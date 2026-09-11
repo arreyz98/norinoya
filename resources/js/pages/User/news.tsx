@@ -6,7 +6,6 @@ import {
 } from 'lucide-react';
 
 import NewsFeed from './components/NewsFeed';
-import { NEWS_UPDATES } from '../../types/mockData';
 import Navbar from './components/Navbar';
 import logoDarkUrl from '../../../../public/assets/images/logo-dark.png';
 import logoLightUrl from '../../../../public/assets/images/logo-light.png';
@@ -32,6 +31,7 @@ interface NewsPageProps {
   kiosItems?: unknown[];
   initialNews?: RawNewsItem | null;
   initialSlug?: string;
+  totalNewsCount?: number;
 }
 
 export default function NewsPage({ 
@@ -40,6 +40,7 @@ export default function NewsPage({
   kiosItems = [],
   initialNews,
   initialSlug,
+  totalNewsCount,
 }: NewsPageProps) {
   const initialPostId = React.useMemo(() => {
     if (initialNews) return String(initialNews.id);
@@ -135,20 +136,13 @@ export default function NewsPage({
                 <span>Discover Japanese Stories.</span>
               </span>
               <h1 className="text-3xl md:text-5xl font-sans font-black tracking-tight uppercase leading-none max-w-4xl text-neutral-950 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-neutral-100 dark:to-neutral-300">
-                NORINOYA
+                NEWS
               </h1>
               <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed">
                 Explore manga, light novel, anime, dan rilisan terbaru dari sumber resmi.
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-3 pt-1.5 relative z-10">
-                <button
-                  onClick={handleNavHome}
-                  className="px-4.5 py-2 bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 hover:bg-neutral-900 dark:hover:bg-neutral-100 active:scale-95 duration-100 text-xs font-mono font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-transparent"
-                >
-                  <BookOpen className="w-3.5 h-3.5" />
-                  <span>norinoya</span>
-                </button>
                 <a
                   href="https://discord.com"
                   target="_blank"
@@ -164,14 +158,12 @@ export default function NewsPage({
 
               <div className="flex items-center gap-4 sm:gap-6 pt-3 font-mono text-[10px] sm:text-xs">
                 <div className="flex flex-col items-center">
-                  <span className="text-neutral-950 dark:text-white font-extrabold text-base sm:text-lg leading-none">{NEWS_UPDATES.length}</span>
+                  <span className="text-neutral-950 dark:text-white font-extrabold text-base sm:text-lg leading-none">
+                    {totalNewsCount !== undefined ? totalNewsCount : newsList.length}
+                  </span>
                   <span className="text-neutral-500 dark:text-neutral-400 text-[9px] sm:text-[10px] mt-1">Feeds Hari Ini</span>
                 </div>
                 <div className="h-6 w-[1px] bg-neutral-200 dark:bg-neutral-800" />
-                <div className="flex flex-col items-center">
-                  <span className="text-neutral-950 dark:text-white font-extrabold text-base sm:text-lg leading-none">100%</span>
-                  <span className="text-neutral-500 dark:text-neutral-400 text-[9px] sm:text-[10px] mt-1">Komunitas</span>
-                </div>
               </div>
             </div>
           )}
@@ -206,7 +198,7 @@ export default function NewsPage({
               />
             </div>
             <p className="text-sm text-neutral-500 max-w-sm font-sans leading-[20px]">
-              Platform kurasi, database buku, komik dan light novel resmi di Indonesia, terafiliasi dengan program referral Gramedia, Tokopedia, Shopee. <strong>Stop Buku Bajakan!</strong>
+              Platform kurasi database buku (manga, novel dan light novel) legal di Indonesia.
             </p>
           </div>
 
@@ -248,9 +240,8 @@ export default function NewsPage({
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto border-t border-neutral-200 mt-10 pt-6 text-center text-xs font-mono text-neutral-400 flex flex-col sm:flex-row justify-between items-center gap-4 leading-[16px]">
-          <span>© 2026 Norinoya Hub. Diposisikan murni untuk ulasan komunitas & edukasi legalitas komik Indonesia.</span>
-          <span>Made with precision</span>
+        <div className="max-w-7xl mx-auto  mt-10 pt-6 text-center text-xs font-mono text-neutral-400 flex flex-col sm:flex-row justify-between items-center gap-4 leading-[16px]">
+          <span>© 2026 Norinoya</span>
         </div>
       </footer>
 
@@ -258,7 +249,7 @@ export default function NewsPage({
       <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-sm bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-700/80 shadow-[0_10px_30px_rgba(0,0,0,0.08)] rounded-2xl z-[60] flex items-center justify-around py-2.5 px-3 mb-safe">
         <button onClick={handleNavHome} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
           <BookOpen className="w-4.5 h-4.5 mb-0.5" />
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">norinoya</span>
+          <span className="text-xs font-sans font-bold leading-none tracking-tight">Home</span>
         </button>
         <button onClick={handleNavNews} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-950 dark:text-white font-extrabold bg-neutral-100/90 dark:bg-neutral-700">
           <Newspaper className="w-4.5 h-4.5 mb-0.5" />

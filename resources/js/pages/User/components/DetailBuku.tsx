@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ShareModal } from './ShareModal';
 import { HighlightReview } from './HighlightReview';
 import { 
-  BookOpen, ArrowUpRight, Play, ArrowLeft, Send, Store, ShieldAlert, Instagram, Info, ShoppingBag, Tv, Video
+  BookOpen, ArrowUpRight, ArrowLeft, Send, Store, ShieldAlert, Info, ShoppingBag
 } from 'lucide-react';
 import { COMICS_DATA, NEWS_UPDATES, PRE_OWNED_ITEMS } from '../../../types/mockData';
 import { Comic, Volume} from '../../../types/demo';
@@ -241,7 +241,7 @@ export default function DetailBuku({
       case 'Anak & Bimbingan Orang Tua':
       case 'Anak & Bimbingan':
         return {
-          bg: 'bg-neutral-100/95 dark:bg-neutral-800/95 border-emerald-500/40 text-[#41a34c] dark:text-emerald-400',
+          bg: 'bg-[#22c55e] dark:bg-[#16a34a] border-emerald-600/30 text-white',
           text: 'Anak & Bimbingan',
           color: '#41a34c',
           hoverClass: 'group-hover:text-[#41a34c] dark:group-hover:text-emerald-400',
@@ -249,15 +249,15 @@ export default function DetailBuku({
         };
       case 'Remaja':
         return {
-          bg: 'bg-neutral-100/95 dark:bg-neutral-800/95 border-amber-500/50 dark:border-amber-400/40 text-[#d97706] dark:text-amber-400',
+          bg: 'bg-[#f59e0b] dark:bg-[#d97706] border-amber-600/30 text-white',
           text: 'Remaja',
-          color: '#d97706',
+          color: '#f59e0b',
           hoverClass: 'group-hover:text-[#d97706] dark:group-hover:text-amber-400',
           hoverClassKat: 'group-hover/kat:text-[#d97706] dark:group-hover/kat:text-amber-400'
         };
       case 'Dewasa Ringan':
         return {
-          bg: 'bg-neutral-100/95 dark:bg-neutral-800/95 border-orange-500/40 text-[#ff6628] dark:text-orange-400',
+          bg: 'bg-[#ff6628] dark:bg-[#ea580c] border-orange-600/30 text-white',
           text: 'Dewasa Ringan',
           color: '#ff723c',
           hoverClass: 'group-hover:text-[#ff6628] dark:group-hover:text-orange-400',
@@ -265,7 +265,7 @@ export default function DetailBuku({
         };
       case 'Dewasa Berat':
         return {
-          bg: 'bg-neutral-100/95 dark:bg-neutral-800/95 border-red-500/40 text-[#c1271f] dark:text-red-400',
+          bg: 'bg-[#ef4444] dark:bg-[#dc2626] border-red-600/30 text-white',
           text: 'Dewasa Berat',
           color: '#c1271f',
           hoverClass: 'group-hover:text-[#c1271f] dark:group-hover:text-red-400',
@@ -273,7 +273,7 @@ export default function DetailBuku({
         };
       default:
         return {
-          bg: 'bg-neutral-100/95 dark:bg-neutral-800/95 border-amber-500/50 dark:border-amber-400/40 text-[#d97706] dark:text-amber-400',
+          bg: 'bg-[#f97316] dark:bg-[#ea580c] border-orange-600/30 text-white',
           text: 'Remaja',
           color: '#d97706',
           hoverClass: 'group-hover:text-[#d97706] dark:group-hover:text-amber-400',
@@ -316,46 +316,47 @@ export default function DetailBuku({
         {/* Scrollable Content Viewport */}
         <div className="w-full">
           {/* Top Header Navigation sticky full-width block */}
-          <div className="sticky top-[57px] sm:top-[61px] z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">
-            <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
-              <button
-                onClick={handleCloseModal}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-mono font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none"
-              >
-                <ArrowLeft className="w-4 h-4 text-neutral-800 dark:text-neutral-200" />
-                <span>Kembali</span>
-              </button>
+        <div className="fixed top-[58px] sm:top-[64px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800 transition-colors">
+                  <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
+                    <button
+                      onClick={handleCloseModal}
+                      className="h-9 inline-flex items-center gap-2 px-3.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none"
+                    >
+                      <ArrowLeft className="w-4 h-4 text-neutral-800 dark:text-neutral-200" />
+                      <span>Kembali</span>
+                    </button>
 
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => {
-                    if (selectedComic) {
-                      const shareUrl = `${window.location.origin}/buku/${selectedComic.slug || selectedComic.id}`;
-                      setShareModalData({
-                        isOpen: true,
-                        title: activeVolObj?.title || selectedComic.title,
-                        shareUrl,
-                        category: 'Katalog'
-                      });
-                    }
-                  }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-mono font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0"
-                  title="Bagikan Post Katalog"
-                >
-                  <Send className="w-4 h-4 text-neutral-600 dark:text-neutral-300" />
-                  <span>Bagikan</span>
-                </button>
-              </div>
-            </div>
-          </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {/* Share Action - Icon Only */}
+                      <button
+                        onClick={() => {
+                          if (selectedComic) {
+                            const bookSlug = selectedComic.slug || selectedComic.id;
+                            const shareUrl = `${window.location.origin}/buku/${bookSlug}`;
+                            setShareModalData({
+                              isOpen: true,
+                              title: selectedComic.title,
+                              shareUrl,
+                              category: 'Katalog'
+                            });
+                          }
+                        }}
+                        className="w-9 h-9 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0"
+                        title="Bagikan Post Katalog"
+                      >
+                        <Send className="w-4 h-4 text-neutral-600 dark:text-neutral-300" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-          <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28">
+          <div className="w-full h-fit lg:max-w-[92%] xl:max-w-7xl mx-auto px-3 sm:px-6 lg:px-24 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-neutral-950">
             {/* Title Header with Gradient */}
-            <div id="comic-detail-card" className="bg-neutral-50/80 dark:bg-[#171717] p-3 sm:p-5 md:p-6 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
+            <div id="comic-detail-card" className="bg-neutral-50/80 dark:bg-[#0F0F0F] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
             
             {/* Left Column: Interactive Slide Carousel Portfolio Component */}
             <div className="flex flex-col gap-3 shrink-0 w-full md:w-80">
-              <div className="relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-xl overflow-hidden bg-neutral-950 flex flex-col justify-between p-3 border border-neutral-150 shadow-md group">
+              <div className="relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-xl overflow-hidden bg-neutral-950 flex flex-col justify-between p-3 border border-neutral-150 dark:border-neutral-800 shadow-md group">
                 
                 {/* Active Slide Image */}
                 {carouselImages && carouselImages.length > 0 ? (
@@ -402,11 +403,8 @@ export default function DetailBuku({
               {/* Primary Comic and Volume title */}
               <div className="flex items-center flex-wrap gap-2.5">
                 <h2 className="text-xl md:text-2xl font-sans font-extrabold text-neutral-900 dark:text-neutral-50 tracking-tight leading-snug">
-                  {activeVolObj?.title || selectedComic.title}
+                  {activeVolObj?.title  || selectedComic.title} (Volume {activeVolumeNum})
                 </h2>
-                <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-mono font-black bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 shadow-2xs select-none">
-                  Volume {activeVolumeNum}
-                </span>
               </div>
 
               {/* Curator explanation text changed to volume-specific synopsis */}
@@ -453,21 +451,21 @@ export default function DetailBuku({
               {/* Combined Metadata: Category, Reading Rating, and Status Badges */}
               <div className="space-y-3 pt-0.5">
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-xs font-mono px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-[#F5F5F5] rounded-md capitalize font-bold leading-normal">
+                  <span className="text-xs px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 border dark:border-neutral-800 rounded-md capitalize font-bold leading-normal">
                     {selectedComic.category.replace('_', ' ')}
                   </span>
                   {selectedComic.readingRating && (
-                    <span className={`text-xs font-mono px-2.5 py-0.5 rounded-md font-bold border leading-normal ${getReadingRatingStyle(selectedComic.readingRating).bg}`}>
+                    <span className={`text-xs px-2.5 py-0.5 rounded-md font-bold border leading-normal ${getReadingRatingStyle(selectedComic.readingRating).bg}`}>
                       {getReadingRatingStyle(selectedComic.readingRating).text}
                     </span>
                   )}
-                  <span className="text-xs font-mono px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-[#F5F5F5] rounded-md capitalize font-bold leading-normal">
+                  <span className="text-xs px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 border dark:border-neutral-800 rounded-md capitalize font-bold leading-normal">
                     {selectedComic.status}
                   </span>
                 </div>
 
                 {/* Publisher and Authors list text */}
-                <div className="text-xs font-mono text-neutral-550 space-y-1.5 mt-1 leading-normal">
+                <div className="text-xs text-neutral-550 space-y-1.5 mt-1 leading-normal">
                   <div className="flex flex-wrap gap-x-4 gap-y-1">
                     <p>
                       Author Story: <span className="text-neutral-900 dark:text-white font-extrabold">{selectedComic.authorStory || 'N/A'}</span>
@@ -488,7 +486,7 @@ export default function DetailBuku({
                         setSelectedGenres([g]);
                         handleCloseModal();
                       }}
-                      className="text-[10px] sm:text-xs bg-white dark:bg-neutral-900 text-neutral-850 dark:text-neutral-200 px-2.5 py-1 rounded-md font-mono border border-neutral-200 dark:border-neutral-800 font-medium leading-normal hover:border-neutral-400 dark:hover:border-neutral-600 hover:text-neutral-900 dark:hover:text-white transition-all cursor-pointer shadow-2xs"
+                      className="text-[10px] sm:text-xs bg-white dark:bg-neutral-900 text-neutral-850 dark:text-neutral-200 px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-800 font-medium leading-normal hover:border-neutral-400 dark:hover:border-neutral-600 hover:text-neutral-900 dark:hover:text-white transition-all cursor-pointer shadow-2xs"
                     >
                       {g}
                     </button>
@@ -505,8 +503,8 @@ export default function DetailBuku({
             <div className="col-span-1 md:col-span-8 space-y-6 w-full max-w-full overflow-hidden">
               {/* Review & Update News Link */}
               <div className="space-y-3">
-                <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-150 dark:border-neutral-850 pb-1 leading-normal">
-                  CATATAN PREVIEW KOMIK
+                <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-150 dark:border-neutral-850 pb-1 leading-normal">
+                  KETERANGAN
                 </h4>
                 {(() => {
                   const targetNewsUrl = activeVolObj?.news_link || activeVolObj?.newsLink || selectedComic.news_link || selectedComic.newsLink;
@@ -601,7 +599,7 @@ export default function DetailBuku({
 
               {/* Volume Selector Carousel */}
               <div className="space-y-3.5">
-                <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 leading-normal">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-400 leading-normal">
                   PILIH VOLUME
                 </h4>
                 <div className="flex flex-wrap gap-2">
@@ -611,7 +609,7 @@ export default function DetailBuku({
                       onClick={() => {
                         setActiveVolumeNum(v.volNumber);
                       }}
-                      className={`w-10 h-10 rounded-xl border transition-all text-xs font-mono font-bold cursor-pointer ${
+                      className={`w-10 h-10 rounded-xl border transition-all text-xs font-bold cursor-pointer ${
                         activeVolumeNum === v.volNumber
                           ? 'bg-neutral-950 text-white border-neutral-950 shadow-sm'
                           : 'bg-white text-neutral-700 border-neutral-200 hover:border-neutral-400 active:bg-neutral-50'
@@ -628,13 +626,13 @@ export default function DetailBuku({
                 if (!activeVolObj) return null;
 
                 return (
-                  <div className="border border-neutral-200 rounded-xl p-3.5 sm:p-5 space-y-4 sm:space-y-5 bg-neutral-50/40 dark:bg-[#171717] shadow-xs">
+                  <div className=" rounded-xl p-3.5 sm:p-5 space-y-4 sm:space-y-5 bg-neutral-50/40 dark:bg-[#171717] shadow-xs">
                     {/* Title and general metadata */}
                     <div className="flex justify-between items-center gap-2">
                       <h5 className="font-extrabold text-[#030303] dark:text-white text-sm leading-snug font-sans">
                         Volume {activeVolObj.volNumber}
                       </h5>
-                      <span className="text-sm font-extrabold font-mono px-3 py-1 bg-white border border-neutral-200 rounded-xl shrink-0 leading-normal text-neutral-900">
+                      <span className="text-sm font-extrabold px-3 py-1 bg-white dark:bg-neutral-900 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-800 rounded-xl shrink-0 leading-normal text-neutral-900">
                         Rp {(activeVolObj.price || 45000).toLocaleString('id-ID')}
                       </span>
                     </div>
@@ -663,7 +661,7 @@ export default function DetailBuku({
 
                             return (
                               <div className="space-y-3">
-                                <h6 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5 leading-normal">
+                                <h6 className="text-xs font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5 leading-normal">
                                   <ShoppingBag className="w-3.5 h-3.5 text-neutral-400" />
                                   Link affiliate toko resmi (Dukungan bagi kreator)
                                 </h6>
@@ -720,48 +718,7 @@ export default function DetailBuku({
                               </div>
                             );
                           })()}
-
-                         
-                          {/* Live Action Platform Link */}
-                          {hasLiveAction && (
-                            <div className="space-y-3 border-t border-neutral-100 dark:border-neutral-800 pt-4">
-                              <h6 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5 leading-normal">
-                                <Video className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                                Link Adaptasi Live Action Resmi
-                              </h6>
-                              <div className="flex flex-col gap-2">
-                                {activeVolObj.liveActionAdaptation!.map(la => (
-                                  <a
-                                    key={la.platformName}
-                                    href={la.watchLink}
-                                    target="_blank"
-                                    rel="no-referrer"
-                                    className="w-full px-4 py-2.5 bg-neutral-100 hover:bg-neutral-200/80 text-neutral-900 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-100 text-xs font-sans font-bold rounded-xl flex items-center gap-2 leading-normal transition-all border border-neutral-200/80 dark:border-neutral-700 shadow-2xs group/ott cursor-pointer"
-                                  >
-                                    <Play className="w-3.5 h-3.5 fill-neutral-900 text-neutral-900 dark:fill-white dark:text-white shrink-0 group-hover/ott:scale-110 transition-transform" />
-                                    <span className="text-neutral-900 dark:text-white font-extrabold flex-1">Tonton di {la.platformName}</span>
-                                    <ArrowUpRight className="w-3.5 h-3.5 text-neutral-500 dark:text-neutral-400 group-hover/ott:text-neutral-900 dark:group-hover/ott:text-white transition-colors" />
-                                  </a>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {!hasOtt && (
-                            <div className="space-y-2.5 border-t border-neutral-100 pt-4">
-                              <h6 className="text-[11px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5 leading-normal">
-                                <Tv className="w-3.5 h-3.5 text-neutral-350" />
-                                Adaptasi OTT &amp; Layanan Streaming
-                              </h6>
-                              <div className="bg-neutral-50/70 dark:bg-[#171717] border border-neutral-150 rounded-xl p-3 flex items-start gap-2.5 shadow-2xs">
-                                <Info className="w-4 h-4 text-neutral-400 dark:text-white shrink-0 mt-0.5" />
-                                <p className="text-[11px] font-sans leading-relaxed text-neutral-600 dark:text-white">
-                                  Saat ini belum tersedia adaptasi anime atau live action resmi di platform streaming OTT legal di Indonesia untuk jilid ini.
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
+                                        </div>
                       );
 
                       if (isAdult && !isUnlocked) {
@@ -809,6 +766,33 @@ export default function DetailBuku({
 
             {/* Right Metadata Column */}
             <div className="col-span-1 md:col-span-4 space-y-4 text-sm font-sans w-full max-w-full overflow-hidden">
+              {/* General book stats */}
+              <div className="bg-neutral-50 dark:bg-[#171717] rounded-2xl p-4.5 space-y-3.5 shadow-xs">
+                <h5 className="font-extrabold dark:text-neutral-100 text-neutral-900 border-b border-neutral-250 pb-2 uppercase text-xs tracking-wider leading-normal">
+                  Spesifikasi Buku
+                </h5>
+                <div className="space-y-3 text-sm leading-normal">
+                  <div>
+                    <span className="text-neutral-400 dark:text-neutral-500 block text-xs leading-normal">JENIS KERTAS:</span>
+                    <span className="text-neutral-950 dark:text-neutral-100 font-semibold">{getPaperType(selectedComic, activeVolObj)}</span>
+                  </div>
+                  <div>
+                    <span className="text-neutral-400 dark:text-neutral-500 block text-xs leading-normal">ISBN:</span>
+                    <span className="text-neutral-950 dark:text-neutral-100 font-semibold">{activeVolObj?.isbn || 'N/A'}</span>
+                  </div>
+                  <div>
+                    <span className="text-neutral-400 dark:text-neutral-500 block text-xs leading-normal">JUMLAH HALAMAN:</span>
+                    <span className="text-neutral-950 dark:text-neutral-100 font-semibold">
+                      {activeVolObj?.pages ? `${activeVolObj.pages} Halaman` : 'N/A'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-neutral-400 dark:text-neutral-500 block text-xs leading-normal">UKURAN BUKU (LEBAR X PANJANG):</span>
+                    <span className="text-neutral-950 dark:text-neutral-100 font-semibold">{getDimensions(selectedComic, activeVolObj)}</span>
+                  </div>
+                </div>
+              </div>
+
               {/* KATALOG RELEVAN Widget */}
               <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 space-y-3 shadow-xs text-left">
                 <div className="flex items-center justify-between pb-2 border-b border-neutral-150 dark:border-neutral-800">
@@ -816,17 +800,17 @@ export default function DetailBuku({
                     <div className="p-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-lg shrink-0">
                       <BookOpen className="w-4 h-4 text-neutral-700 dark:text-neutral-300" />
                     </div>
-                    <h5 className="font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs font-mono tracking-wider">
+                    <h5 className="font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs tracking-wider">
                       KATALOG RELEVAN
                     </h5>
                   </div>
-                  <span className="text-[10px] font-mono font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2 py-0.5 rounded-md">
+                  <span className="text-[10px]  font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2 py-0.5 rounded-md">
                     {relevantComics.length} Buku
                   </span>
                 </div>
 
                 <p className="text-[11px] text-neutral-500 dark:text-neutral-400 font-sans leading-relaxed">
-                  Buku lain yang relevan berdasarkan genre &amp; jenis buku yang sama:
+                  Manga & volume terbitan resmi yang berhubungan dengan berita/buku ini:
                 </p>
 
                 <div className="space-y-2">
@@ -860,10 +844,10 @@ export default function DetailBuku({
 
                         <div className="flex-1 min-w-0 text-left space-y-0.5">
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-[8.5px] font-mono font-extrabold bg-neutral-200/80 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 px-1.5 py-0.2 rounded uppercase leading-none">
+                            <span className="text-[8.5px] font-extrabold bg-neutral-200/80 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 px-1.5 py-0.2 rounded uppercase leading-none">
                               {relComic.category ? relComic.category.replace('_', ' ') : 'Buku'}
                             </span>
-                            <span className="text-[9.5px] font-mono text-neutral-400 truncate">
+                            <span className="text-[9.5px] text-neutral-400 truncate">
                               {relComic.publisherName || 'Penerbit'}
                             </span>
                           </div>
@@ -877,7 +861,7 @@ export default function DetailBuku({
                           </p>
 
                           <div className="flex items-center justify-between pt-0.5">
-                            <span className="text-xs font-mono font-extrabold text-neutral-900 dark:text-neutral-100">
+                            <span className="text-xs font-extrabold text-neutral-900 dark:text-neutral-100">
                               {displayPrice}
                             </span>
                           </div>
@@ -901,35 +885,42 @@ export default function DetailBuku({
                     <div className="p-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-lg shrink-0">
                       <Store className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                     </div>
-                    <h5 className="font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs font-mono tracking-wider">
-                      KIOS PENJUALAN (PRELOVED)
+                    <h5 className="font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs tracking-wider">
+                      KIOS
                     </h5>
                   </div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 px-2 py-0.5 rounded-md border border-emerald-300/50">
-                    Konotasi Store
-                  </span>
                 </div>
 
                 {(() => {
                   const preloved = PRE_OWNED_ITEMS.find(p => p.linkedComicId === selectedComic.id) || PRE_OWNED_ITEMS[0];
+                  const productUrl = `/kios#${preloved.id}`;
+
                   return (
-                    <div className="p-3 bg-emerald-50/40 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/80 rounded-xl space-y-2.5">
+                    <div 
+                      onClick={() => {
+                        window.location.href = productUrl;
+                      }}
+                      className="p-3 bg-emerald-50/40 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/80 hover:border-emerald-400 dark:hover:border-emerald-600 rounded-xl space-y-2.5 cursor-pointer transition-all hover:shadow-xs group/kios"
+                    >
                       <div className="flex gap-3 items-start">
                         <div className="relative shrink-0 w-14 aspect-[3/4] bg-neutral-900 rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800">
                           <img 
                             src={preloved.coverImage} 
                             alt={preloved.comicTitle} 
                             referrerPolicy="no-referrer"
-                            className="w-full h-full object-cover" 
+                            className="w-full h-full object-cover group-hover/kios:scale-105 transition-transform" 
                           />
-                          <span className="absolute top-1 left-1 bg-emerald-600 text-white text-[7.5px] font-mono font-black px-1 py-0.2 rounded uppercase shadow-xs">
+                          <span className="absolute top-1 left-1 bg-emerald-600 text-white text-[7.5px] font-black px-1 py-0.2 rounded uppercase shadow-xs">
                             Kondisi {preloved.conditionRating || 'S'}
                           </span>
                         </div>
                         <div className="flex-1 min-w-0 text-left space-y-0.5">
-                          <h6 className="text-xs font-sans font-bold text-neutral-900 dark:text-neutral-100 line-clamp-1">
-                            {preloved.comicTitle} Vol {preloved.volumeNumber}
-                          </h6>
+                          <div className="flex items-center justify-between gap-1">
+                            <h6 className="text-xs font-sans font-bold text-neutral-900 dark:text-neutral-100 line-clamp-1 group-hover/kios:text-emerald-600 dark:group-hover/kios:text-emerald-400 transition-colors">
+                              {preloved.comicTitle} Vol {preloved.volumeNumber}
+                            </h6>
+                            <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 group-hover/kios:text-emerald-600 dark:group-hover/kios:text-emerald-400 transition-colors shrink-0" />
+                          </div>
                           <p className="text-[10px] font-sans text-neutral-600 dark:text-neutral-400 line-clamp-2 leading-snug">
                             {preloved.notes}
                           </p>
@@ -945,140 +936,18 @@ export default function DetailBuku({
                           </div>
                         </div>
                       </div>
-                      <div className="grid grid-cols-2 gap-2 pt-0.5">
-                        <a
-                          href={preloved.shopeeUrl || "https://shopee.co.id/norinoya.sukasuka"}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="py-1.5 px-2 bg-[#EE4D2D] hover:opacity-95 text-white text-[11px] font-sans font-bold rounded-lg text-center flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
-                        >
-                          <ShoppingBag className="w-3.5 h-3.5 text-white shrink-0" />
-                          <span>Shopee</span>
-                        </a>
-                        <a
-                          href={preloved.tokopediaUrl || "https://tokopedia.com/konotasi.sukasuka"}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="py-1.5 px-2 bg-[#03AC0E] hover:opacity-95 text-white text-[11px] font-sans font-bold rounded-lg text-center flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
-                        >
-                          <Store className="w-3.5 h-3.5 text-white shrink-0" />
-                          <span>Tokopedia</span>
-                        </a>
-                      </div>
                     </div>
                   );
                 })()}
               </div>
 
-              {/* General book stats */}
-              <div className="bg-neutral-50 dark:bg-[#171717]  rounded-2xl p-4.5 space-y-3.5 shadow-xs">
-                <h5 className="font-extrabold dark:text-neutral-100 text-neutral-900 border-b border-neutral-250 pb-2 uppercase text-xs font-mono tracking-wider leading-normal">
-                  Spesifikasi Buku
-                </h5>
-                <div className="space-y-3 text-sm leading-normal">
-                  <div>
-                    <span className="text-neutral-400 dark:text-neutral-500 block text-xs font-mono leading-normal">JENIS KERTAS:</span>
-                    <span className="text-neutral-950 dark:text-neutral-100 font-semibold">{getPaperType(selectedComic, activeVolObj)}</span>
-                  </div>
-                  <div>
-                    <span className="text-neutral-400 dark:text-neutral-500 block text-xs font-mono leading-normal">ISBN:</span>
-                    <span className="text-neutral-950 dark:text-neutral-100 font-semibold">{activeVolObj?.isbn || 'N/A'}</span>
-                  </div>
-                  <div>
-                    <span className="text-neutral-400 dark:text-neutral-500 block text-xs font-mono leading-normal">JUMLAH HALAMAN:</span>
-                    <span className="text-neutral-950 dark:text-neutral-100 font-semibold">
-                      {activeVolObj?.pages ? `${activeVolObj.pages} Halaman` : 'N/A'}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-neutral-400 dark:text-neutral-500 block text-xs font-mono leading-normal">UKURAN BUKU (LEBAR X PANJANG):</span>
-                    <span className="text-neutral-950 dark:text-neutral-100 font-semibold">{getDimensions(selectedComic, activeVolObj)}</span>
-                  </div>
-                </div>
-              </div>
-
               {/* Ads placeholder inside modal */}
               <div className="bg-neutral-50 dark:bg-[#262626] border border-dashed border-neutral-250 dark:border-neutral-700 rounded-2xl p-4 text-center space-y-1.5 transition-colors">
-                <span className="text-xs font-mono font-extrabold tracking-wider text-neutral-400 dark:text-neutral-400 uppercase block leading-normal">PROMOTED AD</span>
-                <div className="bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-800 py-4.5 rounded-xl text-xs text-neutral-500 dark:text-neutral-300 font-mono shadow-xs leading-normal">
+                <span className="text-xs font-extrabold tracking-wider text-neutral-400 dark:text-neutral-400 uppercase block leading-normal">PROMOTED AD</span>
+                <div className="bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-800 py-4.5 rounded-xl text-xs text-neutral-500 dark:text-neutral-300 shadow-xs leading-normal">
                   Affiliate Promo Slot
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Clean, Modular Footer for Detail Overlays */}
-          <div className="mt-12 pt-8 border-t border-neutral-200/80 pb-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-sans font-black tracking-wider uppercase text-neutral-900">Norinoya</span>
-                  <span className="h-1 w-1 rounded-full bg-neutral-400"></span>
-                  <span className="text-xs font-mono font-bold text-neutral-400">DATABASE DETAIL</span>
-                </div>
-                <p className="text-xs text-neutral-550 max-w-md font-sans leading-relaxed">
-                  Data, kurasi, dan ulasan fisik disediakan murni untuk keperluan ulasan komunitas &amp; edukasi legalitas komik Indonesia. Stop Buku Bajakan!
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                <div className="flex items-center justify-between gap-4 py-1.5 px-3 bg-neutral-50 dark:bg-[#262626] rounded-xl border border-neutral-100 dark:border-neutral-800 min-w:[200px] sm:min-w-0">
-                  <span className="text-[11px] font-mono font-bold text-neutral-700 dark:text-neutral-300">@norinoya.official</span>
-                  <div className="flex gap-1">
-                    <a 
-                      href="https://instagram.com/norinoya.official" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="w-7 h-7 rounded-lg bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-700/80 hover:border-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950/30 text-neutral-500 dark:text-neutral-300 hover:text-pink-600 dark:hover:text-pink-400 transition-all flex items-center justify-center shadow-xs"
-                      title="Instagram @norinoya.official"
-                    >
-                      <Instagram className="w-3.5 h-3.5" />
-                    </a>
-                    <a 
-                      href="https://tiktok.com/@norinoya.official" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="w-7 h-7 rounded-lg bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-700/80 hover:border-neutral-900 dark:hover:border-white hover:bg-neutral-50 dark:hover:bg-neutral-700 text-neutral-500 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-all flex items-center justify-center shadow-xs"
-                      title="TikTok @norinoya.official"
-                    >
-                      <svg className="w-3.5 h-3.5 fill-current text-neutral-500 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors" viewBox="0 0 24 24">
-                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.86.97 2.05 1.64 3.34 1.85.01.88 0 1.77-.01 2.65-.96-.11-1.92-.48-2.73-1.03-.69-.47-1.25-1.11-1.63-1.85-.05 1.48-.03 2.94-.04 4.41-.07 2.58-.93 5.16-2.71 7.03-1.74 1.95-4.32 2.99-6.95 2.87-2.67-.03-5.26-1.24-6.85-3.39-1.75-2.25-2.22-5.4-1.25-8.13C2.15 6.01 4.7 3.86 7.6 3.5c1.47-.15 2.98.08 4.29.81-.01 1-.01 1.99-.02 2.99-.86-.54-1.9-.76-2.9-.61-1.39.21-2.61 1.15-3.19 2.44-.7 1.46-.57 3.29.35 4.62.91 1.34 2.53 2.1 4.14 2 1.4-.04 2.72-.78 3.44-1.97.48-.75.69-1.64.67-2.52.01-3.21 0-6.42.01-9.63-.08-.55-.38-.97-.87-1.23-.28-.15-.59-.22-.92-.22H12.525z"/>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between gap-4 py-1.5 px-3 bg-neutral-50 dark:bg-[#262626] rounded-xl border border-neutral-100 dark:border-neutral-800 min-w-[200px] sm:min-w-0">
-                  <span className="text-[11px] font-mono font-bold text-neutral-700 dark:text-neutral-300">@konotasi.sukasuka</span>
-                  <div className="flex gap-1">
-                    <a 
-                      href="https://instagram.com/konotasi.sukasuka" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="w-7 h-7 rounded-lg bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-700/80 hover:border-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950/30 text-neutral-500 dark:text-neutral-300 hover:text-pink-600 dark:hover:text-pink-400 transition-all flex items-center justify-center shadow-xs"
-                      title="Instagram @konotasi.sukasuka"
-                    >
-                      <Instagram className="w-3.5 h-3.5" />
-                    </a>
-                    <a 
-                      href="https://tiktok.com/@konotasi.sukasuka" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="w-7 h-7 rounded-lg bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-700/80 hover:border-neutral-900 dark:hover:border-white hover:bg-neutral-50 dark:hover:bg-neutral-700 text-neutral-500 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-all flex items-center justify-center shadow-xs"
-                      title="TikTok @konotasi.sukasuka"
-                    >
-                      <svg className="w-3.5 h-3.5 fill-current text-neutral-500 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors" viewBox="0 0 24 24">
-                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.86.97 2.05 1.64 3.34 1.85.01.88 0 1.77-.01 2.65-.96-.11-1.92-.48-2.73-1.03-.69-.47-1.25-1.11-1.63-1.85-.05 1.48-.03 2.94-.04 4.41-.07 2.58-.93 5.16-2.71 7.03-1.74 1.95-4.32 2.99-6.95 2.87-2.67-.03-5.26-1.24-6.85-3.39-1.75-2.25-2.22-5.4-1.25-8.13C2.15 6.01 4.7 3.86 7.6 3.5c1.47-.15 2.98.08 4.29.81-.01 1-.01 1.99-.02 2.99-.86-.54-1.9-.76-2.9-.61-1.39.21-2.61 1.15-3.19 2.44-.7 1.46-.57 3.29.35 4.62.91 1.34 2.53 2.1 4.14 2 1.4-.04 2.72-.78 3.44-1.97.48-.75.69-1.64.67-2.52.01-3.21 0-6.42.01-9.63-.08-.55-.38-.97-.87-1.23-.28-.15-.59-.22-.92-.22H12.525z"/>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="border-t border-neutral-100 mt-6 pt-4 flex flex-col sm:flex-row justify-between items-center gap-2.5 text-[10px] font-mono text-neutral-400">
-              <span>© 2026 Norinoya Hub. All rights reserved.</span>
-              <span>Verified Official Indonesian Manga &amp; Novel Release Database</span>
             </div>
           </div>
         </div>
@@ -1098,7 +967,7 @@ export default function DetailBuku({
             {/* Top Bar inside Lightbox */}
             <div className="flex justify-between items-center w-full max-w-5xl mx-auto text-white">
               <div className="space-y-0.5">
-                <span className="text-[10px] sm:text-xs font-mono font-bold tracking-wider text-neutral-400 uppercase">
+                <span className="text-[10px] sm:text-xs font-bold tracking-wider text-neutral-400 uppercase">
                   Detail Cetakan Fisik Halaman
                 </span>
                 <h3 className="text-base sm:text-lg font-sans font-extrabold text-white leading-normal">
@@ -1107,7 +976,7 @@ export default function DetailBuku({
               </div>
               <button 
                 onClick={() => setIsLightboxOpen(false)}
-                className="w-10 h-10 border border-neutral-800 rounded-full flex items-center justify-center text-white bg-neutral-900 hover:bg-neutral-800 transition-colors uppercase font-mono text-xs font-bold cursor-pointer"
+                className="w-10 h-10 border border-neutral-800 rounded-full flex items-center justify-center text-white bg-neutral-900 hover:bg-neutral-800 transition-colors uppercase text-xs font-bold cursor-pointer"
               >
                 ✕
               </button>
@@ -1125,10 +994,10 @@ export default function DetailBuku({
 
             {/* Bottom Controls Indicator inside Lightbox */}
             <div className="w-full max-w-5xl mx-auto flex justify-between items-center text-white pt-2">
-              <span className="font-mono text-xs text-neutral-400">
+              <span className="text-xs text-neutral-400">
                 Pencahayaan Alami Studio • 5500K
               </span>
-              <span className="font-mono text-xs text-neutral-400 uppercase tracking-widest">
+              <span className="text-xs text-neutral-400 uppercase tracking-widest">
                 Foto {activeSlideIndex + 1} / {carouselImages.length}
               </span>
             </div>

@@ -36,12 +36,19 @@ Route::get('/', function () {
     $genres = \App\Models\Genre::orderBy('name')->get(['id', 'name', 'slug']);
     $newsList = \App\Models\News::latest()->get();
 
+    $totalBooksCount = \App\Models\Book::count();
+    $totalSeriesCount = \App\Models\BookSeries::count();
+    $totalPublishersCount = \App\Models\Publisher::count();
+
     return Inertia::render('User/home', [
         'books' => $books,
         'publishers' => $publishers,
         'storyStatuses' => $storyStatuses,
         'genres' => $genres,
         'newsList' => $newsList,
+        'totalBooksCount' => $totalBooksCount,
+        'totalSeriesCount' => $totalSeriesCount,
+        'totalPublishersCount' => $totalPublishersCount,
     ]);
 })->name('home');
 
@@ -60,10 +67,13 @@ Route::get('/news', function () {
         'tiktokEmbeds',
     ])->get();
 
+    $totalNewsCount = \App\Models\News::count();
+
     return Inertia::render('User/news', [
         'newsList' => $newsList,
         'books' => $books,
         'kiosItems' => $kiosItems,
+        'totalNewsCount' => $totalNewsCount,
     ]);
 })->name('news');
 
@@ -78,9 +88,14 @@ Route::get('/kios', function () {
         'genres',
     ])->get();
 
+    $totalKiosItemsCount = \App\Models\KiosItem::count();
+    $totalPartnersCount = \App\Models\KiosPartner::count();
+
     return Inertia::render('User/kios', [
         'kiosItems' => $kiosItems,
         'books' => $books,
+        'totalKiosItemsCount' => $totalKiosItemsCount,
+        'totalPartnersCount' => $totalPartnersCount,
     ]);
 })->name('kios');
 
@@ -141,12 +156,19 @@ Route::get('/buku/{slug}', function ($slug) {
     $genres = \App\Models\Genre::orderBy('name')->get(['id', 'name', 'slug']);
     $newsList = \App\Models\News::latest()->get();
 
+    $totalBooksCount = \App\Models\Book::count();
+    $totalSeriesCount = \App\Models\BookSeries::count();
+    $totalPublishersCount = \App\Models\Publisher::count();
+
     return Inertia::render('User/home', [
         'books' => $books,
         'publishers' => $publishers,
         'storyStatuses' => $storyStatuses,
         'genres' => $genres,
         'newsList' => $newsList,
+        'totalBooksCount' => $totalBooksCount,
+        'totalSeriesCount' => $totalSeriesCount,
+        'totalPublishersCount' => $totalPublishersCount,
         'initialBook' => $book,
         'initialSlug' => $slug,
     ]);
@@ -406,12 +428,15 @@ Route::get('/news/{slug}', function ($slug) {
         'tiktokEmbeds',
     ])->get();
 
+    $totalNewsCount = \App\Models\News::count();
+
     return Inertia::render('User/news', [
         'newsList' => $newsList,
         'books' => $books,
         'kiosItems' => $kiosItems,
         'initialNews' => $news,
         'initialSlug' => $slug,
+        'totalNewsCount' => $totalNewsCount,
     ]);
 })->name('news.detail');
 
@@ -502,11 +527,16 @@ Route::get('/kios/{slug}', function ($slug) {
         'genres',
     ])->get();
 
+    $totalKiosItemsCount = \App\Models\KiosItem::count();
+    $totalPartnersCount = \App\Models\KiosPartner::count();
+
     return Inertia::render('User/kios', [
         'kiosItems' => $kiosItems,
         'books' => $books,
         'initialKiosItem' => $kiosItem,
         'initialSlug' => $slug,
+        'totalKiosItemsCount' => $totalKiosItemsCount,
+        'totalPartnersCount' => $totalPartnersCount,
     ]);
 })->name('kios.detail');
 

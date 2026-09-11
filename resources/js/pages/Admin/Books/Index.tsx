@@ -27,6 +27,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { toast } from 'sonner';
 
 interface BookImage {
     id: number;
@@ -37,6 +38,7 @@ interface BookImage {
 interface Book {
     id: number;
     title: string;
+    slug?: string | null;
     volume: number;
 
     series: {
@@ -97,10 +99,20 @@ interface PaginationData {
     total: number;
 }
 
+interface FilterItem {
+    id: number;
+    title?: string;
+    name?: string;
+}
+
 interface Props {
     books: PaginationData;
+    seriesList?: FilterItem[];
+    publishersList?: FilterItem[];
     filters?: {
         search?: string;
+        series_id?: string;
+        publisher_id?: string;
         sort?: string;
     };
 }
@@ -116,35 +128,64 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Index({ books, filters: rawFilters }: Props) {
+export default function Index({ books, seriesList = [], publishersList = [], filters: rawFilters }: Props) {
     const filters = rawFilters && !Array.isArray(rawFilters) ? rawFilters : {};
     const [deleteBook, setDeleteBook] =
         useState<Book | null>(null);
     const [search, setSearch] = useState(filters.search || '');
+    const [seriesId, setSeriesId] = useState(filters.series_id || 'all');
+    const [publisherId, setPublisherId] = useState(filters.publisher_id || 'all');
     const [sort, setSort] = useState(filters.sort || 'latest');
+
+    const handleApplyFilters = (newParams?: {
+        search?: string;
+        series_id?: string;
+        publisher_id?: string;
+        sort?: string;
+    }) => {
+        const payload: Record<string, string> = {
+            search: newParams?.search !== undefined ? newParams.search : search,
+            series_id: newParams?.series_id !== undefined ? newParams.series_id : seriesId,
+            publisher_id: newParams?.publisher_id !== undefined ? newParams.publisher_id : publisherId,
+            sort: newParams?.sort !== undefined ? newParams.sort : sort,
+        };
+
+        if (!payload.search) delete payload.search;
+        if (!payload.series_id || payload.series_id === 'all') delete payload.series_id;
+        if (!payload.publisher_id || payload.publisher_id === 'all') delete payload.publisher_id;
+
+        router.get(route('admin.books.index'), payload, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    };
 
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get(
-            route('admin.books.index'),
-            { search, sort },
-            { preserveState: true, preserveScroll: true }
-        );
+        handleApplyFilters();
+    };
+
+    const handleSeriesChange = (newSeries: string) => {
+        setSeriesId(newSeries);
+        handleApplyFilters({ series_id: newSeries });
+    };
+
+    const handlePublisherChange = (newPublisher: string) => {
+        setPublisherId(newPublisher);
+        handleApplyFilters({ publisher_id: newPublisher });
     };
 
     const handleSortChange = (newSort: string) => {
         setSort(newSort);
-        router.get(
-            route('admin.books.index'),
-            { search, sort: newSort },
-            { preserveState: true, preserveScroll: true }
-        );
+        handleApplyFilters({ sort: newSort });
     };
 
     const handleDelete = () => {
         if (!deleteBook) {
             return;
         }
+
+        const bookTitle = deleteBook.title;
 
         router.delete(
             route(
@@ -153,7 +194,12 @@ export default function Index({ books, filters: rawFilters }: Props) {
             ),
             {
                 preserveScroll: true,
-
+                onSuccess: () => {
+                    toast.success(`Buku "${bookTitle}" sudah terhapus`);
+                },
+                onError: () => {
+                    toast.error('Gagal menghapus buku');
+                },
                 onFinish: () => {
                     setDeleteBook(null);
                 },
@@ -202,12 +248,12 @@ export default function Index({ books, filters: rawFilters }: Props) {
                 </div>
 
                 {/* Filter & Search Bar */}
-                <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-3.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-2xs">
-                    <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 flex-1 max-w-md">
+                <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-3.5 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 shadow-2xs">
+                    <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 flex-1 min-w-[240px]">
                         <div className="relative flex-1">
                             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
                             <Input
-                                placeholder="Cari judul buku, series, penerbit..."
+                                placeholder="Cari judul buku, sinopsis..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 className="pl-9 h-9 text-xs"
@@ -218,7 +264,40 @@ export default function Index({ books, filters: rawFilters }: Props) {
                         </Button>
                     </form>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                        {/* Series Filter */}
+                        <div className="relative">
+                            <select
+                                value={seriesId}
+                                onChange={(e) => handleSeriesChange(e.target.value)}
+                                className="h-9 px-3 text-xs font-medium bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+                            >
+                                <option value="all">Semua Series</option>
+                                {seriesList.map((series) => (
+                                    <option key={series.id} value={series.id}>
+                                        {series.title || series.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Publisher Filter */}
+                        <div className="relative">
+                            <select
+                                value={publisherId}
+                                onChange={(e) => handlePublisherChange(e.target.value)}
+                                className="h-9 px-3 text-xs font-medium bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+                            >
+                                <option value="all">Semua Penerbit</option>
+                                {publishersList.map((pub) => (
+                                    <option key={pub.id} value={pub.id}>
+                                        {pub.name || pub.title}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Sort Filter */}
                         <div className="relative">
                             <ArrowUpDown className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
                             <select
@@ -231,12 +310,14 @@ export default function Index({ books, filters: rawFilters }: Props) {
                             </select>
                         </div>
 
-                        {(search || sort !== 'latest') && (
+                        {(search || seriesId !== 'all' || publisherId !== 'all' || sort !== 'latest') && (
                             <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => {
                                     setSearch('');
+                                    setSeriesId('all');
+                                    setPublisherId('all');
                                     setSort('latest');
                                     router.get(route('admin.books.index'), {}, { preserveScroll: true });
                                 }}
@@ -432,11 +513,28 @@ export default function Index({ books, filters: rawFilters }: Props) {
 
                                                 {/* Actions */}
                                                 <td className="px-4 py-3">
-                                                    <div className="flex justify-end gap-2">
+                                                    <div className="flex justify-end gap-1.5">
                                                         <Button
                                                             variant="outline"
                                                             size="icon"
                                                             asChild
+                                                            title="Lihat Tampilan User"
+                                                            className="text-neutral-600 hover:text-neutral-950 dark:text-neutral-300 dark:hover:text-white"
+                                                        >
+                                                            <a
+                                                                href={route('book.detail', book.slug || book.id)}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                <Eye className="size-4" />
+                                                            </a>
+                                                        </Button>
+
+                                                        <Button
+                                                            variant="outline"
+                                                            size="icon"
+                                                            asChild
+                                                            title="Edit Buku"
                                                         >
                                                             <Link
                                                                 href={route(
@@ -451,6 +549,7 @@ export default function Index({ books, filters: rawFilters }: Props) {
                                                         <Button
                                                             variant="destructive"
                                                             size="icon"
+                                                            title="Hapus Buku"
                                                             onClick={() =>
                                                                 setDeleteBook(
                                                                     book,
@@ -605,11 +704,6 @@ export default function Index({ books, filters: rawFilters }: Props) {
                                 {deleteBook?.title}
                             </strong>
                             ?
-
-                            <br />
-
-                            Data buku akan dipindahkan
-                            ke soft delete.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
 

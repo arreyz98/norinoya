@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Head } from '@inertiajs/react';
 import { 
-  BookOpen, Instagram, ShoppingBag, Newspaper, Store, ShieldCheck
+  BookOpen, Instagram, ShoppingBag, Newspaper, Store, Handshake
 } from 'lucide-react';
 
 import EtalaseCatalog, { RawKiosItem } from './components/EtalaseCatalog';
 import Navbar from './components/Navbar';
+import ModalKolaborasi from './components/ModalKolaborasi';
 import logoDarkUrl from '../../../../public/assets/images/logo-dark.png';
 import logoLightUrl from '../../../../public/assets/images/logo-light.png';
 
@@ -15,6 +16,8 @@ interface KiosPageProps {
   books?: unknown[];
   initialKiosItem?: RawKiosItem | null;
   initialSlug?: string;
+  totalKiosItemsCount?: number;
+  totalPartnersCount?: number;
 }
 
 export default function KiosPage({ 
@@ -22,6 +25,8 @@ export default function KiosPage({
   books = [],
   initialKiosItem,
   initialSlug,
+  totalKiosItemsCount,
+  totalPartnersCount,
 }: KiosPageProps) {
   const initialItemId = React.useMemo(() => {
     if (initialKiosItem) return String(initialKiosItem.id);
@@ -33,6 +38,7 @@ export default function KiosPage({
   }, [initialKiosItem, initialSlug, kiosItems]);
 
   const [selectedSaleId, setSelectedSaleId] = useState<string | null>(initialItemId);
+  const [showPartnershipModal, setShowPartnershipModal] = useState<boolean>(false);
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const saved = sessionStorage.getItem('norinoya-dark-mode');
@@ -114,28 +120,51 @@ export default function KiosPage({
 
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-amber-50 dark:bg-amber-950/40 border border-amber-200/60 dark:border-amber-700/40 text-amber-900 dark:text-amber-300 text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase rounded-full shadow-2xs">
                 <Store className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                <span>OFFICIAL & PRELOVED MARKETPLACE</span>
+                <span>KOLABORASI PARTNER RESMI</span>
               </span>
 
               <h1 className="text-3xl md:text-5xl font-sans font-black tracking-tight uppercase leading-none max-w-4xl text-neutral-950 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-neutral-100 dark:to-neutral-300">
-                KIOS NORINOYA
+                KIOS
               </h1>
               
               <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed">
-                Temukan buku manga, merchandise resmi, apparel, aksesoris, dan komik preloved terverifikasi dari toko mitra resmi.
+               Temukan koleksi eksklusif norinoya dengan brand resmi terpilih, cek harga dan checkout langsung.
               </p>
 
-              {/* Feature Badges */}
-              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/80 border border-neutral-200/60 dark:border-neutral-700/60 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                  <span>100% Produk Terverifikasi</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/80 border border-neutral-200/60 dark:border-neutral-700/60 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
-                  <Store className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                  <span>Mitra Partner Terpercaya</span>
-                </div>
-              </div>
+               {/* Action Button: Gabung Partner? */}
+        <div className="pt-0.5 relative z-10 flex items-center justify-center gap-2 sm:gap-2.5 flex-wrap">
+          <button
+            type="button"
+            onClick={() => setShowPartnershipModal(true)}
+            className="px-3.5 py-1.5 sm:px-4 sm:py-2 bg-[#183619] hover:bg-[#0b1a0c] text-white border border-[#1c3e1e] active:scale-95 duration-100 text-[11px] sm:text-xs font-mono font-bold tracking-tight rounded-lg sm:rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
+            title="Gabung Kolaborasi Partner Kios Norinoya"
+          >
+            <Handshake className="w-3.5 h-3.5 text-[#DA6B1C]" />
+            <span>Gabung Partner?</span>
+          </button>
+        </div>
+
+             {/* Counter Widget Info */}
+        <div className="flex items-center gap-4 sm:gap-6 pt-1 sm:pt-2 font-mono text-xs">
+          <div className="flex flex-col items-center">
+            <span className="text-neutral-950 dark:text-white font-extrabold text-base sm:text-lg leading-none">
+              {totalKiosItemsCount !== undefined ? totalKiosItemsCount : kiosItems.length}
+            </span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px]">Total Produk</span>
+          </div>
+          <div className="h-5 sm:h-6 w-[1px] bg-neutral-200 dark:bg-neutral-800" />
+          <div className="flex flex-col items-center">
+            <span className="text-neutral-950 dark:text-white font-extrabold text-base sm:text-lg leading-none">
+              {totalPartnersCount !== undefined ? `${totalPartnersCount}+` : '3+'}
+            </span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px]">Partner Resmi</span>
+          </div>
+          <div className="h-5 sm:h-6 w-[1px] bg-neutral-200 dark:bg-neutral-800" />
+          <div className="flex flex-col items-center">
+            <span className="text-neutral-950 dark:text-white font-extrabold text-base sm:text-lg leading-none">100%</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px]">Link Resmi</span>
+          </div>
+        </div>
             </div>
           )}
 
@@ -145,6 +174,7 @@ export default function KiosPage({
             }} 
             selectedSaleId={selectedSaleId}
             onClearSelectedSaleId={() => setSelectedSaleId(null)}
+            onSelectSaleItem={(item) => setSelectedSaleId(item ? String(item.id) : null)}
             dbKiosItems={kiosItems}
             dbBooksList={books}
           />
@@ -164,7 +194,7 @@ export default function KiosPage({
               />
             </div>
             <p className="text-sm text-neutral-500 max-w-sm font-sans leading-[20px]">
-              Platform kurasi, database buku, komik dan light novel resmi di Indonesia, terafiliasi dengan program referral Gramedia, Tokopedia, Shopee. <strong>Stop Buku Bajakan!</strong>
+              Platform kurasi database buku (manga, novel dan light novel) legal di Indonesia.
             </p>
           </div>
 
@@ -206,9 +236,8 @@ export default function KiosPage({
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto border-t border-neutral-200 mt-10 pt-6 text-center text-xs font-mono text-neutral-400 flex flex-col sm:flex-row justify-between items-center gap-4 leading-[16px]">
-          <span>© 2026 Norinoya Hub. Diposisikan murni untuk ulasan komunitas & edukasi legalitas komik Indonesia.</span>
-          <span>Made with precision</span>
+        <div className="max-w-7xl mx-auto  mt-10 pt-6 text-center text-xs font-mono text-neutral-400 flex flex-col sm:flex-row justify-between items-center gap-4 leading-[16px]">
+          <span>© 2026 Norinoya  </span>
         </div>
       </footer>
 
@@ -216,7 +245,7 @@ export default function KiosPage({
       <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-sm bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-700/80 shadow-[0_10px_30px_rgba(0,0,0,0.08)] rounded-2xl z-[60] flex items-center justify-around py-2.5 px-3 mb-safe">
         <button onClick={handleNavHome} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
           <BookOpen className="w-4.5 h-4.5 mb-0.5" />
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">norinoya</span>
+          <span className="text-xs font-sans font-bold leading-none tracking-tight">Home</span>
         </button>
         <button onClick={handleNavNews} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
           <Newspaper className="w-4.5 h-4.5 mb-0.5" />
@@ -227,6 +256,12 @@ export default function KiosPage({
           <span className="text-xs font-sans font-bold leading-none tracking-tight">Kios</span>
         </button>
       </div>
+
+      {/* Modal Kolaborasi Partnership */}
+      <ModalKolaborasi
+        isOpen={showPartnershipModal}
+        onClose={() => setShowPartnershipModal(false)}
+      />
     </div>
   );
 }

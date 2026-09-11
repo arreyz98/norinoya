@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { 
   ArrowLeft, Send, CheckCircle2, 
   Newspaper, RefreshCw, Sparkles, Tag, Ticket, Mic, Tv, Gamepad2, Flame,
-  Users, Eye, Heart, ShoppingBag, Store, ChevronRight, BookOpen, BookMarked, BookText,
+  Users, Eye, Heart, ShoppingBag, ChevronRight, BookOpen, BookMarked, BookText,
   Play, ArrowUpRight, Video
 } from 'lucide-react';
 import { COMICS_DATA } from '../../../types/mockData';
@@ -142,40 +142,50 @@ export default function DetailNews({
       });
   }, [activePost]);
 
-  return (
-    <motion.div
-      key="news-detail-view"
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -15 }}
-      transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-      className="w-full max-w-6xl mx-auto relative -mt-4 sm:-mt-6"
-    >
-      {/* Full-width Sticky Top Navigation Bar */}
-      <div className="sticky top-[57px] sm:top-[61px] z-40 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3 bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800 flex items-center justify-between gap-3 mb-4">
-        <button
-          onClick={() => selectPost(null)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-mono font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Kembali</span>
-        </button>
+  // Instantly reset scroll to top when mounting or changing post so fixed bar stays in place
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  }, [activePost?.id]);
 
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Share Action */}
+  return (
+    <div className="w-full max-w-6xl mx-auto relative -mt-4 sm:-mt-6">
+      {/* Full-width Fixed Top Navigation Bar */}
+      <div className="fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">
+        <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
           <button
-            onClick={(e) => handleSharePost(activePost, e)}
+            onClick={() => selectPost(null)}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-mono font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0"
-            title="Bagikan Berita"
           >
-            <span>Bagikan</span>
-            <Send className="w-4 h-4 text-neutral-600 dark:text-neutral-300" />
+            <ArrowLeft className="w-4 h-4" />
+            <span>Kembali</span>
           </button>
+
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Share Action */}
+            <button
+              onClick={(e) => handleSharePost(activePost, e)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-mono font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0"
+              title="Bagikan Berita"
+            >
+              <span>Bagikan</span>
+              <Send className="w-4 h-4 text-neutral-600 dark:text-neutral-300" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Responsive Grid Layout: Left Main Detail + Right Widgets Sidebar */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <motion.div
+        key="news-detail-view"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="w-full"
+      >
+        {/* Responsive Grid Layout: Left Main Detail + Right Widgets Sidebar */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pt-16 sm:pt-20">
 
         {/* LEFT COLUMN: Main Detail Content Container (8 Cols on Desktop) */}
         <div className="lg:col-span-8 bg-white dark:bg-[#202120] rounded-2xl overflow-hidden border border-neutral-200/85 dark:border-neutral-800 shadow-sm relative">
@@ -202,7 +212,7 @@ export default function DetailNews({
               {/* Headline & Meta */}
               <div className="space-y-2.5">
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono font-semibold text-neutral-500 dark:text-neutral-400 leading-normal">
-                  <span className="font-extrabold text-[#112A12] dark:text-[#112A12] shrink-0">@{activePost.username}</span>
+                  <span className="font-extrabold text-[#112A12] dark:text-white shrink-0">@{activePost.username}</span>
                   <span className="shrink-0 text-neutral-300 dark:text-neutral-600">•</span>
                   <span className="shrink-0">{activePost.displayName}</span>
                   <span className="shrink-0 text-neutral-300 dark:text-neutral-600">•</span>
@@ -664,7 +674,7 @@ export default function DetailNews({
                         
                         if (post.category === 'cetakan_ulang') {
                           categoryLabel = 'Cetak Ulang';
-                          categoryColor = 'bg-[#112A12]/10 dark:bg-[#112A12]/20 text-[#112A12] dark:text-[#112A12] border border-[#112A12]/20 dark:border-[#112A12]/30';
+                          categoryColor = 'bg-[#112A12]/10 dark:bg-emerald-950/45 text-[#112A12] dark:text-white border border-[#112A12]/20 dark:border-[#112A12]/30';
                         } else if (post.category === 'manga') {
                           categoryLabel = 'Manga';
                           categoryColor = 'bg-emerald-50 dark:bg-emerald-950/45 text-emerald-600 dark:text-emerald-400 border border-emerald-100/50 dark:border-emerald-900/30';
@@ -707,7 +717,7 @@ export default function DetailNews({
                           <div
                             key={post.id}
                             onClick={() => selectPost(post)}
-                            className="bg-neutral-50/50 dark:bg-neutral-850/40 hover:bg-neutral-50 dark:hover:bg-[#262626] p-4 rounded-xl border border-neutral-200/60 dark:border-neutral-800/80 cursor-pointer group transition-all flex flex-col justify-between h-full hover:shadow-xs"
+                            className="bg-neutral-50/50 dark:bg-[#1A1A1A] hover:bg-neutral-50 dark:hover:bg-[#262626] p-4 rounded-xl border border-neutral-200/60 dark:border-neutral-800/80 cursor-pointer group transition-all flex flex-col justify-between h-full hover:shadow-xs"
                           >
                             <div className="space-y-2">
                               <div className="flex items-center justify-between">
@@ -747,7 +757,7 @@ export default function DetailNews({
              <div className="bg-white dark:bg-[#202120] rounded-2xl p-4 sm:p-5 border border-neutral-200/85 dark:border-neutral-800 shadow-xs flex flex-col gap-3.5">
                <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-neutral-200/80 dark:border-neutral-800">
                  <div className="flex items-center gap-2">
-                   <ShoppingBag className="w-4 h-4 text-[#112A12] shrink-0" />
+                   <ShoppingBag className="w-4 h-4 text-neutral-100 dark:text-neutral-100 shrink-0" />
                    <h3 className="text-xs font-mono font-extrabold text-neutral-900 dark:text-neutral-100 uppercase tracking-wider">
                      Katalog Relevan
                    </h3>
@@ -766,11 +776,19 @@ export default function DetailNews({
                    <div 
                      key={`${comic.id}-${vol.volNumber}-${idx}`}
                      onClick={() => {
-                       if (onNavigateToComic && comic.id) onNavigateToComic(comic.id);
-                       else if (onNavigateToCatalog) onNavigateToCatalog();
-                       else triggerToast(`📚 Membuka Katalog: ${comic.title} Vol ${vol.volNumber}`);
+                       if (comic.slug) {
+                         window.location.href = `/buku/${comic.slug}`;
+                       } else if (onNavigateToComic && comic.id) {
+                         onNavigateToComic(comic.id);
+                       } else if (comic.id) {
+                         window.location.href = `/#/database/${comic.id}`;
+                       } else if (onNavigateToCatalog) {
+                         onNavigateToCatalog();
+                       } else {
+                         triggerToast(`📚 Membuka Katalog: ${comic.title} Vol ${vol.volNumber}`);
+                       }
                      }}
-                     className="flex gap-3 p-2.5 rounded-xl bg-neutral-50 dark:bg-[#1A2321] hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200/60 dark:border-emerald-500/20 transition-all cursor-pointer group/kat hover:shadow-xs"
+                     className="flex gap-3 p-2.5 rounded-xl bg-neutral-50 dark:bg-[#1A2321] hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200/60 dark:border-emerald-500/20 transition-all cursor-pointer group/kat hover:shadow-xs active:scale-[0.99]"
                    >
                      <img 
                        src={vol.coverImage || comic.coverImage} 
@@ -816,7 +834,7 @@ export default function DetailNews({
                  </h3>
                </div>
                <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                 Kios Partner
+                 Kios
                </span>
              </div>
 
@@ -833,14 +851,18 @@ export default function DetailNews({
                  return (
                    <div 
                      key={`kios-${kiosItem.id || idx}`}
-                     className="p-3 rounded-xl bg-emerald-950/5 dark:bg-emerald-950/20 border border-emerald-500/25 dark:border-emerald-500/20 flex flex-col gap-2.5"
+                     onClick={() => {
+                       const targetSlug = kiosItem.slug || kiosItem.id;
+                       window.location.href = `/kios/${targetSlug}`;
+                     }}
+                     className="p-3 rounded-xl bg-emerald-950/5 dark:bg-emerald-950/20 border border-emerald-500/25 dark:border-emerald-500/20 flex flex-col gap-2.5 cursor-pointer group/kios hover:border-emerald-500 transition-all hover:shadow-xs active:scale-[0.99]"
                    >
                      <div className="flex gap-3">
                        <div className="relative shrink-0">
                          <img 
                            src={coverImage} 
                            alt={title}
-                           className="w-15 h-20 object-cover rounded-lg border border-emerald-500/30 shadow-2xs" 
+                           className="w-15 h-20 object-cover rounded-lg border border-emerald-500/30 shadow-2xs group-hover/kios:scale-103 transition-transform" 
                          />
                          <span className="absolute top-1 left-1 px-1.5 py-0.2 rounded text-[8px] font-mono font-extrabold bg-emerald-600 text-white shadow-xs">
                            {rating}
@@ -851,7 +873,7 @@ export default function DetailNews({
                            <div className="text-[10px] font-sans font-semibold text-emerald-600 dark:text-emerald-400 truncate">
                              {partnerName}
                            </div>
-                           <h4 className="text-xs font-extrabold text-neutral-900 dark:text-neutral-100 line-clamp-1">
+                           <h4 className="text-xs font-extrabold text-neutral-900 dark:text-neutral-100 line-clamp-1 group-hover/kios:text-emerald-600 dark:group-hover/kios:text-emerald-400 transition-colors">
                              {title} {volText}
                            </h4>
                            <p className="text-[10px] text-neutral-600 dark:text-neutral-300 font-sans line-clamp-2 mt-0.5 leading-tight">
@@ -869,48 +891,6 @@ export default function DetailNews({
                            )}
                          </div>
                        </div>
-                     </div>
-
-                     <div className="grid grid-cols-2 gap-2 pt-1 border-t border-emerald-500/15">
-                       {kiosItem.shopee_url ? (
-                         <a 
-                           href={kiosItem.shopee_url} 
-                           target="_blank" 
-                           rel="noopener noreferrer" 
-                           className="py-1.5 px-2 bg-orange-600 hover:bg-orange-700 text-white text-[10px] font-mono font-extrabold rounded-lg flex items-center justify-center gap-1 transition-all shadow-2xs"
-                         >
-                           <ShoppingBag className="w-3 h-3" />
-                           <span>Shopee</span>
-                         </a>
-                       ) : (
-                         <a 
-                           href="/kios" 
-                           className="py-1.5 px-2 bg-neutral-800 hover:bg-neutral-900 text-white text-[10px] font-mono font-extrabold rounded-lg flex items-center justify-center gap-1 transition-all shadow-2xs"
-                         >
-                           <ShoppingBag className="w-3 h-3" />
-                           <span>Lihat Kios</span>
-                         </a>
-                       )}
-
-                       {kiosItem.tokopedia_url ? (
-                         <a 
-                           href={kiosItem.tokopedia_url} 
-                           target="_blank" 
-                           rel="noopener noreferrer" 
-                           className="py-1.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-mono font-extrabold rounded-lg flex items-center justify-center gap-1 transition-all shadow-2xs"
-                         >
-                           <Store className="w-3 h-3" />
-                           <span>Tokopedia</span>
-                         </a>
-                       ) : (
-                         <a 
-                           href="/kios" 
-                           className="py-1.5 px-2 bg-emerald-700 hover:bg-emerald-800 text-white text-[10px] font-mono font-extrabold rounded-lg flex items-center justify-center gap-1 transition-all shadow-2xs"
-                         >
-                           <Store className="w-3 h-3" />
-                           <span>Detail Kios</span>
-                         </a>
-                       )}
                      </div>
                    </div>
                  );
@@ -933,8 +913,8 @@ export default function DetailNews({
            </div>
 
         </div>
-
       </div>
     </motion.div>
-  );
+  </div>
+);
 }

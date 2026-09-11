@@ -87,19 +87,19 @@ function CustomSelect({ label, value, options, onChange, isOpen, onToggle }: Cus
                     }}
                     className={`flex items-center justify-between w-full px-3.5 py-2.5 sm:py-2 text-xs md:text-sm text-left transition-colors font-sans cursor-pointer ${
                       isSelected
-                        ? 'bg-[#FAFAFA] dark:bg-neutral-800 text-neutral-950 dark:text-neutral-50 font-bold'
-                        : 'text-neutral-700 dark:text-neutral-350 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800/60 font-medium'
+                        ? 'bg-[#FAFAFA] dark:bg-neutral-800 text-neutral-950 dark:text-white font-bold'
+                        : 'text-neutral-700 dark:text-white hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800/80 font-medium'
                     }`}
                   >
                     <div className="flex items-center gap-2.5 min-w-0 pr-1.5 flex-1">
                       {OptionIcon ? (
-                        <OptionIcon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#112A12] dark:text-emerald-400' : 'text-neutral-400 dark:text-neutral-500'}`} />
+                        <OptionIcon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#112A12] dark:text-emerald-400' : 'text-neutral-400 dark:text-neutral-300'}`} />
                       ) : (
-                        <Tag className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-[#112A12] dark:text-emerald-400' : 'text-neutral-350 dark:text-neutral-600'}`} />
+                        <Tag className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-[#112A12] dark:text-emerald-400' : 'text-neutral-350 dark:text-neutral-400'}`} />
                       )}
-                      <span className="whitespace-normal break-words leading-snug py-0.5">{opt.label}</span>
+                      <span className="whitespace-normal break-words leading-snug py-0.5 text-inherit">{opt.label}</span>
                     </div>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-neutral-950 dark:text-neutral-50 shrink-0 ml-1.5 mt-0.5" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-neutral-950 dark:text-white shrink-0 ml-1.5 mt-0.5" />}
                   </button>
                 );
               })}
@@ -130,6 +130,9 @@ interface MarketplaceDbProps {
   dynamicStoryStatuses?: FilterOptionItem[];
   dynamicGenres?: FilterOptionItem[];
   newsList?: RawNewsItem[];
+  totalBooksCount?: number;
+  totalSeriesCount?: number;
+  totalPublishersCount?: number;
   initialSelectedComicId?: string | null;
   onClearSelectedComicId?: () => void;
   onNavigateToNews?: (newsId: string) => void;
@@ -142,11 +145,19 @@ export default function MarketplaceDb({
   dynamicStoryStatuses = [], 
   dynamicGenres = [], 
   newsList = [],
+  totalBooksCount,
+  totalSeriesCount,
+  totalPublishersCount,
   initialSelectedComicId, 
   onClearSelectedComicId, 
   onNavigateToNews
 }: MarketplaceDbProps = {}) {
-  const activeComics = useMemo(() => customComics || COMICS_DATA, [customComics]);
+  const activeComics = useMemo(() => {
+    if (customComics !== undefined) {
+      return customComics;
+    }
+    return COMICS_DATA;
+  }, [customComics]);
 
   const [searchInput, setSearchInput] = useState('');
   const [activeSearchTerm, setActiveSearchTerm] = useState('');
@@ -181,6 +192,7 @@ export default function MarketplaceDb({
   const handlePerformSearch = (keywordToSearch?: string) => {
     const raw = (keywordToSearch !== undefined ? keywordToSearch : searchInput).trim();
     setActiveSearchTerm(raw);
+    setCurrentPage(1);
 
     const clean = raw.replace(/\s+/g, ' ').toLowerCase();
 
@@ -202,17 +214,48 @@ export default function MarketplaceDb({
     }
   };
 
-  // Modal detailed states
-  const [selectedComic, setSelectedComic] = useState<Comic | null>(null);
-  const [activeVolumeNum, setActiveVolumeNum] = useState<number>(1);
+  // Modal detailed states - Synchronous lazy init to prevent flash of home catalog
+  const [selectedComic, setSelectedComic] = useState<Comic | null>(() => {
+    if (!initialSelectedComicId || !activeComics || activeComics.length === 0) return null;
+    const parts = initialSelectedComicId.split('-vol-');
+    const realComicId = parts[0];
+    return activeComics.find(c =>
+      c.id === realComicId ||
+      c.id === `book-${realComicId}` ||
+      c.id === `series-${realComicId}` ||
+      c.bookId === Number(realComicId) ||
+      c.slug === realComicId ||
+      c.volumes.some(v => v.id === Number(realComicId) || v.bookId === Number(realComicId))
+    ) || null;
+  });
+
+  const [activeVolumeNum, setActiveVolumeNum] = useState<number>(() => {
+    if (!initialSelectedComicId || !activeComics || activeComics.length === 0) return 1;
+    const parts = initialSelectedComicId.split('-vol-');
+    const realComicId = parts[0];
+    const targetVol = parts[1] ? parseInt(parts[1], 10) : 1;
+    const found = activeComics.find(c =>
+      c.id === realComicId ||
+      c.id === `book-${realComicId}` ||
+      c.id === `series-${realComicId}` ||
+      c.bookId === Number(realComicId) ||
+      c.slug === realComicId ||
+      c.volumes.some(v => v.id === Number(realComicId) || v.bookId === Number(realComicId))
+    );
+    if (found) {
+      return found.volumes.some(v => v.volNumber === targetVol) ? targetVol : (found.volumes[0]?.volNumber || 1);
+    }
+    return 1;
+  });
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const ITEMS_PER_PAGE = 24;
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   const upcomingReleases = useMemo(() => {
     const list: Array<{ comic: Comic; volume: Volume; dateStr: string }> = [];
-    
-    // Only find books explicitly flagged as upcoming by admin
+
+    // Bagian segera rilis berdiri sendiri dan tidak terpengaruh oleh filter atau input pencarian
     activeComics.forEach((comic) => {
       comic.volumes.forEach((vol) => {
         if (vol.isUpcoming || comic.isUpcoming) {
@@ -228,12 +271,12 @@ export default function MarketplaceDb({
     return list.slice(0, 6);
   }, [activeComics]);
 
-  const getReadingRatingStyle = (rating?: string) => {
+const getReadingRatingStyle = (rating?: string) => {
     switch (rating) {
       case 'Anak & Bimbingan Orang Tua':
       case 'Anak & Bimbingan':
         return {
-          bg: 'bg-neutral-100/95 dark:bg-neutral-800/95 border-emerald-500/40 text-[#41a34c] dark:text-emerald-400',
+          bg: 'bg-[#22c55e] dark:bg-[#16a34a] border-emerald-600/30 text-white',
           text: 'Anak & Bimbingan',
           color: '#41a34c',
           hoverClass: 'group-hover:text-[#41a34c] dark:group-hover:text-emerald-400',
@@ -241,15 +284,15 @@ export default function MarketplaceDb({
         };
       case 'Remaja':
         return {
-          bg: 'bg-neutral-100/95 dark:bg-neutral-800/95 border-amber-500/50 dark:border-amber-400/40 text-[#d97706] dark:text-amber-400',
+          bg: 'bg-[#f59e0b] dark:bg-[#d97706] border-amber-600/30 text-white',
           text: 'Remaja',
-          color: '#d97706',
+          color: '#f59e0b',
           hoverClass: 'group-hover:text-[#d97706] dark:group-hover:text-amber-400',
           hoverClassKat: 'group-hover/kat:text-[#d97706] dark:group-hover/kat:text-amber-400'
         };
       case 'Dewasa Ringan':
         return {
-          bg: 'bg-neutral-100/95 dark:bg-neutral-800/95 border-orange-500/40 text-[#ff6628] dark:text-orange-400',
+          bg: 'bg-[#ff6628] dark:bg-[#ea580c] border-orange-600/30 text-white',
           text: 'Dewasa Ringan',
           color: '#ff723c',
           hoverClass: 'group-hover:text-[#ff6628] dark:group-hover:text-orange-400',
@@ -257,7 +300,7 @@ export default function MarketplaceDb({
         };
       case 'Dewasa Berat':
         return {
-          bg: 'bg-neutral-100/95 dark:bg-neutral-800/95 border-red-500/40 text-[#c1271f] dark:text-red-400',
+          bg: 'bg-[#ef4444] dark:bg-[#dc2626] border-red-600/30 text-white',
           text: 'Dewasa Berat',
           color: '#c1271f',
           hoverClass: 'group-hover:text-[#c1271f] dark:group-hover:text-red-400',
@@ -265,7 +308,7 @@ export default function MarketplaceDb({
         };
       default:
         return {
-          bg: 'bg-neutral-100/95 dark:bg-neutral-800/95 border-amber-500/50 dark:border-amber-400/40 text-[#d97706] dark:text-amber-400',
+          bg: 'bg-[#f97316] dark:bg-[#ea580c] border-orange-600/30 text-white',
           text: 'Remaja',
           color: '#d97706',
           hoverClass: 'group-hover:text-[#d97706] dark:group-hover:text-amber-400',
@@ -404,31 +447,39 @@ export default function MarketplaceDb({
   const filteredVolumePosts = useMemo(() => {
     return allVolumePosts.filter(post => {
       const { comic, volume } = post;
-      const bookTitle = volume.title || comic.title;
-      const combinedTitle = `${bookTitle} Vol ${volume.volNumber}`;
+      const term = activeSearchTerm.trim().toLowerCase();
       
-      const matchesSearch = 
-        !activeSearchTerm ||
-        combinedTitle.toLowerCase().includes(activeSearchTerm.toLowerCase()) ||
-        bookTitle.toLowerCase().includes(activeSearchTerm.toLowerCase()) ||
-        comic.title.toLowerCase().includes(activeSearchTerm.toLowerCase()) ||
-        (volume.title && volume.title.toLowerCase().includes(activeSearchTerm.toLowerCase())) ||
-        comic.synopsis.toLowerCase().includes(activeSearchTerm.toLowerCase()) ||
-        volume.cetakanInfo.toLowerCase().includes(activeSearchTerm.toLowerCase()) ||
-        (volume.isbn && volume.isbn.toLowerCase().includes(activeSearchTerm.toLowerCase())) ||
-        comic.publisherName.toLowerCase().includes(activeSearchTerm.toLowerCase()) ||
-        (comic.authorStory && comic.authorStory.toLowerCase().includes(activeSearchTerm.toLowerCase())) ||
-        (comic.authorArt && comic.authorArt.toLowerCase().includes(activeSearchTerm.toLowerCase()));
+      let matchesSearch = true;
+      if (term) {
+        const bookTitle = (volume.title || '').toLowerCase();
+        const comicTitle = (comic.title || '').toLowerCase();
+        const fullCombo = `${comicTitle} ${bookTitle}`.trim();
 
-      const matchesCat = selectedCategories.includes('all') || selectedCategories.length === 0 || selectedCategories.includes(comic.category);
+        // Exact substring match on volume title, series title, or combined title
+        if (bookTitle.includes(term) || comicTitle.includes(term) || fullCombo.includes(term)) {
+          matchesSearch = true;
+        } else {
+          // Check all individual query words (e.g. "naruto shippuden" -> both "naruto" and "shippuden" must be in the title)
+          const words = term.split(/\s+/).filter(Boolean);
+          matchesSearch = words.length > 0 && words.every(w => bookTitle.includes(w) || comicTitle.includes(w));
+        }
+      }
+
+      if (!matchesSearch) return false;
+
+      const matchesCat = selectedCategories.includes('all') || selectedCategories.length === 0 || selectedCategories.some(sc => {
+        const catFilter = sc.toLowerCase().replace(/[\s-_]/g, '');
+        const comicCat = (comic.category || '').toLowerCase().replace(/[\s-_]/g, '');
+        return catFilter === comicCat || comicCat.includes(catFilter) || catFilter.includes(comicCat);
+      });
       
       const matchesPublisher = selectedPublishers.includes('all') || selectedPublishers.length === 0 || selectedPublishers.some(sp => {
         const opt = publisherOptions.find(o => o.value === sp);
         if (!opt) return sp === comic.publisherId;
         return (
           sp === comic.publisherId ||
-          opt.label.toLowerCase() === comic.publisherName.toLowerCase() ||
-          (opt.slug && opt.slug.toLowerCase() === comic.publisherId.toLowerCase())
+          opt.label.toLowerCase() === (comic.publisherName || '').toLowerCase() ||
+          (opt.slug && opt.slug.toLowerCase() === (comic.publisherId || '').toLowerCase())
         );
       });
 
@@ -462,13 +513,13 @@ export default function MarketplaceDb({
         return ss === comic.status;
       });
 
-      const matchesGenre = selectedGenres.includes('all') || selectedGenres.length === 0 || comic.genres.some(g => {
-        const comicNorm = g.toLowerCase().replace(/[_-]/g, ' ').trim();
-        return selectedGenres.some(sg => {
-          const selectNorm = sg.toLowerCase().replace(/[_-]/g, ' ').trim();
-          return selectNorm === comicNorm;
+      const matchesGenre = selectedGenres.includes('all') || selectedGenres.length === 0 || (comic.genres && comic.genres.length > 0 && selectedGenres.some(sg => {
+        const selectNorm = sg.toLowerCase().replace(/[\s-_]/g, '');
+        return comic.genres.some(g => {
+          const comicNorm = (g || '').toLowerCase().replace(/[\s-_]/g, '');
+          return selectNorm === comicNorm || comicNorm.includes(selectNorm) || selectNorm.includes(comicNorm);
         });
-      });
+      }));
 
       const matchesAdaptation = selectedAdaptations.includes('all') || selectedAdaptations.length === 0 || selectedAdaptations.some(sa => {
         const comicAdapt = (comic.adaptation || '').toLowerCase();
@@ -484,7 +535,18 @@ export default function MarketplaceDb({
         return false;
       });
 
-      const matchesReadingRating = selectedReadingRatings.includes('all') || selectedReadingRatings.length === 0 || selectedReadingRatings.includes(comic.readingRating || 'Remaja');
+      const matchesReadingRating = selectedReadingRatings.includes('all') || selectedReadingRatings.length === 0 || selectedReadingRatings.some(sr => {
+        const comicRating = (comic.readingRating || 'Remaja').toLowerCase().trim();
+        const filterVal = sr.toLowerCase().trim();
+
+        if (filterVal === 'all') return true;
+        if (filterVal === 'dewasa') {
+          return comicRating.includes('dewasa');
+        }
+        if (filterVal.includes('anak') && comicRating.includes('anak')) return true;
+        if (filterVal.includes('remaja') && comicRating.includes('remaja')) return true;
+        return comicRating === filterVal || comicRating.includes(filterVal) || filterVal.includes(comicRating);
+      });
 
       return matchesSearch && matchesCat && matchesPublisher && matchesStatus && matchesGenre && matchesAdaptation && matchesReadingRating;
     });
@@ -492,6 +554,23 @@ export default function MarketplaceDb({
 
   const sortedVolumePosts = useMemo(() => {
     const list = [...filteredVolumePosts];
+    const searchTerm = activeSearchTerm.trim().toLowerCase();
+
+    // Helper score untuk relevansi pencarian keyword jika ada kata kunci
+    const getSearchRelevanceScore = (post: VolumePost): number => {
+      if (!searchTerm) return 0;
+      const bTitle = (post.volume.title || '').toLowerCase();
+      const cTitle = (post.comic.title || '').toLowerCase();
+
+      // Exact match gets highest score
+      if (bTitle === searchTerm || cTitle === searchTerm) return 100;
+      // Starts with keyword
+      if (bTitle.startsWith(searchTerm) || cTitle.startsWith(searchTerm)) return 80;
+      // Substring match
+      if (bTitle.includes(searchTerm) || cTitle.includes(searchTerm)) return 60;
+      return 40;
+    };
+
     switch (sortBy) {
       case 'terbaru':
         return list.sort((a, b) => b.volume.releaseDate.localeCompare(a.volume.releaseDate));
@@ -520,15 +599,18 @@ export default function MarketplaceDb({
       case 'relevan':
       default:
         return list.sort((a, b) => {
+          if (searchTerm) {
+            const scoreA = getSearchRelevanceScore(a);
+            const scoreB = getSearchRelevanceScore(b);
+            if (scoreB !== scoreA) return scoreB - scoreA;
+          }
           const aFeat = a.comic.isFeatured ? 1 : 0;
           const bFeat = b.comic.isFeatured ? 1 : 0;
           if (bFeat !== aFeat) return bFeat - aFeat;
-          const indexA = allVolumePosts.indexOf(a);
-          const indexB = allVolumePosts.indexOf(b);
-          return indexA - indexB;
+          return (a.comic.title || '').localeCompare(b.comic.title || '');
         });
     }
-  }, [filteredVolumePosts, sortBy, allVolumePosts]);
+  }, [filteredVolumePosts, sortBy, activeSearchTerm]);
 
   // Reset page when filters or sorting change
   useEffect(() => {
@@ -540,10 +622,35 @@ export default function MarketplaceDb({
     return Math.max(1, Math.ceil(sortedVolumePosts.length / ITEMS_PER_PAGE));
   }, [sortedVolumePosts.length, ITEMS_PER_PAGE]);
 
+  // Use clamped currentPage to ensure instantaneous update on search/filter without empty slice race condition
+  const effectivePage = Math.min(Math.max(1, currentPage), totalPages);
+
   const paginatedVolumePosts = useMemo(() => {
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const startIndex = (effectivePage - 1) * ITEMS_PER_PAGE;
     return sortedVolumePosts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [sortedVolumePosts, currentPage, ITEMS_PER_PAGE]);
+  }, [sortedVolumePosts, effectivePage, ITEMS_PER_PAGE]);
+
+  // Static database counts for Counter Widget Info, unaffected by search/filters
+  const comicCount = useMemo(() => {
+    if (typeof totalBooksCount === 'number') return totalBooksCount;
+    // Fallback: total individual books/volumes across activeComics
+    return allVolumePosts.length;
+  }, [totalBooksCount, allVolumePosts]);
+
+  const volumeCount = useMemo(() => {
+    if (typeof totalSeriesCount === 'number') return totalSeriesCount;
+    // Fallback: total comic series/titles in database
+    return activeComics.length;
+  }, [totalSeriesCount, activeComics]);
+
+  const publisherCount = useMemo(() => {
+    if (typeof totalPublishersCount === 'number') return totalPublishersCount;
+    if (dynamicPublishers && dynamicPublishers.length > 0) return dynamicPublishers.length;
+    const uniquePublishers = new Set(
+      activeComics.map(c => c.publisherName || c.publisherId).filter(Boolean)
+    );
+    return uniquePublishers.size;
+  }, [totalPublishersCount, dynamicPublishers, activeComics]);
 
 
 
@@ -559,15 +666,25 @@ export default function MarketplaceDb({
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-neutral-100 dark:from-neutral-800/20 via-transparent to-transparent pointer-events-none" />
             <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-neutral-100 dark:bg-neutral-800/10 rounded-full blur-3xl pointer-events-none" />
             
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-neutral-100 dark:bg-white/10 border border-neutral-200 dark:border-white/20 text-neutral-800 dark:text-white text-[11px] font-mono font-bold tracking-widest uppercase rounded-full">
-              <BookOpen className="w-3.5 h-3.5 text-[#DA6B1C] dark:text-[#DA6B1C] fill-[#DA6B1C]/10 dark:fill-[#DA6B1C]/30" />
-              <span>Database &amp; Discovery Platform</span>
+             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-neutral-100 dark:bg-white/10 border border-neutral-200 dark:border-white/20 text-neutral-800 dark:text-white text-[10px] sm:text-[11px] font-mono font-bold tracking-widest uppercase rounded-full">
+              <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#DA6B1C] dark:text-[#DA6B1C] fill-[#DA6B1C]/10 dark:fill-[#DA6B1C]/30" />
+              <span>Database &amp; Discovery</span>
             </span>
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-sans font-black tracking-tight uppercase leading-tight max-w-4xl text-neutral-950 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-neutral-100 dark:to-neutral-300">
-              PORTAL DATABASE MANGA, NOVEL &amp; LIGHT NOVEL RESMI INDONESIA
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-black tracking-tight uppercase leading-tight max-w-4xl text-neutral-950 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-neutral-100 dark:to-neutral-300">
+              NORINOYA
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed">
-              Temukan rilisan terbaru, detail cetakan resmi, ulasan komunitas, rekomendasi, serta akses pembelian legal dalam satu tempat.
+            <div className="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap">
+              {['Manga', 'Novel', 'Light Novel'].map((label) => (
+                <div
+                  key={label}
+                  className="px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-white/90 dark:bg-neutral-800/90 text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs font-sans font-semibold select-none shadow-3xs"
+                >
+                  {label}
+                </div>
+              ))}
+            </div>
+            <p className="text-[11px] sm:text-xs md:text-sm text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed">
+              Rilisan terbaru, detail cetakan, rekomendasi, serta akses pembelian dalam satu tempat.
             </p>
 
             <div className="pt-1 relative z-10 flex items-center justify-center gap-2.5 flex-wrap">
@@ -587,19 +704,19 @@ export default function MarketplaceDb({
             {/* Counter Widget Info */}
             <div className="flex items-center gap-6 pt-3 font-mono text-xs">
               <div className="flex flex-col items-center">
-                <span className="text-neutral-950 dark:text-white font-extrabold text-lg leading-none">{COMICS_DATA.length}</span>
+                <span className="text-neutral-950 dark:text-white font-extrabold text-lg leading-none">{comicCount}</span>
                 <span className="text-neutral-500 dark:text-neutral-400 text-[10px]">Judul Komik</span>
               </div>
               <div className="h-6 w-[1px] bg-neutral-200 dark:bg-neutral-800" />
               <div className="flex flex-col items-center">
                 <span className="text-neutral-950 dark:text-white font-extrabold text-lg leading-none">
-                  {COMICS_DATA.reduce((acc, c) => acc + c.volumes.length, 0)}
+                  {volumeCount}
                 </span>
                 <span className="text-neutral-500 dark:text-neutral-400 text-[10px]">Total Volume</span>
               </div>
               <div className="h-6 w-[1px] bg-neutral-200 dark:bg-neutral-800" />
               <div className="flex flex-col items-center">
-                <span className="text-neutral-950 dark:text-white font-extrabold text-lg leading-none">7+</span>
+                <span className="text-neutral-950 dark:text-white font-extrabold text-lg leading-none">{publisherCount}</span>
                 <span className="text-neutral-500 dark:text-neutral-400 text-[10px]">Penerbit Resmi</span>
               </div>
             </div>
@@ -618,7 +735,7 @@ export default function MarketplaceDb({
 
           {/* Section Item Segera Rilis */}
           {upcomingReleases.length > 0 && (
-            <div className="bg-white dark:bg-[#171717] border border-[#DA6B1C]/40/80 dark:border-orange-800/50 p-4 sm:p-5 rounded-2xl space-y-3.5 shadow-2xs mb-6 relative overflow-hidden transition-colors">
+            <div className="bg-white dark:bg-[#171717] border border-black dark:border-orange-800/50 p-4 sm:p-5 rounded-2xl space-y-3.5 shadow-2xs mb-6 relative overflow-hidden transition-colors ">
               {/* Ambient Background Glow */}
               <div className="absolute -top-12 -right-12 w-40 h-40 bg-[#DA6B1C]/10 dark:bg-[#DA6B1C]/5 rounded-full blur-2xl pointer-events-none" />
 
@@ -628,12 +745,9 @@ export default function MarketplaceDb({
                     <Flame className="w-4 h-4 text-[#DA6B1C] fill-[#DA6B1C]/20 animate-pulse" />
                   </div>
                   <div>
-                    <h3 className="text-xs sm:text-sm font-mono font-black uppercase tracking-wider text-neutral-900 dark:text-neutral-100 leading-none">
-                      ITEM SEGERA RILIS
+                    <h3 className="text-xs sm:text-sm font-bold   tracking-wider text-neutral-900 dark:text-neutral-100 leading-none">
+                      Segera Rilis
                     </h3>
-                    <p className="text-[10.5px] text-neutral-500 dark:text-neutral-400 mt-0.5 font-sans">
-                      Jadwal rilis komik &amp; novel resmi Indonesia bulan ini
-                    </p>
                   </div>
                 </div>
               </div>
@@ -677,7 +791,7 @@ export default function MarketplaceDb({
                             {comic.category.replace('_', ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase())}
                           </span>
                           {comic.readingRating && (
-                            <span className={`font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8px] shadow-xs border ${getReadingRatingStyle(comic.readingRating).bg}`}>
+                            <span className={`font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8px] shadow-xs ${getReadingRatingStyle(comic.readingRating).bg}`}>
                               {getReadingRatingStyle(comic.readingRating).text}
                             </span>
                           )}
@@ -701,7 +815,7 @@ export default function MarketplaceDb({
                           </p>
                         )}
                         {comic.genres && comic.genres.length > 0 && (
-                          <p className="text-[8.5px] font-sans text-neutral-400 dark:text-neutral-500 truncate leading-tight">
+                          <p className="text-[8.5px] font-sans text-neutral-400 dark:text-white truncate leading-tight">
                             {comic.genres.slice(0, 2).join(', ')}
                           </p>
                         )}
@@ -723,7 +837,7 @@ export default function MarketplaceDb({
       <div className="bg-white dark:bg-[#171717] border border-[#EFEFEF] dark:border-neutral-800 p-5 rounded-2xl space-y-4 shadow-3xs transition-colors">
         <div className="flex items-center gap-2 border-b border-neutral-100 dark:border-neutral-800 pb-3">
           <Filter className="w-4 h-4 text-neutral-800 dark:text-neutral-200" />
-          <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-900 dark:text-neutral-100 leading-normal">
+           <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-900 dark:text-neutral-100 leading-normal">
             Panel Pencarian Tingkat Lanjut
           </h3>
         </div>
@@ -733,7 +847,7 @@ export default function MarketplaceDb({
           {/* Main search input, always visible + collapse filters button for mobile */}
           <div className="flex flex-col md:flex-row gap-3.5 items-stretch md:items-end">
             <div className="flex-1 relative">
-              <label className="block text-xs font-mono font-bold uppercase text-neutral-400 dark:text-neutral-400 mb-1 leading-normal">Cari Kata Kunci</label>
+              <label className="block text-xs font-mono font-bold uppercase text-neutral-400 dark:text-neutral-400 mb-1 leading-normal">Cari Judul Buku</label>
               <form 
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -745,11 +859,11 @@ export default function MarketplaceDb({
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 dark:text-neutral-500" />
                   <input
                     type="text"
-                    placeholder="Ketik judul manga, light novel, lalu tekan Enter..."
+                    placeholder="Cari judul buku, lalu tekan Enter..."
                     value={searchInput}
                     onChange={(e) => {
                       setSearchInput(e.target.value);
-                      if (e.target.value === '') {
+                      if (e.target.value === '' && activeSearchTerm !== '') {
                         setActiveSearchTerm('');
                       }
                     }}
@@ -906,6 +1020,7 @@ export default function MarketplaceDb({
                 { value: 'all', label: 'Semua Usia', icon: Shield },
                 { value: 'Anak & Bimbingan Orang Tua', label: 'Anak & Bimbingan', icon: Shield },
                 { value: 'Remaja', label: 'Remaja', icon: Shield },
+                { value: 'Dewasa', label: 'Dewasa (Semua)', icon: ShieldAlert },
                 { value: 'Dewasa Ringan', label: 'Dewasa Ringan', icon: ShieldAlert },
                 { value: 'Dewasa Berat', label: 'Dewasa Berat', icon: ShieldAlert }
               ]}
@@ -943,7 +1058,8 @@ export default function MarketplaceDb({
                   <button 
                     onClick={() => {
                       const next = selectedCategories.filter(v => v !== cat);
-                      setSelectedCategories(next.length === 0 ? ['all'] : next);
+                      const finalNext = next.length === 0 ? ['all'] : next;
+                      setSelectedCategories(finalNext);
                     }}
                     className="hover:bg-neutral-200 dark:hover:bg-neutral-700 p-0.5 rounded-sm transition-colors cursor-pointer text-neutral-550 dark:text-neutral-400 hover:text-neutral-850 dark:hover:text-neutral-150"
                     title="Hapus filter"
@@ -964,7 +1080,8 @@ export default function MarketplaceDb({
                   <button 
                     onClick={() => {
                       const next = selectedPublishers.filter(v => v !== pub);
-                      setSelectedPublishers(next.length === 0 ? ['all'] : next);
+                      const finalNext = next.length === 0 ? ['all'] : next;
+                      setSelectedPublishers(finalNext);
                     }}
                     className="hover:bg-neutral-200 dark:hover:bg-neutral-700 p-0.5 rounded-sm transition-colors cursor-pointer text-neutral-550 dark:text-neutral-400 hover:text-neutral-850 dark:hover:text-neutral-150"
                     title="Hapus filter"
@@ -985,7 +1102,8 @@ export default function MarketplaceDb({
                   <button 
                     onClick={() => {
                       const next = selectedStatuses.filter(v => v !== status);
-                      setSelectedStatuses(next.length === 0 ? ['all'] : next);
+                      const finalNext = next.length === 0 ? ['all'] : next;
+                      setSelectedStatuses(finalNext);
                     }}
                     className="hover:bg-neutral-200 dark:hover:bg-neutral-700 p-0.5 rounded-sm transition-colors cursor-pointer text-neutral-550 dark:text-neutral-400 hover:text-neutral-850 dark:hover:text-neutral-150"
                     title="Hapus filter"
@@ -1004,7 +1122,8 @@ export default function MarketplaceDb({
                   <button 
                     onClick={() => {
                       const next = selectedGenres.filter(v => v !== genre);
-                      setSelectedGenres(next.length === 0 ? ['all'] : next);
+                      const finalNext = next.length === 0 ? ['all'] : next;
+                      setSelectedGenres(finalNext);
                     }}
                     className="hover:bg-neutral-200 dark:hover:bg-neutral-700 p-0.5 rounded-sm transition-colors cursor-pointer text-neutral-550 dark:text-neutral-400 hover:text-neutral-850 dark:hover:text-neutral-150"
                     title="Hapus filter"
@@ -1024,7 +1143,8 @@ export default function MarketplaceDb({
                   <button 
                     onClick={() => {
                       const next = selectedAdaptations.filter(v => v !== ad);
-                      setSelectedAdaptations(next.length === 0 ? ['all'] : next);
+                      const finalNext = next.length === 0 ? ['all'] : next;
+                      setSelectedAdaptations(finalNext);
                     }}
                     className="hover:bg-neutral-200 dark:hover:bg-neutral-700 p-0.5 rounded-sm transition-colors cursor-pointer text-neutral-550 dark:text-neutral-400 hover:text-neutral-850 dark:hover:text-neutral-150"
                     title="Hapus filter"
@@ -1044,7 +1164,8 @@ export default function MarketplaceDb({
                   <button 
                     onClick={() => {
                       const next = selectedReadingRatings.filter(v => v !== rr);
-                      setSelectedReadingRatings(next.length === 0 ? ['all'] : next);
+                      const finalNext = next.length === 0 ? ['all'] : next;
+                      setSelectedReadingRatings(finalNext);
                     }}
                     className="hover:bg-neutral-200 dark:hover:bg-neutral-700 p-0.5 rounded-sm transition-colors cursor-pointer text-neutral-550 dark:text-neutral-400 hover:text-neutral-850 dark:hover:text-neutral-150"
                     title="Hapus filter"
@@ -1058,7 +1179,7 @@ export default function MarketplaceDb({
             {/* Dynamic Search Term Tag */}
             {activeSearchTerm && (
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-[#EFEFEF] dark:bg-neutral-800/80 border border-neutral-200/50 dark:border-neutral-700/50 text-neutral-850 dark:text-neutral-200 text-[11px] sm:text-xs font-sans font-extrabold tracking-wide rounded-md transition-all select-none">
-                Cari: "{activeSearchTerm}"
+                Judul: "{activeSearchTerm}"
                 <button 
                   onClick={() => {
                     setSearchInput('');
@@ -1099,7 +1220,7 @@ export default function MarketplaceDb({
             DATA TERBITAN RESMI
           </span>
           <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300">
-            Menampilkan <strong className="text-neutral-950 dark:text-white font-bold">{Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, sortedVolumePosts.length)} - {Math.min(currentPage * ITEMS_PER_PAGE, sortedVolumePosts.length)}</strong> dari <strong className="text-neutral-950 dark:text-white font-bold">{sortedVolumePosts.length}</strong> Jilid Komik / Novel
+            Menampilkan <strong className="text-neutral-950 dark:text-white font-bold">{sortedVolumePosts.length > 0 ? (effectivePage - 1) * ITEMS_PER_PAGE + 1 : 0} - {Math.min(effectivePage * ITEMS_PER_PAGE, sortedVolumePosts.length)}</strong> dari <strong className="text-neutral-950 dark:text-white font-bold">{sortedVolumePosts.length}</strong> Jilid Komik / Novel
           </p>
         </div>
         
@@ -1147,15 +1268,15 @@ export default function MarketplaceDb({
                       }}
                       className={`flex items-center justify-between w-full px-3.5 py-2.5 sm:py-2 text-xs md:text-sm text-left transition-colors font-sans cursor-pointer ${
                         isSelected
-                          ? 'bg-neutral-50 dark:bg-neutral-800 text-neutral-950 dark:text-neutral-50 font-bold'
-                          : 'text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800/60 font-medium'
+                          ? 'bg-neutral-50 dark:bg-neutral-800 text-neutral-950 dark:text-white font-bold'
+                          : 'text-neutral-700 dark:text-white hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800/80 font-medium'
                       }`}
                     >
                       <div className="flex items-center gap-2.5 min-w-0 pr-1.5 flex-1">
-                        <OptionIcon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#112A12] dark:text-emerald-400' : 'text-neutral-400 dark:text-neutral-500'}`} />
-                        <span className="truncate">{opt.label}</span>
+                        <OptionIcon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#112A12] dark:text-emerald-400' : 'text-neutral-400 dark:text-neutral-300'}`} />
+                        <span className="truncate text-inherit">{opt.label}</span>
                       </div>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-neutral-950 dark:text-neutral-50 shrink-0 ml-1.5" />}
+                      {isSelected && <Check className="w-3.5 h-3.5 text-neutral-950 dark:text-white shrink-0 ml-1.5" />}
                     </button>
                   );
                 })}
@@ -1167,24 +1288,19 @@ export default function MarketplaceDb({
 
       {/* Grid of Results */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3">
-        <AnimatePresence mode="popLayout">
-          {paginatedVolumePosts.length > 0 ? (
-            paginatedVolumePosts.map((post) => {
-              const { comic, volume } = post;
-              return (
+        {paginatedVolumePosts.length > 0 ? (
+          paginatedVolumePosts.map((post) => {
+            const { comic, volume } = post;
+            const postKey = `${post.id || `${comic.id}-${volume.volNumber}`}`;
+            return (
+              <div
+                key={postKey}
+                onClick={() => openVolumeModal(comic, volume.volNumber)}
+                className="block group cursor-pointer"
+              >
                 <div
-                  key={post.id}
-                  onClick={() => openVolumeModal(comic, volume.volNumber)}
-                  className="block group cursor-pointer"
+                  className="h-full bg-white dark:bg-neutral-900 border border-[#EFEFEF] dark:border-neutral-800 rounded-xl overflow-hidden flex flex-col justify-between cursor-pointer transition-all duration-300 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_10px_24px_rgba(0,0,0,0.05)] hover:translate-y-[-2px] select-none"
                 >
-                  <motion.div
-                    layout
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.15 }}
-                    className="h-full bg-white dark:bg-neutral-900 border border-[#EFEFEF] dark:border-neutral-800 rounded-xl overflow-hidden flex flex-col justify-between cursor-pointer transition-all duration-300 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_10px_24px_rgba(0,0,0,0.05)] hover:translate-y-[-2px] select-none"
-                  >
                     {/* Book Jacket Art */}
                     <div className="relative aspect-[3/4] w-full bg-neutral-950 flex flex-col justify-between p-2.5 select-none overflow-hidden">
                       {(volume.coverImage || comic.coverImage) && !imageErrors[post.id] ? (
@@ -1269,41 +1385,65 @@ export default function MarketplaceDb({
 
 
                     </div>
-                  </motion.div>
+                  </div>
                 </div>
               );
             })
           ) : (
-            <div className="col-span-full p-12 border border-dashed border-neutral-250 dark:border-neutral-800 text-center rounded-2xl bg-neutral-50/50 dark:bg-[#171717]">
-              <AlertCircle className="w-10 h-10 text-neutral-400 dark:text-neutral-500 mx-auto mb-3" />
-              <h4 className="font-bold text-neutral-800 dark:text-neutral-100 font-sans text-sm">Tidak ada database komik yang cocok</h4>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 leading-normal">Coba gunakan kata kunci lain atau ubah filter format penerbit.</p>
+            <div className="col-span-full py-16 px-6 border border-dashed border-neutral-250 dark:border-neutral-800 text-center rounded-2xl bg-neutral-50/60 dark:bg-[#171717] flex flex-col items-center justify-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-1">
+                <AlertCircle className="w-6 h-6 text-neutral-400 dark:text-neutral-500" />
+              </div>
+              <h4 className="font-bold text-neutral-800 dark:text-neutral-100 font-sans text-sm sm:text-base">
+                Tidak ada postingan yang sesuai dengan filter yang dipilih
+              </h4>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-md mx-auto leading-relaxed">
+                Tidak ditemukan buku yang cocok dengan kombinasi filter rating, genre, atau format saat ini. Coba pilih kombinasi filter lain atau reset filter.
+              </p>
+              {(activeSearchTerm || !selectedCategories.includes('all') || !selectedPublishers.includes('all') || !selectedStatuses.includes('all') || !selectedGenres.includes('all') || !selectedAdaptations.includes('all') || !selectedReadingRatings.includes('all')) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchInput('');
+                    setActiveSearchTerm('');
+                    setSelectedCategories(['all']);
+                    setSelectedPublishers(['all']);
+                    setSelectedStatuses(['all']);
+                    setSelectedGenres(['all']);
+                    setSelectedAdaptations(['all']);
+                    setSelectedReadingRatings(['all']);
+                  }}
+                  className="mt-2 px-4 py-2 bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white dark:text-neutral-900 text-white rounded-lg text-xs font-mono font-bold transition-all cursor-pointer shadow-xs"
+                >
+                  Reset Semua Filter
+                </button>
+              )}
             </div>
           )}
-        </AnimatePresence>
       </div>
 
       {/* PAGINATION CONTROLS */}
       {sortedVolumePosts.length > 0 && totalPages > 1 && (
         <div className="pt-8 mt-6 border-t border-neutral-150 dark:border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4 select-none">
           <div className="text-xs font-mono text-neutral-500 dark:text-neutral-400">
-            Halaman <span className="font-bold text-neutral-900 dark:text-neutral-100">{currentPage}</span> dari <span className="font-bold text-neutral-900 dark:text-neutral-100">{totalPages}</span> ({sortedVolumePosts.length} Volume)
+            Halaman <span className="font-bold text-neutral-900 dark:text-neutral-100">{effectivePage}</span> dari <span className="font-bold text-neutral-900 dark:text-neutral-100">{totalPages}</span> ({sortedVolumePosts.length} Volume)
           </div>
 
           <div className="flex items-center gap-1.5">
             <button
               type="button"
               onClick={() => {
-                if (currentPage > 1) {
-                  setCurrentPage(currentPage - 1);
+                if (effectivePage > 1) {
+                  setCurrentPage(effectivePage - 1);
                   document.getElementById('catalog-sort-wrapper')?.scrollIntoView({ behavior: 'smooth' });
                 }
               }}
-              disabled={currentPage === 1}
-              className="px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-mono font-bold text-neutral-700 dark:text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all flex items-center gap-1 cursor-pointer"
+              disabled={effectivePage === 1}
+              className="px-2.5 sm:px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-mono font-bold text-neutral-700 dark:text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all flex items-center gap-1 cursor-pointer"
+              aria-label="Halaman Sebelumnya"
             >
               <ChevronLeft className="w-3.5 h-3.5" />
-              <span>Sebelumnya</span>
+              <span className="hidden sm:inline">Sebelumnya</span>
             </button>
 
             <div className="flex items-center gap-1">
@@ -1311,12 +1451,12 @@ export default function MarketplaceDb({
                 let pages: (number | string)[] = [];
                 if (totalPages <= 7) {
                   pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-                } else if (currentPage <= 4) {
+                } else if (effectivePage <= 4) {
                   pages = [1, 2, 3, 4, 5, '...', totalPages];
-                } else if (currentPage >= totalPages - 3) {
+                } else if (effectivePage >= totalPages - 3) {
                   pages = [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
                 } else {
-                  pages = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+                  pages = [1, '...', effectivePage - 1, effectivePage, effectivePage + 1, '...', totalPages];
                 }
                 return pages.map((p, idx) => {
                   if (typeof p === 'string') {
@@ -1335,7 +1475,7 @@ export default function MarketplaceDb({
                         document.getElementById('catalog-sort-wrapper')?.scrollIntoView({ behavior: 'smooth' });
                       }}
                       className={`w-8 h-8 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
-                        currentPage === p
+                        effectivePage === p
                           ? 'bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 shadow-xs'
                           : 'bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800'
                       }`}
@@ -1350,15 +1490,16 @@ export default function MarketplaceDb({
             <button
               type="button"
               onClick={() => {
-                if (currentPage < totalPages) {
-                  setCurrentPage(currentPage + 1);
+                if (effectivePage < totalPages) {
+                  setCurrentPage(effectivePage + 1);
                   document.getElementById('catalog-sort-wrapper')?.scrollIntoView({ behavior: 'smooth' });
                 }
               }}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-mono font-bold text-neutral-700 dark:text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all flex items-center gap-1 cursor-pointer"
+              disabled={effectivePage === totalPages}
+              className="px-2.5 sm:px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-mono font-bold text-neutral-700 dark:text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all flex items-center gap-1 cursor-pointer"
+              aria-label="Halaman Selanjutnya"
             >
-              <span>Selanjutnya</span>
+              <span className="hidden sm:inline">Selanjutnya</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>

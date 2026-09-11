@@ -45,6 +45,9 @@ interface HomeProps {
   storyStatuses?: FilterOption[];
   genres?: FilterOption[];
   newsList?: RawNewsItem[];
+  totalBooksCount?: number;
+  totalSeriesCount?: number;
+  totalPublishersCount?: number;
   initialBook?: BookModel | null;
   initialSlug?: string;
 }
@@ -55,6 +58,9 @@ export default function App({
   storyStatuses = [], 
   genres = [], 
   newsList = [],
+  totalBooksCount,
+  totalSeriesCount,
+  totalPublishersCount,
   initialBook,
   initialSlug,
 }: HomeProps) {
@@ -312,6 +318,9 @@ export default function App({
                   dynamicStoryStatuses={storyStatuses}
                   dynamicGenres={genres}
                   newsList={newsList}
+                  totalBooksCount={totalBooksCount}
+                  totalSeriesCount={totalSeriesCount}
+                  totalPublishersCount={totalPublishersCount}
                   initialSelectedComicId={selectedComicId} 
                   onClearSelectedComicId={() => setSelectedComicId(null)}
                   onNavigateToNews={(newsId) => {
@@ -458,7 +467,7 @@ export default function App({
                 />
               </div>
               <p className="text-sm text-neutral-500 max-w-sm font-sans leading-[20px]">
-                Platform kurasi, database buku, komik dan light novel resmi di Indonesia, terafiliasi dengan program referral Gramedia, Tokopedia, Shopee. <strong>Stop Buku Bajakan!</strong>
+               Platform kurasi database buku (manga, novel dan light novel) legal di Indonesia.
               </p>
             </div>
 
@@ -561,9 +570,8 @@ export default function App({
 
           </div>
 
-          <div className="max-w-7xl mx-auto border-t border-neutral-200 mt-10 pt-6 text-center text-xs font-mono text-neutral-400 flex flex-col sm:flex-row justify-between items-center gap-4 leading-[16px]">
-            <span>© 2026 Norinoya Hub. Diposisikan murni untuk ulasan komunitas & edukasi legalitas komik Indonesia.</span>
-            <span>Made with precision</span>
+          <div className="max-w-7xl mx-auto mt-10 pt-6 text-center text-xs font-mono text-neutral-400 flex flex-col sm:flex-row justify-between items-center gap-4 leading-[16px]">
+            <span>© 2026 Norinoya </span>
           </div>
         </footer>
 
@@ -578,7 +586,7 @@ export default function App({
             }`}
           >
             <BookOpen className="w-4.5 h-4.5 mb-0.5" />
-            <span className="text-xs font-sans font-bold leading-none tracking-tight">norinoya</span>
+            <span className="text-xs font-sans font-bold leading-none tracking-tight">Home</span>
           </button>
 
           <button

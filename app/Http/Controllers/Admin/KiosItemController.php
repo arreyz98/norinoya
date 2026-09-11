@@ -41,11 +41,18 @@ class KiosItemController extends Controller
             }
         }
 
-        $kiosItems = $query->latest()->paginate(12)->withQueryString();
+        $sort = $request->input('sort', 'latest');
+        if ($sort === 'oldest') {
+            $query->oldest();
+        } else {
+            $query->latest();
+        }
+
+        $kiosItems = $query->paginate(12)->withQueryString();
 
         return Inertia::render('Admin/Kios/Index', [
             'kiosItems' => $kiosItems,
-            'filters' => $request->only(['search', 'category', 'type']),
+            'filters' => $request->only(['search', 'category', 'type', 'sort']),
         ]);
     }
 

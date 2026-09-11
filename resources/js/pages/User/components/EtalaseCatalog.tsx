@@ -160,6 +160,7 @@ interface EtalaseCatalogProps {
   onNavigateToNews?: (newsId: string) => void;
   selectedSaleId?: string | null;
   onClearSelectedSaleId?: () => void;
+  onSelectSaleItem?: (item: CatalogItem | null) => void;
   dbKiosItems?: RawKiosItem[];
   dbBooksList?: unknown[];
 }
@@ -167,6 +168,7 @@ interface EtalaseCatalogProps {
 export default function EtalaseCatalog({ 
   selectedSaleId,
   onClearSelectedSaleId,
+  onSelectSaleItem,
   dbKiosItems = [],
 }: EtalaseCatalogProps) {
   const catalogItems = useMemo<CatalogItem[]>(() => {
@@ -245,7 +247,16 @@ export default function EtalaseCatalog({
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchInput, setSearchInput] = useState('');
   const [activeSearchTerm, setActiveSearchTerm] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(['all']);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const categoryParam = urlParams.get('category') || urlParams.get('tipe') || urlParams.get('merch_type');
+      if (categoryParam) {
+        return categoryParam.split(',').map(s => s.trim()).filter(Boolean);
+      }
+    }
+    return ['all'];
+  });
   const [selectedPublishers, setSelectedPublishers] = useState<string[]>(['all']);
   const [selectedGenres, setSelectedGenres] = useState<string[]>(['all']);
   const [pricePresets, setPricePresets] = useState<string[]>(['all']);
@@ -273,7 +284,10 @@ export default function EtalaseCatalog({
       });
     }
   };
-  const [selectedItem, setSelectedItem] = useState<CatalogItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<CatalogItem | null>(() => {
+    if (!selectedSaleId || !catalogItems || catalogItems.length === 0) return null;
+    return catalogItems.find(p => p.id === selectedSaleId || p.slug === selectedSaleId || p.comicId === selectedSaleId) || null;
+  });
   const scrollableContainerRef = React.useRef<HTMLDivElement>(null);
 
   // Share Modal state
@@ -331,12 +345,18 @@ export default function EtalaseCatalog({
 
   const handleSelectItem = (item: CatalogItem) => {
     setSelectedItem(item);
+    if (onSelectSaleItem) {
+      onSelectSaleItem(item);
+    }
     const targetSlug = item.slug || item.id;
     window.history.pushState({ itemId: item.id }, '', `/kios/${targetSlug}`);
   };
 
   const handleCloseModal = () => {
     setSelectedItem(null);
+    if (onSelectSaleItem) {
+      onSelectSaleItem(null);
+    }
     if (onClearSelectedSaleId) {
       onClearSelectedSaleId();
     }
@@ -659,26 +679,13 @@ export default function EtalaseCatalog({
                 }`}
               >
                 <Filter className="w-4 h-4" />
-                <span>{isFiltersExpanded ? 'Sembunyikan Filter' : 'Filter Tipe Merch & Partner'}</span>
+                <span>{isFiltersExpanded ? 'Sembunyikan Filter' : 'Filter Partner'}</span>
               </button>
             </div>
           </div>
 
           {/* Advanced select dropdowns - always open on desktop, expandable on mobile */}
-          <div className={`${isFiltersExpanded ? 'grid' : 'hidden'} md:grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1 md:pt-0`}>
-            {/* Format (Tipe Merch) */}
-            <CustomSelect
-              label="Tipe Merch"
-              value={selectedCategories}
-              options={categories}
-              onChange={(val) => setSelectedCategories(val)}
-              isOpen={activeDropdown === 'category'}
-              onToggle={(e) => {
-                e.stopPropagation();
-                setActiveDropdown(activeDropdown === 'category' ? null : 'category');
-              }}
-            />
-
+          <div className={`${isFiltersExpanded ? 'grid' : 'hidden'} md:grid grid-cols-1 gap-3.5 pt-1 md:pt-0`}>
             {/* Publisher (Partner) */}
             <CustomSelect
               label="Partner"
@@ -705,7 +712,8 @@ export default function EtalaseCatalog({
             
             {/* Render Category tags */}
             {!selectedCategories.includes('all') && selectedCategories.map(cat => {
-              const label = cat === 'manga' ? 'Manga / Buku' : cat === 'light_novel' ? 'Light Novel' : 'Novel';
+              const catObj = categories.find(c => c.value === cat);
+              const label = catObj?.label || cat;
               return (
                 <span key={`cat-${cat}`} className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-[#EFEFEF] dark:bg-neutral-800/80 border border-neutral-200/50 dark:border-neutral-700/50 text-neutral-850 dark:text-neutral-200 text-[11px] sm:text-xs font-sans font-extrabold tracking-wide rounded-md transition-all select-none">
                   {label}
@@ -775,61 +783,66 @@ export default function EtalaseCatalog({
       {/* POPULAR MERCH TYPES QUICK SHORTCUTS (Single Row - Horizontal Scrollable) */}
       <div className="bg-white dark:bg-neutral-900 border border-[#EFEFEF] dark:border-neutral-800 p-4 sm:p-5 rounded-2xl space-y-3 shadow-3xs">
         <div className="flex items-center justify-between">
-          <h3 className="text-xs sm:text-sm font-sans font-bold text-neutral-900 dark:text-neutral-100 tracking-tight">
-            Kategori Merch & Media
-          </h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-xs sm:text-sm font-sans font-bold text-neutral-900 dark:text-neutral-100 tracking-tight">
+              Tipe Merch
+            </h3>
+            {!selectedCategories.includes('all') && selectedCategories.length > 0 && (
+              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400">
+                {selectedCategories.length} Dipilih
+              </span>
+            )}
+          </div>
           <button
             onClick={() => {
-              setSearchInput('');
-              setActiveSearchTerm('');
               setSelectedCategories(['all']);
-              setSelectedPublishers(['all']);
             }}
             className="text-xs font-sans font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 hover:underline flex items-center gap-0.5 cursor-pointer"
           >
-            <span>Reset Filter</span>
+            <span>Reset Tipe Merch</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* Single Scrollable Row */}
+        {/* Single Scrollable Row with Icons instead of Images, Multiselect enabled */}
         <div className="flex items-center gap-4 sm:gap-6 overflow-x-auto scrollbar-none scroll-smooth py-1 px-1">
           {[
-            { id: 'manga', name: 'Manga / Buku', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=200&auto=format&fit=crop&q=80' },
-            { id: 'light_novel', name: 'Light Novel', image: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=80' },
-            { id: 'novel', name: 'Novel', image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=200&auto=format&fit=crop&q=80' },
-            { id: 'trading_card', name: 'Trading Card', image: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=200&auto=format&fit=crop&q=80' },
-            { id: 'apparel', name: 'Apparel', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=200&auto=format&fit=crop&q=80' },
-            { id: 'lifestyle', name: 'Lifestyle', image: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=200&auto=format&fit=crop&q=80' },
-            { id: 'tas', name: 'Tas', image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=200&auto=format&fit=crop&q=80' },
-            { id: 'aksesoris', name: 'Aksesoris', image: 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=200&auto=format&fit=crop&q=80' },
-            { id: 'gaming', name: 'Gaming', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=200&auto=format&fit=crop&q=80' },
-            { id: 'dekorasi', name: 'Dekorasi', image: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=200&auto=format&fit=crop&q=80' },
+            { id: 'manga', name: 'Manga / Buku', icon: BookOpen },
+            { id: 'light_novel', name: 'Light Novel', icon: BookText },
+            { id: 'novel', name: 'Novel', icon: BookText },
+            { id: 'trading_card', name: 'Trading Card', icon: CreditCard },
+            { id: 'apparel', name: 'Apparel', icon: Shirt },
+            { id: 'lifestyle', name: 'Lifestyle', icon: Sparkles },
+            { id: 'tas', name: 'Tas', icon: ShoppingBag },
+            { id: 'aksesoris', name: 'Aksesoris', icon: Tag },
+            { id: 'gaming', name: 'Gaming', icon: Gamepad2 },
+            { id: 'dekorasi', name: 'Dekorasi', icon: Palette },
           ].map((cat) => {
             const isActive = selectedCategories.includes(cat.id);
+            const Icon = cat.icon;
             return (
               <button
                 key={cat.id}
+                type="button"
                 onClick={() => {
-                  setSelectedCategories([cat.id]);
-                  setSearchInput('');
-                  setActiveSearchTerm('');
+                  setSelectedCategories(prev => {
+                    const withoutAll = prev.filter(c => c !== 'all');
+                    if (withoutAll.includes(cat.id)) {
+                      const next = withoutAll.filter(c => c !== cat.id);
+                      return next.length === 0 ? ['all'] : next;
+                    } else {
+                      return [...withoutAll, cat.id];
+                    }
+                  });
                 }}
                 className="flex flex-col items-center gap-1.5 group cursor-pointer transition-transform hover:scale-105 shrink-0"
               >
-                <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 overflow-hidden flex items-center justify-center shadow-xs border transition-colors ${
+                <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 overflow-hidden flex items-center justify-center shadow-xs border transition-all ${
                   isActive
-                    ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 ring-2 ring-emerald-500/20'
-                    : 'bg-neutral-100 dark:bg-neutral-800/80 border-neutral-200/70 dark:border-neutral-700/70 group-hover:border-emerald-500 dark:group-hover:border-emerald-400'
+                    ? 'bg-emerald-600 dark:bg-emerald-600 text-white border-emerald-500 ring-2 ring-emerald-500/30'
+                    : 'bg-neutral-100 dark:bg-neutral-800/80 text-neutral-600 dark:text-neutral-300 border-neutral-200/70 dark:border-neutral-700/70 group-hover:border-emerald-500 dark:group-hover:border-emerald-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400'
                 }`}>
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110"
-                    referrerPolicy="no-referrer"
-                    loading="lazy"
-                    decoding="async"
-                  />
+                  <Icon className="w-7 h-7 sm:w-9 sm:h-9 transition-transform duration-200 group-hover:scale-110" />
                 </div>
                 <span className={`text-[11px] sm:text-xs font-sans font-medium text-center whitespace-nowrap transition-colors ${
                   isActive ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-neutral-800 dark:text-neutral-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-400'
@@ -1250,6 +1263,10 @@ export default function EtalaseCatalog({
             onOpenShareModal={(data) => setShareModalData({ ...data, isOpen: true })}
             onAddToCart={(item) => addToCart(item)}
             triggerNotification={triggerNotification}
+            onFilterCategory={(cat) => {
+              setSelectedCategories([cat]);
+              handleCloseModal();
+            }}
           />
         )}
       </AnimatePresence>

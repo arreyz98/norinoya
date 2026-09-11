@@ -4,10 +4,10 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, LayoutPanelTop, Newspaper, Store, ShoppingBag } from 'lucide-react';
+import { BookOpen, ExternalLink, Folder, LayoutGrid, LayoutPanelTop, Newspaper, Store } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavItem[] = [
+const mainNavItems: (NavItem & { target?: string })[] = [
     {
         title: 'Dashboard',
         url: '/admin/dashboard',
@@ -27,6 +27,12 @@ const mainNavItems: NavItem[] = [
         title: 'Kios & Preloved',
         url: '/admin/kios',
         icon: Store,
+    },
+    {
+        title: 'Lihat Website',
+        url: '/',
+        icon: ExternalLink,
+        target: '_blank',
     },
 ];
 

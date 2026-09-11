@@ -6,7 +6,6 @@ import {
     Newspaper, 
     ShoppingBag, 
     Eye, 
-    TrendingUp, 
     ArrowUpRight,
     Plus,
     History,
@@ -115,7 +114,7 @@ export default function Dashboard({
                 </div>
 
                 {/* Key Metrics Overview */}
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {/* Books Metric */}
                     <div className="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900 shadow-2xs">
                         <div className="flex items-center justify-between">
@@ -167,22 +166,6 @@ export default function Dashboard({
                             <Link href={route('admin.kios.index')} className="text-xs font-medium text-pink-600 hover:underline flex items-center gap-0.5">
                                 Kelola <ArrowUpRight className="h-3 w-3" />
                             </Link>
-                        </div>
-                    </div>
-
-                    {/* Total Views Metric */}
-                    <div className="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900 shadow-2xs">
-                        <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Total Traffic Views</span>
-                            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-600">
-                                <TrendingUp className="h-4.5 w-4.5" />
-                            </div>
-                        </div>
-                        <div className="mt-3 flex items-baseline justify-between">
-                            <span className="text-2xl font-black font-sans text-neutral-900 dark:text-white">
-                                {stats.totalViews.toLocaleString('id-ID')}
-                            </span>
-                            <span className="text-xs text-neutral-400 font-mono">Real-time</span>
                         </div>
                     </div>
                 </div>

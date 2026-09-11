@@ -82,18 +82,18 @@ export default function Navbar({
           onClick={handleHomeClick}
           className={`px-3 py-1.5 text-[12px] font-mono font-bold rounded transition-all cursor-pointer outline-none focus:outline-none select-none flex items-center gap-1.5 ${
             isHomeActive
-              ? 'bg-white dark:bg-neutral-700 text-neutral-950 dark:text-neutral-50 shadow-xs border border-neutral-200/20 dark:border-neutral-600'
+              ? 'bg-white dark:bg-neutral-800 text-emerald-600 dark:text-emerald-400 shadow-xs border border-neutral-200/80 dark:border-neutral-700'
               : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white border border-transparent'
           }`}
         >
           <BookOpen className="w-3.5 h-3.5" />
-          <span>norinoya</span>
+          <span>Home</span>
         </button>
         <button
           onClick={handleNewsClick}
           className={`px-3 py-1.5 text-[12px] font-mono font-bold rounded transition-all cursor-pointer outline-none focus:outline-none select-none flex items-center gap-1.5 ${
             isNewsActive
-              ? 'bg-white dark:bg-neutral-700 text-neutral-950 dark:text-neutral-50 shadow-xs border border-neutral-200/20 dark:border-neutral-600'
+              ? 'bg-white dark:bg-neutral-800 text-emerald-600 dark:text-emerald-400 shadow-xs border border-neutral-200/80 dark:border-neutral-700'
               : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white border border-transparent'
           }`}
         >
@@ -104,7 +104,7 @@ export default function Navbar({
           onClick={handleKiosClick}
           className={`px-3 py-1.5 text-[12px] font-mono font-bold rounded transition-all cursor-pointer outline-none focus:outline-none select-none flex items-center gap-1.5 ${
             isKiosActive
-              ? 'bg-white dark:bg-neutral-700 text-neutral-950 dark:text-white shadow-xs border border-neutral-200/20 dark:border-neutral-600'
+              ? 'bg-white dark:bg-neutral-800 text-emerald-600 dark:text-emerald-400 shadow-xs border border-neutral-200/80 dark:border-neutral-700'
               : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white border border-transparent'
           }`}
         >

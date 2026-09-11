@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
-  ArrowLeft, Send, ExternalLink, ShoppingBag, Store, BookOpen, Eye
+  ArrowLeft, Send, ExternalLink, BookOpen, Tag,
 } from 'lucide-react';
 import { getTierDetails } from '@/types/demoHelper';
 
@@ -64,6 +64,7 @@ export interface DetailKiosProps {
   onOpenShareModal: (data: { title: string; shareUrl: string; category: string }) => void;
   onAddToCart?: (item: CatalogItem) => void;
   triggerNotification?: (msg: string) => void;
+  onFilterCategory?: (category: string) => void;
 }
 
 export default function DetailKios({
@@ -72,19 +73,10 @@ export default function DetailKios({
   onClose,
   onSelectItem,
   onOpenShareModal,
+  onFilterCategory,
 }: DetailKiosProps) {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const scrollableContainerRef = React.useRef<HTMLDivElement>(null);
-
-  const [currentViews, setCurrentViews] = useState<number>(() => {
-    return selectedItem?.views_count || 0;
-  });
-
-  useEffect(() => {
-    if (selectedItem?.views_count !== undefined) {
-      setCurrentViews(selectedItem.views_count);
-    }
-  }, [selectedItem?.views_count, selectedItem?.id]);
 
   // Increment view counter on backend when viewing detail kios item
   useEffect(() => {
@@ -106,7 +98,6 @@ export default function DetailKios({
       .then(res => res.json())
       .then(data => {
         if (data && data.success && typeof data.views_count === 'number') {
-          setCurrentViews(data.views_count);
           if (selectedItem) {
             selectedItem.views_count = data.views_count;
           }
@@ -176,21 +167,7 @@ export default function DetailKios({
     };
   }, [selectedItem]);
 
-  const getReadingRatingBadgeStyle = (rating?: string) => {
-    switch (rating) {
-      case 'Anak & Bimbingan Orang Tua':
-      case 'Anak & Bimbingan':
-        return 'bg-neutral-100/95 dark:bg-neutral-800/95 text-[#41a34c] dark:text-emerald-400 border-emerald-500/40';
-      case 'Remaja':
-        return 'bg-neutral-100/95 dark:bg-neutral-800/95 text-[#d97706] dark:text-amber-400 border-amber-500/50 dark:border-amber-400/40';
-      case 'Dewasa Ringan':
-        return 'bg-neutral-100/95 dark:bg-neutral-800/95 text-[#ff6628] dark:text-orange-400 border-orange-500/40';
-      case 'Dewasa Berat':
-        return 'bg-neutral-100/95 dark:bg-neutral-800/95 text-[#c1271f] dark:text-red-400 border-red-500/40';
-      default:
-        return 'bg-neutral-100/95 dark:bg-neutral-800/95 text-[#d97706] dark:text-amber-400 border-amber-500/50 dark:border-amber-400/40';
-    }
-  };
+
 
   const handleShareClick = () => {
     const shareUrl = `${window.location.origin}/kios/${selectedItem.slug || selectedItem.id}`;
@@ -200,6 +177,40 @@ export default function DetailKios({
       category: 'Kios'
     });
   };
+
+  const handleFilterMerchType = (catKey: string) => {
+    if (onFilterCategory) {
+      onFilterCategory(catKey);
+    } else {
+      window.location.href = `/kios?category=${encodeURIComponent(catKey)}`;
+    }
+  };
+
+  const getCategoryLabel = (cat: string) => {
+    const map: Record<string, string> = {
+      manga: 'Manga / Buku',
+      light_novel: 'Light Novel',
+      novel: 'Novel',
+      trading_card: 'Trading Card',
+      apparel: 'Apparel',
+      lifestyle: 'Lifestyle',
+      tas: 'Tas',
+      aksesoris: 'Aksesoris',
+      gaming: 'Gaming',
+      dekorasi: 'Dekorasi',
+    };
+    return map[cat] || cat.replace(/_/g, ' ');
+  };
+
+  const rawMerchTags = React.useMemo(() => {
+    const tagsSet = new Set<string>();
+    if (selectedItem.merchType) tagsSet.add(selectedItem.merchType);
+    if (selectedItem.category) tagsSet.add(selectedItem.category);
+    if (Array.isArray(selectedItem.categories)) {
+      selectedItem.categories.forEach(c => tagsSet.add(c));
+    }
+    return Array.from(tagsSet).filter(Boolean);
+  }, [selectedItem]);
 
   return (
     <div className="w-full bg-white dark:bg-neutral-950 flex flex-col min-h-screen" ref={scrollableContainerRef}>
@@ -211,11 +222,11 @@ export default function DetailKios({
         className="h-full w-full bg-white dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 flex flex-col transition-colors duration-200 relative"
       >
         {/* Top Header Navigation sticky full-width block */}
-        <div className="sticky top-[57px] sm:top-[61px] z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">
+        <div className="fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">
           <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
             <button
               onClick={onClose}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-mono font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none"
             >
               <ArrowLeft className="w-4 h-4 text-neutral-800 dark:text-neutral-200" />
               <span>Kembali</span>
@@ -224,17 +235,16 @@ export default function DetailKios({
             <div className="flex items-center gap-2">
               <button
                 onClick={handleShareClick}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-mono font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0"
                 title="Bagikan Post Kios"
               >
                 <Send className="w-4 h-4 text-neutral-600 dark:text-neutral-300" />
-                <span>Bagikan</span>
               </button>
             </div>
           </div>
         </div>
 
-        <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28">
+        <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28">
           {/* Title Header Block */}
           <div className="bg-neutral-50/80 dark:bg-neutral-900/40 p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
             
@@ -293,7 +303,7 @@ export default function DetailKios({
                 {/* Active photo caption */}
                 {selectedItem.isPreloved && (
                   <div className="absolute bottom-4 left-6 right-6 z-10 text-left">
-                    <span className="text-[10px] font-mono font-extrabold bg-white text-neutral-950 px-2 py-0.5 rounded uppercase tracking-wider leading-none shadow-xs">
+                    <span className="text-[10px] font-extrabold bg-white text-neutral-950 px-2 py-0.5 rounded uppercase tracking-wider leading-none shadow-xs">
                       {selectedItem.carouselLabels ? selectedItem.carouselLabels[activeSlideIndex] : 'Review Photo'}
                     </span>
                   </div>
@@ -325,55 +335,24 @@ export default function DetailKios({
               
               {/* Badges row */}
               <div className="flex flex-wrap items-center gap-1.5">
-                {selectedItem.isPreloved ? (
-                  <>
-                    <span className="text-xs font-mono px-2.5 py-1 bg-neutral-100 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-850 text-neutral-800 dark:text-neutral-200 rounded font-bold">
+          
+                    <span className="text-xs px-2.5 py-1 bg-neutral-100 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-850 text-neutral-800 dark:text-neutral-200 rounded font-bold">
                       Grade Kondisi: {getTierDetails(selectedItem.conditionRating).label}
                     </span>
                     {selectedItem.isSoldOut ? (
-                      <span className="text-xs font-mono px-1.5 py-1 bg-red-105 text-red-800 rounded font-bold uppercase">
+                      <span className="text-xs px-1.5 py-1 bg-red-105 text-red-800 rounded font-bold uppercase">
                         HABIS TERJUAL
                       </span>
                     ) : (
-                      <span className="text-xs font-mono px-1.5 py-1 bg-emerald-100 text-emerald-800 rounded font-bold uppercase">
+                      <span className="text-xs px-1.5 py-1 bg-emerald-100 text-emerald-800 rounded font-bold uppercase">
                         STOK TERSEDIA
                       </span>
                     )}
                     {selectedItem.originalPrice && (
-                      <span className="text-xs font-mono px-1.5 py-1 bg-orange-50 text-rose-900 rounded font-bold uppercase border border-rose-200/50">
+                      <span className="text-xs px-1.5 py-1 bg-orange-50 text-rose-900 rounded font-bold uppercase border border-rose-200/50">
                         Hemat {Math.round((1 - selectedItem.price / selectedItem.originalPrice) * 100)}%
                       </span>
                     )}
-                  </>
-                ) : (
-                  <>
-                    {selectedItem.categories && selectedItem.categories.length > 0 ? (
-                      selectedItem.categories.map((cat, i) => (
-                        <span key={i} className="text-xs font-mono px-2.5 py-0.5 bg-neutral-150 text-neutral-800 rounded-md capitalize font-bold leading-normal">
-                          {cat.replace('_', ' ')}
-                        </span>
-                      ))
-                    ) : (
-                      <span className="text-xs font-mono px-2.5 py-0.5 bg-neutral-150 text-neutral-800 rounded-md capitalize font-bold leading-normal">
-                        {selectedItem.category.replace('_', ' ')}
-                      </span>
-                    )}
-                    {selectedItem.readingRating && (
-                      <span className={`text-xs font-mono px-2.5 py-0.5 rounded-md font-bold border leading-normal ${getReadingRatingBadgeStyle(selectedItem.readingRating)}`}>
-                        {selectedItem.readingRating}
-                      </span>
-                    )}
-                    <span className="text-xs font-mono px-2.5 py-0.5 bg-neutral-150 text-neutral-800 rounded-md capitalize font-bold leading-normal">
-                      {selectedItem.status}
-                    </span>
-                  </>
-                )}
-
-                {/* Views Counter Badge */}
-                <span className="inline-flex items-center gap-1 text-xs font-mono font-bold px-2 py-0.5 bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 rounded-md border border-neutral-200/50 dark:border-neutral-700 leading-normal">
-                  <Eye className="w-3.5 h-3.5 text-neutral-400" />
-                  <span>{currentViews.toLocaleString('id-ID')} views</span>
-                </span>
               </div>
 
               {/* Title */}
@@ -390,7 +369,7 @@ export default function DetailKios({
               <div className="bg-neutral-50/50 dark:bg-neutral-900/60 p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 shadow-xs max-w-xl space-y-4">
                 <div className="flex justify-between items-baseline flex-wrap gap-2">
                   <div className="space-y-0.5">
-                    <span className="text-[10px] font-mono text-neutral-400 uppercase block leading-none">
+                    <span className="text-[10px] text-neutral-400 uppercase block leading-none">
                       {selectedItem.isPreloved ? 'Harga Sale Preloved' : 'Harga Eceran Resmi'}
                     </span>
                     <div className="flex items-baseline gap-2">
@@ -404,18 +383,10 @@ export default function DetailKios({
                       )}
                     </div>
                   </div>
-
-                  <button
-                    onClick={handleShareClick}
-                    className="px-4 py-2.5 bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 hover:opacity-90 border border-transparent text-xs font-sans font-black uppercase tracking-wider rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
-                  >
-                    <Send className="w-4 h-4 shrink-0" />
-                    <span>BAGIKAN</span>
-                  </button>
                 </div>
 
                 {/* Buy Buttons */}
-                <div className="pt-2">
+                <div className="pt-2 space-y-3">
                   {selectedItem.isPreloved ? (
                     selectedItem.isSoldOut ? (
                       <button
@@ -435,7 +406,7 @@ export default function DetailKios({
                             className="flex-1 min-w-[120px] py-2.5 px-3 bg-[#EE4D2D] text-white hover:opacity-95 text-xs font-sans font-black uppercase tracking-wider rounded-xl text-center shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
                           >
                             <span>Shopee</span>
-                            <ExternalLink className="w-3.5 h-3.5" />
+                            <ExternalLink className="w-3.5 h-3.5 ml-auto opacity-80" />
                           </a>
                         )}
                         {selectedItem.tokopediaUrl && (
@@ -447,7 +418,7 @@ export default function DetailKios({
                             className="flex-1 min-w-[120px] py-2.5 px-3 bg-[#03AC0E] text-white hover:opacity-95 text-xs font-sans font-black uppercase tracking-wider rounded-xl text-center shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
                           >
                             <span>Tokopedia</span>
-                            <ExternalLink className="w-3.5 h-3.5" />
+                            <ExternalLink className="w-3.5 h-3.5 ml-auto opacity-80" />
                           </a>
                         )}
                         {selectedItem.tocoUrl && (
@@ -459,15 +430,15 @@ export default function DetailKios({
                             className="flex-1 min-w-[120px] py-2.5 px-3 bg-[#FFD400] text-neutral-950 hover:brightness-95 text-xs font-sans font-black uppercase tracking-wider rounded-xl text-center shadow-xs flex items-center justify-center gap-1.5 cursor-pointer border border-[#e6bf00]"
                           >
                             <span>Toco</span>
-                            <ExternalLink className="w-3.5 h-3.5 text-neutral-950" />
+                            <ExternalLink className="w-3.5 h-3.5 text-neutral-950 ml-auto opacity-80" />
                           </a>
                         )}
                       </div>
                     )
                   ) : (
                     <div className="flex flex-col gap-2">
-                      <span className="text-[10px] font-mono font-bold text-neutral-400 uppercase tracking-widest block leading-none mb-1">
-                        Klik untuk Beli Resmi (Affiliate Link):
+                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest block leading-none mb-1">
+                        Barang Tersedia di : 
                       </span>
                       <div className="flex flex-wrap gap-2">
                         {selectedItem.affiliateLinks.gramedia && (
@@ -478,9 +449,6 @@ export default function DetailKios({
                             onClick={() => handleLinkClick('gramedia')}
                             className="flex items-center gap-1.5 bg-white dark:bg-neutral-900 border border-neutral-200 hover:border-blue-500 hover:text-blue-600 dark:border-neutral-800 px-3 py-1.5 rounded-xl transition-all shadow-2xs"
                           >
-                            <span className="w-5 h-5 bg-[#00519E] rounded-md flex items-center justify-center shrink-0">
-                              <span className="!text-white text-[8.5px] font-sans font-black select-none" style={{ color: '#ffffff' }}>G</span>
-                            </span>
                             <span className="text-xs font-sans font-bold">Gramedia</span>
                             <ExternalLink className="w-3 h-3 text-neutral-400 shrink-0" />
                           </a>
@@ -493,9 +461,6 @@ export default function DetailKios({
                             onClick={() => handleLinkClick('shopee')}
                             className="flex items-center gap-1.5 bg-white dark:bg-neutral-900 border border-neutral-200 hover:border-orange-500 hover:text-orange-600 dark:border-neutral-800 px-3 py-1.5 rounded-xl transition-all shadow-2xs"
                           >
-                            <span className="w-5 h-5 bg-[#EE4D2D] rounded-md flex items-center justify-center shrink-0">
-                              <span className="!text-white text-[8.5px] font-sans font-black select-none" style={{ color: '#ffffff' }}>S</span>
-                            </span>
                             <span className="text-xs font-sans font-bold">Shopee</span>
                             <ExternalLink className="w-3 h-3 text-neutral-400 shrink-0" />
                           </a>
@@ -508,9 +473,6 @@ export default function DetailKios({
                             onClick={() => handleLinkClick('tokopedia')}
                             className="flex items-center gap-1.5 bg-white dark:bg-neutral-900 border border-neutral-200 hover:border-emerald-500 hover:text-emerald-600 dark:border-neutral-800 px-3 py-1.5 rounded-xl transition-all shadow-2xs"
                           >
-                            <span className="w-5 h-5 bg-[#03AC0E] rounded-md flex items-center justify-center shrink-0">
-                              <span className="!text-white text-[8.5px] font-sans font-black select-none" style={{ color: '#ffffff' }}>T</span>
-                            </span>
                             <span className="text-xs font-sans font-bold">Tokopedia</span>
                             <ExternalLink className="w-3 h-3 text-neutral-400 shrink-0" />
                           </a>
@@ -523,9 +485,6 @@ export default function DetailKios({
                             onClick={() => handleLinkClick('toco')}
                             className="flex items-center gap-1.5 bg-white dark:bg-neutral-900 border border-neutral-200 hover:border-yellow-500 hover:text-yellow-600 dark:border-neutral-800 px-3 py-1.5 rounded-xl transition-all shadow-2xs"
                           >
-                            <span className="w-5 h-5 bg-[#FFD400] text-neutral-950 rounded-md flex items-center justify-center shrink-0">
-                              <span className="text-[8.5px] font-sans font-black select-none text-neutral-950">Tc</span>
-                            </span>
                             <span className="text-xs font-sans font-bold">Toco</span>
                             <ExternalLink className="w-3 h-3 text-neutral-400 shrink-0" />
                           </a>
@@ -533,20 +492,33 @@ export default function DetailKios({
                       </div>
                     </div>
                   )}
+
+                  {/* Merch Type Tags Button */}
+                  {rawMerchTags.length > 0 && (
+                    <div className="pt-2 border-t border-neutral-200/60 dark:border-neutral-800/80 flex flex-col gap-1.5">
+                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block leading-none">
+                        Tipe Merch :
+                      </span>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {rawMerchTags.map((tagKey) => (
+                          <button
+                            key={tagKey}
+                            type="button"
+                            onClick={() => handleFilterMerchType(tagKey)}
+                            title={`Lihat semua produk dengan tipe ${getCategoryLabel(tagKey)}`}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white dark:bg-neutral-850 hover:bg-emerald-50 hover:border-emerald-500/50 hover:text-emerald-600 dark:hover:bg-emerald-950/40 dark:hover:border-emerald-500/40 dark:hover:text-emerald-400 text-neutral-700 dark:text-neutral-250 text-xs font-sans font-semibold rounded-lg border border-neutral-200 dark:border-neutral-750 transition-all cursor-pointer shadow-2xs active:scale-95 group"
+                          >
+                            <Tag className="w-3 h-3 text-neutral-400 dark:text-neutral-500 group-hover:text-emerald-500 transition-colors" />
+                            <span>{getCategoryLabel(tagKey)}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Genre Tags */}
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                {selectedItem.genres.map(g => (
-                  <span
-                    key={g}
-                    className="text-[10px] sm:text-xs bg-white dark:bg-neutral-900 text-neutral-850 dark:text-neutral-200 px-2.5 py-1 rounded-md font-mono border border-neutral-200 dark:border-neutral-800 font-medium leading-normal shadow-2xs"
-                  >
-                    {g}
-                  </span>
-                ))}
-              </div>
+
             </div>
           </div>
 
@@ -556,7 +528,7 @@ export default function DetailKios({
             {/* Left Detail Column */}
             <div className="col-span-1 md:col-span-8 space-y-6 w-full max-w-full overflow-hidden text-left">
               <div className="space-y-3">
-                <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-150 dark:border-neutral-850 pb-1 leading-normal">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-150 dark:border-neutral-850 pb-1 leading-normal">
                   Deskripsi Produk
                 </h4>
                 
@@ -576,7 +548,7 @@ export default function DetailKios({
                     {/* Catatan Kondisi Fisik Reviewer */}
                     {selectedItem.notes && (
                       <div className="space-y-2 bg-neutral-50 dark:bg-neutral-900/40 p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-xs">
-                        <h5 className="text-[11px] font-mono font-bold text-neutral-400 uppercase tracking-widest leading-none">
+                        <h5 className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest leading-none">
                           catatan kondisi fisik
                         </h5>
                         <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed whitespace-pre-wrap select-text">
@@ -604,11 +576,11 @@ export default function DetailKios({
                     <div className="p-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-lg shrink-0">
                       <BookOpen className="w-4 h-4 text-neutral-700 dark:text-neutral-300" />
                     </div>
-                    <h5 className="font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs font-mono tracking-wider">
+                    <h5 className="font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs tracking-wider">
                       PRODUK RELEVAN
                     </h5>
                   </div>
-                  <span className="text-[10px] font-mono font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2 py-0.5 rounded-md">
+                  <span className="text-[10px] font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2 py-0.5 rounded-md">
                     Rekomendasi
                   </span>
                 </div>
@@ -681,10 +653,10 @@ export default function DetailKios({
                         />
                         <div className="flex-1 min-w-0 text-left space-y-0.5">
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-[8.5px] font-mono font-extrabold bg-neutral-200/80 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 px-1.5 py-0.2 rounded uppercase leading-none">
+                            <span className="text-[8.5px] font-extrabold bg-neutral-200/80 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 px-1.5 py-0.2 rounded uppercase leading-none">
                               {relItem.isPreloved ? 'PRELOVED' : 'MERCH'}
                             </span>
-                            <span className="text-[9.5px] font-mono text-neutral-400 truncate">
+                            <span className="text-[9.5px] text-neutral-400 truncate">
                               {relItem.publisherName}
                             </span>
                           </div>
@@ -695,7 +667,7 @@ export default function DetailKios({
                             {relItem.genres.join(', ')}
                           </p>
                           <div className="flex items-center justify-between pt-0.5">
-                            <span className="text-xs font-mono font-extrabold text-neutral-900 dark:text-neutral-100">
+                            <span className="text-xs font-extrabold text-neutral-900 dark:text-neutral-100">
                               Rp {relItem.price.toLocaleString('id-ID')}
                             </span>
                           </div>
@@ -706,125 +678,7 @@ export default function DetailKios({
                 </div>
               </div>
 
-              {/* KIOS PENJUALAN (PRELOVED) Widget */}
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 space-y-3 shadow-xs text-left">
-                <div className="flex items-center justify-between pb-2 border-b border-neutral-150 dark:border-neutral-800">
-                  <div className="flex items-center gap-2">
-                    <div className="p-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-lg shrink-0">
-                      <Store className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                    </div>
-                    <h5 className="font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs font-mono tracking-wider">
-                      KIOS PENJUALAN (PRELOVED)
-                    </h5>
-                  </div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 px-2 py-0.5 rounded-md border border-emerald-300/50">
-                    Konotasi Store
-                  </span>
-                </div>
 
-                {(() => {
-                  const preloved = catalogItems.find(p => p.isPreloved && p.id !== selectedItem.id) || (selectedItem.isPreloved ? selectedItem : catalogItems[0]);
-                  if (!preloved) return null;
-                  return (
-                    <div className="p-3 bg-emerald-50/40 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/80 rounded-xl space-y-2.5">
-                      <div className="flex gap-3 items-start cursor-pointer" onClick={() => onSelectItem(preloved)}>
-                        <div className="relative shrink-0 w-14 aspect-[3/4] bg-neutral-900 rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                          <img 
-                            src={preloved.coverImage} 
-                            alt={preloved.title} 
-                            referrerPolicy="no-referrer"
-                            className="w-full h-full object-cover" 
-                          />
-                          <span className="absolute top-1 left-1 bg-emerald-600 text-white text-[7.5px] font-mono font-black px-1 py-0.2 rounded uppercase shadow-xs">
-                            Kondisi {preloved.conditionRating || 'S'}
-                          </span>
-                        </div>
-                        <div className="flex-1 min-w-0 text-left space-y-0.5">
-                          <h6 className="text-xs font-sans font-bold text-neutral-900 dark:text-neutral-100 line-clamp-1">
-                            {preloved.title}
-                          </h6>
-                          <p className="text-[10px] font-sans text-neutral-600 dark:text-neutral-400 line-clamp-2 leading-snug">
-                            {preloved.notes || preloved.synopsis}
-                          </p>
-                          <div className="flex items-baseline gap-2 pt-1">
-                            <span className="text-xs font-sans font-black text-emerald-600 dark:text-emerald-400">
-                              Rp {preloved.price.toLocaleString('id-ID')}
-                            </span>
-                            {preloved.originalPrice && (
-                              <span className="text-[10px] text-neutral-400 line-through">
-                                Rp {preloved.originalPrice.toLocaleString('id-ID')}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-2 pt-0.5">
-                        {preloved.shopeeUrl && (
-                          <a
-                            href={preloved.shopeeUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 min-w-[80px] py-1.5 px-2 bg-[#EE4D2D] hover:opacity-95 text-white text-[11px] font-sans font-bold rounded-lg text-center flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
-                          >
-                            <ShoppingBag className="w-3.5 h-3.5 text-white shrink-0" />
-                            <span>Shopee</span>
-                          </a>
-                        )}
-                        {preloved.tokopediaUrl && (
-                          <a
-                            href={preloved.tokopediaUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 min-w-[80px] py-1.5 px-2 bg-[#03AC0E] hover:opacity-95 text-white text-[11px] font-sans font-bold rounded-lg text-center flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
-                          >
-                            <Store className="w-3.5 h-3.5 text-white shrink-0" />
-                            <span>Tokopedia</span>
-                          </a>
-                        )}
-                        {preloved.tocoUrl && (
-                          <a
-                            href={preloved.tocoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 min-w-[80px] py-1.5 px-2 bg-[#FFD400] hover:brightness-95 text-neutral-950 text-[11px] font-sans font-bold rounded-lg text-center flex items-center justify-center gap-1.5 shadow-xs cursor-pointer border border-[#e6bf00]"
-                          >
-                            <span className="w-3.5 h-3.5 bg-neutral-950 rounded-full text-[#FFD400] text-[8px] font-black flex items-center justify-center shrink-0">T</span>
-                            <span>Toco</span>
-                          </a>
-                        )}
-                        {!preloved.shopeeUrl && !preloved.tokopediaUrl && !preloved.tocoUrl && (
-                          <a
-                            href="https://shopee.co.id/norinoya.sukasuka"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 py-1.5 px-2 bg-[#EE4D2D] hover:opacity-95 text-white text-[11px] font-sans font-bold rounded-lg text-center flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
-                          >
-                            <ShoppingBag className="w-3.5 h-3.5 text-white shrink-0" />
-                            <span>Shopee Store</span>
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
-
-            </div>
-          </div>
-
-          {/* Clean Footer */}
-          <div className="mt-12 pt-8 border-t border-neutral-200/80 dark:border-neutral-800 pb-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-sans font-black tracking-wider uppercase text-neutral-900 dark:text-neutral-100">Norinoya</span>
-                  <span className="h-1 w-1 rounded-full bg-neutral-400"></span>
-                  <span className="text-xs font-mono font-bold text-neutral-400">KIOS DETAIL</span>
-                </div>
-                <p className="text-xs text-neutral-550 dark:text-neutral-450 max-w-md font-sans leading-relaxed">
-                  Dapatkan produk orisinal dan berkualitas tinggi langsung melalui partner kolaborasi kami. Dukung industri resmi dengan membeli produk original.
-                </p>
-              </div>
             </div>
           </div>
 

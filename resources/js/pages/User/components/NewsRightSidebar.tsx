@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pin, ChevronRight, Flame, Globe, Instagram, Youtube, Mail, CheckCircle2 } from 'lucide-react';
+import { Pin, ChevronRight, Flame, Globe, Instagram, Youtube } from 'lucide-react';
 import { NewsUpdate } from '../../../types/demo';
 
 export interface NewsRightSidebarProps {
@@ -9,10 +9,10 @@ export interface NewsRightSidebarProps {
   setSearchInput?: (val: string) => void;
   setSearchTerm?: (val: string) => void;
   scrollToFeedTop: () => void;
-  isNewsletterSubscribed: boolean;
-  newsletterEmail: string;
-  setNewsletterEmail: (val: string) => void;
-  handleSubscribeNewsletter: (e: React.FormEvent) => void;
+  isNewsletterSubscribed?: boolean;
+  newsletterEmail?: string;
+  setNewsletterEmail?: (val: string) => void;
+  handleSubscribeNewsletter?: (e: React.FormEvent) => void;
   onNavigateToCatalog?: () => void;
 }
 
@@ -20,11 +20,6 @@ export default function NewsRightSidebar({
   NEWS_UPDATES,
   selectPost,
   scrollToFeedTop,
-  isNewsletterSubscribed,
-  newsletterEmail,
-  setNewsletterEmail,
-  handleSubscribeNewsletter,
-  onNavigateToCatalog,
 }: NewsRightSidebarProps) {
   return (
     <div className="hidden lg:flex lg:col-span-3 flex-col gap-4 self-start sticky top-20">
@@ -202,58 +197,6 @@ export default function NewsRightSidebar({
         </div>
       </div>
 
-      {/* 4. PREMIUM NEWSLETTER ALERT SUBSCRIPTION */}
-      <div className="bg-[#183619] dark:bg-[#09160a] text-white p-5 rounded-xl border border-[#1e4220] relative overflow-hidden shadow-xs">
-        <div className="absolute -right-8 -bottom-8 w-24 h-24 rounded-full bg-[#112A12]/20" />
-        
-        <div className="relative flex flex-col gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#1e4220] flex items-center justify-center">
-            <Mail className="w-4 h-4 text-[#8eb790]" />
-          </div>
-          <h4 className="text-sm font-extrabold tracking-tight">Dapatkan Update Rilisan Instan!</h4>
-          <p className="text-[11px] text-[#8eb790] leading-relaxed">
-            Berlangganan buletin untuk menerima email notifikasi otomatis jika judul incaranmu dirilis m&c! Akasha atau Elex Media.
-          </p>
-
-          {isNewsletterSubscribed ? (
-            <div className="bg-[#09160a]/80 p-3 rounded-lg border border-[#1e4220] flex items-center gap-2 mt-1">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span className="text-xs font-semibold text-white">Anda telah terdaftar di alert!</span>
-            </div>
-          ) : (
-            <form onSubmit={handleSubscribeNewsletter} className="flex gap-2 mt-1">
-              <input
-                type="email"
-                required
-                placeholder="nama@email.com"
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="flex-1 text-xs bg-[#09160a]/60 text-white placeholder-[#558857] border border-[#1e4220] rounded-lg px-2.5 py-2 outline-none focus:border-[#112A12]"
-              />
-              <button
-                type="submit"
-                className="bg-white hover:bg-neutral-100 text-[#09160a] font-bold text-xs px-3.5 py-2 rounded-lg transition-all cursor-pointer whitespace-nowrap"
-              >
-                Daftar
-              </button>
-            </form>
-          )}
-        </div>
-      </div>
-
-      {/* 5. BANNER PROMO LINK TO KIOS */}
-      {onNavigateToCatalog && (
-        <div 
-          onClick={onNavigateToCatalog}
-          className="bg-emerald-900 text-white p-4 rounded-xl border border-emerald-800 flex items-center justify-between cursor-pointer hover:bg-emerald-950 transition-colors shadow-xs"
-        >
-          <div className="space-y-0.5">
-            <h4 className="text-xs font-mono font-extrabold uppercase tracking-widest text-emerald-300">KATALOG KIOS</h4>
-            <p className="text-xs font-extrabold">Beli Komik Bekas Review Konotasi Store!</p>
-          </div>
-          <ChevronRight className="w-5 h-5 text-emerald-300" />
-        </div>
-      )}
 
     </div>
   );

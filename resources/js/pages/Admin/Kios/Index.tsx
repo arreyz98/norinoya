@@ -1,5 +1,5 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Pencil, Plus, Trash2, Store, ShoppingBag, Search, Eye, MousePointerClick, History, SearchCode } from 'lucide-react';
+import { Pencil, Plus, Trash2, ShoppingBag, Search, Eye, MousePointerClick, History, SearchCode, ArrowUpDown } from 'lucide-react';
 import React, { useState } from 'react';
 
 import AppLayout from '@/layouts/app-layout';
@@ -25,10 +25,12 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { toast } from 'sonner';
 
 export interface KiosItemData {
     id: number;
     title: string;
+    slug?: string | null;
     comic_title?: string | null;
     vol_number?: number;
     category: string;
@@ -88,6 +90,7 @@ interface KiosIndexProps {
         search?: string;
         category?: string;
         type?: string;
+        sort?: string;
     };
 }
 
@@ -102,33 +105,72 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function KiosIndex({ kiosItems, filters = {} }: KiosIndexProps) {
+export default function KiosIndex({ kiosItems, filters: rawFilters }: KiosIndexProps) {
+    const filters = rawFilters && !Array.isArray(rawFilters) ? rawFilters : {};
     const [deleteItem, setDeleteItem] = useState<KiosItemData | null>(null);
     const [searchTerm, setSearchTerm] = useState(filters.search || '');
+    const [category, setCategory] = useState(filters.category || 'all');
+    const [sort, setSort] = useState(filters.sort || 'latest');
+    const [type, setType] = useState(filters.type || 'all');
+
+    const handleApplyFilters = (newParams?: {
+        search?: string;
+        category?: string;
+        type?: string;
+        sort?: string;
+    }) => {
+        const payload: Record<string, string> = {
+            search: newParams?.search !== undefined ? newParams.search : searchTerm,
+            category: newParams?.category !== undefined ? newParams.category : category,
+            type: newParams?.type !== undefined ? newParams.type : type,
+            sort: newParams?.sort !== undefined ? newParams.sort : sort,
+        };
+
+        if (!payload.search) delete payload.search;
+        if (!payload.category || payload.category === 'all') delete payload.category;
+        if (!payload.type || payload.type === 'all') delete payload.type;
+
+        router.get(route('admin.kios.index'), payload, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    };
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get(route('admin.kios.index'), {
-            search: searchTerm,
-            category: filters.category,
-            type: filters.type,
-        }, { preserveState: true });
+        handleApplyFilters();
     };
 
-    const handleFilterType = (type: string) => {
-        router.get(route('admin.kios.index'), {
-            search: searchTerm,
-            category: filters.category,
-            type: type === 'all' ? undefined : type,
-        }, { preserveState: true });
+    const handleFilterType = (newType: string) => {
+        setType(newType);
+        handleApplyFilters({ type: newType });
+    };
+
+    const handleCategoryChange = (newCategory: string) => {
+        setCategory(newCategory);
+        handleApplyFilters({ category: newCategory });
+    };
+
+    const handleSortChange = (newSort: string) => {
+        setSort(newSort);
+        handleApplyFilters({ sort: newSort });
     };
 
     const handleDelete = () => {
         if (!deleteItem) return;
 
+        const itemTitle = deleteItem.title;
+
         router.delete(route('admin.kios.destroy', deleteItem.id), {
             preserveScroll: true,
             onSuccess: () => {
+                toast.success(`Item "${itemTitle}" sudah terhapus`);
+                setDeleteItem(null);
+            },
+            onError: () => {
+                toast.error('Gagal menghapus item kios');
+            },
+            onFinish: () => {
                 setDeleteItem(null);
             },
         });
@@ -143,11 +185,11 @@ export default function KiosIndex({ kiosItems, filters = {} }: KiosIndexProps) {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-bold flex items-center gap-2 text-neutral-900 dark:text-white">
-                            <Store className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-                            <span>Kios &amp; Preloved Merchandise</span>
+                            <ShoppingBag className="w-6 h-6 text-[#112A12] dark:text-emerald-400" />
+                            <span>Kios &amp; Preloved Catalog</span>
                         </h1>
                         <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
-                            Kelola koleksi preloved buku, merchandise partner, apparel, trading card, dan link affiliate official.
+                            Kelola etalase komik preloved konotasi, official partner merchandise, dan apparel Norinoya.
                         </p>
                     </div>
 
@@ -176,8 +218,8 @@ export default function KiosIndex({ kiosItems, filters = {} }: KiosIndexProps) {
                 </div>
 
                 {/* Filter & Search Bar */}
-                <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-3.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-2xs">
-                    <form onSubmit={handleSearch} className="flex items-center gap-2 flex-1 max-w-md">
+                <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-3.5 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 shadow-2xs">
+                    <form onSubmit={handleSearch} className="flex items-center gap-2 flex-1 min-w-[240px]">
                         <div className="relative flex-1">
                             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
                             <Input
@@ -192,40 +234,92 @@ export default function KiosIndex({ kiosItems, filters = {} }: KiosIndexProps) {
                         </Button>
                     </form>
 
-                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-                        <button
-                            type="button"
-                            onClick={() => handleFilterType('all')}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all ${
-                                !filters.type || filters.type === 'all'
-                                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900'
-                                    : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200'
-                            }`}
-                        >
-                            Semua ({kiosItems.total})
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => handleFilterType('preloved')}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all ${
-                                filters.type === 'preloved'
-                                    ? 'bg-pink-600 text-white'
-                                    : 'bg-pink-50 dark:bg-pink-950/40 text-pink-700 dark:text-pink-300 hover:bg-pink-100'
-                            }`}
-                        >
-                            Preloved / Review
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => handleFilterType('partner')}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all ${
-                                filters.type === 'partner'
-                                    ? 'bg-emerald-600 text-white'
-                                    : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100'
-                            }`}
-                        >
-                            Merch Partner
-                        </button>
+                    <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                        {/* Type Tabs */}
+                        <div className="flex items-center gap-1 bg-neutral-100 dark:bg-neutral-800 p-1 rounded-lg">
+                            <button
+                                type="button"
+                                onClick={() => handleFilterType('all')}
+                                className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold transition-all cursor-pointer ${
+                                    type === 'all'
+                                        ? 'bg-white text-neutral-900 shadow-2xs dark:bg-neutral-900 dark:text-white'
+                                        : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                                }`}
+                            >
+                                Semua
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => handleFilterType('preloved')}
+                                className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold transition-all cursor-pointer ${
+                                    type === 'preloved'
+                                        ? 'bg-pink-600 text-white shadow-2xs'
+                                        : 'text-pink-600 hover:bg-pink-50 dark:hover:bg-pink-950/30'
+                                }`}
+                            >
+                                Preloved
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => handleFilterType('partner')}
+                                className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold transition-all cursor-pointer ${
+                                    type === 'partner'
+                                        ? 'bg-emerald-600 text-white shadow-2xs'
+                                        : 'text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30'
+                                }`}
+                            >
+                                Partner
+                            </button>
+                        </div>
+
+                        {/* Category Filter */}
+                        <div className="relative">
+                            <select
+                                value={category}
+                                onChange={(e) => handleCategoryChange(e.target.value)}
+                                className="h-9 px-3 text-xs font-medium bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+                            >
+                                <option value="all">Semua Kategori</option>
+                                <option value="manga">Manga</option>
+                                <option value="light_novel">Light Novel</option>
+                                <option value="artbook">Artbook</option>
+                                <option value="merchandise">Merchandise</option>
+                                <option value="apparel">Apparel / Kaos</option>
+                                <option value="figure">Figure</option>
+                                <option value="poster">Poster</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+
+                        {/* Sort Filter */}
+                        <div className="relative">
+                            <ArrowUpDown className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
+                            <select
+                                value={sort}
+                                onChange={(e) => handleSortChange(e.target.value)}
+                                className="h-9 pl-8 pr-7 text-xs font-medium bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer appearance-none"
+                            >
+                                <option value="latest">Terbaru</option>
+                                <option value="oldest">Terlama</option>
+                            </select>
+                        </div>
+
+                        {(searchTerm || category !== 'all' || type !== 'all' || sort !== 'latest') && (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                    setSearchTerm('');
+                                    setCategory('all');
+                                    setType('all');
+                                    setSort('latest');
+                                    router.get(route('admin.kios.index'), {}, { preserveScroll: true });
+                                }}
+                                className="h-9 text-xs font-bold"
+                            >
+                                Reset
+                            </Button>
+                        )}
                     </div>
                 </div>
 
@@ -454,10 +548,26 @@ export default function KiosIndex({ kiosItems, filters = {} }: KiosIndexProps) {
                                         {/* Actions */}
                                         <TableCell className="text-right">
                                             <div className="flex items-center justify-end gap-1.5">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    asChild
+                                                    title="Lihat Tampilan User"
+                                                    className="h-8 w-8 text-neutral-600 hover:text-neutral-950 dark:text-neutral-300 dark:hover:text-white"
+                                                >
+                                                    <a
+                                                        href={route('kios.detail', item.slug || item.id)}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        <Eye className="w-3.5 h-3.5" />
+                                                    </a>
+                                                </Button>
                                                 <Link href={route('admin.kios.edit', item.id)}>
                                                     <Button
                                                         variant="ghost"
                                                         size="icon"
+                                                        title="Edit Item Kios"
                                                         className="h-8 w-8 text-neutral-600 hover:text-neutral-950 dark:text-neutral-300 dark:hover:text-white"
                                                     >
                                                         <Pencil className="w-3.5 h-3.5" />
@@ -466,6 +576,7 @@ export default function KiosIndex({ kiosItems, filters = {} }: KiosIndexProps) {
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
+                                                    title="Hapus Item Kios"
                                                     className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/40"
                                                     onClick={() => setDeleteItem(item)}
                                                 >

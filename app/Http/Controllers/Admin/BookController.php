@@ -19,6 +19,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -56,6 +57,14 @@ class BookController extends Controller
             });
         }
 
+        if ($request->filled('series_id') && $request->series_id !== 'all') {
+            $query->where('series_id', $request->series_id);
+        }
+
+        if ($request->filled('publisher_id') && $request->publisher_id !== 'all') {
+            $query->where('publisher_id', $request->publisher_id);
+        }
+
         $sort = $request->input('sort', 'latest');
         if ($sort === 'oldest') {
             $query->oldest();
@@ -65,11 +74,16 @@ class BookController extends Controller
 
         $books = $query->paginate(15)->withQueryString();
 
+        $seriesList = BookSeries::orderBy('title')->get(['id', 'title']);
+        $publishersList = Publisher::orderBy('name')->get(['id', 'name']);
+
         return Inertia::render(
             'Admin/Books/Index',
             [
                 'books' => $books,
-                'filters' => (object) $request->only(['search', 'sort']),
+                'seriesList' => $seriesList,
+                'publishersList' => $publishersList,
+                'filters' => (object) $request->only(['search', 'series_id', 'publisher_id', 'sort']),
             ]
         );
     }
@@ -121,7 +135,7 @@ class BookController extends Controller
         $uniqueIpsCount = \App\Models\BookViewLog::distinct('ip_address')->count('ip_address');
 
         // Top 5 most viewed books recently
-        $topBooks = \App\Models\Book::orderByDesc('views_count')
+        $topBooks = Book::orderByDesc('views_count')
             ->take(5)
             ->get(['id', 'title', 'volume', 'views_count', 'series_id']);
 
@@ -306,7 +320,7 @@ class BookController extends Controller
         $uniqueKeywordsCount = \App\Models\SearchLogBuku::distinct('keyword')->count('keyword');
 
         // Top 5 most searched keywords
-        $topSearches = \App\Models\SearchLogBuku::select('keyword', \Illuminate\Support\Facades\DB::raw('SUM(search_count) as total_count'))
+        $topSearches = \App\Models\SearchLogBuku::select('keyword', DB::raw('SUM(search_count) as total_count'))
             ->groupBy('keyword')
             ->orderByDesc('total_count')
             ->take(5)
@@ -406,12 +420,13 @@ class BookController extends Controller
 
             foreach ($logs as $log) {
                 $timeString = $log->updated_at ? $log->updated_at->setTimezone('Asia/Jakarta')->format('Y-m-d H:i:s') : '-';
+                $searchDateString = $log->search_date ? Carbon::parse($log->search_date)->format('Y-m-d') : '-';
 
                 fputcsv($handle, [
                     $log->id,
                     $log->keyword,
                     $log->search_count,
-                    $log->search_date ? $log->search_date->format('Y-m-d') : '-',
+                    $searchDateString,
                     $timeString,
                 ]);
             }
@@ -853,7 +868,7 @@ class BookController extends Controller
             'admin.books.index'
         )->with(
             'success',
-            'Book berhasil dihapus.'
+            'Buku berhasil dihapus.'
         );
     }
 

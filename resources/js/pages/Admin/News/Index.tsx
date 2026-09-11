@@ -27,6 +27,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { toast } from 'sonner';
 
 interface PaginatedData<T> {
     data: T[];
@@ -63,32 +64,59 @@ export default function NewsIndex({ news, filters: rawFilters }: NewsIndexProps)
     const filters = rawFilters && !Array.isArray(rawFilters) ? rawFilters : {};
     const [deleteNewsItem, setDeleteNewsItem] = useState<NewsItem | null>(null);
     const [search, setSearch] = useState(filters.search || '');
+    const [category, setCategory] = useState(filters.category || 'all');
     const [sort, setSort] = useState(filters.sort || 'latest');
+
+    const handleApplyFilters = (newParams?: {
+        search?: string;
+        category?: string;
+        sort?: string;
+    }) => {
+        const payload: Record<string, string> = {
+            search: newParams?.search !== undefined ? newParams.search : search,
+            category: newParams?.category !== undefined ? newParams.category : category,
+            sort: newParams?.sort !== undefined ? newParams.sort : sort,
+        };
+
+        if (!payload.search) delete payload.search;
+        if (!payload.category || payload.category === 'all') delete payload.category;
+
+        router.get(route('admin.news.index'), payload, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    };
 
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get(
-            route('admin.news.index'),
-            { search, sort, category: filters.category },
-            { preserveState: true, preserveScroll: true }
-        );
+        handleApplyFilters();
+    };
+
+    const handleCategoryChange = (newCategory: string) => {
+        setCategory(newCategory);
+        handleApplyFilters({ category: newCategory });
     };
 
     const handleSortChange = (newSort: string) => {
         setSort(newSort);
-        router.get(
-            route('admin.news.index'),
-            { search, sort: newSort, category: filters.category },
-            { preserveState: true, preserveScroll: true }
-        );
+        handleApplyFilters({ sort: newSort });
     };
 
     const handleDelete = () => {
         if (!deleteNewsItem) return;
 
+        const newsTitle = deleteNewsItem.title;
+
         router.delete(route('admin.news.destroy', deleteNewsItem.id), {
             preserveScroll: true,
             onSuccess: () => {
+                toast.success(`Berita "${newsTitle}" sudah terhapus`);
+                setDeleteNewsItem(null);
+            },
+            onError: () => {
+                toast.error('Gagal menghapus berita');
+            },
+            onFinish: () => {
                 setDeleteNewsItem(null);
             },
         });
@@ -152,7 +180,25 @@ export default function NewsIndex({ news, filters: rawFilters }: NewsIndexProps)
                         </Button>
                     </form>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                        {/* Category Filter */}
+                        <div className="relative">
+                            <select
+                                value={category}
+                                onChange={(e) => handleCategoryChange(e.target.value)}
+                                className="h-9 px-3 text-xs font-medium bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+                            >
+                                <option value="all">Semua Kategori</option>
+                                <option value="rilisan">Rilisan</option>
+                                <option value="event">Event</option>
+                                <option value="berita">Berita</option>
+                                <option value="pengumuman">Pengumuman</option>
+                                <option value="komunitas">Komunitas</option>
+                                <option value="ulasan">Ulasan</option>
+                            </select>
+                        </div>
+
+                        {/* Sort Filter */}
                         <div className="relative">
                             <ArrowUpDown className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
                             <select
@@ -165,12 +211,13 @@ export default function NewsIndex({ news, filters: rawFilters }: NewsIndexProps)
                             </select>
                         </div>
 
-                        {(search || sort !== 'latest') && (
+                        {(search || category !== 'all' || sort !== 'latest') && (
                             <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => {
                                     setSearch('');
+                                    setCategory('all');
                                     setSort('latest');
                                     router.get(route('admin.news.index'), {}, { preserveScroll: true });
                                 }}
@@ -241,8 +288,18 @@ export default function NewsIndex({ news, filters: rawFilters }: NewsIndexProps)
                                             }) : '-'}
                                         </TableCell>
                                         <TableCell className="text-right">
-                                            <div className="flex items-center justify-end gap-2">
-                                                <Button variant="ghost" size="icon" asChild>
+                                            <div className="flex items-center justify-end gap-1.5">
+                                                <Button variant="ghost" size="icon" asChild title="Lihat Tampilan User">
+                                                    <a
+                                                        href={route('news.detail', item.slug || item.id)}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-neutral-600 hover:text-neutral-950 dark:text-neutral-300 dark:hover:text-white"
+                                                    >
+                                                        <Eye className="h-4 w-4" />
+                                                    </a>
+                                                </Button>
+                                                <Button variant="ghost" size="icon" asChild title="Edit Berita">
                                                     <Link href={route('admin.news.edit', item.id)}>
                                                         <Pencil className="h-4 w-4" />
                                                     </Link>
@@ -250,6 +307,7 @@ export default function NewsIndex({ news, filters: rawFilters }: NewsIndexProps)
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
+                                                    title="Hapus Berita"
                                                     onClick={() => setDeleteNewsItem(item)}
                                                 >
                                                     <Trash2 className="h-4 w-4 text-destructive" />
