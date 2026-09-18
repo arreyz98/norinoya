@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Head } from '@inertiajs/react';
 import { ShareModal } from './ShareModal';
 import { HighlightReview } from './HighlightReview';
 import { 
@@ -8,6 +9,7 @@ import {
 import { COMICS_DATA, NEWS_UPDATES, PRE_OWNED_ITEMS } from '../../../types/mockData';
 import { Comic, Volume} from '../../../types/demo';
 import { RawNewsItem } from '../news';
+import LoadingDetailBuku from './SkeletonLoading/LoadingDetailBuku';
 
 interface DetailBukuProps {
   selectedComic: Comic;
@@ -34,6 +36,15 @@ export default function DetailBuku({
   const [activeSlideIndex, setActiveSlideIndex] = useState<number>(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
   const [unlockedComics, setUnlockedComics] = useState<Record<string, boolean>>({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 280);
+    return () => clearTimeout(timer);
+  }, [selectedComic?.id, activeVolumeNum]);
 
   // Share Modal state
   const [shareModalData, setShareModalData] = useState<{
@@ -303,60 +314,80 @@ export default function DetailBuku({
     return '12 x 18 cm';
   };
 
+  const metaTitle = `${selectedComic.title}${activeVolObj ? ` Vol. ${activeVolObj.volNumber}` : ''} - Norinoya`;
+  const metaDesc = (activeVolObj?.synopsis || selectedComic.synopsis || 'Lihat detail buku di Norinoya').replace(/<[^>]*>/g, '').slice(0, 160);
+  const metaImage = activeVolObj?.coverImage || selectedComic.coverImage || '';
+
   return (
     <div className="w-full bg-white dark:bg-neutral-950 flex flex-col min-h-screen" ref={scrollableContainerRef}>
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 15 }}
-        transition={{ duration: 0.2 }}
-        className="h-full w-full bg-white dark:bg-[#202120] text-neutral-950 dark:text-neutral-50 flex flex-col transition-colors duration-200 relative"
-      >
-        <div id="comic-detail-top" className="absolute top-0 left-0 w-0 h-0 pointer-events-none" />
-        {/* Scrollable Content Viewport */}
-        <div className="w-full">
-          {/* Top Header Navigation sticky full-width block */}
-        <div className="fixed top-[58px] sm:top-[64px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800 transition-colors">
-                  <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
-                    <button
-                      onClick={handleCloseModal}
-                      className="h-9 inline-flex items-center gap-2 px-3.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none"
-                    >
-                      <ArrowLeft className="w-4 h-4 text-neutral-800 dark:text-neutral-200" />
-                      <span>Kembali</span>
-                    </button>
-
-                    <div className="flex items-center gap-2 shrink-0">
-                      {/* Share Action - Icon Only */}
+      <Head title={metaTitle}>
+        <meta name="description" content={metaDesc} />
+        <meta property="og:site_name" content="Norinoya" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDesc} />
+        <meta property="og:type" content="book" />
+        {metaImage && <meta property="og:image" content={metaImage} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDesc} />
+        {metaImage && <meta name="twitter:image" content={metaImage} />}
+        <meta name="theme-color" content="#E53935" />
+      </Head>
+      {isLoading ? (
+        <LoadingDetailBuku />
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 15 }}
+          transition={{ duration: 0.2 }}
+          className="h-full w-full bg-white dark:bg-[#202120] text-neutral-950 dark:text-neutral-50 flex flex-col transition-colors duration-200 relative"
+        >
+          <div id="comic-detail-top" className="absolute top-0 left-0 w-0 h-0 pointer-events-none" />
+          {/* Scrollable Content Viewport */}
+          <div className="w-full">
+            {/* Top Header Navigation sticky full-width block */}
+          <div className="fixed top-[58px] sm:top-[64px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800 transition-colors">
+                    <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
                       <button
-                        onClick={() => {
-                          if (selectedComic) {
-                            const bookSlug = selectedComic.slug || selectedComic.id;
-                            const shareUrl = `${window.location.origin}/buku/${bookSlug}`;
-                            setShareModalData({
-                              isOpen: true,
-                              title: selectedComic.title,
-                              shareUrl,
-                              category: 'Katalog'
-                            });
-                          }
-                        }}
-                        className="w-9 h-9 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0"
-                        title="Bagikan Post Katalog"
+                        onClick={handleCloseModal}
+                        className="h-9 inline-flex items-center gap-2 px-3.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none"
                       >
-                        <Send className="w-4 h-4 text-neutral-600 dark:text-neutral-300" />
+                        <ArrowLeft className="w-4 h-4 text-neutral-800 dark:text-neutral-200" />
+                        <span>Kembali</span>
                       </button>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        {/* Share Action - Icon Only */}
+                        <button
+                          onClick={() => {
+                            if (selectedComic) {
+                              const bookSlug = selectedComic.slug || selectedComic.id;
+                              const shareUrl = `${window.location.origin}/buku/${bookSlug}`;
+                              setShareModalData({
+                                isOpen: true,
+                                title: selectedComic.title,
+                                shareUrl,
+                                category: 'Katalog'
+                              });
+                            }
+                          }}
+                          className="w-9 h-9 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0"
+                          title="Bagikan Post Katalog"
+                        >
+                          <Send className="w-4 h-4 text-neutral-600 dark:text-neutral-300" />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-          <div className="w-full h-fit lg:max-w-[92%] xl:max-w-7xl mx-auto px-3 sm:px-6 lg:px-24 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-neutral-950">
-            {/* Title Header with Gradient */}
-            <div id="comic-detail-card" className="bg-neutral-50/80 dark:bg-[#0F0F0F] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
-            
-            {/* Left Column: Interactive Slide Carousel Portfolio Component */}
-            <div className="flex flex-col gap-3 shrink-0 w-full md:w-80">
-              <div className="relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-xl overflow-hidden bg-neutral-950 flex flex-col justify-between p-3 border border-neutral-150 dark:border-neutral-800 shadow-md group">
+            <div className="w-full h-fit lg:max-w-[92%] xl:max-w-7xl mx-auto px-3 sm:px-6 lg:px-24 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-neutral-950">
+              {/* Title Header with Gradient */}
+              <div id="comic-detail-card" className="bg-neutral-50/80 dark:bg-[#0F0F0F] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
+              
+              {/* Left Column: Interactive Slide Carousel Portfolio Component */}
+              <div className="flex flex-col gap-3 shrink-0 w-full md:w-80">
+                <div className="relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-xl overflow-hidden bg-neutral-950 flex flex-col justify-between p-3 border border-neutral-150 dark:border-neutral-800 shadow-md group">
                 
                 {/* Active Slide Image */}
                 {carouselImages && carouselImages.length > 0 ? (
@@ -953,6 +984,7 @@ export default function DetailBuku({
         </div>
       </div>
       </motion.div>
+      )}
 
       {/* Lightbox High-Resolution Immersive Zoom Overlay */}
       <AnimatePresence>

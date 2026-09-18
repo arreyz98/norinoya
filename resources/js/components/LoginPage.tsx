@@ -2,10 +2,10 @@ import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 
-interface LoginForm {
+type LoginForm = {
     email: string;
     password: string;
-    remember: boolean;
+    [key: string]: string;
 }
 
 interface LoginPageProps {

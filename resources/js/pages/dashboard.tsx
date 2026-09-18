@@ -103,7 +103,7 @@ export default function Dashboard({
                                     Tulis Berita
                                 </Link>
                             </Button>
-                            <Button size="sm" variant="outline" asChild className="h-8 text-xs font-bold border-neutral-700 hover:bg-neutral-800 text-white cursor-pointer">
+                            <Button size="sm" variant="outline" asChild className="h-8 text-xs font-bold border-neutral-700 hover:bg-neutral-800 text-neutral-800 dark:text-white cursor-pointer">
                                 <Link href={route('admin.kios.create')}>
                                     <Plus className="h-3.5 w-3.5 mr-1" />
                                     Tambah Item Kios

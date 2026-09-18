@@ -5,7 +5,38 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        {{-- Primary Meta Tags --}}
+        @php
+            $metaData = $page['props']['meta'] ?? null;
+            $metaTitle = !empty($metaData['title']) ? $metaData['title'] : config('app.name', 'Norinoya');
+            $metaDesc = !empty($metaData['description']) ? $metaData['description'] : 'Norinoya - Database Manga, Komik, & Light Novel Indonesia. Temukan rilisan buku, berita terbaru, dan belanja komik preloved di Kios Norinoya.';
+            $metaUrl = !empty($metaData['url']) ? $metaData['url'] : url()->current();
+            $metaImage = !empty($metaData['image']) ? $metaData['image'] : asset('assets/images/logo-dark.png');
+            $metaType = !empty($metaData['type']) ? $metaData['type'] : 'website';
+            $siteName = 'Norinoya';
+        @endphp
+
+        <title inertia>{{ $metaTitle }}</title>
+        <meta name="description" content="{{ $metaDesc }}">
+        <link rel="canonical" href="{{ $metaUrl }}">
+
+        {{-- Open Graph / Facebook / WhatsApp / Discord --}}
+        <meta property="og:site_name" content="{{ $siteName }}">
+        <meta property="og:type" content="{{ $metaType }}">
+        <meta property="og:url" content="{{ $metaUrl }}">
+        <meta property="og:title" content="{{ $metaTitle }}">
+        <meta property="og:description" content="{{ $metaDesc }}">
+        <meta property="og:image" content="{{ $metaImage }}">
+        <meta property="og:image:alt" content="{{ $metaTitle }}">
+
+        {{-- Twitter Card / Discord Large Preview --}}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $metaTitle }}">
+        <meta name="twitter:description" content="{{ $metaDesc }}">
+        <meta name="twitter:image" content="{{ $metaImage }}">
+
+        {{-- Discord & Mobile Theme Accent --}}
+        <meta name="theme-color" content="#E53935">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +73,7 @@
 
         @routes
         @viteReactRefresh
-        @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
+        @vite(['resources/js/app.tsx'])
         @inertiaHead
     </head>
     <body class="font-sans antialiased bg-[#FEFFFE] dark:bg-[#202120] text-neutral-900 dark:text-neutral-50 transition-colors duration-150">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Scale, FileText, Sparkles, Lock } from 'lucide-react';
+import { ShieldCheck, Scale, FileText, Lock } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function AboutSection() {
@@ -13,25 +13,16 @@ export default function AboutSection() {
       {/* Banner info */}
       <div className="text-center space-y-3">
         <span className="inline-block px-3 py-1 bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-250 text-xs font-mono tracking-wider uppercase rounded-md leading-[16px]">
-          Kebijakan Hukum &amp; Tentang Kami
+          Tentang Kami
         </span>
         <h1 className="text-2xl md:text-3xl font-sans font-extrabold text-neutral-950 dark:text-neutral-50 tracking-tight leading-tight">
-          Transparansi &amp; Dukungan Industri Kreatif Resmi
+          Kebijakan &amp; Transparansi Norinoya
         </h1>
         <p className="text-sm md:text-base text-neutral-600 dark:text-neutral-350 max-w-2xl mx-auto leading-[24px]">
-          Norinoya dirancang khusus sebagai wadah kurasi informasi komik/light novel berlisensi resmi di Indonesia, menjembatani ulasan komunitas dari akun media sosial <strong>@konotasi.sukasuka</strong> dengan pembelian produk yang sah.
+          Norinoya adalah platform kurasi dan informasi seputar komik, novel dan light novel yang terbit resmi original di Indonesia.
         </p>
       </div>
 
-      {/* Ads Placeholder */}
-      <div className="w-full bg-neutral-50/70 dark:bg-[#171717] border border-dashed border-neutral-300 dark:border-neutral-800 rounded-2xl p-4 sm:p-5 text-center space-y-1.5 transition-colors shadow-xs">
-        <span className="text-xs font-mono font-extrabold uppercase tracking-wider text-neutral-400 dark:text-neutral-400 flex items-center justify-center gap-1.5 leading-[16px]">
-          📢 SPONSORED ADSENSE
-        </span>
-        <div className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 font-sans leading-[20px] max-w-xl mx-auto">
-          Iklan Google Adsense membantu kelangsungan server Norinoya. Hubungi kami untuk kerja sama penempatan banner.
-        </div>
-      </div>
 
       {/* Key Declarations */}
       <div className="grid md:grid-cols-2 gap-4 pt-2">
@@ -39,10 +30,10 @@ export default function AboutSection() {
         <div className="space-y-2.5 p-5 border border-neutral-250 dark:border-neutral-850 rounded-xl bg-neutral-50/20 dark:bg-neutral-950/20">
           <div className="flex items-center gap-2.5 text-neutral-900 dark:text-neutral-100 font-bold">
             <ShieldCheck className="w-5 h-5 text-neutral-855 dark:text-neutral-300 shrink-0" />
-            <h3 className="font-sans text-base leading-[24px]">Kebijakan Transparansi Affiliate</h3>
+            <h3 className="font-sans text-base leading-[24px]">Transparansi Affiliate</h3>
           </div>
           <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-[20px]">
-            Sesuai UU No. 8 Tahun 1999 tentang Perlindungan Konsumen serta etika periklanan digital, kami menyatakan bahwa seluruh link pembelian berlabel <strong>"Affiliate"</strong> (Gramedia, Shopee, Tokopedia) mengadopsi program referral resmi. Norinoya menerima persentase komisi kecil dari transaksi tanpa membebankan biaya tambahan sepeser pun kepada pembeli.
+            Beberapa tautan pembelian di Norinoya merupakan tautan afiliasi (affiliate link). Jika pengguna melakukan pembelian melalui tautan tersebut, Norinoya dapat menerima komisi dari program afiliasi terkait, tanpa biaya tambahan yang dibebankan kepada pengguna.
           </p>
         </div>
 
@@ -50,10 +41,10 @@ export default function AboutSection() {
         <div className="space-y-2.5 p-5 border border-neutral-250 dark:border-neutral-850 rounded-xl bg-neutral-50/20 dark:bg-neutral-950/20">
           <div className="flex items-center gap-2.5 text-neutral-900 dark:text-neutral-100 font-bold">
             <Scale className="w-5 h-5 text-neutral-855 dark:text-neutral-300 shrink-0" />
-            <h3 className="font-sans text-base leading-[24px]">Kepatuhan UU Hak Cipta No 28/2014</h3>
+            <h3 className="font-sans text-base leading-[24px]">Kebijakan Hak Cipta</h3>
           </div>
           <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-[20px]">
-            Norinoya berkomitmen memerangi pembajakan karya intelektual. Kami <strong>pantang luar biasa</strong> menyediakan atau mengarahkan ke link baca manga bajakan (seperti scanlation ilegal, situs web mirror, dsb). Seluruh komik/novel didatabasekan hanya dari penerbit resmi Indonesia (PT Elex Media Komputindo, m&c!, dsb) beserta link streaming OTT legal (Netflix, Crunchyroll, dll).
+            Norinoya tidak menyediakan atau mengarahkan pengguna ke salinan, scan, atau situs distribusi manga yang tidak sah. Kami berupaya menggunakan sumber dan tautan resmi dalam penyajian informasi serta rekomendasi kami.
           </p>
         </div>
 
@@ -64,54 +55,99 @@ export default function AboutSection() {
             <h3 className="font-sans text-base leading-[24px]">Kebijakan Privasi &amp; Penggunaan Cookie (Privacy Policy)</h3>
           </div>
           <p className="text-sm text-neutral-600 dark:text-neutral-450 leading-[20px]">
-            Privasi pengunjung adalah salah satu prioritas utama kami di Norinoya Hub. Layanan kami dirancang sepenuhnya secara statis informatif, yang berarti kami <strong>tidak menyediakan registrasi akun, tidak mengumpulkan atau menyimpan informasi pribadi sensitif Anda</strong> di server eksternal kami. 
+            Privasi pengunjung merupakan salah satu prioritas utama Norinoya. Layanan Norinoya dirancang sebagai platform informatif, dengan pengelolaan data yang terbatas dan transparan.
           </p>
-          <div className="text-xs text-neutral-500 dark:text-neutral-400 pt-1 space-y-1.5 pl-4 list-disc font-sans leading-relaxed">
-            <li><strong>Penyimpanan Data Lokal:</strong> Kami menggunakan browser <code>localStorage</code> dan file cookie teknologis lokal secara eksklusif untuk menyimpan preferensi navigasi Anda, seperti data pembukaan rating bacaan dewasa (unlocked posts) serta status persetujuan Cookie Consent Banner demi kenyamanan penjelajahan Anda secara anonim.</li>
-            <li><strong>Tautan Pihak Ketiga:</strong> Situs ini memuat program referal/affiliate afiliasi (seperti Gramedia, Shopee, Tokopedia) yang memiliki kebijakan privasi dan tracker cookie tersendiri saat Anda mengunjungi halaman checkout mereka. Kami menyarankan Anda membaca kebijakan privasi pihak ketiga tersebut secara mandiri.</li>
-            <li><strong>Statistik Non-Identitas:</strong> Layanan kami mungkin menganalisis data kunjungan umum (seperti jumlah visitor harian dan referensi klik) secara anonim guna optimasi performa server &amp; database kami agar tetap lincah diakses di Indonesia.</li>
-          </div>
+          <p className="text-sm text-neutral-600 dark:text-neutral-450 leading-[20px]">
+            Norinoya tidak menyediakan registrasi akun dan tidak secara sengaja mengumpulkan atau menyimpan informasi pribadi sensitif pengguna di server Norinoya.
+          </p>
+          <ul className="text-xs text-neutral-500 dark:text-neutral-400 pt-1 space-y-1.5 pl-4 list-disc font-sans leading-relaxed">
+            <li><strong>Penyimpanan Data Lokal:</strong> Norinoya dapat menggunakan localStorage dan cookie pada browser untuk menyimpan preferensi navigasi pengguna, seperti status pembukaan konten berdasarkan rating usia serta status persetujuan Cookie Consent Banner. Data tersebut disimpan secara lokal pada perangkat pengguna.</li>
+            <li><strong>Tautan Pihak Ketiga:</strong> Norinoya memuat tautan referral atau affiliate, seperti Gramedia, Shopee, dan Tokopedia. Ketika pengguna mengakses platform pihak ketiga tersebut, pengelolaan cookie, tracker, dan data pengguna mengikuti kebijakan privasi masing-masing platform. Norinoya tidak mengendalikan kebijakan privasi pihak ketiga tersebut.</li>
+            <li><strong>Statistik Non-Identitas:</strong> Norinoya dapat menggunakan data kunjungan umum, seperti jumlah pengunjung dan sumber rujukan klik, untuk memahami penggunaan situs serta membantu mengoptimalkan performa dan pengalaman pengguna. Data statistik tersebut digunakan dalam bentuk yang tidak ditujukan untuk mengidentifikasi pengguna secara langsung.</li>
+          </ul>
         </div>
       </div>
 
       {/* Detailed Legal Disclaimer */}
       <div className="space-y-4 pt-5 border-t border-neutral-200 dark:border-neutral-800">
-        <h2 className="text-base font-bold font-mono uppercase tracking-wider text-neutral-400 dark:text-neutral-500 flex items-center gap-2">
+        <h2 className="text-base font-bold font-mono uppercase tracking-wider text-neutral-700 dark:text-neutral-300 flex items-center gap-2">
           <FileText className="w-5 h-5 text-neutral-700 dark:text-neutral-400 shrink-0" />
           Keterangan Hukum Tambahan (Disclaimer)
         </h2>
-        <div className="text-sm text-neutral-600 dark:text-neutral-400 space-y-3 leading-[20px]">
-          <p>
-            1. <strong>Merek Dagang &amp; Hak Cipta Cover:</strong> Semua gambar sampul (cover artwork), cuplikan panel review, serta rujukan karakter komik sepenuhnya dimiliki oleh para ilustrator, kreator Jepang/internasional, dan penerbit berlisensi asli. Norinoya memanfaatkan visual tersebut murni untuk keperluan ulasan (fair use/pendidikan edukatif) guna mempromosikan pembelian cetakan fisik yang legal di Indonesia.
-          </p>
-          <p>
-            2. <strong>Jual Beli Pre-Owned Curated @konotasi.sukasuka:</strong> Barang-barang bekas yang dipajang di tab marketplace bekas adalah komik yang dibeli mandiri oleh tim review dan digunakan sebagai properti konten. Transaksi jual beli dijalankan secara personal melalui platform e-commerce terpercaya (Shopee/Tokopedia) demi keamanan transaksi bersama, tunduk pada hukum jual beli barang pribadi secara perdata Indonesia.
-          </p>
-          <p>
-            3. <strong>Sistem Tanpa Forum / Akun Login:</strong> Demi menjaga kualitas ulasan, integritas data, dan menghindari penyebaran ujaran kebencian atau spam link bajakan di Indonesia, Norinoya diputuskan berjalan <strong>secara statis informatif tanpa adanya sistem registrasi akun atau komentar publik</strong>. Percakapan dua arah sepenuhnya diakomodasi di media sosial resmi kita: <a href="https://instagram.com/norinoya.official" target="_blank" rel="noopener noreferrer" className="underline font-semibold text-neutral-950 dark:text-neutral-300 font-mono text-sm">@norinoya.official</a> and <a href="https://tiktok.com/@norinoya.official" target="_blank" rel="noopener noreferrer" className="underline font-semibold text-neutral-950 dark:text-neutral-300 font-mono text-sm">TikTok @norinoya.official</a>.
-          </p>
-        </div>
-      </div>
+        <div className="text-sm text-neutral-600 dark:text-neutral-400 space-y-4 leading-relaxed">
+          <div className="space-y-1.5">
+            <h3 className="font-bold text-neutral-900 dark:text-neutral-100">
+              1. Merek Dagang &amp; Hak Cipta Visual
+            </h3>
+            <p>
+              Nama, logo, karakter, cover artwork, ilustrasi, dan materi visual lainnya yang ditampilkan di Norinoya dapat merupakan milik atau berada di bawah hak cipta masing-masing pencipta, ilustrator, penerbit, produsen, atau pemegang hak terkait.
+            </p>
+            <p>
+              Norinoya tidak mengklaim kepemilikan atas materi tersebut dan menggunakannya secara terbatas untuk keperluan identifikasi karya, informasi, ulasan, edukasi, atau pemberitaan.
+            </p>
+            <p>
+              Penggunaan materi visual tidak dimaksudkan untuk menggantikan karya asli maupun mengesankan adanya kepemilikan atau afiliasi resmi dengan pemegang hak, kecuali dinyatakan secara jelas.
+            </p>
+          </div>
 
-      {/* Footer support call */}
-      <div className="p-6 bg-neutral-950 dark:bg-neutral-900 border border-transparent dark:border-neutral-800 text-white rounded-xl flex flex-col md:flex-row justify-between items-center gap-5">
-        <div className="space-y-1.5 text-center md:text-left">
-          <h4 className="font-extrabold text-base font-sans flex items-center justify-center md:justify-start gap-2 leading-[24px]">
-            <Sparkles className="w-5 h-5 text-[#DA6B1C] shrink-0" />
-            Dukung Ekosistem Manga Indonesia
-          </h4>
-          <p className="text-xs text-neutral-400 dark:text-neutral-450 max-w-md leading-[16px]">
-            Membeli produk orisinal berarti mendukung kelangsungan hidup mangaka lokal maupun global, serta penerjemah dan editor di penerbit kesayangan kita.
-          </p>
+          <div className="space-y-1.5">
+            <h3 className="font-bold text-neutral-900 dark:text-neutral-100">
+              2. Informasi Produk &amp; Affiliate
+            </h3>
+            <p>
+              Norinoya dapat menampilkan informasi mengenai buku, manga, light novel, dan produk terkait beserta tautan menuju platform penjual atau distributor pihak ketiga.
+            </p>
+            <p>
+              Beberapa tautan tersebut dapat merupakan tautan affiliate/referral. Apabila pengguna melakukan pembelian melalui tautan tersebut, Norinoya dapat menerima komisi sesuai dengan ketentuan program affiliate yang berlaku, tanpa biaya tambahan bagi pengguna.
+            </p>
+            <p>
+              Harga, ketersediaan, stok, promosi, dan informasi produk pada platform pihak ketiga dapat berubah sewaktu-waktu. Norinoya menyarankan pengguna untuk memeriksa informasi terbaru pada halaman penjual sebelum melakukan pembelian.
+            </p>
+          </div>
+
+          <div className="space-y-1.5">
+            <h3 className="font-bold text-neutral-900 dark:text-neutral-100">
+              3. Informasi Editorial
+            </h3>
+            <p>
+              Informasi, ulasan, rekomendasi, rating usia, dan pandangan yang dipublikasikan di Norinoya merupakan bagian dari konten editorial Norinoya, kecuali dinyatakan sebagai informasi resmi dari penerbit, distributor, produsen, atau pemegang hak terkait.
+            </p>
+            <p>
+              Rating atau rekomendasi yang diberikan Norinoya merupakan penilaian editorial dan tidak selalu mewakili rating atau klasifikasi resmi dari lembaga, penerbit, platform, atau pemegang hak terkait.
+            </p>
+          </div>
+
+          <div className="space-y-1.5">
+            <h3 className="font-bold text-neutral-900 dark:text-neutral-100">
+              4. Sumber &amp; Referensi
+            </h3>
+            <p>
+              Norinoya berupaya menggunakan sumber yang relevan dan dapat dipertanggungjawabkan dalam penyusunan informasi.
+            </p>
+            <p>
+              Informasi mengenai karya dapat bersumber dari penerbit, distributor, platform resmi, katalog, database publik, maupun sumber lain yang relevan. Norinoya berupaya membedakan antara informasi faktual, sumber resmi, dan pendapat editorial.
+            </p>
+            <p>
+              Apabila terdapat informasi yang tidak akurat atau materi yang dianggap melanggar hak pihak tertentu, pemilik hak dapat menghubungi Norinoya untuk menyampaikan koreksi atau permintaan peninjauan.
+            </p>
+          </div>
+
+          <div className="space-y-1.5">
+            <h3 className="font-bold text-neutral-900 dark:text-neutral-100">
+              5. Perubahan Kebijakan
+            </h3>
+            <p>
+              Norinoya dapat memperbarui Kebijakan Privasi, Penggunaan Cookie, dan Disclaimer ini apabila terdapat perubahan pada fitur, layanan, teknologi, atau ketentuan yang berlaku.
+            </p>
+            <p>
+              Setiap perubahan akan diperbarui pada halaman ini.
+            </p>
+          </div>
+
+          <div className="pt-2 text-xs font-mono text-neutral-500 dark:text-neutral-400 border-t border-neutral-100 dark:border-neutral-800/80">
+            Terakhir diperbarui: 9 September 2026
+          </div>
         </div>
-        <a
-          href="https://instagram.com/norinoya.official"
-          target="_blank"
-          rel="no-referrer"
-          className="px-4 py-2.5 bg-white text-neutral-950 text-xs font-mono font-bold tracking-wider rounded-lg transition-transform active:scale-95 duration-100 hover:bg-neutral-100 inline-block text-center shrink-0 leading-[16px] shadow-3xs"
-        >
-          FOLLOW INSTAGRAM
-        </a>
       </div>
     </motion.div>
   );

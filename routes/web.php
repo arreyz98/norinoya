@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\KiosItemController;
 use App\Http\Controllers\Admin\KiosPartnerController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 Route::get('/test', function () {
@@ -171,6 +172,13 @@ Route::get('/buku/{slug}', function ($slug) {
         'totalPublishersCount' => $totalPublishersCount,
         'initialBook' => $book,
         'initialSlug' => $slug,
+        'meta' => [
+            'title' => $book->title . ' - Norinoya',
+            'description' => Str::limit(strip_tags($book->synopsis ?? $book->short_description ?? 'Lihat informasi lengkap dan detail buku komik di Norinoya.'), 160),
+            'image' => ($img = $book->images->first()?->image_url) ? (Str::startsWith($img, ['http://', 'https://']) ? $img : url($img)) : url('/favicon.png'),
+            'url' => url("/buku/{$book->slug}"),
+            'type' => 'book',
+        ],
     ]);
 })->name('book.detail');
 
@@ -437,6 +445,13 @@ Route::get('/news/{slug}', function ($slug) {
         'initialNews' => $news,
         'initialSlug' => $slug,
         'totalNewsCount' => $totalNewsCount,
+        'meta' => [
+            'title' => $news->title . ' - Norinoya News',
+            'description' => Str::limit(strip_tags($news->content ?? 'Baca update berita dan artikel terbaru di Norinoya News.'), 160),
+            'image' => ($img = $news->attached_image) ? (Str::startsWith($img, ['http://', 'https://']) ? $img : url($img)) : url('/favicon.png'),
+            'url' => url("/news/{$news->slug}"),
+            'type' => 'article',
+        ],
     ]);
 })->name('news.detail');
 
@@ -537,6 +552,13 @@ Route::get('/kios/{slug}', function ($slug) {
         'initialSlug' => $slug,
         'totalKiosItemsCount' => $totalKiosItemsCount,
         'totalPartnersCount' => $totalPartnersCount,
+        'meta' => [
+            'title' => $kiosItem->title . ' - Norinoya Kios',
+            'description' => Str::limit(strip_tags($kiosItem->deskripsi_produk ?? 'Beli merchandise, komik, dan produk eksklusif di Kios Norinoya.'), 160),
+            'image' => ($img = $kiosItem->cover_image) ? (Str::startsWith($img, ['http://', 'https://']) ? $img : url($img)) : url('/favicon.png'),
+            'url' => url("/kios/{$kiosItem->slug}"),
+            'type' => 'product',
+        ],
     ]);
 })->name('kios.detail');
 

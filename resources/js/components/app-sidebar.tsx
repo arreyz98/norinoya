@@ -2,10 +2,12 @@ import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { useAppearance } from '@/hooks/use-appearance';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { BookOpen, ExternalLink, Folder, LayoutGrid, LayoutPanelTop, Newspaper, Store } from 'lucide-react';
-import AppLogo from './app-logo';
+import logoDarkUrl from '/public/assets/images/logo-dark.png';
+import logoLightUrl from '/public/assets/images/logo-light.png';
 
 const mainNavItems: (NavItem & { target?: string })[] = [
     {
@@ -80,6 +82,11 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { appearance } = useAppearance();
+    const isDark =
+        appearance === 'dark' ||
+        (appearance === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -87,8 +94,12 @@ export function AppSidebar() {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href="/admin/dashboard" prefetch>
-                                <AppLogo />
-                            </Link>
+                                    <img
+             src={isDark ?  logoDarkUrl : logoLightUrl }
+             alt="Norinoya Logo"
+             className="h-60 object-contain transition-transform  pt-6"
+           />
+                        </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>

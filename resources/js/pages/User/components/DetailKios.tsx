@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Head } from '@inertiajs/react';
 import { motion } from 'motion/react';
 import { 
   ArrowLeft, Send, ExternalLink, BookOpen, Tag,
@@ -212,8 +213,25 @@ export default function DetailKios({
     return Array.from(tagsSet).filter(Boolean);
   }, [selectedItem]);
 
+  const metaTitle = selectedItem?.title ? `${selectedItem.title} - Kios Norinoya` : 'Kios - Norinoya';
+  const metaDesc = (selectedItem?.deskripsi_produk || selectedItem?.synopsis || 'Beli merchandise, komik, dan produk eksklusif di Kios Norinoya.').replace(/<[^>]*>/g, '').slice(0, 160);
+  const metaImage = selectedItem?.coverImage || '';
+
   return (
     <div className="w-full bg-white dark:bg-neutral-950 flex flex-col min-h-screen" ref={scrollableContainerRef}>
+      <Head title={metaTitle}>
+        <meta name="description" content={metaDesc} />
+        <meta property="og:site_name" content="Norinoya" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDesc} />
+        <meta property="og:type" content="product" />
+        {metaImage && <meta property="og:image" content={metaImage} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDesc} />
+        {metaImage && <meta name="twitter:image" content={metaImage} />}
+        <meta name="theme-color" content="#E53935" />
+      </Head>
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}

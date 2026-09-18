@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import {
   BookOpen,  Instagram, Sparkles,
   MessageCircle,  Newspaper, ArrowUp, ShoppingBag,
@@ -13,6 +13,7 @@ import MarketplaceDb from './components/MarketplaceDB';
 import AboutSection from './components/AboutSection';
 import EtalaseCatalog from './components/EtalaseCatalog';
 import Navbar from './components/Navbar';
+import LoadingHome from './components/SkeletonLoading/LoadingHome';
 
 import logoDarkUrl from '../../../../public/assets/images/logo-dark.png';
 import logoLightUrl from '../../../../public/assets/images/logo-light.png';
@@ -116,6 +117,34 @@ export default function App({
   const [cookieChoice, setCookieChoice] = useState<string | null>(null);
   const [showBriefModal, setShowBriefModal] = useState<boolean>(false);
   const [briefSlide, setBriefSlide] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // Initial load simulation & Inertia route transition listener
+  useEffect(() => {
+    // Initial page load skeleton
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 450);
+
+    // Listen to Inertia router visit start / finish
+    const unbindStart = router.on('start', (event) => {
+      // Only show home skeleton if navigating to home/buku
+      const targetUrl = event.detail.visit.url.pathname;
+      if (targetUrl === '/' || targetUrl.startsWith('/buku/')) {
+        setIsLoading(true);
+      }
+    });
+
+    const unbindFinish = router.on('finish', () => {
+      setIsLoading(false);
+    });
+
+    return () => {
+      clearTimeout(timer);
+      unbindStart();
+      unbindFinish();
+    };
+  }, []);
 
   // Navigation handlers
   const handleNavHome = () => {
@@ -307,29 +336,34 @@ export default function App({
             {/* Tab: HOME (Catalog Database) */}
             {activeTab === 'home' && (
               <motion.div
-                key="home-screen"
+                key={isLoading ? 'home-skeleton' : 'home-screen'}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
               >
-                <MarketplaceDb 
-                  customComics={comicsData}
-                  dynamicPublishers={publishers}
-                  dynamicStoryStatuses={storyStatuses}
-                  dynamicGenres={genres}
-                  newsList={newsList}
-                  totalBooksCount={totalBooksCount}
-                  totalSeriesCount={totalSeriesCount}
-                  totalPublishersCount={totalPublishersCount}
-                  initialSelectedComicId={selectedComicId} 
-                  onClearSelectedComicId={() => setSelectedComicId(null)}
-                  onNavigateToNews={(newsId) => {
-                    setActiveTab('news');
-                    setSelectedNewsId(newsId);
-                    window.location.hash = `#news`;
-                  }}
-                  onNavigateToCalendar={handleNavCalendar}
-                />
+                {isLoading ? (
+                  <LoadingHome />
+                ) : (
+                  <MarketplaceDb 
+                    customComics={comicsData}
+                    dynamicPublishers={publishers}
+                    dynamicStoryStatuses={storyStatuses}
+                    dynamicGenres={genres}
+                    newsList={newsList}
+                    totalBooksCount={totalBooksCount}
+                    totalSeriesCount={totalSeriesCount}
+                    totalPublishersCount={totalPublishersCount}
+                    initialSelectedComicId={selectedComicId} 
+                    onClearSelectedComicId={() => setSelectedComicId(null)}
+                    onNavigateToNews={(newsId) => {
+                      setActiveTab('news');
+                      setSelectedNewsId(newsId);
+                      window.location.hash = `#news`;
+                    }}
+                    onNavigateToCalendar={handleNavCalendar}
+                  />
+                )}
               </motion.div>
             )}
 

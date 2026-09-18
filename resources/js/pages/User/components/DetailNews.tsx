@@ -1,4 +1,5 @@
 import React from 'react';
+import { Head } from '@inertiajs/react';
 import { motion } from 'motion/react';
 import { 
   ArrowLeft, Send, CheckCircle2, 
@@ -149,8 +150,25 @@ export default function DetailNews({
     if (document.body) document.body.scrollTop = 0;
   }, [activePost?.id]);
 
+  const metaTitle = activePost?.title ? `${activePost.title} - Norinoya News` : 'Berita - Norinoya';
+  const metaDesc = (activePost?.content || 'Baca update berita dan artikel terbaru seputar manga, anime, dan pop culture di Norinoya.').replace(/<[^>]*>/g, '').slice(0, 160);
+  const metaImage = activePost?.attachedImage || '';
+
   return (
     <div className="w-full max-w-6xl mx-auto relative -mt-4 sm:-mt-6">
+      <Head title={metaTitle}>
+        <meta name="description" content={metaDesc} />
+        <meta property="og:site_name" content="Norinoya" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDesc} />
+        <meta property="og:type" content="article" />
+        {metaImage && <meta property="og:image" content={metaImage} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDesc} />
+        {metaImage && <meta name="twitter:image" content={metaImage} />}
+        <meta name="theme-color" content="#E53935" />
+      </Head>
       {/* Full-width Fixed Top Navigation Bar */}
       <div className="fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">
         <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">

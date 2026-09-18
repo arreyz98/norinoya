@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { 
   BookOpen, Instagram, ShoppingBag, Newspaper, Sparkles
 } from 'lucide-react';
 
 import NewsFeed from './components/NewsFeed';
 import Navbar from './components/Navbar';
+import LoadingNews from './components/SkeletonLoading/LoadingNews';
 import logoDarkUrl from '../../../../public/assets/images/logo-dark.png';
 import logoLightUrl from '../../../../public/assets/images/logo-light.png';
 import { VideoShortItem } from './home';
@@ -53,6 +54,31 @@ export default function NewsPage({
 
   const [selectedNewsId, setSelectedNewsId] = useState<string | null>(initialPostId);
   const [selectedShort, setSelectedShort] = useState<VideoShortItem | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 450);
+
+    const unbindStart = router.on('start', (event) => {
+      const targetUrl = event.detail.visit.url.pathname;
+      if (targetUrl === '/news' || targetUrl.startsWith('/news/')) {
+        setIsLoading(true);
+      }
+    });
+
+    const unbindFinish = router.on('finish', () => {
+      setIsLoading(false);
+    });
+
+    return () => {
+      clearTimeout(timer);
+      unbindStart();
+      unbindFinish();
+    };
+  }, []);
+
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const saved = sessionStorage.getItem('norinoya-dark-mode');
@@ -120,68 +146,75 @@ export default function NewsPage({
       {/* Main Content */}
       <main className="flex-1 w-full max-w-7xl mx-auto p-4 sm:p-6 pb-20 md:pb-6 bg-transparent">
         <motion.div
-          key="news-screen"
+          key={isLoading ? 'news-skeleton' : 'news-screen'}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
           className="space-y-8"
         >
-          {!selectedNewsId && (
-            <div className="relative text-center py-10 md:py-14 bg-white dark:bg-gradient-to-br dark:from-neutral-900 dark:to-neutral-950 text-neutral-900 dark:text-white rounded-2xl overflow-hidden shadow-xs dark:shadow-md border border-neutral-200/60 dark:border-neutral-800 px-6 flex flex-col items-center justify-center space-y-4 transition-all duration-200">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-neutral-100 dark:from-neutral-800/20 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-neutral-100 dark:bg-neutral-800/10 rounded-full blur-3xl pointer-events-none" />
+          {isLoading ? (
+            <LoadingNews />
+          ) : (
+            <>
+              {!selectedNewsId && (
+                <div className="relative text-center py-10 md:py-14 bg-white dark:bg-gradient-to-br dark:from-neutral-900 dark:to-neutral-950 text-neutral-900 dark:text-white rounded-2xl overflow-hidden shadow-xs dark:shadow-md border border-neutral-200/60 dark:border-neutral-800 px-6 flex flex-col items-center justify-center space-y-4 transition-all duration-200">
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-neutral-100 dark:from-neutral-800/20 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-neutral-100 dark:bg-neutral-800/10 rounded-full blur-3xl pointer-events-none" />
 
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-neutral-100 dark:bg-white/10 dark:backdrop-blur-md border border-neutral-200 dark:border-white/20 text-neutral-800 dark:text-white text-[9px] sm:text-[11px] font-mono font-bold tracking-wider sm:tracking-widest uppercase rounded-full text-center max-w-full leading-relaxed sm:leading-none">
-                <Sparkles className="w-3.5 h-3.5 text-[#DA6B1C] dark:text-[#DA6B1C] fill-[#DA6B1C]/10 dark:fill-[#DA6B1C]/30 shrink-0" />
-                <span>Discover Japanese Stories.</span>
-              </span>
-              <h1 className="text-3xl md:text-5xl font-sans font-black tracking-tight uppercase leading-none max-w-4xl text-neutral-950 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-neutral-100 dark:to-neutral-300">
-                NEWS
-              </h1>
-              <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed">
-                Explore manga, light novel, anime, dan rilisan terbaru dari sumber resmi.
-              </p>
-
-              <div className="flex flex-wrap items-center justify-center gap-3 pt-1.5 relative z-10">
-                <a
-                  href="https://discord.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4.5 py-2 bg-[#5865F2] hover:bg-[#4752C4] !text-white active:scale-95 duration-100 text-xs font-mono font-bold tracking-tight rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-[#4752C4]/20"
-                >
-                  <svg className="w-4 h-4 fill-white text-white shrink-0" viewBox="0 0 24 24">
-                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.094 13.094 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z" />
-                  </svg>
-                  <span className="text-white font-bold">konotasi.sukasuka</span>
-                </a>
-              </div>
-
-              <div className="flex items-center gap-4 sm:gap-6 pt-3 font-mono text-[10px] sm:text-xs">
-                <div className="flex flex-col items-center">
-                  <span className="text-neutral-950 dark:text-white font-extrabold text-base sm:text-lg leading-none">
-                    {totalNewsCount !== undefined ? totalNewsCount : newsList.length}
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-neutral-100 dark:bg-white/10 dark:backdrop-blur-md border border-neutral-200 dark:border-white/20 text-neutral-800 dark:text-white text-[9px] sm:text-[11px] font-mono font-bold tracking-wider sm:tracking-widest uppercase rounded-full text-center max-w-full leading-relaxed sm:leading-none">
+                    <Sparkles className="w-3.5 h-3.5 text-[#DA6B1C] dark:text-[#DA6B1C] fill-[#DA6B1C]/10 dark:fill-[#DA6B1C]/30 shrink-0" />
+                    <span>Discover Japanese Stories.</span>
                   </span>
-                  <span className="text-neutral-500 dark:text-neutral-400 text-[9px] sm:text-[10px] mt-1">Feeds Hari Ini</span>
-                </div>
-                <div className="h-6 w-[1px] bg-neutral-200 dark:bg-neutral-800" />
-              </div>
-            </div>
-          )}
+                  <h1 className="text-3xl md:text-5xl font-sans font-black tracking-tight uppercase leading-none max-w-4xl text-neutral-950 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-neutral-100 dark:to-neutral-300">
+                    NEWS
+                  </h1>
+                  <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed">
+                    Explore manga, light novel, anime, dan rilisan terbaru dari sumber resmi.
+                  </p>
 
-          <div id="norinoya-news-hub" className="pt-2 scroll-mt-20">
-            <NewsFeed 
-              dbNewsList={newsList}
-              dbBooksList={books}
-              dbKiosList={kiosItems}
-              selectedNewsId={selectedNewsId} 
-              setSelectedNewsId={setSelectedNewsId} 
-              onNavigateToCatalog={handleNavHome}
-              onNavigateToComic={(comicId) => {
-                window.location.href = `/#/database/${comicId}`;
-              }}
-              onSelectShort={(short) => setSelectedShort(short)}
-            />
-          </div>
+                  <div className="flex flex-wrap items-center justify-center gap-3 pt-1.5 relative z-10">
+                    <a
+                      href="https://discord.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4.5 py-2 bg-[#5865F2] hover:bg-[#4752C4] !text-white active:scale-95 duration-100 text-xs font-mono font-bold tracking-tight rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-[#4752C4]/20"
+                    >
+                      <svg className="w-4 h-4 fill-white text-white shrink-0" viewBox="0 0 24 24">
+                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.094 13.094 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z" />
+                      </svg>
+                      <span className="text-white font-bold">konotasi.sukasuka</span>
+                    </a>
+                  </div>
+
+                  <div className="flex items-center gap-4 sm:gap-6 pt-3 font-mono text-[10px] sm:text-xs">
+                    <div className="flex flex-col items-center">
+                      <span className="text-neutral-950 dark:text-white font-extrabold text-base sm:text-lg leading-none">
+                        {totalNewsCount !== undefined ? totalNewsCount : newsList.length}
+                      </span>
+                      <span className="text-neutral-500 dark:text-neutral-400 text-[9px] sm:text-[10px] mt-1">Feeds Hari Ini</span>
+                    </div>
+                    <div className="h-6 w-[1px] bg-neutral-200 dark:bg-neutral-800" />
+                  </div>
+                </div>
+              )}
+
+              <div id="norinoya-news-hub" className="pt-2 scroll-mt-20">
+                <NewsFeed 
+                  dbNewsList={newsList}
+                  dbBooksList={books}
+                  dbKiosList={kiosItems}
+                  selectedNewsId={selectedNewsId} 
+                  setSelectedNewsId={setSelectedNewsId} 
+                  onNavigateToCatalog={handleNavHome}
+                  onNavigateToComic={(comicId) => {
+                    window.location.href = `/#/database/${comicId}`;
+                  }}
+                  onSelectShort={(short) => setSelectedShort(short)}
+                />
+              </div>
+            </>
+          )}
         </motion.div>
       </main>
 

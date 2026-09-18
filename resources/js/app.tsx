@@ -1,6 +1,6 @@
 import '../css/app.css';
 
-import { createInertiaApp } from '@inertiajs/react';
+import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { route as routeFn } from 'ziggy-js';
@@ -27,3 +27,9 @@ createInertiaApp({
 
 // This will set light / dark mode on load...
 initializeTheme();
+
+// Re-apply the saved appearance on every Inertia navigation (e.g. after login),
+// since the app is a SPA and initializeTheme only runs on a full page load.
+router.on('navigate', () => {
+    initializeTheme();
+});
