@@ -198,7 +198,7 @@ export default function DetailKios({
       komik_lokal: 'Komik Lokal',
       light_novel: 'Light Novel',
       novel: 'Novel',
-      j_lit: 'J-Lit (Japanese Literature)',
+      j_lit: 'J Lit',
       trading_card: 'Trading Card',
       figurine: 'Figure / Model Kit',
       apparel: 'Apparel',

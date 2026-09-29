@@ -947,7 +947,7 @@ export default function BookForm({
                                               { value: 'Light Novel', label: 'Light Novel' },
                                               { value: 'Novel', label: 'Novel' },
                                               { value: 'Komik Lokal', label: 'Komik Lokal' },
-                                              { value: 'J Lit', label: 'J-Lit (Japanese Literature)' },
+                                              { value: 'J Lit', label: 'J Lit' },
                                           ]
                                     ).map((item) => (
                                         <SelectItem key={item.value} value={item.value}>

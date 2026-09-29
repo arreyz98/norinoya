@@ -1085,7 +1085,7 @@ const getReadingRatingStyle = (rating?: string) => {
                 { value: 'komik_lokal', label: 'Komik Lokal', icon: BookOpen },
                 { value: 'light_novel', label: 'Light Novel', icon: BookText },
                 { value: 'novel', label: 'Novel', icon: BookText },
-                { value: 'j_lit', label: 'J-Lit (Japanese Literature)', icon: BookText },
+                { value: 'j_lit', label: 'J Lit', icon: BookText },
               ]}
               onChange={(val) => {
                 setSelectedCategories(val);
