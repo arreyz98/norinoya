@@ -1,0 +1,164 @@
+import React from 'react';
+
+export default function LoadingHome() {
+  return (
+    <div className="w-full animate-pulse space-y-6 pb-12 select-none pointer-events-none">
+      {/* 1. Hero Banner Skeleton */}
+      <div className="relative text-center py-10 md:py-14 bg-neutral-100/70 dark:bg-neutral-900/60 rounded-2xl border border-neutral-200/60 dark:border-neutral-800 px-6 flex flex-col items-center justify-center space-y-4 overflow-hidden">
+        {/* Shimmer sweep effect */}
+        <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 dark:via-white/5 to-transparent pointer-events-none" />
+
+        {/* Pill Badge */}
+        <div className="h-6 w-44 bg-neutral-200 dark:bg-neutral-800 rounded-full" />
+
+        {/* Big Title NORINOYA */}
+        <div className="h-10 sm:h-12 w-64 sm:w-80 bg-neutral-200 dark:bg-neutral-800 rounded-2xl" />
+
+        {/* Tags pills (Manga, Novel, Light Novel) */}
+        <div className="flex items-center justify-center gap-2">
+          <div className="h-6 w-16 sm:w-20 bg-neutral-200 dark:bg-neutral-800 rounded-lg sm:rounded-xl" />
+          <div className="h-6 w-16 sm:w-20 bg-neutral-200 dark:bg-neutral-800 rounded-lg sm:rounded-xl" />
+          <div className="h-6 w-20 sm:w-24 bg-neutral-200 dark:bg-neutral-800 rounded-lg sm:rounded-xl" />
+        </div>
+
+        {/* Subtitle description */}
+        <div className="h-4 w-full max-w-md bg-neutral-200/80 dark:bg-neutral-800/80 rounded-md" />
+
+        {/* Social / Action Button */}
+        <div className="pt-1">
+          <div className="h-9 w-44 bg-neutral-200 dark:bg-neutral-800 rounded-xl" />
+        </div>
+
+        {/* Stats counter widget */}
+        <div className="flex items-center gap-6 pt-3">
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="h-6 w-12 bg-neutral-200 dark:bg-neutral-800 rounded-md" />
+            <div className="h-3 w-16 bg-neutral-200/70 dark:bg-neutral-800/70 rounded-md" />
+          </div>
+          <div className="h-6 w-[1px] bg-neutral-200 dark:bg-neutral-800" />
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="h-6 w-12 bg-neutral-200 dark:bg-neutral-800 rounded-md" />
+            <div className="h-3 w-16 bg-neutral-200/70 dark:bg-neutral-800/70 rounded-md" />
+          </div>
+          <div className="h-6 w-[1px] bg-neutral-200 dark:bg-neutral-800" />
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="h-6 w-12 bg-neutral-200 dark:bg-neutral-800 rounded-md" />
+            <div className="h-3 w-16 bg-neutral-200/70 dark:bg-neutral-800/70 rounded-md" />
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Ads / Sponsored Placeholder Skeleton */}
+      <div className="w-full bg-neutral-100/50 dark:bg-neutral-900/30 border border-dashed border-neutral-200 dark:border-neutral-800/80 rounded-2xl p-6 flex flex-col items-center justify-center space-y-2">
+        <div className="h-4 w-36 bg-neutral-200 dark:bg-neutral-800 rounded-md" />
+        <div className="h-3 w-72 max-w-full bg-neutral-200/70 dark:bg-neutral-800/70 rounded-md" />
+      </div>
+
+      {/* 3. Section Segera Rilis Skeleton */}
+      <div className="bg-white dark:bg-[#171717] border border-neutral-200/80 dark:border-neutral-800 p-4 sm:p-5 rounded-2xl space-y-3.5 shadow-2xs">
+        {/* Header Segera Rilis */}
+        <div className="flex items-center gap-2 border-b border-neutral-100 dark:border-neutral-800 pb-3">
+          <div className="w-7 h-7 bg-orange-200/60 dark:bg-orange-950/40 rounded-lg" />
+          <div className="h-4 w-28 bg-neutral-200 dark:bg-neutral-800 rounded-md" />
+        </div>
+
+        {/* 6 Upcoming Cards Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
+          {[...Array(6)].map((_, i) => (
+            <div 
+              key={`upcoming-skeleton-${i}`}
+              className="bg-neutral-50/80 dark:bg-neutral-900/80 border border-neutral-200/80 dark:border-neutral-800 rounded-xl p-2 sm:p-2.5 flex flex-col justify-between"
+            >
+              <div className="space-y-2">
+                {/* Cover Image */}
+                <div className="relative aspect-[3/4] w-full rounded-lg bg-neutral-200 dark:bg-neutral-800 overflow-hidden">
+                  {/* Badge top */}
+                  <div className="absolute top-1.5 left-1.5 w-14 h-3.5 bg-neutral-300 dark:bg-neutral-700 rounded-md" />
+                  {/* Badge bottom */}
+                  <div className="absolute bottom-1.5 left-1.5 w-10 h-3 bg-neutral-300 dark:bg-neutral-700 rounded-md" />
+                </div>
+                {/* Titles */}
+                <div className="space-y-1.5 pt-0.5">
+                  <div className="h-2.5 w-16 bg-neutral-200/70 dark:bg-neutral-800/70 rounded" />
+                  <div className="h-3 w-full bg-neutral-200 dark:bg-neutral-800 rounded" />
+                  <div className="h-2.5 w-12 bg-neutral-200 dark:bg-neutral-800 rounded" />
+                </div>
+              </div>
+              <div className="pt-2 border-t border-neutral-200/60 dark:border-neutral-800/80 mt-2">
+                <div className="h-3 w-14 bg-neutral-200 dark:bg-neutral-800 rounded" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. Search Filter Panel Skeleton */}
+      <div className="bg-white dark:bg-[#171717] border border-[#EFEFEF] dark:border-neutral-800 p-5 rounded-2xl space-y-4 shadow-3xs">
+        <div className="flex items-center gap-2 border-b border-neutral-100 dark:border-neutral-800 pb-3">
+          <div className="w-4 h-4 bg-neutral-200 dark:bg-neutral-800 rounded" />
+          <div className="h-3.5 w-52 bg-neutral-200 dark:bg-neutral-800 rounded-md" />
+        </div>
+
+        <div className="flex flex-col gap-3.5">
+          {/* Main search bar input */}
+          <div className="space-y-1">
+            <div className="h-3 w-28 bg-neutral-200/80 dark:bg-neutral-800/80 rounded" />
+            <div className="h-10 w-full bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/70 dark:border-neutral-800 rounded-xl" />
+          </div>
+
+          {/* Filter dropdowns 6 columns */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 pt-1">
+            {[...Array(6)].map((_, i) => (
+              <div key={`filter-skeleton-${i}`} className="space-y-1">
+                <div className="h-2.5 w-16 bg-neutral-200/70 dark:bg-neutral-800/70 rounded" />
+                <div className="h-9 w-full bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/70 dark:border-neutral-800 rounded-lg" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Subheader (Showing counts and sort dropdown) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+        <div className="space-y-1.5">
+          <div className="h-2.5 w-32 bg-neutral-200/70 dark:bg-neutral-800/70 rounded" />
+          <div className="h-3.5 w-56 bg-neutral-200 dark:bg-neutral-800 rounded-md" />
+        </div>
+        <div className="h-9 w-36 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/70 dark:border-neutral-800 rounded-lg" />
+      </div>
+
+      {/* 6. Main Books Catalog Grid Skeleton (18 Book Cards) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3">
+        {[...Array(18)].map((_, i) => (
+          <div
+            key={`catalog-skeleton-${i}`}
+            className="bg-white dark:bg-[#171717] border border-neutral-200/80 dark:border-neutral-800 rounded-xl p-2 sm:p-2.5 flex flex-col justify-between shadow-3xs"
+          >
+            <div className="space-y-2">
+              {/* Card Cover Image */}
+              <div className="relative aspect-[3/4] w-full rounded-lg bg-neutral-200 dark:bg-neutral-800 overflow-hidden">
+                {/* Badges top & bottom */}
+                <div className="absolute top-1.5 left-1.5 w-12 h-3.5 bg-neutral-300 dark:bg-neutral-700 rounded-md" />
+                <div className="absolute bottom-1.5 left-1.5 w-10 h-3 bg-neutral-300 dark:bg-neutral-700 rounded-md" />
+              </div>
+
+              {/* Meta information */}
+              <div className="space-y-1.5 pt-0.5">
+                <div className="h-2.5 w-16 bg-neutral-200/70 dark:bg-neutral-800/70 rounded" />
+                <div className="h-3.5 w-full bg-neutral-200 dark:bg-neutral-800 rounded" />
+                <div className="h-3 w-4/5 bg-neutral-200/80 dark:bg-neutral-800/80 rounded" />
+                <div className="h-2.5 w-10 bg-neutral-200/70 dark:bg-neutral-800/70 rounded" />
+              </div>
+            </div>
+
+            {/* Card Price & Rating Footer */}
+            <div className="pt-2 border-t border-neutral-200/60 dark:border-neutral-800/80 mt-2.5 flex items-center justify-between">
+              <div className="h-3 w-16 bg-neutral-200 dark:bg-neutral-800 rounded" />
+              <div className="h-3 w-8 bg-neutral-200/70 dark:bg-neutral-800/70 rounded" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
