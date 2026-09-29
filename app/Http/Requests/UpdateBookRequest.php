@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\BookType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -61,6 +62,7 @@ class UpdateBookRequest extends FormRequest
             'book_type' => [
                 'required',
                 'string',
+                Rule::enum(BookType::class),
             ],
 
             'story_status_id' => [

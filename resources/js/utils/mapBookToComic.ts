@@ -375,7 +375,7 @@ export const BOOK_TYPE_LABELS: Record<string, string> = {
   komik_lokal: 'Komik Lokal',
   light_novel: 'Light Novel',
   novel: 'Novel',
-  j_lit: 'J Lit ',
+  j_lit: 'J Lit',
 };
 
 export function getBookTypeLabel(category: string | undefined): string {

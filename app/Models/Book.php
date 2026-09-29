@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Casts\NormalizedBookType;
 use App\Enums\AgeRating;
-use App\Enums\BookType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,7 +42,7 @@ class Book extends Model
     protected function casts(): array
     {
         return [
-            'book_type' => BookType::class,
+            'book_type' => NormalizedBookType::class,
             'age_rating' => AgeRating::class,
             'msrp' => 'decimal:2',
             'page_count' => 'integer',

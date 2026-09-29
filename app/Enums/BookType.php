@@ -19,7 +19,7 @@ enum BookType: string
             self::LIGHT_NOVEL => 'Light Novel',
             self::NOVEL => 'Novel',
             self::KOMIK_LOKAL  => 'Komik Lokal',
-            self::J_LIT => 'J Lit ',
+            self::J_LIT => 'J Lit',
             
         };
     }
