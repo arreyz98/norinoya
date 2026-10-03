@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\NormalizedBookType;
 use App\Enums\AgeRating;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -123,5 +124,20 @@ class Book extends Model
     public function viewLogs(): HasMany
     {
         return $this->hasMany(BookViewLog::class, 'book_id');
+    }
+
+    public static function homeQuery(): Builder
+    {
+        return static::query()->with([
+            'series:id,title',
+            'edition:id,name',
+            'storyStatus:id,name',
+            'publisher:id,name',
+            'images:id,book_id,image_url,sort_order',
+            'authors:id,name',
+            'genres:id,name',
+            'affiliateLinks.affiliateStore:id,name,slug,logo_url',
+            'tiktokEmbeds:id,book_id,name,url_video,sort_order',
+        ]);
     }
 }
