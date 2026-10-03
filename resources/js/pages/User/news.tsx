@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Head, router } from '@inertiajs/react';
-import {
-  BookOpen, ShoppingBag, Newspaper, Sparkles, Bookmark, Instagram
-} from 'lucide-react';
+import { Sparkles, Instagram } from 'lucide-react';
 
 import NewsFeed from './components/NewsFeed';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LoadingNews from './components/SkeletonLoading/LoadingNews';
+import BackToTopButton from './components/BackToTopButton';
 import { VideoShortItem } from './home';
-import { useBookmarks } from '../../utils/bookmarkStorage';
 import { usePageLoading } from '../../hooks/use-page-loading';
 
 export interface RawNewsItem {
@@ -78,8 +76,6 @@ export default function NewsPage({
     }
   }, [darkMode]);
 
-  const { counts } = useBookmarks();
-
   const handleNavHome = () => {
     router.visit('/');
   };
@@ -94,11 +90,7 @@ export default function NewsPage({
   };
 
   const handleNavAbout = () => {
-    router.visit('/#about');
-  };
-
-  const handleNavBookmark = () => {
-    router.visit('/bookmark');
+    router.visit('/?scroll=about');
   };
 
   const activeNewsItem = selectedNewsId ? newsList.find(n => String(n.id) === selectedNewsId) : null;
@@ -109,7 +101,7 @@ export default function NewsPage({
   const pageDesc = activeNewsItem
     ? (cleanContent || `Berita ${activeNewsItem.title} di Norinoya Hub`).slice(0, 160)
     : 'Update berita rilisan komik terbaru, info cetak ulang m&c! Akasha dan Elex Media, promo, serta poling komunitas Norinoya.';
-  const pageImage = activeNewsItem?.attached_image || (Array.isArray(activeNewsItem?.gallery_images) && activeNewsItem.gallery_images[0]) || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&auto=format&fit=crop&q=80';
+  const pageImage = activeNewsItem?.attached_image || (Array.isArray(activeNewsItem?.gallery_images) && activeNewsItem.gallery_images[0]) || '/favicon.png';
 
   return (
     <div className="bg-[#FEFFFE] dark:bg-[#202120] min-h-screen text-neutral-950 dark:text-neutral-50 selection:bg-neutral-900 dark:selection:bg-neutral-100 selection:text-white dark:selection:text-neutral-900 flex flex-col justify-between font-sans">
@@ -223,7 +215,7 @@ export default function NewsPage({
                   setSelectedNewsId={setSelectedNewsId}
                   onNavigateToCatalog={handleNavHome}
                   onNavigateToComic={(comicId) => {
-                    router.visit(`/#/database/${comicId}`);
+                    router.visit(`/buku/${comicId}`);
                   }}
                   onSelectShort={(short) => setSelectedShort(short)}
                 />
@@ -237,34 +229,8 @@ export default function NewsPage({
       <Footer
         onNavigateHome={handleNavHome}
         onNavigateAbout={handleNavAbout}
+        darkMode={darkMode}
       />
-
-      {/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-sm bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-700/80 shadow-[0_10px_30px_rgba(0,0,0,0.08)] rounded-2xl z-[60] flex items-center justify-around py-2.5 px-3 mb-safe">
-        <button onClick={handleNavHome} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
-          <BookOpen className="w-4.5 h-4.5 mb-0.5" />
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">Home</span>
-        </button>
-        <button onClick={handleNavEtalase} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
-          <ShoppingBag className="w-4.5 h-4.5 mb-0.5" />
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">Kios</span>
-        </button>
-        <button onClick={handleNavNews} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-950 dark:text-white font-extrabold bg-neutral-100/90 dark:bg-neutral-700">
-          <Newspaper className="w-4.5 h-4.5 mb-0.5" />
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">News</span>
-        </button>
-        <button onClick={handleNavBookmark} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
-          <span className="relative flex items-center justify-center mb-0.5">
-            <Bookmark className="w-4.5 h-4.5" />
-            {counts.total > 0 && (
-              <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-1 flex items-center justify-center rounded-full bg-[#DA6B1C] text-white text-[9px] font-bold leading-none tabular-nums ring-2 ring-white/95 dark:ring-neutral-800/95">
-                {counts.total > 99 ? '99+' : counts.total}
-              </span>
-            )}
-          </span>
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">Bookmark</span>
-        </button>
-      </div>
 
       {/* Shorts Player Modal */}
       <AnimatePresence>
@@ -300,6 +266,9 @@ export default function NewsPage({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Floating Back to Top Button */}
+      <BackToTopButton />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { router } from "@inertiajs/react";
-import { Instagram, Youtube } from "lucide-react";
+import { Instagram,Youtube } from "lucide-react";
 import logoDarkUrl from '../../../../../public/assets/images/dark.svg';
 import logoLightUrl from '../../../../../public/assets/images/white.svg';
 
@@ -93,9 +93,13 @@ export default function Footer({ onNavigateHome, onNavigateAbout , darkMode }: F
                         className="w-7 h-7 rounded-lg bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-700/80 hover:border-neutral-900 dark:hover:border-white hover:bg-neutral-50 dark:hover:bg-neutral-700 text-neutral-700 dark:text-white hover:text-neutral-900 dark:hover:text-white transition-all flex items-center justify-center shadow-xs"
                         title="TikTok @norinoya.official"
                       >
-                        <svg className="w-3.5 h-3.5 fill-current text-neutral-700 dark:text-white hover:text-neutral-900 dark:hover:text-white transition-colors" viewBox="0 0 24 24">
-                          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.86.97 2.05 1.64 3.34 1.85.01.88 0 1.77-.01 2.65-.96-.11-1.92-.48-2.73-1.03-.69-.47-1.25-1.11-1.63-1.85-.05 1.48-.03 2.94-.04 4.41-.07 2.58-.93 5.16-2.71 7.03-1.74 1.95-4.32 2.99-6.95 2.87-2.67-.03-5.26-1.24-6.85-3.39-1.75-2.25-2.22-5.4-1.25-8.13C2.15 6.01 4.7 3.86 7.6 3.5c1.47-.15 2.98.08 4.29.81-.01 1-.01 1.99-.02 2.99-.86-.54-1.9-.76-2.9-.61-1.39.21-2.61 1.15-3.19 2.44-.7 1.46-.57 3.29.35 4.62.91 1.34 2.53 2.1 4.14 2 1.4-.04 2.72-.78 3.44-1.97.48-.75.69-1.64.67-2.52.01-3.21 0-6.42.01-9.63-.08-.55-.38-.97-.87-1.23-.28-.15-.59-.22-.92-.22H12.525z"/>
-                        </svg>
+                       <svg
+                        className="w-4 h-4 fill-current"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 3 15.68 6.34 6.34 0 0 0 9.34 22a6.34 6.34 0 0 0 6.34-6.34V9.28a8.16 8.16 0 0 0 4.91 1.62V7.46a4.85 4.85 0 0 1-1-.77z"/>
+                    </svg>
                       </a>
                     </div>
                   </div>
@@ -119,9 +123,13 @@ export default function Footer({ onNavigateHome, onNavigateAbout , darkMode }: F
                         className="w-7 h-7 rounded-lg bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-700/80 hover:border-neutral-900 dark:hover:border-white hover:bg-neutral-50 dark:hover:bg-neutral-700 text-neutral-700 dark:text-white hover:text-neutral-900 dark:hover:text-white transition-all flex items-center justify-center shadow-xs"
                         title="TikTok @konotasi.sukasuka"
                       >
-                        <svg className="w-3.5 h-3.5 fill-current text-neutral-700 dark:text-white hover:text-neutral-900 dark:hover:text-white transition-colors" viewBox="0 0 24 24">
-                          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.86.97 2.05 1.64 3.34 1.85.01.88 0 1.77-.01 2.65-.96-.11-1.92-.48-2.73-1.03-.69-.47-1.25-1.11-1.63-1.85-.05 1.48-.03 2.94-.04 4.41-.07 2.58-.93 5.16-2.71 7.03-1.74 1.95-4.32 2.99-6.95 2.87-2.67-.03-5.26-1.24-6.85-3.39-1.75-2.25-2.22-5.4-1.25-8.13C2.15 6.01 4.7 3.86 7.6 3.5c1.47-.15 2.98.08 4.29.81-.01 1-.01 1.99-.02 2.99-.86-.54-1.9-.76-2.9-.61-1.39.21-2.61 1.15-3.19 2.44-.7 1.46-.57 3.29.35 4.62.91 1.34 2.53 2.1 4.14 2 1.4-.04 2.72-.78 3.44-1.97.48-.75.69-1.64.67-2.52.01-3.21 0-6.42.01-9.63-.08-.55-.38-.97-.87-1.23-.28-.15-.59-.22-.92-.22H12.525z"/>
-                        </svg>
+                        <svg
+                          className="w-4 h-4 fill-current"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                      >
+                          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 3 15.68 6.34 6.34 0 0 0 9.34 22a6.34 6.34 0 0 0 6.34-6.34V9.28a8.16 8.16 0 0 0 4.91 1.62V7.46a4.85 4.85 0 0 1-1-.77z"/>
+                      </svg>
                       </a>
                       <a
                         href="https://youtube.com/@konotasi.sukasuka"

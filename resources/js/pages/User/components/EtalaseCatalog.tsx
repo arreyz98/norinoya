@@ -205,7 +205,7 @@ export default function EtalaseCatalog({
           category: dbItem.merch_type || dbItem.category || 'manga',
           merchType: dbItem.merch_type || dbItem.category || 'manga',
           categories: categoriesArr,
-          coverImage: dbItem.cover_image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&auto=format&fit=crop&q=80',
+          coverImage: dbItem.cover_image || null,
           synopsis: dbItem.deskripsi_produk || dbItem.synopsis || dbItem.notes || '',
           deskripsi_produk: dbItem.deskripsi_produk || dbItem.synopsis || '',
           rating: Number(dbItem.rating) || 5,
@@ -1018,15 +1018,19 @@ export default function EtalaseCatalog({
                 className="h-full bg-white dark:bg-neutral-900 border border-[#EFEFEF] dark:border-neutral-800 rounded-xl overflow-hidden flex flex-col justify-between cursor-pointer transition-all duration-300 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_10px_24px_rgba(0,0,0,0.05)] hover:translate-y-[-2px] relative group select-none"
               >
                 {/* Cover Jacket Art */}
-                <div className="relative aspect-[3/4] w-full bg-neutral-950 flex flex-col justify-between p-2 sm:p-2.5 select-none overflow-hidden">
-                  <img
-                    src={item.coverImage}
-                    alt={item.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 scale-100 group-hover:scale-105"
-                    referrerPolicy="no-referrer"
-                    loading="lazy"
-                    decoding="async"
-                  />
+                 <div className="relative aspect-[3/4] w-full bg-neutral-950 flex flex-col justify-between p-2 sm:p-2.5 select-none overflow-hidden">
+                   {item.coverImage ? (
+                     <img
+                       src={item.coverImage}
+                       alt={item.title}
+                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 scale-100 group-hover:scale-105"
+                       referrerPolicy="no-referrer"
+                       loading="lazy"
+                       decoding="async"
+                     />
+                   ) : (
+                     <div className="absolute inset-0 w-full h-full flex items-center justify-center text-neutral-600 dark:text-neutral-400 text-xs font-mono bg-neutral-200 dark:bg-neutral-700" />
+                   )}
 
                   {item.isPreloved && item.isSoldOut && (
                     <div className="absolute top-2 right-2 z-20">
@@ -1090,18 +1094,22 @@ export default function EtalaseCatalog({
                 className="bg-white dark:bg-neutral-900 border border-neutral-150 dark:border-neutral-850 p-3.5 rounded-2xl flex flex-col sm:flex-row gap-4 items-center sm:items-start text-left hover:border-neutral-350 dark:hover:border-neutral-700 hover:shadow-[0_12px_28px_rgba(0,0,0,0.05)] transition-all duration-200 group relative"
               >
                 {/* Compact Image with Volume info */}
-                <div 
-                  onClick={() => setSelectedItem(item)}
-                  className="w-24 aspect-[3/4] bg-neutral-950 rounded-xl overflow-hidden shrink-0 relative flex items-center justify-center shadow-3xs cursor-pointer select-none"
-                >
-                  <img 
-                    src={item.coverImage} 
-                    alt={item.title} 
-                    className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
-                    referrerPolicy="no-referrer"
-                    loading="lazy"
-                    decoding="async"
-                  />
+                 <div 
+                   onClick={() => setSelectedItem(item)}
+                   className="w-24 aspect-[3/4] bg-neutral-950 rounded-xl overflow-hidden shrink-0 relative flex items-center justify-center shadow-3xs cursor-pointer select-none"
+                 >
+                   {item.coverImage ? (
+                     <img 
+                       src={item.coverImage} 
+                       alt={item.title} 
+                       className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
+                       referrerPolicy="no-referrer"
+                       loading="lazy"
+                       decoding="async"
+                     />
+                   ) : (
+                     <div className="w-full h-full flex items-center justify-center text-neutral-600 dark:text-neutral-400 text-[10px] font-mono" />
+                   )}
                   <div className="absolute inset-x-0 bottom-0 bg-black/60 py-1 text-center font-mono text-[9px] text-white font-bold leading-none">
                     Vol {item.volNumber}
                   </div>
@@ -1335,14 +1343,18 @@ export default function EtalaseCatalog({
                       className="border border-neutral-150 dark:border-neutral-850 p-3 rounded-xl flex items-start gap-3 relative hover:border-neutral-250 transition-all bg-white dark:bg-neutral-950 shadow-[0_1px_2px_rgba(0,0,0,0.01)]"
                     >
                       {/* Thumbnail mini cover */}
-                      <div className="w-12 h-16 bg-neutral-900 rounded-lg overflow-hidden shrink-0 border border-neutral-100 dark:border-neutral-850">
-                        <img 
-                          src={item.coverImage} 
-                          alt={item.title} 
-                          className="w-full h-full object-cover"
-                          referrerPolicy="no-referrer"
-                        />
-                      </div>
+                       <div className="w-12 h-16 bg-neutral-900 rounded-lg overflow-hidden shrink-0 border border-neutral-100 dark:border-neutral-850">
+                         {item.coverImage ? (
+                         <img 
+                           src={item.coverImage} 
+                           alt={item.title} 
+                           className="w-full h-full object-cover"
+                           referrerPolicy="no-referrer"
+                         />
+                       ) : (
+                         <div className="w-full h-full flex items-center justify-center text-neutral-600 dark:text-neutral-400 text-[8px] font-mono" />
+                       )}
+                       </div>
 
                       {/* Info fields */}
                       <div className="flex-1 min-w-0 space-y-1 text-left">

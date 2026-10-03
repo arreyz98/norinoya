@@ -38,17 +38,22 @@
         {{-- Discord & Mobile Theme Accent --}}
         <meta name="theme-color" content="#E53935">
 
-        {{-- Favicon / Website Icon --}}
-        <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" sizes="any">
-        <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-        <link rel="apple-touch-icon" href="{{ asset('assets/images/favicon.ico') }}">
+         {{-- Favicon / Website Icon --}}
+         <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" sizes="any">
+         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+         <link rel="apple-touch-icon" href="{{ asset('assets/images/favicon.ico') }}">
+
+         {{-- robots noindex directive (pages that shouldn't be indexed) --}}
+         @if (!empty($page['props']['meta']['robots']))
+             <meta name="robots" content="{{ $page['props']['meta']['robots'] }}">
+
+         @endif
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
         <style>
       /* Style untuk loader */
       #app:empty {

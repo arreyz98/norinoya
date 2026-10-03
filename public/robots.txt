@@ -1,2 +1,5 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap generated dynamically — see /sitemap.xml
+Sitemap: https://norinoya.com/sitemap.xml

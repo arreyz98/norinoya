@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Video, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { Volume, Comic } from '../../../types/demo';
 
@@ -11,20 +11,35 @@ interface TikTokCardItem {
   id: string;
   title: string;
   tiktokUrl: string;
+  coverImage?: string;
 }
 
-function TikTokCard({ item }: { item: TikTokCardItem }) {
+function TikTokCard({ item, coverImage }: { item: TikTokCardItem; coverImage?: string }) {
+  const thumb = coverImage || '/assets/images/thumbnail-tiktok.jpeg';
   return (
     <div
-      onClick={() => window.open(item.tiktokUrl, '_blank')}
+      onClick={() => window.open(item.tiktokUrl, '_blank', 'noopener,noreferrer')}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          window.open(item.tiktokUrl, '_blank', 'noopener,noreferrer');
+        }
+      }}
       className="w-[135px] sm:w-[155px] aspect-[9/16] shrink-0 rounded-2xl overflow-hidden relative border border-neutral-200/60 dark:border-neutral-800 bg-neutral-900 flex flex-col justify-end p-2.5 sm:p-3 shadow-2xs group cursor-pointer transition-all hover:scale-102"
     >
-      {/* Gambar Thumbnail dari Public Asset */}
-      <img 
-        src="/assets/images/thumbnail-tiktok.jpeg" 
-        alt={item.title} 
+      <img
+        src={thumb}
+        alt={item.title}
         loading="lazy"
         decoding="async"
+        referrerPolicy="no-referrer"
+        onError={(e) => {
+          const img = e.currentTarget;
+          if (img.src.endsWith('thumbnail-tiktok.jpeg')) return;
+          img.src = '/assets/images/thumbnail-tiktok.jpeg';
+        }}
         className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-300"
       />
       
@@ -52,20 +67,23 @@ function TikTokCard({ item }: { item: TikTokCardItem }) {
 }
 
 export const HighlightReview: React.FC<HighlightReviewProps> = ({ activeVolObj, selectedComic }) => {
-  // Ambil murni data dari database BookTiktokEmbed (lewat activeVolObj.tiktokEmbeds atau selectedComic)
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const embedsSource = (activeVolObj?.tiktokEmbeds && activeVolObj.tiktokEmbeds.length > 0)
     ? activeVolObj.tiktokEmbeds
     : (selectedComic?.tiktokEmbeds && selectedComic.tiktokEmbeds.length > 0)
       ? selectedComic.tiktokEmbeds
       : (selectedComic?.volumes?.flatMap(v => v.tiktokEmbeds || []) ?? []);
 
+  const coverImage = activeVolObj?.coverImage || selectedComic?.coverImage || undefined;
+
   const tiktokList: TikTokCardItem[] = embedsSource
     .map((embed, index) => ({
       id: embed.id || String(index),
       title: embed.name || embed.title || `Review TikTok ${index + 1}`,
-      tiktokUrl: embed.url_video || embed.embed_url || '',
+      tiktokUrl: (embed.url_video || embed.embed_url || '').trim(),
     }))
-    .filter((item) => item.tiktokUrl.trim() !== '');
+    .filter((item) => item.tiktokUrl !== '');
 
   // Jika tidak ada video TikTok di database, kosongkan (return null)
   if (!tiktokList || tiktokList.length === 0) {
@@ -85,23 +103,19 @@ export const HighlightReview: React.FC<HighlightReviewProps> = ({ activeVolObj, 
         <div className="flex items-center gap-1.5 sm:gap-2">
           <button
             type="button"
-            onClick={() => {
-              const el = document.getElementById('highlight-shorts-modal-container');
-              if (el) el.scrollBy({ left: -200, behavior: 'smooth' });
-            }}
+            onClick={() => scrollRef.current?.scrollBy({ left: -200, behavior: 'smooth' })}
             className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-neutral-50 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-750 transition-colors cursor-pointer"
             title="Sebelumnya"
+            aria-label="Scroll sebelumnya"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             type="button"
-            onClick={() => {
-              const el = document.getElementById('highlight-shorts-modal-container');
-              if (el) el.scrollBy({ left: 200, behavior: 'smooth' });
-            }}
+            onClick={() => scrollRef.current?.scrollBy({ left: 200, behavior: 'smooth' })}
             className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-neutral-50 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-750 transition-colors cursor-pointer"
             title="Berikutnya"
+            aria-label="Scroll berikutnya"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
@@ -120,12 +134,12 @@ export const HighlightReview: React.FC<HighlightReviewProps> = ({ activeVolObj, 
       </div>
 
       {/* Horizontal scroll container */}
-      <div 
-        id="highlight-shorts-modal-container"
+      <div
+        ref={scrollRef}
         className="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth pt-1 pb-1 select-none"
       >
         {tiktokList.map((short) => (
-          <TikTokCard key={short.id} item={short} />
+          <TikTokCard key={short.id} item={short} coverImage={coverImage} />
         ))}
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef, Suspense, lazy } from 'react';
+import React, { useState, useMemo, useEffect, useRef, useCallback, Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import LoadingDetailBuku from './SkeletonLoading/LoadingDetailBuku';
 
@@ -129,7 +129,7 @@ interface SelectOptionItem {
 }
 
 function resolveVolumeFor(comic: Comic, parsedVol: number | string): number | string {
-  if (comic.volumes.some(v => v.volNumber === parsedVol)) return parsedVol;
+  if (comic.volumes.some(v => String(v.volNumber) === String(parsedVol))) return parsedVol;
   return comic.volumes[0]?.volNumber || 1;
 }
 
@@ -213,9 +213,9 @@ export default function MarketplaceDb({
         // 1. Try matching comic ID exactly with the full ref (handles series-X, book-X formats)
         let found: Comic | null | undefined = catalog.find(c => c.id === ref);
 
-        // 2. Try matching with -vol-X suffix stripped (but only if it's a known comic ID pattern)
+        // 2. Try matching with -vol-X suffix stripped (supports numeric and non-numeric volumes)
         if (!found) {
-          const volMatch = ref.match(/^(.*?)-vol-(\d+)$/);
+          const volMatch = ref.match(/^(.*?)-vol-(.+)$/);
           if (volMatch) {
             const comicPart = volMatch[1];
             found = catalog.find(c => c.id === comicPart);
@@ -234,24 +234,29 @@ export default function MarketplaceDb({
           );
         }
 
-        // 5. Try matching slug with -vol-X suffix stripped
+        // 5. Try matching slug with -vol-X suffix stripped (supports numeric and non-numeric volumes)
         if (!found) {
-          const volMatch = ref.match(/^(.*?)-vol-(\d+)$/);
+          const volMatch = ref.match(/^(.*?)-vol-(.+)$/);
           if (volMatch) {
             const slugPart = volMatch[1];
-            const volNum = parseInt(volMatch[2], 10);
+            const volPart = volMatch[2];
+            const volNum = /^\d+(\.\d+)?$/.test(volPart) ? Number(volPart) : volPart;
             // Try exact slug match on the stripped part
             found = catalog.find(c => c.slug === slugPart);
             // If found, verify the volume exists
-            if (found && !found.volumes.some(v => v.volNumber === volNum)) {
+            if (found && !found.volumes.some(v => String(v.volNumber) === String(volNum))) {
               found = null;
             }
             // Try altSlugs with -vol-X suffix stripped
             if (!found) {
               found = catalog.find(c =>
                 c.altSlugs && c.altSlugs.some(s => {
-                  const altMatch = s.match(/^(.*?)-vol-(\d+)$/);
-                  return altMatch && altMatch[1] === slugPart && parseInt(altMatch[2], 10) === volNum;
+                  const altMatch = s.match(/^(.*?)-vol-(.+)$/);
+                  if (!altMatch) return false;
+                  const altSlugPart = altMatch[1];
+                  const altVolPart = altMatch[2];
+                  const altVolNum = /^\d+(\.\d+)?$/.test(altVolPart) ? Number(altVolPart) : altVolPart;
+                  return altSlugPart === slugPart && altVolNum === volNum;
                 })
               );
             }
@@ -270,12 +275,13 @@ export default function MarketplaceDb({
         }
 
         // 7. If ref still looks like a slug with -vol-, try matching slug prefix
-        // This handles backend-generated slugs like "series-title-vol-1"
+        // This handles backend-generated slugs like "series-title-vol-1" or "series-title-vol-Original"
         if (!found) {
-          const volMatch = ref.match(/^(.*?)-vol-(\d+)$/);
+          const volMatch = ref.match(/^(.*?)-vol-(.+)$/);
           if (volMatch) {
             const slugPrefix = volMatch[1];
-            const volNum = parseInt(volMatch[2], 10);
+            const volPart = volMatch[2];
+            const volNum = /^\d+(\.\d+)?$/.test(volPart) ? Number(volPart) : volPart;
             // Find comics whose slug starts with the prefix
             const prefixMatches = catalog.filter(c =>
               c.slug && slugPrefix && c.slug.startsWith(slugPrefix)
@@ -284,7 +290,7 @@ export default function MarketplaceDb({
               found = prefixMatches[0];
             } else if (prefixMatches.length > 1) {
               // Pick the one that has the matching volume number
-              found = prefixMatches.find(c => c.volumes.some(v => v.volNumber === volNum)) || prefixMatches[0];
+              found = prefixMatches.find(c => c.volumes.some(v => String(v.volNumber) === String(volNum))) || prefixMatches[0];
             }
           }
         }
@@ -326,6 +332,7 @@ export default function MarketplaceDb({
   }, [activeDropdown]);
 
   // Fungsi submit pencarian saat tekan Enter atau klik tombol Search
+  const lastSearchLogRef = useRef<{ keyword: string; ts: number } | null>(null);
   const handlePerformSearch = (keywordToSearch?: string) => {
     const raw = (keywordToSearch !== undefined ? keywordToSearch : searchInput).trim();
     setActiveSearchTerm(raw);
@@ -333,8 +340,11 @@ export default function MarketplaceDb({
 
     const clean = raw.replace(/\s+/g, ' ').toLowerCase();
 
-    // Catat log jika memenuhi kriteria: minimal 3 huruf, bukan spam karakter berulang
     if (clean.length >= 3 && !/(.)\1{3,}/.test(clean) && /[\p{L}\p{N}]/u.test(clean)) {
+      const now = Date.now();
+      const last = lastSearchLogRef.current;
+      if (last && last.keyword === clean && now - last.ts < 5_000) return;
+      lastSearchLogRef.current = { keyword: clean, ts: now };
       const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
       fetch('/books/search-log', {
@@ -362,9 +372,9 @@ export default function MarketplaceDb({
     const found = findComicByRef(initialSelectedComicId);
     if (!found) return initialVolume && initialVolume !== '0' ? initialVolume : 1;
 
-    // Extract volume from ref if initialVolume prop not provided
-    const volMatch = initialSelectedComicId.match(/-vol-(\d+)$/);
-    const volFromRef = volMatch ? parseInt(volMatch[1], 10) : null;
+     // Extract volume from ref if initialVolume prop not provided
+    const volMatch = initialSelectedComicId.match(/-vol-(.+)$/);
+    const volFromRef = volMatch ? volMatch[1] : null;
 
     const parsedVol = initialVolume && initialVolume !== '0' && initialVolume !== 0
       ? initialVolume
@@ -458,9 +468,9 @@ const getReadingRatingStyle = (rating?: string) => {
     if (initialSelectedComicId) {
       const comic = findComicByRef(initialSelectedComicId);
       if (comic) {
-        // Extract volume from ref string safely
-        const volMatch = initialSelectedComicId.match(/-vol-(\d+)$/);
-        const volFromRef = volMatch ? parseInt(volMatch[1], 10) : null;
+        // Extract volume from ref string safely (supports numeric and non-numeric volumes)
+        const volMatch = initialSelectedComicId.match(/-vol-(.+)$/);
+        const volFromRef = volMatch ? volMatch[1] : null;
 
         const parsedVol = initialVolume && initialVolume !== '0' && initialVolume !== 0
           ? initialVolume
@@ -476,6 +486,10 @@ const getReadingRatingStyle = (rating?: string) => {
       hadInitialSelectionRef.current = false;
     }
   }, [initialSelectedComicId, initialVolume, findComicByRef]);
+
+  // Posisi scroll katalog terakhir sebelum detail buku dibuka; dipakai untuk
+  // mengembalikan viewport ke MarketplaceDB saat detail ditutup.
+  const catalogScrollRef = useRef(0);
 
   // Sinkronkan query ?vol= dengan volume yang sedang dibuka tanpa menumpuk
   // entri history, supaya refresh mengembalikan volume yang sama.
@@ -495,6 +509,8 @@ const getReadingRatingStyle = (rating?: string) => {
   };
 
   const openVolumeModal = (comic: Comic, volNumber: number | string) => {
+    // Simpan posisi katalog sebelum konten detail mengambil alih dokumen
+    catalogScrollRef.current = window.scrollY;
     setSelectedComic(comic);
     setActiveVolumeNum(volNumber);
     // Update browser URL using slug + volume for SEO without full-page reload
@@ -502,18 +518,54 @@ const getReadingRatingStyle = (rating?: string) => {
     window.history.pushState({ comicId: comic.id, volNumber }, '', `/buku/${targetSlug}?vol=${volNumber}`);
   };
 
+  // Reposisi scroll ke area katalog setelah detail ditutup, supaya posisi dari
+  // halaman detail tidak ter-clamp ke dasar dokumen saat konten tinggi dilepas.
+  // Dipanggil dua kali: segera setelah commit (sebelum paint, mencegah lompatan)
+  // dan lagi lewat onExitComplete saat detail benar-benar sudah di-unmount.
+  const restoreCatalogScroll = useCallback(() => {
+    const returnY = catalogScrollRef.current;
+    const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+    if (returnY > 0 && returnY <= maxScroll) {
+      window.scrollTo({ top: returnY, behavior: 'auto' });
+      return;
+    }
+
+    // Deep-link atau katalog menciut (mis. filter berubah): ke awal area MarketplaceDB,
+    // dikurangi tinggi navbar sticky agar judul section tidak tertutup.
+    const section = document.getElementById('marketplace-search-section');
+    if (section) {
+      const top = section.getBoundingClientRect().top + window.pageYOffset - 80;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
+    }
+  }, []);
+
   const handleCloseModal = () => {
     setSelectedComic(null);
     if (onClearSelectedComicId) {
       onClearSelectedComicId();
     }
-    // Revert browser URL back to home cleanly (drop the ?vol= query too)
     if (window.location.pathname.startsWith('/buku/')) {
-      window.history.pushState({}, '', '/');
+      window.history.replaceState({}, '', '/');
     } else if (window.location.hash.startsWith('#/database/')) {
       window.location.hash = '#database';
     }
+    requestAnimationFrame(restoreCatalogScroll);
   };
+
+  // Back button dari browser saat detail buku terbuka harus menutup modal, bukan orphan URL
+  useEffect(() => {
+    if (!selectedComic) return;
+    const onPopState = () => {
+      if (!window.location.pathname.startsWith('/buku/')) {
+        setSelectedComic(null);
+        if (onClearSelectedComicId) onClearSelectedComicId();
+        requestAnimationFrame(restoreCatalogScroll);
+      }
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, [selectedComic, onClearSelectedComicId, restoreCatalogScroll]);
 
   // All genres present in database / prop
   const genreOptions: SelectOptionItem[] = useMemo(() => {
@@ -908,7 +960,7 @@ const getReadingRatingStyle = (rating?: string) => {
 
               {/* Grid of 6 Upcoming Items */}
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 relative z-10">
-                {upcomingReleases.map(({ comic, volume, dateStr }) => (
+                {upcomingReleases.map(({ comic, volume, dateStr }, idx) => (
                   <div
                     key={`upcoming-${comic.id}-${volume.volNumber}`}
                     onClick={() => openVolumeModal(comic, volume.volNumber)}
@@ -921,8 +973,9 @@ const getReadingRatingStyle = (rating?: string) => {
                           <img
                             src={volume.coverImage || comic.coverImage}
                             alt={`${comic.title} Vol.${volume.volNumber}`}
-                            loading="lazy"
+                            loading={idx < 2 ? 'eager' : 'lazy'}
                             decoding="async"
+                            fetchPriority={idx < 2 ? 'high' : 'auto'}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             referrerPolicy="no-referrer"
                           />
@@ -1472,8 +1525,9 @@ const getReadingRatingStyle = (rating?: string) => {
                         <img
                           src={volume.coverImage || comic.coverImage}
                           alt={`${volume.title || comic.title} Vol ${volume.volNumber}`}
-                          loading="lazy"
+                          loading={paginatedVolumePosts.indexOf(post) < 6 ? 'eager' : 'lazy'}
                           decoding="async"
+                          fetchPriority={paginatedVolumePosts.indexOf(post) < 4 ? 'high' : 'auto'}
                           onError={() => setImageErrors(prev => ({ ...prev, [post.id]: true }))}
                           className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 scale-100 group-hover:scale-105"
                           referrerPolicy="no-referrer"
@@ -1687,7 +1741,7 @@ const getReadingRatingStyle = (rating?: string) => {
       )}
 
       {/* Advanced Fullscreen Detailed View */}
-      <AnimatePresence>
+      <AnimatePresence onExitComplete={restoreCatalogScroll}>
         {selectedComic && (
           <Suspense fallback={<LoadingDetailBuku />}>
             <DetailBuku

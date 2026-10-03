@@ -15,6 +15,7 @@ import { RawNewsItem } from './news';
 import { RawKiosItem } from './components/EtalaseCatalog';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import BackToTopButton from './components/BackToTopButton';
 
 
 const getReadingRatingBadgeStyle = (rating?: string) => {
@@ -103,24 +104,25 @@ const renderNewsGallery = (news: NewsUpdate) => {
 
   if (!images || images.length === 0) return null;
 
-  if (images.length === 1) {
-    return (
-      <div className="relative w-full rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-950 border border-neutral-200/80 dark:border-neutral-800 shadow-2xs group/img aspect-[16/10]">
-        <img
-          src={images[0]}
-          alt={news.title || 'Foto Berita'}
-          loading="lazy"
-          decoding="async"
-          referrerPolicy="no-referrer"
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=80';
-          }}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-      </div>
-    );
-  }
+   if (images.length === 1) {
+     return (
+       <div className="relative w-full rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-950 border border-neutral-200/80 dark:border-neutral-800 shadow-2xs group/img aspect-[16/10] flex items-center justify-center">
+         <img
+           src={images[0]}
+           alt={news.title || 'Foto Berita'}
+           loading="lazy"
+           decoding="async"
+           referrerPolicy="no-referrer"
+           onError={(e) => {
+             e.currentTarget.onerror = null;
+             e.currentTarget.style.display = 'none';
+           }}
+           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+         />
+         <span className="text-neutral-400 dark:text-neutral-500 text-xs font-mono">Gambar tidak tersedia</span>
+       </div>
+     );
+   }
 
   if (images.length === 2) {
     return (
@@ -256,19 +258,21 @@ export function SavedBookmarks({
       genres?: string;
       coverImage?: string;
       synopsis: string;
-      volNumber?: number;
+      volNumber?: number | string;
       price?: number;
       releaseDate?: string;
     }> = [];
 
     bookmarks.comics.forEach((savedId) => {
-      const volMatch = savedId.match(/^(.+)-vol-(\d+)$/);
+      const volMatch = savedId.match(/^(.+)-vol-(.+)$/);
       if (volMatch) {
         const cId = volMatch[1];
-        const volNum = parseInt(volMatch[2], 10);
+        const volPart = volMatch[2];
+        const isNumericVol = /^\d+(\.\d+)?$/.test(volPart);
+        const volNum = isNumericVol ? Number(volPart) : volPart;
         const comic = catalogComics.find(c => c.id === cId);
         if (comic) {
-          const vol = comic.volumes.find(v => Number(v.volNumber) === volNum);
+          const vol = comic.volumes.find(v => String(v.volNumber) === String(volNum));
           list.push({
             id: savedId,
             comicId: comic.id,
@@ -322,7 +326,7 @@ export function SavedBookmarks({
       id: string;
       comicId?: string;
       comicTitle: string;
-      volumeNumber?: number;
+      volumeNumber?: number | string;
       salePrice: number;
       originalPrice?: number;
       coverImage: string;
@@ -394,13 +398,15 @@ export function SavedBookmarks({
       }
 
       // 3. Check if volume ID format `${comicId}-vol-${volNum}`
-      const volMatch = savedId.match(/^(.+)-vol-(\d+)$/);
+      const volMatch = savedId.match(/^(.+)-vol-(.+)$/);
       if (volMatch) {
         const cId = volMatch[1];
-        const volNum = parseInt(volMatch[2], 10);
+        const volPart = volMatch[2];
+        const isNumericVol = /^\d+(\.\d+)?$/.test(volPart);
+        const volNum = isNumericVol ? Number(volPart) : volPart;
         const comic = catalogComics.find(c => c.id === cId);
         if (comic) {
-          const vol = comic.volumes.find(v => Number(v.volNumber) === volNum);
+          const vol = comic.volumes.find(v => String(v.volNumber) === String(volNum));
           list.push({
             id: savedId,
             comicId: comic.id,
@@ -1202,8 +1208,6 @@ export default function BookmarkPage({
     }));
   }, [newsList]);
 
-  const { counts } = useBookmarks();
-
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const saved = sessionStorage.getItem('norinoya-dark-mode');
@@ -1242,11 +1246,11 @@ export default function BookmarkPage({
   };
 
   const handleNavAbout = () => {
-    router.visit('/#about');
+    router.visit('/?scroll=about');
   };
 
   const handleNavigateToComic = (comicId: string) => {
-    router.visit(`/#/database/${comicId}`);
+    router.visit(`/buku/${comicId}`);
   };
 
   const handleNavigateToNews = (newsId: string) => {
@@ -1290,34 +1294,11 @@ export default function BookmarkPage({
         />
       </main>
 
-      <Footer onNavigateHome={handleNavHome} onNavigateAbout={handleNavAbout} />
+      <Footer onNavigateHome={handleNavHome} onNavigateAbout={handleNavAbout} darkMode={darkMode}/>
 
-      {/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-sm bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-700/80 shadow-[0_10px_30px_rgba(0,0,0,0.08)] rounded-2xl z-[60] flex items-center justify-around py-2.5 px-3 mb-safe">
-        <button onClick={handleNavHome} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
-          <BookOpen className="w-4.5 h-4.5 mb-0.5" />
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">Home</span>
-        </button>
-        <button onClick={handleNavKios} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
-          <ShoppingBag className="w-4.5 h-4.5 mb-0.5" />
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">Kios</span>
-        </button>
-        <button onClick={handleNavNews} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
-          <Newspaper className="w-4.5 h-4.5 mb-0.5" />
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">News</span>
-        </button>
-        <button onClick={handleNavBookmark} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-950 dark:text-white font-extrabold bg-neutral-100/90 dark:bg-neutral-700">
-          <span className="relative flex items-center justify-center mb-0.5">
-            <Bookmark className="w-4.5 h-4.5" />
-            {counts.total > 0 && (
-              <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-1 flex items-center justify-center rounded-full bg-[#DA6B1C] text-white text-[9px] font-bold leading-none tabular-nums ring-2 ring-neutral-100/90 dark:ring-neutral-700">
-                {counts.total > 99 ? '99+' : counts.total}
-              </span>
-            )}
-          </span>
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">Bookmark</span>
-        </button>
-      </div>
+      {/* Floating Back to Top Button */}
+      <BackToTopButton />
+
     </div>
   );
 }

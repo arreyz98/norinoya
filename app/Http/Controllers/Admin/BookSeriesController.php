@@ -17,22 +17,43 @@ class BookSeriesController extends Controller
     /**
      * Display a listing of book series.
      */
-    public function index(\Illuminate\Http\Request $request): Response
+    public function index(Request $request): Response
     {
         $query = BookSeries::query()
             ->withCount('books');
 
         if ($request->filled('search')) {
-            $query->where('title', 'like', "%{$request->input('search')}%");
+            $search = $request->input('search');
+
+            $query->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%");
+            });
         }
 
-        $series = $query->latest()
-            ->paginate(15)
+        match ($request->input('sort', 'latest')) {
+            'oldest' => $query->oldest(),
+            'title_asc' => $query->orderBy('title'),
+            'title_desc' => $query->orderByDesc('title'),
+            'books_desc' => $query->orderByDesc('books_count')->latest(),
+            default => $query->latest(),
+        };
+
+        $perPage = (int) $request->input('per_page', 15);
+        $perPage = in_array($perPage, [15, 25, 50, 100], true)
+            ? $perPage
+            : 15;
+
+        $series = $query->paginate($perPage)
             ->withQueryString();
 
         return Inertia::render('Admin/BookSeries/Index', [
             'series' => $series,
-            'filters' => (object) $request->only(['search']),
+            'filters' => (object) $request->only([
+                'search',
+                'sort',
+                'per_page',
+            ]),
         ]);
     }
 

@@ -1,127 +1,149 @@
 <?php
 
-use App\Http\Controllers\Admin\BookSeriesController;
+use App\Http\Controllers\Admin\AffiliateStoreController;
+use App\Http\Controllers\Admin\AuthorController;
 use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\BookSeriesController;
 use App\Http\Controllers\Admin\BookVolumeOrderController;
 use App\Http\Controllers\Admin\EditionController;
 use App\Http\Controllers\Admin\GenreController;
-use App\Http\Controllers\Admin\AuthorController;
-use App\Http\Controllers\Admin\PublisherController;
-use App\Http\Controllers\Admin\StoryStatusController;
-use App\Http\Controllers\Admin\AffiliateStoreController;
-use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\KiosItemController;
 use App\Http\Controllers\Admin\KiosPartnerController;
+use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\PublisherController;
+use App\Http\Controllers\Admin\StoryStatusController;
+use App\Http\Controllers\SitemapController;
+use App\Models\Book;
+use App\Models\BookSeries;
+use App\Models\BookViewLog;
+use App\Models\Genre;
+use App\Models\KiosItem;
+use App\Models\KiosPartner;
+use App\Models\KiosViewLog;
+use App\Models\News;
+use App\Models\NewsViewLog;
+use App\Models\Publisher;
+use App\Models\SearchLogBuku;
+use App\Models\SearchLogKios;
+use App\Models\SearchLogNews;
+use App\Models\StoryStatus;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
+if (! function_exists('homeBookQuery')) {
+    function homeBookQuery()
+    {
+        return Book::query()->with([
+            'series:id,title',
+            'edition:id,name',
+            'storyStatus:id,name',
+            'publisher:id,name',
+            'images:id,book_id,image_url,sort_order',
+            'authors:id,name',
+            'genres:id,name',
+            'affiliateLinks.affiliateStore:id,name,slug,logo_url',
+            'tiktokEmbeds:id,book_id,name,url_video,sort_order',
+        ]);
+    }
+}
 
+// SEO: sitemap.xml dinamis (cache 1 jam)
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+
+// Payload dirampingkan: limit + cache filter, defer news, count di-cache.
 Route::get('/', function () {
-    $books = \App\Models\Book::with([
-        'series',
-        'edition',
-        'storyStatus',
-        'publisher',
-        'images',
-        'authors',
-        'genres',
-        'affiliateLinks.affiliateStore',
-        'tiktokEmbeds',
-    ])->get();
+    $books = Cache::remember('home:books:v2', 300, fn () => homeBookQuery()
+        ->latest('updated_at')
+        ->limit(300)
+        ->get());
 
-    $publishers = \App\Models\Publisher::orderBy('name')->get(['id', 'name', 'slug']);
-    $storyStatuses = \App\Models\StoryStatus::orderBy('name')->get(['id', 'name', 'slug']);
-    $genres = \App\Models\Genre::orderBy('name')->get(['id', 'name', 'slug']);
-    $newsList = \App\Models\News::latest()->get();
+    $publishers = Cache::remember('home:publishers', 600, fn () => Publisher::orderBy('name')->get(['id', 'name', 'slug']));
+    $storyStatuses = Cache::remember('home:story_statuses', 600, fn () => StoryStatus::orderBy('name')->get(['id', 'name', 'slug']));
+    $genres = Cache::remember('home:genres', 600, fn () => Genre::orderBy('name')->get(['id', 'name', 'slug']));
 
-    $totalBooksCount = \App\Models\Book::count();
-    $totalSeriesCount = \App\Models\BookSeries::count();
-    $totalPublishersCount = \App\Models\Publisher::count();
+    $totalBooksCount = Cache::remember('home:total_books', 300, fn () => Book::count());
+    $totalSeriesCount = Cache::remember('home:total_series', 300, fn () => BookSeries::count());
+    $totalPublishersCount = Cache::remember('home:total_publishers', 300, fn () => Publisher::count());
 
     return Inertia::render('User/home', [
         'books' => $books,
         'publishers' => $publishers,
         'storyStatuses' => $storyStatuses,
         'genres' => $genres,
-        'newsList' => $newsList,
+        'newsList' => Inertia::defer(fn () => News::latest()->limit(50)->get()),
         'totalBooksCount' => $totalBooksCount,
         'totalSeriesCount' => $totalSeriesCount,
         'totalPublishersCount' => $totalPublishersCount,
+        'meta' => [
+            'title' => 'Norinoya - Database Manga, Komik, & Light Novel Indonesia',
+            'description' => 'Norinoya - Database Manga, Komik, & Light Novel Indonesia. Temukan rilisan buku, berita terbaru, dan belanja komik preloved di Kios Norinoya.',
+            'image' => url('/favicon.png'),
+            'url' => url('/'),
+            'type' => 'website',
+        ],
     ]);
 })->name('home');
 
 Route::get('/news', function () {
-    $newsList = \App\Models\News::latest()->get();
-    $kiosItems = \App\Models\KiosItem::with(['kiosPartner', 'linkedBook'])->latest()->get();
-    $books = \App\Models\Book::with([
-        'series',
-        'edition',
-        'storyStatus',
-        'publisher',
-        'images',
-        'authors',
-        'genres',
-        'affiliateLinks.affiliateStore',
-        'tiktokEmbeds',
-    ])->get();
-
-    $totalNewsCount = \App\Models\News::count();
+    $newsList = Cache::remember('news:list:v2', 300, fn () => News::latest()->limit(80)->get());
+    $kiosItems = Cache::remember('news:kios_items', 300, fn () => KiosItem::with(['kiosPartner:id,name,slug', 'linkedBook:id,title'])->available()->latest()->limit(40)->get());
+    $books = Cache::remember('news:books:v2', 300, fn () => homeBookQuery()->latest('updated_at')->limit(100)->get());
+    $totalNewsCount = Cache::remember('news:total', 300, fn () => News::count());
 
     return Inertia::render('User/news', [
         'newsList' => $newsList,
         'books' => $books,
-        'kiosItems' => $kiosItems,
+        'kiosItems' => Inertia::defer(fn () => $kiosItems),
         'totalNewsCount' => $totalNewsCount,
+        'meta' => [
+            'title' => 'Berita &amp; Update - Norinoya',
+            'description' => 'Baca update berita dan artikel terbaru seputar manga, anime, dan pop culture di Norinoya.',
+            'image' => url('/favicon.png'),
+            'url' => url('/news'),
+            'type' => 'website',
+        ],
     ]);
 })->name('news');
 
 Route::get('/kios', function () {
-    $kiosItems = \App\Models\KiosItem::with(['kiosPartner', 'linkedBook'])->latest()->get();
-    $books = \App\Models\Book::with([
-        'series',
-        'edition',
-        'storyStatus',
-        'publisher',
-        'images',
-        'genres',
-    ])->get();
-
-    $totalKiosItemsCount = \App\Models\KiosItem::count();
-    $totalPartnersCount = \App\Models\KiosPartner::count();
+    $kiosItems = Cache::remember('kios:list:v2', 300, fn () => KiosItem::with(['kiosPartner:id,name,slug', 'linkedBook:id,title'])->available()->latest()->limit(80)->get());
+    $books = Cache::remember('kios:books:v2', 300, fn () => Book::with([
+        'series:id,title', 'edition:id,name', 'storyStatus:id,name', 'publisher:id,name', 'images:id,book_id,image_url,sort_order', 'genres:id,name',
+    ])->latest('updated_at')->limit(100)->get());
+    $totalKiosItemsCount = Cache::remember('kios:total_items', 300, fn () => KiosItem::count());
+    $totalPartnersCount = Cache::remember('kios:total_partners', 300, fn () => KiosPartner::count());
 
     return Inertia::render('User/kios', [
         'kiosItems' => $kiosItems,
-        'books' => $books,
+        'books' => Inertia::defer(fn () => $books),
         'totalKiosItemsCount' => $totalKiosItemsCount,
         'totalPartnersCount' => $totalPartnersCount,
+        'meta' => [
+            'title' => 'Kios Norinoya - Marketplace Komik & Merchandise',
+            'description' => 'Beli merchandise, komik, dan produk eksklusif di Kios Norinoya. Temukan penawaran terbaik dari Gramedia, Shopee, Tokopedia, dan lokakarya seni.',
+            'image' => url('/favicon.png'),
+            'url' => url('/kios'),
+            'type' => 'website',
+        ],
     ]);
 })->name('kios');
 
 Route::get('/bookmark', function () {
-    $books = \App\Models\Book::with([
-        'series',
-        'edition',
-        'storyStatus',
-        'publisher',
-        'images',
-        'authors',
-        'genres',
-        'affiliateLinks.affiliateStore',
-        'tiktokEmbeds',
-    ])->get();
-    $newsList = \App\Models\News::latest()->get();
-    $kiosItems = \App\Models\KiosItem::with(['kiosPartner', 'linkedBook'])->latest()->get();
+    $books = Cache::remember('bookmark:books:v2', 300, fn () => homeBookQuery()->latest('updated_at')->limit(120)->get());
 
     return Inertia::render('User/bookmark', [
         'books' => $books,
-        'newsList' => $newsList,
-        'kiosItems' => $kiosItems,
+        'newsList' => Inertia::defer(fn () => News::latest()->limit(40)->get()),
+        'kiosItems' => Inertia::defer(fn () => KiosItem::with(['kiosPartner:id,name,slug', 'linkedBook:id,title'])->latest()->limit(40)->get()),
+        'meta' => ['robots' => 'noindex,nofollow'],
     ]);
 })->name('bookmark');
 
 Route::get('/buku/{slug}', function ($slug) {
-    $book = \App\Models\Book::where('slug', $slug)
+    $book = Book::where('slug', $slug)
         ->orWhere('id', $slug)
         ->with([
             'series',
@@ -135,11 +157,6 @@ Route::get('/buku/{slug}', function ($slug) {
             'tiktokEmbeds',
         ])->first();
 
-    // Catatan: slug yang tidak ada di database TIDAK diarahkan ke home.
-    // Katalog bisa berisi item mock (COMICS_DATA) yang tidak punya baris di
-    // tabel books, sehingga redirect akan membuang deep-link yang valid.
-    // Klien menerima initialSlug dan mencoba resolve dari DB maupun mock.
-
     $requestedVolume = request()->query('vol', null);
     $initialVolume = $requestedVolume
         ? $requestedVolume
@@ -150,15 +167,19 @@ Route::get('/buku/{slug}', function ($slug) {
         $ua = request()->userAgent();
         $oneMinuteAgo = now()->subMinute();
 
-        $alreadyLogged = \App\Models\BookViewLog::where('book_id', $book->id)
+        $alreadyLogged = BookViewLog::where('book_id', $book->id)
             ->where('ip_address', $ip)
             ->where('created_at', '>=', $oneMinuteAgo)
             ->exists();
 
-        if (!$alreadyLogged) {
+        if (! $alreadyLogged) {
             $book->increment('views_count');
+            Cache::forget('home:books:v2');
+            Cache::forget('bookmark:books:v2');
+            Cache::forget('news:books:v2');
+            Cache::forget('kios:books:v2');
 
-            \App\Models\BookViewLog::create([
+            BookViewLog::create([
                 'book_id' => $book->id,
                 'ip_address' => $ip,
                 'user_agent' => $ua,
@@ -166,33 +187,21 @@ Route::get('/buku/{slug}', function ($slug) {
         }
     }
 
-    $books = \App\Models\Book::with([
-        'series',
-        'edition',
-        'storyStatus',
-        'publisher',
-        'images',
-        'authors',
-        'genres',
-        'affiliateLinks.affiliateStore',
-        'tiktokEmbeds',
-    ])->get();
+    $books = Cache::remember('home:books:v2', 300, fn () => homeBookQuery()->latest('updated_at')->limit(300)->get());
+    $publishers = Cache::remember('home:publishers', 600, fn () => Publisher::orderBy('name')->get(['id', 'name', 'slug']));
+    $storyStatuses = Cache::remember('home:story_statuses', 600, fn () => StoryStatus::orderBy('name')->get(['id', 'name', 'slug']));
+    $genres = Cache::remember('home:genres', 600, fn () => Genre::orderBy('name')->get(['id', 'name', 'slug']));
 
-    $publishers = \App\Models\Publisher::orderBy('name')->get(['id', 'name', 'slug']);
-    $storyStatuses = \App\Models\StoryStatus::orderBy('name')->get(['id', 'name', 'slug']);
-    $genres = \App\Models\Genre::orderBy('name')->get(['id', 'name', 'slug']);
-    $newsList = \App\Models\News::latest()->get();
-
-    $totalBooksCount = \App\Models\Book::count();
-    $totalSeriesCount = \App\Models\BookSeries::count();
-    $totalPublishersCount = \App\Models\Publisher::count();
+    $totalBooksCount = Cache::remember('home:total_books', 300, fn () => Book::count());
+    $totalSeriesCount = Cache::remember('home:total_series', 300, fn () => BookSeries::count());
+    $totalPublishersCount = Cache::remember('home:total_publishers', 300, fn () => Publisher::count());
 
     return Inertia::render('User/home', [
         'books' => $books,
         'publishers' => $publishers,
         'storyStatuses' => $storyStatuses,
         'genres' => $genres,
-        'newsList' => $newsList,
+        'newsList' => Inertia::defer(fn () => News::latest()->limit(50)->get()),
         'totalBooksCount' => $totalBooksCount,
         'totalSeriesCount' => $totalSeriesCount,
         'totalPublishersCount' => $totalPublishersCount,
@@ -200,7 +209,7 @@ Route::get('/buku/{slug}', function ($slug) {
         'initialSlug' => $slug,
         'initialVolume' => $initialVolume,
         'meta' => [
-            'title' => $book ? $book->title . ' - Norinoya' : 'Katalog Buku - Norinoya',
+            'title' => $book ? $book->title.' - Norinoya' : 'Katalog Buku - Norinoya',
             'description' => $book
                 ? Str::limit(strip_tags($book->synopsis ?? $book->short_description ?? 'Lihat informasi lengkap dan detail buku komik di Norinoya.'), 160)
                 : 'Katalog manga, komik, novel, dan light novel lengkap di Norinoya.',
@@ -211,39 +220,40 @@ Route::get('/buku/{slug}', function ($slug) {
     ]);
 })->name('book.detail');
 
-Route::post('/books/{id}/view', function (\Illuminate\Http\Request $request, $id) {
+Route::post('/books/{id}/view', function (Request $request, $id) {
     $cleanId = preg_replace('/^(book|series)-/', '', $id);
     $volume = $request->input('volume');
     $slug = $request->input('slug');
 
     $book = null;
 
-    // 1. Try finding by direct numeric ID
     if (is_numeric($cleanId)) {
         if ($volume) {
-            $book = \App\Models\Book::where('id', $cleanId)->first()
-                ?? \App\Models\Book::where('series_id', $cleanId)->where('volume', $volume)->first();
+            $book = Book::where('id', $cleanId)->first()
+                ?? Book::where('series_id', $cleanId)->where('volume', $volume)->first();
         } else {
-            $book = \App\Models\Book::where('id', $cleanId)->first()
-                ?? \App\Models\Book::where('series_id', $cleanId)->first();
+            $book = Book::where('id', $cleanId)->first()
+                ?? Book::where('series_id', $cleanId)->first();
         }
     }
 
-    // 2. Try finding by slug or provided slug
-    if (!$book) {
+    if (! $book) {
         $targetSlug = $slug ?: $id;
-        $book = \App\Models\Book::where('slug', $targetSlug)->first();
+        $book = Book::where('slug', $targetSlug)->first();
     }
 
-    // 3. Fallback search by title/series
-    if (!$book && $volume) {
-        $book = \App\Models\Book::where('volume', $volume)
-            ->where(function ($q) use ($id, $cleanId) {
-                $q->where('slug', 'like', "%{$cleanId}%")
-                  ->orWhere('title', 'like', "%{$cleanId}%")
-                  ->orWhereHas('series', function ($sq) use ($cleanId) {
-                      $sq->where('id', $cleanId)->orWhere('title', 'like', "%{$cleanId}%");
-                  });
+    if (! $book && $volume) {
+        $escaped = addcslashes($cleanId, '%_\\');
+        $book = Book::where('volume', $volume)
+            ->where(function ($q) use ($escaped, $cleanId) {
+                $q->where('slug', 'like', "%{$escaped}%")
+                    ->orWhere('title', 'like', "%{$escaped}%")
+                    ->orWhereHas('series', function ($sq) use ($escaped, $cleanId) {
+                        $sq->where('title', 'like', "%{$escaped}%");
+                        if (is_numeric($cleanId)) {
+                            $sq->orWhere('id', $cleanId);
+                        }
+                    });
             })->first();
     }
 
@@ -252,15 +262,19 @@ Route::post('/books/{id}/view', function (\Illuminate\Http\Request $request, $id
         $ua = $request->userAgent();
         $oneMinuteAgo = now()->subMinute();
 
-        $alreadyLogged = \App\Models\BookViewLog::where('book_id', $book->id)
+        $alreadyLogged = BookViewLog::where('book_id', $book->id)
             ->where('ip_address', $ip)
             ->where('created_at', '>=', $oneMinuteAgo)
             ->exists();
 
-        if (!$alreadyLogged) {
+        if (! $alreadyLogged) {
             $book->increment('views_count');
+            Cache::forget('home:books:v2');
+            Cache::forget('bookmark:books:v2');
+            Cache::forget('news:books:v2');
+            Cache::forget('kios:books:v2');
 
-            \App\Models\BookViewLog::create([
+            BookViewLog::create([
                 'book_id' => $book->id,
                 'ip_address' => $ip,
                 'user_agent' => $ua,
@@ -271,33 +285,28 @@ Route::post('/books/{id}/view', function (\Illuminate\Http\Request $request, $id
             'success' => true,
             'book_id' => $book->id,
             'views_count' => (int) $book->views_count,
-            'is_new_view' => !$alreadyLogged,
+            'is_new_view' => ! $alreadyLogged,
         ]);
     }
 
     return response()->json(['success' => false, 'message' => 'Book not found'], 404);
-})->name('books.increment-view');
+})->middleware('throttle:60,1')->name('books.increment-view');
 
-// Endpoint kios relevan berdasarkan JUDUL buku (dipanggil sesuai kebutuhan dari klien
-// saat detail buku dibuka). Pencocokan hanya memakai judul, dan hasilnya dibatasi LIMIT,
-// jadi biayanya tidak tumbuh mengikuti total produk kios di seluruh katalog.
-Route::get('/kios/relevant-by-title', function (\Illuminate\Http\Request $request) {
+// Endpoint kios relevan berdasarkan JUDUL buku
+Route::get('/kios/relevant-by-title', function (Request $request) {
     $title = trim(preg_replace('/\s+/u', ' ', (string) $request->input('title', '')));
 
     if (mb_strlen($title, 'UTF-8') < 2) {
         return response()->json(['success' => false, 'items' => []]);
     }
 
-    // Escape wildcard LIKE agar judul yang mengandung %, _ atau \ tidak salah cocok.
-    $needle = '%' . addcslashes(mb_strtolower($title, 'UTF-8'), '%_\\') . '%';
+    $needle = '%'.addcslashes(mb_strtolower($title, 'UTF-8'), '%_\\').'%';
 
-    // Kata judul (>2 huruf) dipakai untuk pencocokan longgar: cukup satu kata cocok.
     $words = array_values(array_filter(
-        preg_split('/[\s:–-]+/u', mb_strtolower($title, 'UTF-8')) ?: [],
+        preg_split('/[\s:â€“-]+/u', mb_strtolower($title, 'UTF-8')) ?: [],
         fn ($w) => mb_strlen($w, 'UTF-8') > 2
     ));
 
-    // Judul efektif postingan kios: pakai comic_title bila ada, kalau tidak pakai title.
     $effectiveTitle = "IFNULL(NULLIF(comic_title, ''), title)";
 
     $columns = [
@@ -316,27 +325,24 @@ Route::get('/kios/relevant-by-title', function (\Illuminate\Http\Request $reques
         'publisher_name',
     ];
 
-    $items = \App\Models\KiosItem::query()
+    $items = KiosItem::query()
         ->where(function ($q) use ($needle, $words, $effectiveTitle) {
-            // 1. Judul buku muncul utuh
             $q->whereRaw('LOWER(comic_title) LIKE ?', [$needle])
-              ->orWhereRaw('LOWER(title) LIKE ?', [$needle]);
-
-            // 2. Judul dipecah per kata: sebagian kata cocok sudah dianggap relevan
+                ->orWhereRaw('LOWER(title) LIKE ?', [$needle]);
             foreach ($words as $word) {
                 $q->orWhereRaw("LOWER({$effectiveTitle}) LIKE ?", [
-                    '%' . addcslashes($word, '%_\\') . '%',
+                    '%'.addcslashes($word, '%_\\').'%',
                 ]);
             }
         })
+        ->where('is_sold_out', false)
         ->latest()
         ->limit(12)
         ->get($columns);
 
-    // Tidak ada judul yang cocok: tetap kirim postingan kios terbaru supaya widget di
-    // halaman detail buku tidak kosong selama kios memang punya postingan.
     if ($items->isEmpty()) {
-        $items = \App\Models\KiosItem::query()
+        $items = KiosItem::query()
+            ->where('is_sold_out', false)
             ->latest()
             ->limit(4)
             ->get($columns);
@@ -357,35 +363,27 @@ Route::get('/kios/relevant-by-title', function (\Illuminate\Http\Request $reques
     ]);
 })->name('kios.relevant-by-title');
 
-Route::post('/books/search-log', function (\Illuminate\Http\Request $request) {
+Route::post('/books/search-log', function (Request $request) {
     $rawKeyword = (string) $request->input('keyword', '');
 
-    // 1. Membersihkan spasi berlebih (trim) dan multiple whitespaces
     $keyword = trim(preg_replace('/\s+/u', ' ', $rawKeyword));
-
-    // 2. Menyeragamkan huruf kecil (strtolower UTF-8)
     $keyword = mb_strtolower($keyword, 'UTF-8');
 
-    // 3. Jangan catat jika keyword kurang dari 3 huruf
     if (mb_strlen($keyword, 'UTF-8') < 3) {
         return response()->json(['success' => false, 'message' => 'Keyword terlalu pendek (min 3 huruf).'], 422);
     }
 
-    // 4. Batasi panjang maksimal kata kunci agar tidak abused
     if (mb_strlen($keyword, 'UTF-8') > 100) {
         $keyword = mb_substr($keyword, 0, 100, 'UTF-8');
     }
 
-    // 5. Pencegahan Spam / Karakter Berulang (misal: "aaaaaa", ".......", "111111", "???????")
-    // Tolak jika ada 4 karakter identik berurutan atau hanya terdiri dari simbol/tanda baca tanpa huruf/angka
-    if (preg_match('/(.)\1{3,}/u', $keyword) || !preg_match('/[\p{L}\p{N}]/u', $keyword)) {
+    if (preg_match('/(.)\1{3,}/u', $keyword) || ! preg_match('/[\p{L}\p{N}]/u', $keyword)) {
         return response()->json(['success' => false, 'message' => 'Keyword terdeteksi spam atau karakter berulang.'], 422);
     }
 
     $today = now()->setTimezone('Asia/Jakarta')->toDateString();
 
-    // 6. Pastikan di tanggal yang sama tidak ada keyword yang sama (jika ada maka search_count bertambah)
-    $log = \App\Models\SearchLogBuku::firstOrCreate(
+    $log = SearchLogBuku::firstOrCreate(
         [
             'keyword' => $keyword,
             'search_date' => $today,
@@ -404,36 +402,29 @@ Route::post('/books/search-log', function (\Illuminate\Http\Request $request) {
         'search_count' => (int) $log->search_count,
         'search_date' => $today,
     ]);
-})->name('books.search-log');
+})->middleware('throttle:20,1')->name('books.search-log');
 
-Route::post('/news/search-log', function (\Illuminate\Http\Request $request) {
+Route::post('/news/search-log', function (Request $request) {
     $rawKeyword = (string) $request->input('keyword', '');
 
-    // 1. Membersihkan spasi berlebih (trim) dan multiple whitespaces
     $keyword = trim(preg_replace('/\s+/u', ' ', $rawKeyword));
-
-    // 2. Menyeragamkan huruf kecil (strtolower UTF-8)
     $keyword = mb_strtolower($keyword, 'UTF-8');
 
-    // 3. Jangan catat jika keyword kurang dari 3 huruf
     if (mb_strlen($keyword, 'UTF-8') < 3) {
         return response()->json(['success' => false, 'message' => 'Keyword terlalu pendek (min 3 huruf).'], 422);
     }
 
-    // 4. Batasi panjang maksimal kata kunci agar tidak abused
     if (mb_strlen($keyword, 'UTF-8') > 100) {
         $keyword = mb_substr($keyword, 0, 100, 'UTF-8');
     }
 
-    // 5. Pencegahan Spam / Karakter Berulang
-    if (preg_match('/(.)\1{3,}/u', $keyword) || !preg_match('/[\p{L}\p{N}]/u', $keyword)) {
+    if (preg_match('/(.)\1{3,}/u', $keyword) || ! preg_match('/[\p{L}\p{N}]/u', $keyword)) {
         return response()->json(['success' => false, 'message' => 'Keyword terdeteksi spam atau karakter berulang.'], 422);
     }
 
     $today = now()->setTimezone('Asia/Jakarta')->toDateString();
 
-    // 6. Pastikan di tanggal yang sama tidak ada keyword yang sama
-    $log = \App\Models\SearchLogNews::firstOrCreate(
+    $log = SearchLogNews::firstOrCreate(
         [
             'keyword' => $keyword,
             'search_date' => $today,
@@ -452,36 +443,29 @@ Route::post('/news/search-log', function (\Illuminate\Http\Request $request) {
         'search_count' => (int) $log->search_count,
         'search_date' => $today,
     ]);
-})->name('news.search-log');
+})->middleware('throttle:20,1')->name('news.search-log');
 
-Route::post('/kios/search-log', function (\Illuminate\Http\Request $request) {
+Route::post('/kios/search-log', function (Request $request) {
     $rawKeyword = (string) $request->input('keyword', '');
 
-    // 1. Membersihkan spasi berlebih (trim) dan multiple whitespaces
     $keyword = trim(preg_replace('/\s+/u', ' ', $rawKeyword));
-
-    // 2. Menyeragamkan huruf kecil (strtolower UTF-8)
     $keyword = mb_strtolower($keyword, 'UTF-8');
 
-    // 3. Jangan catat jika keyword kurang dari 3 huruf
     if (mb_strlen($keyword, 'UTF-8') < 3) {
         return response()->json(['success' => false, 'message' => 'Keyword terlalu pendek (min 3 huruf).'], 422);
     }
 
-    // 4. Batasi panjang maksimal kata kunci agar tidak abused
     if (mb_strlen($keyword, 'UTF-8') > 100) {
         $keyword = mb_substr($keyword, 0, 100, 'UTF-8');
     }
 
-    // 5. Pencegahan Spam / Karakter Berulang
-    if (preg_match('/(.)\1{3,}/u', $keyword) || !preg_match('/[\p{L}\p{N}]/u', $keyword)) {
+    if (preg_match('/(.)\1{3,}/u', $keyword) || ! preg_match('/[\p{L}\p{N}]/u', $keyword)) {
         return response()->json(['success' => false, 'message' => 'Keyword terdeteksi spam atau karakter berulang.'], 422);
     }
 
     $today = now()->setTimezone('Asia/Jakarta')->toDateString();
 
-    // 6. Pastikan di tanggal yang sama tidak ada keyword yang sama
-    $log = \App\Models\SearchLogKios::firstOrCreate(
+    $log = SearchLogKios::firstOrCreate(
         [
             'keyword' => $keyword,
             'search_date' => $today,
@@ -500,14 +484,14 @@ Route::post('/kios/search-log', function (\Illuminate\Http\Request $request) {
         'search_count' => (int) $log->search_count,
         'search_date' => $today,
     ]);
-})->name('kios.search-log');
+})->middleware('throttle:20,1')->name('kios.search-log');
 
 Route::get('/news/{slug}', function ($slug) {
-    $news = \App\Models\News::where('slug', $slug)
+    $news = News::where('slug', $slug)
         ->orWhere('id', $slug)
         ->first();
 
-    if (!$news) {
+    if (! $news) {
         return redirect()->route('news');
     }
 
@@ -515,24 +499,24 @@ Route::get('/news/{slug}', function ($slug) {
     $ua = request()->userAgent();
     $oneMinuteAgo = now()->subMinute();
 
-    $alreadyLogged = \App\Models\NewsViewLog::where('news_id', $news->id)
+    $alreadyLogged = NewsViewLog::where('news_id', $news->id)
         ->where('ip_address', $ip)
         ->where('created_at', '>=', $oneMinuteAgo)
         ->exists();
 
-    if (!$alreadyLogged) {
+    if (! $alreadyLogged) {
         $news->increment('views_count');
 
-        \App\Models\NewsViewLog::create([
+        NewsViewLog::create([
             'news_id' => $news->id,
             'ip_address' => $ip,
             'user_agent' => $ua,
         ]);
     }
 
-    $newsList = \App\Models\News::latest()->get();
-    $kiosItems = \App\Models\KiosItem::with(['kiosPartner', 'linkedBook'])->latest()->get();
-    $books = \App\Models\Book::with([
+    $newsList = News::latest()->get();
+    $kiosItems = KiosItem::with(['kiosPartner', 'linkedBook'])->available()->latest()->get();
+    $books = Book::with([
         'series',
         'edition',
         'storyStatus',
@@ -544,7 +528,7 @@ Route::get('/news/{slug}', function ($slug) {
         'tiktokEmbeds',
     ])->get();
 
-    $totalNewsCount = \App\Models\News::count();
+    $totalNewsCount = News::count();
 
     return Inertia::render('User/news', [
         'newsList' => $newsList,
@@ -554,7 +538,7 @@ Route::get('/news/{slug}', function ($slug) {
         'initialSlug' => $slug,
         'totalNewsCount' => $totalNewsCount,
         'meta' => [
-            'title' => $news->title . ' - Norinoya News',
+            'title' => $news->title.' - Norinoya News',
             'description' => Str::limit(strip_tags($news->content ?? 'Baca update berita dan artikel terbaru di Norinoya News.'), 160),
             'image' => ($img = $news->attached_image) ? (Str::startsWith($img, ['http://', 'https://']) ? $img : url($img)) : url('/favicon.png'),
             'url' => url("/news/{$news->slug}"),
@@ -563,19 +547,19 @@ Route::get('/news/{slug}', function ($slug) {
     ]);
 })->name('news.detail');
 
-Route::post('/news/{id}/view', function (\Illuminate\Http\Request $request, $id) {
+Route::post('/news/{id}/view', function (Request $request, $id) {
     $cleanId = preg_replace('/^news-/', '', $id);
     $slug = $request->input('slug');
 
     $news = null;
     if (is_numeric($cleanId)) {
-        $news = \App\Models\News::where('id', $cleanId)->first();
+        $news = News::where('id', $cleanId)->first();
     }
 
-    if (!$news) {
+    if (! $news) {
         $targetSlug = $slug ?: $id;
-        $news = \App\Models\News::where('slug', $targetSlug)->first()
-            ?? \App\Models\News::where('id', $id)->first();
+        $news = News::where('slug', $targetSlug)->first()
+            ?? News::where('id', $id)->first();
     }
 
     if ($news) {
@@ -583,15 +567,15 @@ Route::post('/news/{id}/view', function (\Illuminate\Http\Request $request, $id)
         $ua = $request->userAgent();
         $oneMinuteAgo = now()->subMinute();
 
-        $alreadyLogged = \App\Models\NewsViewLog::where('news_id', $news->id)
+        $alreadyLogged = NewsViewLog::where('news_id', $news->id)
             ->where('ip_address', $ip)
             ->where('created_at', '>=', $oneMinuteAgo)
             ->exists();
 
-        if (!$alreadyLogged) {
+        if (! $alreadyLogged) {
             $news->increment('views_count');
 
-            \App\Models\NewsViewLog::create([
+            NewsViewLog::create([
                 'news_id' => $news->id,
                 'ip_address' => $ip,
                 'user_agent' => $ua,
@@ -602,20 +586,20 @@ Route::post('/news/{id}/view', function (\Illuminate\Http\Request $request, $id)
             'success' => true,
             'news_id' => $news->id,
             'views_count' => (int) $news->views_count,
-            'is_new_view' => !$alreadyLogged,
+            'is_new_view' => ! $alreadyLogged,
         ]);
     }
 
     return response()->json(['success' => false, 'message' => 'News not found'], 404);
-})->name('news.increment-view');
+})->middleware('throttle:60,1')->name('news.increment-view');
 
 Route::get('/kios/{slug}', function ($slug) {
-    $kiosItem = \App\Models\KiosItem::where('slug', $slug)
+    $kiosItem = KiosItem::where('slug', $slug)
         ->orWhere('id', $slug)
         ->with(['kiosPartner', 'linkedBook'])
         ->first();
 
-    if (!$kiosItem) {
+    if (! $kiosItem) {
         return redirect()->route('kios');
     }
 
@@ -623,16 +607,16 @@ Route::get('/kios/{slug}', function ($slug) {
     $ua = request()->userAgent();
     $oneMinuteAgo = now()->subMinute();
 
-    $alreadyLogged = \App\Models\KiosViewLog::where('kios_item_id', $kiosItem->id)
+    $alreadyLogged = KiosViewLog::where('kios_item_id', $kiosItem->id)
         ->where('action_type', 'view')
         ->where('ip_address', $ip)
         ->where('created_at', '>=', $oneMinuteAgo)
         ->exists();
 
-    if (!$alreadyLogged) {
+    if (! $alreadyLogged) {
         $kiosItem->increment('views_count');
 
-        \App\Models\KiosViewLog::create([
+        KiosViewLog::create([
             'kios_item_id' => $kiosItem->id,
             'action_type' => 'view',
             'ip_address' => $ip,
@@ -640,8 +624,8 @@ Route::get('/kios/{slug}', function ($slug) {
         ]);
     }
 
-    $kiosItems = \App\Models\KiosItem::with(['kiosPartner', 'linkedBook'])->latest()->get();
-    $books = \App\Models\Book::with([
+    $kiosItems = KiosItem::with(['kiosPartner', 'linkedBook'])->available()->latest()->get();
+    $books = Book::with([
         'series',
         'edition',
         'storyStatus',
@@ -650,8 +634,8 @@ Route::get('/kios/{slug}', function ($slug) {
         'genres',
     ])->get();
 
-    $totalKiosItemsCount = \App\Models\KiosItem::count();
-    $totalPartnersCount = \App\Models\KiosPartner::count();
+    $totalKiosItemsCount = KiosItem::count();
+    $totalPartnersCount = KiosPartner::count();
 
     return Inertia::render('User/kios', [
         'kiosItems' => $kiosItems,
@@ -661,7 +645,7 @@ Route::get('/kios/{slug}', function ($slug) {
         'totalKiosItemsCount' => $totalKiosItemsCount,
         'totalPartnersCount' => $totalPartnersCount,
         'meta' => [
-            'title' => $kiosItem->title . ' - Norinoya Kios',
+            'title' => $kiosItem->title.' - Norinoya Kios',
             'description' => Str::limit(strip_tags($kiosItem->deskripsi_produk ?? 'Beli merchandise, komik, dan produk eksklusif di Kios Norinoya.'), 160),
             'image' => ($img = $kiosItem->cover_image) ? (Str::startsWith($img, ['http://', 'https://']) ? $img : url($img)) : url('/favicon.png'),
             'url' => url("/kios/{$kiosItem->slug}"),
@@ -670,19 +654,19 @@ Route::get('/kios/{slug}', function ($slug) {
     ]);
 })->name('kios.detail');
 
-Route::post('/kios/{id}/view', function (\Illuminate\Http\Request $request, $id) {
+Route::post('/kios/{id}/view', function (Request $request, $id) {
     $cleanId = preg_replace('/^kios-/', '', $id);
     $slug = $request->input('slug');
 
     $item = null;
     if (is_numeric($cleanId)) {
-        $item = \App\Models\KiosItem::where('id', $cleanId)->first();
+        $item = KiosItem::where('id', $cleanId)->first();
     }
 
-    if (!$item) {
+    if (! $item) {
         $targetSlug = $slug ?: $id;
-        $item = \App\Models\KiosItem::where('slug', $targetSlug)->first()
-            ?? \App\Models\KiosItem::where('id', $id)->first();
+        $item = KiosItem::where('slug', $targetSlug)->first()
+            ?? KiosItem::where('id', $id)->first();
     }
 
     if ($item) {
@@ -690,16 +674,16 @@ Route::post('/kios/{id}/view', function (\Illuminate\Http\Request $request, $id)
         $ua = $request->userAgent();
         $oneMinuteAgo = now()->subMinute();
 
-        $alreadyLogged = \App\Models\KiosViewLog::where('kios_item_id', $item->id)
+        $alreadyLogged = KiosViewLog::where('kios_item_id', $item->id)
             ->where('action_type', 'view')
             ->where('ip_address', $ip)
             ->where('created_at', '>=', $oneMinuteAgo)
             ->exists();
 
-        if (!$alreadyLogged) {
+        if (! $alreadyLogged) {
             $item->increment('views_count');
 
-            \App\Models\KiosViewLog::create([
+            KiosViewLog::create([
                 'kios_item_id' => $item->id,
                 'action_type' => 'view',
                 'ip_address' => $ip,
@@ -711,43 +695,66 @@ Route::post('/kios/{id}/view', function (\Illuminate\Http\Request $request, $id)
             'success' => true,
             'kios_id' => $item->id,
             'views_count' => (int) $item->views_count,
-            'is_new_view' => !$alreadyLogged,
+            'is_new_view' => ! $alreadyLogged,
         ]);
     }
 
     return response()->json(['success' => false, 'message' => 'Kios item not found'], 404);
-})->name('kios.increment-view');
+})->middleware('throttle:60,1')->name('kios.increment-view');
 
-Route::post('/kios/{id}/click', function (\Illuminate\Http\Request $request, $id) {
+Route::post('/kios/{id}/click', function (Request $request, $id) {
     $cleanId = preg_replace('/^kios-/', '', $id);
     $platform = strtolower((string) $request->input('platform', ''));
     $slug = $request->input('slug');
 
     $item = null;
     if (is_numeric($cleanId)) {
-        $item = \App\Models\KiosItem::where('id', $cleanId)->first();
+        $item = KiosItem::where('id', $cleanId)->first();
     }
 
-    if (!$item) {
+    if (! $item) {
         $targetSlug = $slug ?: $id;
-        $item = \App\Models\KiosItem::where('slug', $targetSlug)->first()
-            ?? \App\Models\KiosItem::where('id', $id)->first();
+        $item = KiosItem::where('slug', $targetSlug)->first()
+            ?? KiosItem::where('id', $id)->first();
     }
 
     if ($item) {
-        // Increment total clicks
+        $allowed = ['shopee', 'tokopedia', 'gramedia', 'toco'];
+        $isAllowed = in_array($platform, $allowed, true);
+
+        // Dedup klik: 10 detik window per IP+item+platform untuk mencegah inflate
+        $tenSecondsAgo = now()->subSeconds(10);
+        $actionType = $isAllowed ? "click_{$platform}" : 'click_other';
+        $recentClick = KiosViewLog::where('kios_item_id', $item->id)
+            ->where('action_type', $actionType)
+            ->where('ip_address', $request->ip())
+            ->where('created_at', '>=', $tenSecondsAgo)
+            ->exists();
+
+        if ($recentClick) {
+            return response()->json([
+                'success' => true,
+                'kios_id' => $item->id,
+                'platform' => $platform,
+                'deduped' => true,
+                'total_clicks_count' => (int) $item->total_clicks_count,
+                'shopee_clicks_count' => (int) $item->shopee_clicks_count,
+                'tokopedia_clicks_count' => (int) $item->tokopedia_clicks_count,
+                'gramedia_clicks_count' => (int) $item->gramedia_clicks_count,
+                'toco_clicks_count' => (int) $item->toco_clicks_count,
+            ]);
+        }
+
         $item->increment('total_clicks_count');
 
-        // Increment specific platform clicks
-        if (in_array($platform, ['shopee', 'tokopedia', 'gramedia', 'toco'])) {
+        if ($isAllowed) {
             $column = "{$platform}_clicks_count";
             $item->increment($column);
         }
 
-        // Record log for link click
-        \App\Models\KiosViewLog::create([
+        KiosViewLog::create([
             'kios_item_id' => $item->id,
-            'action_type' => $platform ? "click_{$platform}" : 'click_other',
+            'action_type' => $actionType,
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
         ]);
@@ -765,7 +772,7 @@ Route::post('/kios/{id}/click', function (\Illuminate\Http\Request $request, $id
     }
 
     return response()->json(['success' => false, 'message' => 'Kios item not found'], 404);
-})->name('kios.increment-click');
+})->middleware('throttle:30,1')->name('kios.increment-click');
 
 Route::get('/home', function () {
     return redirect()->route('home');
@@ -781,21 +788,22 @@ Route::middleware(['auth'])->group(function () {
         ->group(function () {
 
             Route::get('dashboard', function () {
-                $totalBooks = \App\Models\Book::count();
-                $totalNews = \App\Models\News::count();
-                $totalKios = \App\Models\KiosItem::count();
-                $totalPartners = \App\Models\KiosPartner::count();
+                $totalBooks = Book::count();
+                $totalNews = News::count();
+                $totalKios = KiosItem::count();
+                $totalPartners = KiosPartner::count();
 
-                $bookViews = \App\Models\Book::sum('views_count');
-                $newsViews = \App\Models\News::sum('views_count');
-                $kiosViews = \App\Models\KiosItem::sum('views_count');
+                $bookViews = Book::sum('views_count');
+                $newsViews = News::sum('views_count');
+                $kiosViews = KiosItem::sum('views_count');
                 $totalViews = $bookViews + $newsViews + $kiosViews;
 
-                $recentBooks = \App\Models\Book::latest()->take(5)->get(['id', 'title', 'volume', 'views_count', 'created_at']);
-                $recentNews = \App\Models\News::latest()->take(5)->get(['id', 'title', 'category', 'views_count', 'created_at']);
-                $recentKios = \App\Models\KiosItem::latest()->take(5)->get(['id', 'title', 'price', 'is_preloved', 'views_count', 'created_at']);
+                $recentBooks = Book::latest()->take(5)->get(['id', 'title', 'volume', 'views_count', 'created_at']);
+                $recentNews = News::latest()->take(5)->get(['id', 'title', 'category', 'views_count', 'created_at']);
+                $recentKios = KiosItem::latest()->take(5)->get(['id', 'title', 'price', 'is_preloved', 'views_count', 'created_at']);
 
                 return Inertia::render('dashboard', [
+                    'meta' => ['robots' => 'noindex,nofollow'],
                     'stats' => [
                         'totalBooks' => $totalBooks,
                         'totalNews' => $totalNews,
@@ -855,6 +863,10 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('books/search-logs-clear', [BookController::class, 'clearSearchLogs'])->name('books.search-logs.clear');
 
             Route::get('books/{book}/duplicate', [BookController::class, 'duplicate'])->name('books.duplicate');
+
+            Route::get('books/filter-options', [BookController::class, 'filterOptions'])->name('books.filter-options');
+
+            Route::delete('books/bulk', [BookController::class, 'bulkDestroy'])->name('books.bulk-destroy');
 
             Route::resource(
                 'books',

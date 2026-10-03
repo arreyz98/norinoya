@@ -99,8 +99,13 @@ class KiosItem extends Model
         return $this->belongsTo(KiosPartner::class, 'kios_partner_id');
     }
 
-    public function viewLogs()
+     public function viewLogs()
     {
         return $this->hasMany(KiosViewLog::class, 'kios_item_id');
+    }
+
+     public function scopeAvailable($query)
+    {
+        return $query->where('is_sold_out', false);
     }
 }

@@ -14,6 +14,7 @@ class AffiliateStore extends Model
     protected $fillable = [
         'name',
         'slug',
+        'logo_url',
     ];
 
     public function affiliateLinks(): HasMany

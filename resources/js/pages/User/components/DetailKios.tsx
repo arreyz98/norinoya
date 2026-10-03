@@ -66,7 +66,6 @@ export interface DetailKiosProps {
   onSelectItem: (item: CatalogItem) => void;
   onOpenShareModal: (data: { title: string; shareUrl: string; category: string }) => void;
   onAddToCart?: (item: CatalogItem) => void;
-  triggerNotification?: (msg: string) => void;
   onFilterCategory?: (category: string) => void;
 }
 
@@ -76,6 +75,7 @@ export default function DetailKios({
   onClose,
   onSelectItem,
   onOpenShareModal,
+  onAddToCart,
   onFilterCategory,
 }: DetailKiosProps) {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -83,9 +83,18 @@ export default function DetailKios({
   const { message: bookmarkToast, show: showBookmarkToast } = useBookmarkToast();
   const scrollableContainerRef = React.useRef<HTMLDivElement>(null);
 
+  const [liveViewsCount, setLiveViewsCount] = useState<number | null>(null);
+
   // Increment view counter on backend when viewing detail kios item
   useEffect(() => {
     if (!selectedItem?.id) return;
+
+    // Avoid double-count when SSR already logged view for /kios/{slug} deep-link
+    const isDirectKiosPath = typeof window !== 'undefined' && window.location.pathname.startsWith('/kios/');
+    const dedupeKey = `norinoya-kios-view:${String(selectedItem.id)}`;
+    const lastTs = Number(sessionStorage.getItem(dedupeKey) || 0);
+    if (isDirectKiosPath && Date.now() - lastTs < 60_000) return;
+    sessionStorage.setItem(dedupeKey, String(Date.now()));
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
@@ -103,19 +112,22 @@ export default function DetailKios({
       .then(res => res.json())
       .then(data => {
         if (data && data.success && typeof data.views_count === 'number') {
-          if (selectedItem) {
-            selectedItem.views_count = data.views_count;
-          }
+          setLiveViewsCount(data.views_count);
         }
       })
       .catch(() => {
         // Silently catch network errors
       });
-  }, [selectedItem]);
+  }, [selectedItem.id, selectedItem.slug]);
 
-  // Track purchase/affiliate link clicks
+  // Track purchase/affiliate link clicks (client-side throttle 10s)
+  const lastClickRef = React.useRef<Record<string, number>>({});
   const handleLinkClick = (platform: 'shopee' | 'tokopedia' | 'gramedia' | 'toco') => {
     if (!selectedItem?.id) return;
+    const now = Date.now();
+    const k = `${String(selectedItem.id)}:${platform}`;
+    if (now - (lastClickRef.current[k] || 0) < 10_000) return;
+    lastClickRef.current[k] = now;
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
@@ -138,7 +150,10 @@ export default function DetailKios({
   useEffect(() => {
     setActiveSlideIndex(0);
     const targetSlug = selectedItem.slug || selectedItem.id;
-    window.history.pushState({ itemId: selectedItem.id }, '', `/kios/${targetSlug}`);
+    const nextUrl = `/kios/${targetSlug}`;
+    if (window.location.pathname !== nextUrl) {
+      window.history.pushState({ itemId: selectedItem.id }, '', nextUrl);
+    }
 
     window.scrollTo(0, 0);
     if (document.documentElement) document.documentElement.scrollTop = 0;
@@ -166,11 +181,20 @@ export default function DetailKios({
       }
     }, 50);
 
+    const onPopState = () => {
+      // Jika user menekan Back dari detail kios, tutup modal agar tidak orphan
+      if (!window.location.pathname.startsWith('/kios/')) {
+        onClose();
+      }
+    };
+    window.addEventListener('popstate', onPopState);
+
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
+      window.removeEventListener('popstate', onPopState);
     };
-  }, [selectedItem]);
+  }, [selectedItem.id, selectedItem.slug]);
 
 
 
@@ -225,9 +249,10 @@ export default function DetailKios({
   const metaDesc = (selectedItem?.deskripsi_produk || selectedItem?.synopsis || 'Beli merchandise, komik, dan produk eksklusif di Kios Norinoya.').replace(/<[^>]*>/g, '').slice(0, 160);
   const metaImage = selectedItem?.coverImage || '';
 
-  return (
+   return (
     <div className="w-full bg-white dark:bg-neutral-950 flex flex-col min-h-screen" ref={scrollableContainerRef}>
-      <Head title={metaTitle}>
+      <Head>
+        <title>{metaTitle}</title>
         <meta name="description" content={metaDesc} />
         <meta property="og:site_name" content="Norinoya" />
         <meta property="og:title" content={metaTitle} />
@@ -239,6 +264,52 @@ export default function DetailKios({
         <meta name="twitter:description" content={metaDesc} />
         {metaImage && <meta name="twitter:image" content={metaImage} />}
         <meta name="theme-color" content="#E53935" />
+        <link rel="canonical" href={`${window.location.origin}/kios/${selectedItem.slug || selectedItem.id}`} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: selectedItem.title,
+            ...(metaImage ? { image: [metaImage] } : {}),
+            description: selectedItem.deskripsi_produk || selectedItem.synopsis,
+            ...(selectedItem.isPreloved
+              ? {
+                  offers: {
+                    '@type': 'Offer',
+                    priceCurrency: 'IDR',
+                    price: selectedItem.price.toString(),
+                    ...(selectedItem.originalPrice ? { priceValidUntil: selectedItem.originalPrice.toString() } : {}),
+                    availability: selectedItem.isSoldOut ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+                  },
+                }
+              : null),
+            ...(selectedItem.affiliateLinks
+              ? {
+                  offers: {
+                    '@type': 'Offer',
+                    priceCurrency: 'IDR',
+                    price: selectedItem.price.toString(),
+                    ...(selectedItem.originalPrice ? { priceValidUntil: selectedItem.originalPrice.toString() } : {}),
+                    availability: 'https://schema.org/InStock',
+                    ...(selectedItem.affiliateLinks.gramedia
+                      ? { url: selectedItem.affiliateLinks.gramedia, seller: { '@type': 'Organization', name: 'Gramedia' } }
+                      : {}),
+                  },
+                }
+              : {}),
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Beranda', item: `${window.location.origin}/` },
+              { '@type': 'ListItem', position: 2, name: 'Kios', item: `${window.location.origin}/kios` },
+              { '@type': 'ListItem', position: 3, name: selectedItem.title, item: `${window.location.origin}/kios/${selectedItem.slug || selectedItem.id}` },
+            ],
+          })}
+        </script>
       </Head>
       <motion.div
         initial={{ opacity: 0, y: 15 }}
@@ -405,9 +476,9 @@ export default function DetailKios({
               </div>
 
               {/* Title */}
-              <h2 className="text-xl md:text-2xl font-sans font-extrabold text-neutral-900 dark:text-neutral-50 tracking-tight leading-snug">
-                {selectedItem.title}
-              </h2>
+               <h1 className="text-xl md:text-2xl font-sans font-extrabold text-neutral-900 dark:text-neutral-50 tracking-tight leading-snug">
+                 {selectedItem.title}
+               </h1>
 
               {/* Author Art, Story & Publisher */}
               <p className="text-xs sm:text-sm text-neutral-550 dark:text-neutral-450">

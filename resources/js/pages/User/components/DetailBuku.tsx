@@ -42,6 +42,7 @@ export default function DetailBuku({
   const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
   const [unlockedComics, setUnlockedComics] = useState<Record<string, boolean>>({});
   const [kiosCandidates, setKiosCandidates] = useState<RawKiosItem[]>([]);
+  const [liveViewsCount, setLiveViewsCount] = useState<number | null>(null);
 
   // Cache kios results per book title so reopening the same book does not refetch.
   const kiosTitleCacheRef = useRef<Map<string, RawKiosItem[]>>(new Map());
@@ -101,12 +102,20 @@ export default function DetailBuku({
     ? (orderedVolumes.find(v => String(v.volNumber) === String(activeVolumeNum)) || orderedVolumes[0])
     : null;
 
-  // Increment view counter on backend when viewing detail buku
+  // Increment view counter on backend when viewing detail buku (deduped 1 min on server)
   useEffect(() => {
     const targetBookId = activeVolObj?.bookId || activeVolObj?.id || selectedComic?.bookId || selectedComic?.id;
     if (!targetBookId) return;
 
-    // Send POST request with CSRF token support
+    const isDirectBookPath = typeof window !== 'undefined' && window.location.pathname.startsWith('/buku/');
+    // Jika user membuka via deep-link langsung /buku/{slug}, SSR sudah menghitung view yang sama (window 1 menit).
+    // Hindari double-count: skip POST saat masih dalam jeda dedupe kecuali ganti volume.
+    const dedupeKey = `norinoya-book-view:${String(targetBookId)}:${String(activeVolumeNum)}`;
+    const lastTs = Number(sessionStorage.getItem(dedupeKey) || 0);
+    const nowTs = Date.now();
+    if (isDirectBookPath && nowTs - lastTs < 60_000) return;
+    sessionStorage.setItem(dedupeKey, String(nowTs));
+
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
     fetch(`/books/${encodeURIComponent(String(targetBookId))}/view`, {
@@ -124,18 +133,13 @@ export default function DetailBuku({
       .then(res => res.json())
       .then(data => {
         if (data && data.success && typeof data.views_count === 'number') {
-          if (activeVolObj) {
-            activeVolObj.views_count = data.views_count;
-          }
-          if (selectedComic) {
-            selectedComic.views_count = data.views_count;
-          }
+          setLiveViewsCount(data.views_count);
         }
       })
       .catch(() => {
         // Silently catch network errors
       });
-  }, [selectedComic, activeVolObj, activeVolumeNum]);
+  }, [selectedComic?.id, activeVolObj?.id, activeVolumeNum]);
 
   const activeVolumeCover = selectedComic
     ? (activeVolObj?.coverImage || selectedComic.coverImage)
@@ -416,22 +420,62 @@ export default function DetailBuku({
   const metaTitle = `${selectedComic.title}${activeVolObj ? ` Vol. ${activeVolObj.volNumber}` : ''} - Norinoya`;
   const metaDesc = (activeVolObj?.synopsis || selectedComic.synopsis || 'Lihat detail buku di Norinoya').replace(/<[^>]*>/g, '').slice(0, 160);
   const metaImage = activeVolObj?.coverImage || selectedComic.coverImage || '';
+  const canonicalUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/buku/${selectedComic.slug || selectedComic.id}`
+    : `/buku/${selectedComic.slug || selectedComic.id}`;
+  const displayViews = liveViewsCount ?? activeVolObj?.views_count ?? selectedComic?.views_count ?? null;
 
-  return (
+   return (
     <div className="w-full bg-white dark:bg-neutral-950 flex flex-col min-h-screen" ref={scrollableContainerRef}>
-      <Head title={metaTitle}>
-        <meta name="description" content={metaDesc} />
-        <meta property="og:site_name" content="Norinoya" />
-        <meta property="og:title" content={metaTitle} />
-        <meta property="og:description" content={metaDesc} />
-        <meta property="og:type" content="book" />
-        {metaImage && <meta property="og:image" content={metaImage} />}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={metaTitle} />
-        <meta name="twitter:description" content={metaDesc} />
-        {metaImage && <meta name="twitter:image" content={metaImage} />}
-        <meta name="theme-color" content="#E53935" />
-      </Head>
+      {selectedComic ? (
+        <Head>
+          <title>{metaTitle}</title>
+          <meta name="description" content={metaDesc} />
+          <meta property="og:site_name" content="Norinoya" />
+          <meta property="og:title" content={metaTitle} />
+          <meta property="og:description" content={metaDesc} />
+          <meta property="og:type" content="book" />
+          {metaImage && <meta property="og:image" content={metaImage} />}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={metaTitle} />
+          <meta name="twitter:description" content={metaDesc} />
+          {metaImage && <meta name="twitter:image" content={metaImage} />}
+          <meta name="theme-color" content="#E53935" />
+          <link rel="canonical" href={canonicalUrl} />
+              <script type="application/ld+json">
+            {JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Book',
+              name: activeVolObj?.title || selectedComic.title,
+              alternateName: selectedComic.title,
+              url: canonicalUrl,
+              ...(metaImage ? { image: metaImage } : {}),
+              ...(activeVolObj?.isbn ? { isbn: activeVolObj.isbn } : {}),
+              ...(selectedComic.publisherName ? { publisher: { '@type': 'Organization', name: selectedComic.publisherName } } : {}),
+              ...(activeVolObj?.authorStory ? { author: { '@type': 'Person', name: activeVolObj.authorStory } } : {}),
+              ...(activeVolObj?.volNumber != null ? { bookEdition: `Volume ${activeVolObj.volNumber}` } : {}),
+              ...(selectedComic.genres?.length ? { genre: selectedComic.genres.join(', ') } : {}),
+              ...(activeVolObj?.synopsis ? { description: activeVolObj.synopsis.replace(/<[^>]*>/g, '').trim() } : {}),
+            })}
+          </script>
+          <script type="application/ld+json">
+            {JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Beranda', item: typeof window !== 'undefined' ? `${window.location.origin}/` : '/' },
+                { '@type': 'ListItem', position: 2, name: 'Katalog Buku', item: typeof window !== 'undefined' ? `${window.location.origin}/` : '/' },
+                { '@type': 'ListItem', position: 3, name: (activeVolObj?.title || selectedComic.title), item: canonicalUrl },
+              ],
+            })}
+          </script>
+        </Head>
+      ) : (
+        <Head>
+          <title>Norinoya - Database Manga, Komik, & Light Novel Indonesia</title>
+          <meta name="description" content="Norinoya - Database Manga, Komik, & Light Novel Indonesia" />
+        </Head>
+      )}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -552,9 +596,9 @@ export default function DetailBuku({
 
               {/* Primary Comic and Volume title */}
               <div className="flex items-center flex-wrap gap-2.5">
-                <h2 className="text-xl md:text-2xl font-sans font-extrabold text-neutral-900 dark:text-neutral-50 tracking-tight leading-snug">
+                <h1 className="text-xl md:text-2xl font-sans font-extrabold text-neutral-900 dark:text-neutral-50 tracking-tight leading-snug">
                   {activeVolObj?.title  || selectedComic.title}{selectedComic.volumes.length > 1 && ` (Volume ${activeVolumeNum})`}
-                </h2>
+                </h1>
               </div>
 
               {/* Curator explanation text changed to volume-specific synopsis */}
@@ -1107,7 +1151,7 @@ export default function DetailBuku({
                   <div className="space-y-2.5">
                     {relevantKiosItems.map((item) => {
                       const itemCover = item.cover_image || item.carousel_images?.[0]
-                        || 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300&auto=format&fit=crop&q=80';
+                        || null;
                       const itemTitle = item.comic_title || item.title || 'Produk Kios';
                       const itemNotes = item.deskripsi_produk || item.notes || item.synopsis || '';
                       const itemPrice = Number(item.price) || 0;
@@ -1122,17 +1166,21 @@ export default function DetailBuku({
                           }}
                           className="p-3 bg-emerald-50/40 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/80 hover:border-emerald-400 dark:hover:border-emerald-600 rounded-xl space-y-2.5 cursor-pointer transition-all hover:shadow-xs group/kios"
                         >
-                          <div className="flex gap-3 items-start">
-                            <div className="relative shrink-0 w-14 aspect-[3/4] bg-neutral-900 rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                              <img
-                                src={itemCover}
-                                alt={itemTitle}
-                                loading="lazy"
-                                decoding="async"
-                                referrerPolicy="no-referrer"
-                                className="w-full h-full object-cover group-hover/kios:scale-105 transition-transform"
-                              />
-                            </div>
+                           <div className="flex gap-3 items-start">
+                             <div className="relative shrink-0 w-14 aspect-[3/4] bg-neutral-900 rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800 flex items-center justify-center">
+                               {itemCover ? (
+                                 <img
+                                   src={itemCover}
+                                   alt={itemTitle}
+                                   loading="lazy"
+                                   decoding="async"
+                                   referrerPolicy="no-referrer"
+                                   className="w-full h-full object-cover group-hover/kios:scale-105 transition-transform"
+                                 />
+                               ) : (
+                                 <span className="text-neutral-500 dark:text-neutral-400 text-xs font-mono">No Image</span>
+                               )}
+                             </div>
                             <div className="flex-1 min-w-0 text-left space-y-0.5">
                               <div className="flex items-center justify-between gap-1">
                                 <h6 className="text-xs font-sans font-bold text-neutral-900 dark:text-neutral-100 line-clamp-1 group-hover/kios:text-emerald-600 dark:group-hover/kios:text-emerald-400 transition-colors">

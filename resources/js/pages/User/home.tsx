@@ -1,27 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Head, router } from '@inertiajs/react';
 import {
   BookOpen, Sparkles,
-  MessageCircle,  Newspaper, ArrowUp, ShoppingBag, Bookmark,
+  MessageCircle,
   Mail, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 
-// Sub-components
-import NewsFeed from './components/NewsFeed';
-import MarketplaceDb from './components/MarketplaceDB';
-import AboutSection from './components/AboutSection';
-import EtalaseCatalog from './components/EtalaseCatalog';
+// Sub-components - lazy untuk split chunk & cepat first paint
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LoadingHome from './components/SkeletonLoading/LoadingHome';
+import BackToTopButton from './components/BackToTopButton';
+
+const NewsFeed = lazy(() => import('./components/NewsFeed'));
+const MarketplaceDb = lazy(() => import('./components/MarketplaceDB'));
+const AboutSection = lazy(() => import('./components/AboutSection'));
+const EtalaseCatalog = lazy(() => import('./components/EtalaseCatalog'));
 
 
 
 // Data
 import { COMICS_DATA, NEWS_UPDATES } from '../../types/mockData';
 import { mapBooksToComics, BookModel } from '../../utils/mapBookToComic';
-import { useBookmarks } from '../../utils/bookmarkStorage';
 import { usePageLoading } from '../../hooks/use-page-loading';
 import { RawNewsItem } from './news';
 
@@ -110,21 +111,26 @@ export default function App({
         );
       }
 
-      // 3. Try matching by stripping -vol-X suffix from ref (for slugs like "title-vol-1")
-      if (!found) {
-        const volMatch = ref.match(/^(.*?)-vol-(\d+)$/);
-        if (volMatch) {
-          const slugBase = volMatch[1];
-          const volNum = parseInt(volMatch[2], 10);
-          found = deepLinkCatalog.find(c =>
-            c.slug === slugBase ||
-            (c.altSlugs && c.altSlugs.some(s => {
-              const altMatch = s.match(/^(.*?)-vol-(\d+)$/);
-              return altMatch && altMatch[1] === slugBase && parseInt(altMatch[2], 10) === volNum;
-            }))
-          );
-        }
+    // 3. Try matching by stripping -vol-X suffix from ref (for slugs like "title-vol-1" or "title-vol-Original")
+    if (!found) {
+      const volMatch = ref.match(/^(.*?)-vol-(.+)$/);
+      if (volMatch) {
+        const slugBase = volMatch[1];
+        const volPart = volMatch[2];
+        const volNumFromRef = /^\d+(\.\d+)?$/.test(volPart) ? Number(volPart) : volPart;
+        found = deepLinkCatalog.find(c =>
+          c.slug === slugBase ||
+          (c.altSlugs && c.altSlugs.some(s => {
+            const altMatch = s.match(/^(.*?)-vol-(.+)$/);
+            if (!altMatch) return false;
+            const altSlugBase = altMatch[1];
+            const altVolPart = altMatch[2];
+            const altVolNum = /^\d+(\.\d+)?$/.test(altVolPart) ? Number(altVolPart) : altVolPart;
+            return altSlugBase === slugBase && altVolNum === volNumFromRef;
+          }))
+        );
       }
+    }
 
       return found;
     };
@@ -165,15 +171,12 @@ export default function App({
   const [selectedSaleId, setSelectedSaleId] = useState<string | null>(null);
   const [selectedShort, setSelectedShort] = useState<VideoShortItem | null>(null);
   const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [showToTop, setShowToTop] = useState<boolean>(false);
   const [cookieChoice, setCookieChoice] = useState<string | null>(null);
   const [showBriefModal, setShowBriefModal] = useState<boolean>(false);
   const [briefSlide, setBriefSlide] = useState<number>(0);
 
   // Skeleton hanya muncul bila Inertia memang lama memuat rute ini (tanpa delay buatan)
   const isLoading = usePageLoading();
-
-    const { counts } = useBookmarks();
 
   // Navigation handlers
   const handleNavHome = () => {
@@ -198,10 +201,6 @@ export default function App({
   const handleNavCalendar = () => {
     setActiveTab('calendar');
     window.location.hash = '#calendar';
-  };
-
-  const handleNavBookmark = () => {
-    router.visit('/bookmark');
   };
 
   // Dark mode state & effect integration
@@ -285,52 +284,6 @@ export default function App({
   };
 
   React.useEffect(() => {
-    const handleScroll = (e: Event) => {
-      const target = e.currentTarget as HTMLElement | Window;
-      let scrollTop = 0;
-      if (target instanceof Window) {
-        scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      } else {
-        scrollTop = (target as HTMLElement).scrollTop;
-      }
-      if (scrollTop > 250) {
-        setShowToTop(true);
-      } else {
-        setShowToTop(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Pasang listener ke container scroll simulasi di dalam ViewportWrapper secara pasif
-    const attachToScrollers = () => {
-      const scrollingEls = document.querySelectorAll('.overflow-auto, [class*="overflow-y-auto"]');
-      scrollingEls.forEach(el => {
-        el.removeEventListener('scroll', handleScroll);
-        el.addEventListener('scroll', handleScroll, { passive: true });
-      });
-    };
-
-    const rafId = requestAnimationFrame(attachToScrollers);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener('scroll', handleScroll);
-      document.querySelectorAll('.overflow-auto, [class*="overflow-y-auto"]').forEach(el => {
-        el.removeEventListener('scroll', handleScroll);
-      });
-    };
-  }, [activeTab, isLoading]);
-
-  const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    const scrollingContainers = document.querySelectorAll('.overflow-auto, [class*="overflow-y-auto"]');
-    scrollingContainers.forEach((el) => {
-      el.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  };
-
-  React.useEffect(() => {
     window.scrollTo({ top: 0 });
     const scrollingContainers = document.querySelectorAll('.overflow-auto, [class*="overflow-y-auto"]');
     scrollingContainers.forEach((el) => {
@@ -343,7 +296,7 @@ export default function App({
     const activeComicObj = selectedComicId ? comicsData.find(c => c.id === selectedComicId) : null;
     const pageTitle = activeComicObj ? `${activeComicObj.title} - Sinopsis & Ulasan Komik | Norinoya` : 'Norinoya - Pusat Katalog & Ulasan Komik Indonesia';
     const pageDesc = activeComicObj ? (activeComicObj.synopsis || `Informasi detail, sinopsis, penerbit, dan link pembelian buku ${activeComicObj.title}`).slice(0, 160) : 'Katalog komik terlengkap, jadwal terbit m&c! Akasha dan Elex Media, serta ulasan fisik komik dari Konotasi Store.';
-    const pageImage = activeComicObj?.coverImage || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80';
+    const pageImage = activeComicObj?.coverImage || '/favicon.png';
 
     return (
     <div
@@ -383,25 +336,27 @@ export default function App({
                 {isLoading ? (
                   <LoadingHome />
                 ) : (
-                  <MarketplaceDb
-                    customComics={comicsData}
-                    dynamicPublishers={publishers}
-                    dynamicStoryStatuses={storyStatuses}
-                    dynamicGenres={genres}
-                    newsList={newsList}
-                    totalBooksCount={totalBooksCount}
-                    totalSeriesCount={totalSeriesCount}
-                    totalPublishersCount={totalPublishersCount}
-                    initialSelectedComicId={selectedComicId}
-                    initialVolume={initialVolume}
-                    onClearSelectedComicId={() => setSelectedComicId(null)}
-                    onNavigateToNews={(newsId) => {
-                      setActiveTab('news');
-                      setSelectedNewsId(newsId);
-                      window.location.hash = `#news`;
-                    }}
-                    onNavigateToCalendar={handleNavCalendar}
-                  />
+                  <Suspense fallback={<LoadingHome />}>
+                    <MarketplaceDb
+                      customComics={comicsData}
+                      dynamicPublishers={publishers}
+                      dynamicStoryStatuses={storyStatuses}
+                      dynamicGenres={genres}
+                      newsList={newsList}
+                      totalBooksCount={totalBooksCount}
+                      totalSeriesCount={totalSeriesCount}
+                      totalPublishersCount={totalPublishersCount}
+                      initialSelectedComicId={selectedComicId}
+                      initialVolume={initialVolume}
+                      onClearSelectedComicId={() => setSelectedComicId(null)}
+                      onNavigateToNews={(newsId) => {
+                        setActiveTab('news');
+                        setSelectedNewsId(newsId);
+                        window.location.hash = `#news`;
+                      }}
+                      onNavigateToCalendar={handleNavCalendar}
+                    />
+                  </Suspense>
                 )}
               </motion.div>
             )}
@@ -471,19 +426,21 @@ export default function App({
 
                 {/* News Feed section with id for anchoring */}
                 <div id="norinoya-news-hub" className="pt-2 scroll-mt-20">
-                  <NewsFeed
-                    dbNewsList={newsList}
-                    dbBooksList={books}
-                    selectedNewsId={selectedNewsId}
-                    setSelectedNewsId={setSelectedNewsId}
-                    onNavigateToCatalog={handleNavHome}
-                    onNavigateToComic={(comicId) => {
-                      setActiveTab('home');
-                      setSelectedComicId(comicId);
-                      window.location.hash = `#/database/${comicId}`;
-                    }}
-                    onSelectShort={(short) => setSelectedShort(short)}
-                  />
+                  <Suspense fallback={<LoadingHome />}>
+                    <NewsFeed
+                      dbNewsList={newsList}
+                      dbBooksList={books}
+                      selectedNewsId={selectedNewsId}
+                      setSelectedNewsId={setSelectedNewsId}
+                      onNavigateToCatalog={handleNavHome}
+                      onNavigateToComic={(comicId) => {
+                        setActiveTab('home');
+                        setSelectedComicId(comicId);
+                        router.visit(`/buku/${comicId}`);
+                      }}
+                      onSelectShort={(short) => setSelectedShort(short)}
+                    />
+                  </Suspense>
                 </div>
               </motion.div>
             )}
@@ -496,15 +453,17 @@ export default function App({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
               >
-                <EtalaseCatalog
-                  onNavigateToNews={(newsId) => {
-                    setActiveTab('news');
-                    setSelectedNewsId(newsId);
-                    window.location.hash = `#news`;
-                  }}
-                  selectedSaleId={selectedSaleId}
-                  onClearSelectedSaleId={() => setSelectedSaleId(null)}
-                />
+                <Suspense fallback={<LoadingHome />}>
+                  <EtalaseCatalog
+                    onNavigateToNews={(newsId) => {
+                      setActiveTab('news');
+                      setSelectedNewsId(newsId);
+                      window.location.hash = `#news`;
+                    }}
+                    selectedSaleId={selectedSaleId}
+                    onClearSelectedSaleId={() => setSelectedSaleId(null)}
+                  />
+                </Suspense>
               </motion.div>
             )}
 
@@ -516,8 +475,9 @@ export default function App({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
               >
-                {/* Legal compliance legal page component */}
-                <AboutSection />
+                <Suspense fallback={<LoadingHome />}>
+                  <AboutSection />
+                </Suspense>
               </motion.div>
             )}
 
@@ -531,57 +491,6 @@ export default function App({
           onNavigateAbout={handleNavAbout}
           darkMode={darkMode}
         />
-
-        {/* Mobile Sticky Bottom Navigation */}
-        <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-sm bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-700/80 shadow-[0_10px_30px_rgba(0,0,0,0.08)] rounded-2xl z-[60] flex items-center justify-around py-2.5 px-3 mb-safe">
-          <button
-            onClick={handleNavHome}
-            className={`flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer outline-none focus:outline-none ${
-              activeTab === 'home'
-                ? 'text-neutral-950 dark:text-white font-extrabold bg-neutral-100/90 dark:bg-neutral-700'
-                : 'text-neutral-400 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white'
-            }`}
-          >
-            <BookOpen className="w-4.5 h-4.5 mb-0.5" />
-            <span className="text-xs font-sans font-bold leading-none tracking-tight">Home</span>
-          </button>
-            <button
-            onClick={handleNavEtalase}
-            className={`flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer outline-none focus:outline-none ${
-              activeTab === 'etalase'
-                ? 'text-neutral-950 dark:text-white font-extrabold bg-neutral-100/90 dark:bg-neutral-700'
-                : 'text-neutral-400 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white'
-            }`}
-          >
-            <ShoppingBag className="w-4.5 h-4.5 mb-0.5" />
-            <span className="text-xs font-sans font-bold leading-none tracking-tight">Kios</span>
-          </button>
-          <button
-            onClick={handleNavNews}
-            className={`flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer outline-none focus:outline-none ${
-              activeTab === 'news'
-                ? 'text-neutral-950 dark:text-white font-extrabold bg-neutral-100/90 dark:bg-neutral-700'
-                : 'text-neutral-400 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white'
-            }`}
-          >
-            <Newspaper className="w-4.5 h-4.5 mb-0.5" />
-            <span className="text-xs font-sans font-bold leading-none tracking-tight">News</span>
-          </button>
-          <button
-            onClick={handleNavBookmark}
-            className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer outline-none focus:outline-none text-neutral-400 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white"
-          >
-            <span className="relative flex items-center justify-center mb-0.5">
-              <Bookmark className="w-4.5 h-4.5" />
-              {counts.total > 0 && (
-                <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-1 flex items-center justify-center rounded-full bg-[#DA6B1C] text-white text-[9px] font-bold leading-none tabular-nums ring-2 ring-white/95 dark:ring-neutral-800/95">
-                  {counts.total > 99 ? '99+' : counts.total}
-                </span>
-              )}
-            </span>
-            <span className="text-xs font-sans font-bold leading-none tracking-tight">Bookmark</span>
-          </button>
-        </div>
 
         {/* Animated Simulated Shorts Modal Player (Unified with MarketplaceDb design!) */}
         <AnimatePresence>
@@ -775,23 +684,7 @@ export default function App({
 
 
         {/* Floating Back to Top Button */}
-        <AnimatePresence>
-          {showToTop && (
-            <motion.button
-              id="to-top-button"
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.9 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleScrollToTop}
-              className="fixed bottom-[88px] right-4 md:bottom-8 md:right-8 z-[100] bg-white/95 dark:bg-[#171717]/95 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-800 text-neutral-800 dark:text-white p-3 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.12)] hover:bg-neutral-100 dark:hover:bg-[#262626] hover:text-neutral-950 dark:hover:text-white focus:outline-none flex items-center justify-center cursor-pointer font-bold group transition-colors"
-              title="Kembali ke atas"
-            >
-              <ArrowUp className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />
-            </motion.button>
-          )}
-        </AnimatePresence>
+        <BackToTopButton />
 
         {/* Partnership Brief Modal */}
         <AnimatePresence>

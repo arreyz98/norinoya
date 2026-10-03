@@ -1,5 +1,33 @@
 import { Comic, Volume } from '../types/demo';
 
+// Bentuk relasi affiliate link dari payload Laravel. Kunci relasi memakai
+// snake_case ("affiliate_store"), kolomnya juga snake_case ("store_name",
+// "location") sesuai model App\Models\AffiliateLink.
+export interface BookAffiliateLink {
+  id: number;
+  book_id?: number;
+  affiliate_store_id?: number;
+  url: string;
+  store_name?: string;
+  location?: string;
+  affiliate_store?: {
+    id: number;
+    name: string;
+    slug: string;
+    logo_url?: string;
+  };
+}
+
+export interface BookTiktokEmbed {
+  id: number;
+  book_id?: number;
+  name?: string;
+  title?: string;
+  url_video?: string;
+  embed_url?: string;
+  sort_order?: number;
+}
+
 export interface BookModel {
   id: number;
   title: string;
@@ -58,26 +86,10 @@ export interface BookModel {
     id: number;
     name: string;
   }>;
-  affiliateLinks?: Array<{
-    id: number;
-    book_id: number;
-    affiliate_store_id: number;
-    url: string;
-    affiliate_store?: {
-      id: number;
-      name: string;
-      slug: string;
-      logo_url?: string;
-    };
-  }>;
-  tiktokEmbeds?: Array<{
-    id: number;
-    book_id: number;
-    name?: string;
-    url_video?: string;
-    embed_url?: string;
-    sort_order?: number;
-  }>;
+  affiliateLinks?: BookAffiliateLink[];
+  affiliate_links?: BookAffiliateLink[];
+  tiktokEmbeds?: BookTiktokEmbed[];
+  tiktok_embeds?: BookTiktokEmbed[];
 }
 
 /**
@@ -208,7 +220,7 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
         tokopedia: '',
       };
 
-        const rawAffiliateLinks = b.affiliateLinks || (b as any).affiliate_links || [];
+        const rawAffiliateLinks = b.affiliateLinks || b.affiliate_links || [];
         const affiliateLinksList: Array<{
           id: string;
           url: string;
@@ -220,7 +232,7 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
           location?: string;
         }> = [];
 
-        rawAffiliateLinks.forEach((link: any) => {
+        rawAffiliateLinks.forEach((link) => {
           const brand = link.affiliate_store?.name || link.affiliate_store?.slug || '';
           const brandSlug = link.affiliate_store?.slug || brand.toLowerCase().replace(/\s+/g, '-');
           const brandLower = brand.toLowerCase();
@@ -245,7 +257,7 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
 
       const bookImages = b.images && b.images.length > 0 ? b.images.map(img => img.image_url) : (volCover ? [volCover] : []);
 
-      const rawEmbeds = b.tiktokEmbeds || (b as any).tiktok_embeds || [];
+      const rawEmbeds = b.tiktokEmbeds || b.tiktok_embeds || [];
 
       // Volume-specific author extraction
       const volStoryAuthors: string[] = [];
@@ -287,7 +299,7 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
         isUpcoming: Boolean(b.is_upcoming),
         affiliateLinks: affiliateLinksObj,
         affiliateLinksList,
-        tiktokEmbeds: rawEmbeds.map((t: any) => ({
+        tiktokEmbeds: rawEmbeds.map((t) => ({
           id: String(t.id),
           title: t.name || t.title || `Review TikTok`,
           name: t.name || t.title || `Review TikTok`,
@@ -299,9 +311,10 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
     });
 
     // Map reading rating
-    let readingRating: 'Anak & Bimbingan Orang Tua' | 'Remaja' | 'Dewasa Ringan' | 'Dewasa Berat' = 'Remaja';
-    if (['Anak & Bimbingan Orang Tua', 'Remaja', 'Dewasa Ringan', 'Dewasa Berat'].includes(mainBook.age_rating)) {
-      readingRating = mainBook.age_rating as any;
+    type ReadingRating = 'Anak & Bimbingan Orang Tua' | 'Remaja' | 'Dewasa Ringan' | 'Dewasa Berat';
+    let readingRating: ReadingRating = 'Remaja';
+    if ((['Anak & Bimbingan Orang Tua', 'Remaja', 'Dewasa Ringan', 'Dewasa Berat'] as readonly string[]).includes(mainBook.age_rating)) {
+      readingRating = mainBook.age_rating as ReadingRating;
     }
 
     const comicTikTokEmbeds = volumes.flatMap(v => v.tiktokEmbeds || []);

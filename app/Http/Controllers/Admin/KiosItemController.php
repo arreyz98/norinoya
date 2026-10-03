@@ -407,16 +407,16 @@ class KiosItemController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    private function kiosValidationRules(): array
     {
-        $validated = $request->validate([
+        return [
             'title' => 'required|string|max:255',
             'merch_type' => 'required|string|max:50',
             'categories' => 'required|array|min:1',
             'categories.*' => 'string|max:50',
-            'cover_image' => 'nullable|string',
+            'cover_image' => 'nullable|url|max:2048',
             'carousel_images' => 'nullable|array',
-            'carousel_images.*' => 'nullable|string',
+            'carousel_images.*' => 'nullable|url|max:2048',
             'carousel_labels' => 'nullable|array',
             'carousel_labels.*' => 'nullable|string',
             'deskripsi_produk' => 'nullable|string',
@@ -439,11 +439,16 @@ class KiosItemController extends Controller
             'isbn' => 'nullable|string|max:100',
             'release_date' => 'nullable|string|max:100',
             'cetakan_info' => 'nullable|string',
-            'shopee_url' => 'nullable|string',
-            'tokopedia_url' => 'nullable|string',
-            'gramedia_url' => 'nullable|string',
-            'toco_url' => 'nullable|string',
-        ]);
+            'shopee_url' => 'nullable|url|max:2048',
+            'tokopedia_url' => 'nullable|url|max:2048',
+            'gramedia_url' => 'nullable|url|max:2048',
+            'toco_url' => 'nullable|url|max:2048',
+        ];
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate($this->kiosValidationRules());
 
         if (isset($validated['categories']) && is_array($validated['categories'])) {
             $validated['categories'] = array_values(array_unique(array_filter($validated['categories'])));
@@ -490,41 +495,7 @@ class KiosItemController extends Controller
 
     public function update(Request $request, KiosItem $kio)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'merch_type' => 'required|string|max:50',
-            'categories' => 'required|array|min:1',
-            'categories.*' => 'string|max:50',
-            'cover_image' => 'nullable|string',
-            'carousel_images' => 'nullable|array',
-            'carousel_images.*' => 'nullable|string',
-            'carousel_labels' => 'nullable|array',
-            'carousel_labels.*' => 'nullable|string',
-            'deskripsi_produk' => 'nullable|string',
-            'notes' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'original_price' => 'nullable|numeric|min:0',
-            'condition_rating' => 'nullable|string|max:10',
-            'is_preloved' => 'boolean',
-            'is_sold_out' => 'boolean',
-            'rating' => 'nullable|numeric|min:0|max:5',
-            'genres' => 'nullable|array',
-            'genres.*' => 'nullable|string',
-            'kios_partner_id' => 'nullable|exists:kios_partners,id',
-            'publisher_name' => 'nullable|string|max:255',
-            'publisher_id' => 'nullable|string|max:100',
-            'author' => 'nullable|string|max:255',
-            'reading_rating' => 'nullable|string|max:50',
-            'status' => 'nullable|string|max:50',
-            'demographic' => 'nullable|string|max:50',
-            'isbn' => 'nullable|string|max:100',
-            'release_date' => 'nullable|string|max:100',
-            'cetakan_info' => 'nullable|string',
-            'shopee_url' => 'nullable|string',
-            'tokopedia_url' => 'nullable|string',
-            'gramedia_url' => 'nullable|string',
-            'toco_url' => 'nullable|string',
-        ]);
+        $validated = $request->validate($this->kiosValidationRules());
 
         if (isset($validated['categories']) && is_array($validated['categories'])) {
             $validated['categories'] = array_values(array_unique(array_filter($validated['categories'])));

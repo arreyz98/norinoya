@@ -16,8 +16,11 @@ use App\Models\Edition;
 use App\Models\Genre;
 use App\Models\Publisher;
 use App\Models\StoryStatus;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Inertia\Inertia;
@@ -43,17 +46,28 @@ class BookController extends Controller
                 'affiliateLinks',
             ]);
 
-        if ($request->filled('search')) {
-            $search = $request->search;
+        $search = trim((string) $request->input('search', ''));
+
+        if ($search !== '') {
             $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('synopsis', 'like', "%{$search}%")
-                  ->orWhereHas('series', function ($sq) use ($search) {
-                      $sq->where('title', 'like', "%{$search}%");
-                  })
-                  ->orWhereHas('publisher', function ($pq) use ($search) {
-                      $pq->where('name', 'like', "%{$search}%");
-                  });
+                $booleanTerm = $this->fullTextBooleanTerm($search);
+
+                if ($this->fullTextIndexAvailable() && mb_strlen($search) >= 3 && $booleanTerm !== '') {
+                    $q->whereFullText(
+                        ['title', 'synopsis', 'short_description'],
+                        $booleanTerm,
+                        ['mode' => 'boolean']
+                    );
+                } else {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('synopsis', 'like', "%{$search}%");
+                }
+
+                $q->orWhereHas('series', function ($sq) use ($search) {
+                    $sq->where('title', 'like', "%{$search}%");
+                })->orWhereHas('publisher', function ($pq) use ($search) {
+                    $pq->where('name', 'like', "%{$search}%");
+                });
             });
         }
 
@@ -65,27 +79,142 @@ class BookController extends Controller
             $query->where('publisher_id', $request->publisher_id);
         }
 
-        $sort = $request->input('sort', 'latest');
-        if ($sort === 'oldest') {
-            $query->oldest();
-        } else {
-            $query->latest();
+        $sort = (string) $request->input('sort', 'latest');
+
+        match ($sort) {
+            'oldest' => $query->oldest()->orderBy('id'),
+            'title_asc' => $query->orderBy('title')->orderBy('id'),
+            'title_desc' => $query->orderByDesc('title')->orderByDesc('id'),
+            'views_asc' => $query->orderBy('views_count')->orderBy('id'),
+            'views_desc' => $query->orderByDesc('views_count')->orderByDesc('id'),
+            default => $query->latest()->orderByDesc('id'),
+        };
+
+        $perPage = (int) $request->input('per_page', 15);
+
+        if (! in_array($perPage, [10, 15, 25, 50, 100], true)) {
+            $perPage = 15;
         }
 
-        $books = $query->paginate(15)->withQueryString();
+        $books = $query->paginate($perPage)->withQueryString();
 
-        $seriesList = BookSeries::orderBy('title')->get(['id', 'title']);
-        $publishersList = Publisher::orderBy('name')->get(['id', 'name']);
+        $selectedSeries = null;
+
+        if ($request->filled('series_id') && $request->series_id !== 'all') {
+            $selectedSeries = BookSeries::whereKey($request->series_id)->first(['id', 'title']);
+        }
+
+        $selectedPublisher = null;
+
+        if ($request->filled('publisher_id') && $request->publisher_id !== 'all') {
+            $selectedPublisher = Publisher::whereKey($request->publisher_id)->first(['id', 'name']);
+        }
 
         return Inertia::render(
             'Admin/Books/Index',
             [
                 'books' => $books,
-                'seriesList' => $seriesList,
-                'publishersList' => $publishersList,
-                'filters' => (object) $request->only(['search', 'series_id', 'publisher_id', 'sort']),
+                'selectedSeries' => $selectedSeries,
+                'selectedPublisher' => $selectedPublisher,
+                'filters' => (object) $request->only(['search', 'series_id', 'publisher_id', 'sort', 'per_page']),
             ]
         );
+    }
+
+    /**
+     * Return filter options for the async series/publisher comboboxes.
+     */
+    public function filterOptions(\Illuminate\Http\Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'type' => ['required', 'in:series,publisher'],
+            'q' => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $term = trim((string) ($validated['q'] ?? ''));
+
+        if ($validated['type'] === 'series') {
+            $options = BookSeries::query()
+                ->when($term !== '', function ($q) use ($term) {
+                    $q->where('title', 'like', "%{$term}%");
+                })
+                ->orderBy('title')
+                ->limit(25)
+                ->get(['id', 'title'])
+                ->map(fn (BookSeries $series) => [
+                    'value' => (string) $series->id,
+                    'label' => $series->title,
+                ]);
+        } else {
+            $options = Publisher::query()
+                ->when($term !== '', function ($q) use ($term) {
+                    $q->where('name', 'like', "%{$term}%");
+                })
+                ->orderBy('name')
+                ->limit(25)
+                ->get(['id', 'name'])
+                ->map(fn (Publisher $publisher) => [
+                    'value' => (string) $publisher->id,
+                    'label' => $publisher->name,
+                ]);
+        }
+
+        return response()->json(['data' => $options->values()]);
+    }
+
+    /**
+     * Remove the given books in a single request.
+     */
+    public function bulkDestroy(\Illuminate\Http\Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array', 'min:1', 'max:100'],
+            'ids.*' => ['integer', 'distinct', 'exists:books,id'],
+        ]);
+
+        $books = Book::whereIn('id', $validated['ids'])->get();
+
+        DB::transaction(function () use ($books) {
+            foreach ($books as $book) {
+                $book->forceDelete();
+            }
+        });
+
+        return redirect()
+            ->back(fallback: route('admin.books.index'))
+            ->with('success', $books->count().' buku berhasil dihapus.');
+    }
+
+    private function fullTextIndexAvailable(): bool
+    {
+        if (! in_array(DB::connection()->getDriverName(), ['mysql', 'mariadb'], true)) {
+            return false;
+        }
+
+        return Cache::remember(
+            'books_fulltext_index',
+            now()->addHour(),
+            fn () => Schema::hasIndex('books', 'books_search_fulltext')
+        );
+    }
+
+    private function fullTextBooleanTerm(string $search): string
+    {
+        $terms = preg_split('/\s+/u', $search, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+        $terms = array_map(function ($term) {
+            $cleaned = preg_replace('/[+\-><()~*"@\\\\]+/u', ' ', $term);
+
+            return trim(is_string($cleaned) ? $cleaned : '');
+        }, $terms);
+
+        $terms = array_values(array_filter($terms, fn ($term) => mb_strlen($term) >= 3));
+
+        if ($terms === []) {
+            return '';
+        }
+
+        return implode(' ', array_map(fn ($term) => $term.'*', $terms));
     }
 
     /**
@@ -984,12 +1113,12 @@ class BookController extends Controller
     {
         $book->forceDelete();
 
-        return to_route(
-            'admin.books.index'
-        )->with(
-            'success',
-            'Buku berhasil dihapus.'
-        );
+        return redirect()
+            ->back(fallback: route('admin.books.index'))
+            ->with(
+                'success',
+                'Buku berhasil dihapus.'
+            );
     }
 
     /**

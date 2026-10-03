@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Head, router } from '@inertiajs/react';
-import {
-  BookOpen, ShoppingBag, Newspaper, Store, Handshake, Bookmark
-} from 'lucide-react';
+import { Handshake } from 'lucide-react';
 
 import EtalaseCatalog, { RawKiosItem } from './components/EtalaseCatalog';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer'
 import ModalKolaborasi from './components/ModalKolaborasi';
 import LoadingKios from './components/SkeletonLoading/LoadingKios';
-import { useBookmarks } from '../../utils/bookmarkStorage';
+import BackToTopButton from './components/BackToTopButton';
 import { usePageLoading } from '../../hooks/use-page-loading';
 
 
@@ -66,8 +64,6 @@ export default function KiosPage({
     }
   }, [darkMode]);
 
-  const { counts } = useBookmarks();
-
   const handleNavHome = () => {
     router.visit('/');
   };
@@ -82,11 +78,7 @@ export default function KiosPage({
   };
 
   const handleNavAbout = () => {
-    router.visit('/#about');
-  };
-
-  const handleNavBookmark = () => {
-    router.visit('/bookmark');
+    router.visit('/?scroll=about');
   };
 
   const activeKiosItem = selectedSaleId ? kiosItems.find(k => String(k.id) === selectedSaleId) : null;
@@ -96,7 +88,7 @@ export default function KiosPage({
   const pageDesc = activeKiosItem
     ? (activeKiosItem.deskripsi_produk || activeKiosItem.notes || `Beli ${activeKiosItem.title} resmi / preloved di Kios Norinoya`).slice(0, 160)
     : 'Kios merchandise resmi, preloved mulus terverifikasi, komik, manga, light novel, dan official apparel mitra partner Norinoya.';
-  const pageImage = activeKiosItem?.cover_image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80';
+  const pageImage = activeKiosItem?.cover_image || '/favicon.png';
 
   return (
     <div className="bg-[#FEFFFE] dark:bg-[#202120] min-h-screen text-neutral-950 dark:text-neutral-50 selection:bg-neutral-900 dark:selection:bg-neutral-100 selection:text-white dark:selection:text-neutral-900 flex flex-col justify-between font-sans">
@@ -139,10 +131,10 @@ export default function KiosPage({
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-500/10 dark:from-amber-500/15 via-transparent to-transparent pointer-events-none" />
                   <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-emerald-500/10 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
-                  <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-amber-50 dark:bg-amber-950/40 border border-amber-200/60 dark:border-amber-700/40 text-amber-900 dark:text-amber-300 text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase rounded-full shadow-2xs">
-                    <Store className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                    <span>KOLABORASI PARTNER RESMI</span>
-                  </span>
+                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-neutral-100 dark:bg-white/10 border border-neutral-200 dark:border-white/20 text-neutral-800 dark:text-white text-[10px] sm:text-[11px] font-mono font-bold tracking-widest uppercase rounded-full">
+                  <Handshake className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#DA6B1C] dark:text-[#DA6B1C] fill-[#DA6B1C]/10 dark:fill-[#DA6B1C]/20" />
+                  <span>KOLABORASI PARTNER RESMI</span>
+                </span>
 
                   <h1 className="text-3xl md:text-5xl font-sans font-black tracking-tight uppercase leading-none max-w-4xl text-neutral-950 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-neutral-100 dark:to-neutral-300">
                     KIOS
@@ -208,40 +200,17 @@ export default function KiosPage({
       <Footer
         onNavigateHome={handleNavHome}
         onNavigateAbout={handleNavAbout}
+        darkMode={darkMode}
       />
-
-      {/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-sm bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-700/80 shadow-[0_10px_30px_rgba(0,0,0,0.08)] rounded-2xl z-[60] flex items-center justify-around py-2.5 px-3 mb-safe">
-        <button onClick={handleNavHome} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
-          <BookOpen className="w-4.5 h-4.5 mb-0.5" />
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">Home</span>
-        </button>
-        <button onClick={handleNavEtalase} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-950 dark:text-white font-extrabold bg-neutral-100/90 dark:bg-neutral-700">
-          <ShoppingBag className="w-4.5 h-4.5 mb-0.5" />
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">Kios</span>
-        </button>
-        <button onClick={handleNavNews} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
-          <Newspaper className="w-4.5 h-4.5 mb-0.5" />
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">News</span>
-        </button>
-        <button onClick={handleNavBookmark} className="flex flex-col items-center justify-center py-1.5 rounded-xl select-none transition-all flex-1 cursor-pointer text-neutral-400 dark:text-neutral-400">
-          <span className="relative flex items-center justify-center mb-0.5">
-            <Bookmark className="w-4.5 h-4.5" />
-            {counts.total > 0 && (
-              <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-1 flex items-center justify-center rounded-full bg-[#DA6B1C] text-white text-[9px] font-bold leading-none tabular-nums ring-2 ring-white/95 dark:ring-neutral-800/95">
-                {counts.total > 99 ? '99+' : counts.total}
-              </span>
-            )}
-          </span>
-          <span className="text-xs font-sans font-bold leading-none tracking-tight">Bookmark</span>
-        </button>
-      </div>
 
       {/* Modal Kolaborasi Partnership */}
       <ModalKolaborasi
         isOpen={showPartnershipModal}
         onClose={() => setShowPartnershipModal(false)}
       />
+
+      {/* Floating Back to Top Button */}
+      <BackToTopButton />
     </div>
   );
 }

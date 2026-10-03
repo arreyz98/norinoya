@@ -12,7 +12,7 @@ import {
   BookOpen, BookMarked, BookText, Ticket, Mic, Tv, Gamepad2, X,
   Search, ChevronLeft, ChevronRight
 } from 'lucide-react';
-import { COMICS_DATA, PRE_OWNED_ITEMS } from '../../../types/mockData';
+import { COMICS_DATA } from '../../../types/mockData';
 import { NewsUpdate, Comic, Volume } from '../../../types/demo';
 import { RawKiosItem } from './EtalaseCatalog';
 import { VideoShortItem } from '../home';
@@ -389,12 +389,12 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
             loading="lazy"
             decoding="async"
             referrerPolicy="no-referrer"
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=80';
-            }}
-            className="w-full h-auto object-contain max-h-[500px] hover:scale-[1.01] transition-transform duration-300"
-          />
+             onError={(e) => {
+               e.currentTarget.onerror = null;
+               e.currentTarget.style.display = 'none';
+             }}
+             className="w-full h-auto object-contain max-h-[500px] hover:scale-[1.01] transition-transform duration-300"
+           />
           {isDetail && post.hashTags && post.hashTags.length > 0 && (
             <div className="absolute bottom-3 right-3 flex gap-1.5 flex-wrap">
               {post.hashTags.map((tag, i) => (
@@ -434,10 +434,10 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
                   loading="lazy"
                   decoding="async"
                   referrerPolicy="no-referrer"
-                  onError={(e) => {
+                onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=80';
-                  }}
+                    e.currentTarget.style.display = 'none';
+                }}
                   className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-300"
                 />
                 {isFourthAndExtra && (
@@ -503,7 +503,7 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
         const bookImages = book.images as Array<{ image_url?: string; file_path?: string }> | undefined;
         const coverImg = (bookImages && bookImages.length > 0)
           ? (bookImages[0].image_url || bookImages[0].file_path)
-          : 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300&auto=format&fit=crop&q=80';
+          : null;
 
         const ageRatingObj = book.age_rating as { name?: string } | string | undefined;
         const ageRatingName = typeof ageRatingObj === 'object' ? ageRatingObj?.name : ageRatingObj;
@@ -651,7 +651,7 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
         const cover = (item.cover_image as string) 
           || (carouselImgs && carouselImgs.length > 0 ? carouselImgs[0] : null)
           || (linkedBook?.images && linkedBook.images.length > 0 ? (linkedBook.images[0].image_url || linkedBook.images[0].file_path) : null)
-          || 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300&auto=format&fit=crop&q=80';
+          || null;
 
         const partnerObj = item.kios_partner as { name?: string } | undefined;
 
@@ -674,44 +674,16 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
         };
       });
 
-      const filtered = mapped.filter((_, idx) => scoredDbItems[idx].score > 0);
+      const filtered = mapped.filter((_, idx) => scoredDbItems[idx].score > 0 && !scoredDbItems[idx].item.is_sold_out);
       if (filtered.length > 0) {
         return filtered.slice(0, 3);
       }
-      return mapped.slice(0, 3);
+      const available = mapped.filter((_, idx) => !scoredDbItems[idx].item.is_sold_out);
+      const availableList = available.length > 0 ? available : mapped;
+      return availableList.slice(0, 3);
     }
 
-    const matched = PRE_OWNED_ITEMS.filter(item => {
-      const titleLower = item.comicTitle.toLowerCase();
-      const notesLower = item.notes.toLowerCase();
-
-      if (postText.includes('frieren') && titleLower.includes('frieren')) return true;
-      if (postText.includes('naruto') && titleLower.includes('naruto')) return true;
-      if (postText.includes('solo') && titleLower.includes('solo')) return true;
-      if (postText.includes('spy') && titleLower.includes('spy')) return true;
-
-      return titleLower.split(' ').some(w => w.length > 3 && postText.includes(w)) || notesLower.includes(postText);
-    });
-
-    const fallbackList = matched.length > 0 ? matched.slice(0, 2) : PRE_OWNED_ITEMS.slice(0, 2);
-
-    return fallbackList.map(item => ({
-      id: item.id,
-      title: item.comicTitle,
-      slug: (item as unknown as { slug?: string }).slug || item.id,
-      comic_title: item.comicTitle,
-      vol_number: item.volumeNumber,
-      condition_rating: item.conditionRating,
-      notes: item.notes,
-      price: item.salePrice,
-      original_price: item.originalPrice,
-      cover_image: item.coverImage || '',
-      shopee_url: item.shopeeUrl || '',
-      tokopedia_url: item.tokopediaUrl || '',
-      gramedia_url: '',
-      toco_url: '',
-      kios_partner: { name: 'Konotasi Store' },
-    }));
+    return [];
   }, [activePost, dbKiosList]);
 
   const selectPost = (post: NewsUpdate | null) => {

@@ -1,1 +1,0 @@
-import{r as s,S as i}from"./app-DY4sDn0u.js";const u=150;function l(){const[o,e]=s.useState(!1);return s.useEffect(()=>{let t=null;const n=()=>{t&&(clearTimeout(t),t=null)},r=i.on("start",()=>{n(),t=setTimeout(()=>e(!0),u)}),a=i.on("finish",()=>{n(),e(!1)});return()=>{n(),r(),a()}},[]),o}export{l as u};

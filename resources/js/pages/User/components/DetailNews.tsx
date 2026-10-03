@@ -158,9 +158,12 @@ export default function DetailNews({
   const metaDesc = (activePost?.content || 'Baca update berita dan artikel terbaru seputar manga, anime, dan pop culture di Norinoya.').replace(/<[^>]*>/g, '').slice(0, 160);
   const metaImage = activePost?.attachedImage || '';
 
-  return (
+  if (!activePost) return null;
+
+   return (
     <div className="w-full max-w-6xl mx-auto relative -mt-4 sm:-mt-6">
-      <Head title={metaTitle}>
+      <Head>
+        <title>{metaTitle}</title>
         <meta name="description" content={metaDesc} />
         <meta property="og:site_name" content="Norinoya" />
         <meta property="og:title" content={metaTitle} />
@@ -172,8 +175,33 @@ export default function DetailNews({
         <meta name="twitter:description" content={metaDesc} />
         {metaImage && <meta name="twitter:image" content={metaImage} />}
         <meta name="theme-color" content="#E53935" />
-      </Head>
-      {/* Full-width Fixed Top Navigation Bar */}
+        <link rel="canonical" href={`${window.location.origin}/news/${activePost.slug || activePost.id}`} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'NewsArticle',
+            headline: activePost.title,
+             datePublished: activePost.createdAt || activePost.timestamp,
+             dateModified: activePost.createdAt || activePost.timestamp,
+            ...(activePost.username ? { author: { '@type': 'Person', name: activePost.displayName || activePost.username } } : {}),
+            ...(metaImage ? { image: [metaImage] } : {}),
+            articleSection: activePost.category,
+            ...(activePost.content ? { description: activePost.content.replace(/<[^>]*>/g, '').slice(0, 160) } : {}),
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Beranda', item: `${window.location.origin}/` },
+              { '@type': 'ListItem', position: 2, name: 'Berita', item: `${window.location.origin}/news` },
+              { '@type': 'ListItem', position: 3, name: activePost.title, item: `${window.location.origin}/news/${activePost.slug || activePost.id}` },
+            ],
+          })}
+        </script>
+       </Head>
+       {/* Full-width Fixed Top Navigation Bar */}
       <div className="fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">
         <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
           <button
@@ -331,9 +359,9 @@ export default function DetailNews({
                   );
                 })()}
 
-                <h2 className="text-xl sm:text-2xl font-extrabold text-neutral-900 dark:text-neutral-50 leading-tight">
-                  {activePost.title}
-                </h2>
+                 <h1 className="text-xl sm:text-2xl font-extrabold text-neutral-900 dark:text-neutral-50 leading-tight">
+                   {activePost.title}
+                 </h1>
               </div>
 
               {/* Body Paragraph */}
@@ -399,9 +427,9 @@ export default function DetailNews({
 
                       // Cover Image utama milik buku
                       const imagesArr = matchedDbBook?.images as Array<{ image_url?: string; file_path?: string }> | undefined;
-                      const coverImg = (imagesArr && imagesArr.length > 0)
-                        ? (imagesArr[0].image_url || imagesArr[0].file_path)
-                        : (matchedMockComic?.coverImage || rec.shortReview?.thumbnail || 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300&auto=format&fit=crop&q=80');
+                       const coverImg = (imagesArr && imagesArr.length > 0)
+                         ? (imagesArr[0].image_url || imagesArr[0].file_path)
+                         : (matchedMockComic?.coverImage || rec.shortReview?.thumbnail || null);
 
                       // TikTok video matching from book's tiktok embeds or specific id
                       const tiktokEmbedsArr = matchedDbBook?.tiktok_embeds as Array<{ id?: string | number; name?: string; url_video?: string }> | undefined;
@@ -453,13 +481,19 @@ export default function DetailNews({
                               <div>
                                 {/* Top Cover Image with Badges */}
                                 <div className="relative w-full h-48 sm:h-52 bg-neutral-900 overflow-hidden shrink-0">
-                                  <img
-                                    src={coverImg}
-                                    alt={bookTitle}
-                                    loading="lazy"
-                                    decoding="async"
-                                    className="w-full h-full object-cover object-top group-hover/kat:scale-105 transition-transform duration-300"
-                                  />
+                                  {coverImg ? (
+                                    <img
+                                      src={coverImg}
+                                      alt={bookTitle}
+                                      loading="lazy"
+                                      decoding="async"
+                                      className="w-full h-full object-cover object-top group-hover/kat:scale-105 transition-transform duration-300"
+                                    />
+                                  ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-neutral-600 dark:text-neutral-400 text-xs font-mono">
+                                      No Image
+                                    </div>
+                                  )}
                                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
 
                                   {/* Bottom Badges */}
@@ -822,19 +856,19 @@ export default function DetailNews({
                  {relevantCatalogItems.map(({ comic, vol }, idx) => (
                    <div
                      key={`${comic.id}-${vol.volNumber}-${idx}`}
-                     onClick={() => {
-                       if (comic.slug) {
-                         router.visit(`/buku/${comic.slug}`);
-                       } else if (onNavigateToComic && comic.id) {
-                         onNavigateToComic(comic.id);
-                       } else if (comic.id) {
-                         window.location.href = `/#/database/${comic.id}`;
-                       } else if (onNavigateToCatalog) {
-                         onNavigateToCatalog();
-                       } else {
-                         triggerToast(`📚 Membuka Katalog: ${comic.title} Vol ${vol.volNumber}`);
-                       }
-                     }}
+                      onClick={() => {
+                        if (comic.slug) {
+                          router.visit(`/buku/${comic.slug}`);
+                        } else if (onNavigateToComic && comic.id) {
+                          onNavigateToComic(comic.id);
+                        } else if (comic.id) {
+                          router.visit(`/buku/${comic.id}`);
+                        } else if (onNavigateToCatalog) {
+                          onNavigateToCatalog();
+                        } else {
+                          triggerToast(`📚 Membuka Katalog: ${comic.title} Vol ${vol.volNumber}`);
+                        }
+                      }}
                      className="flex gap-3 p-2.5 rounded-xl bg-neutral-50 dark:bg-[#1A2321] hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200/60 dark:border-emerald-500/20 transition-all cursor-pointer group/kat hover:shadow-xs active:scale-[0.99]"
                    >
                       <img
@@ -873,29 +907,30 @@ export default function DetailNews({
              </div>
            )}
 
-           {/* WIDGET 2: PRODUK TERKAIT (KOMIK & MERCHANDISE RELEVAN) */}
-           <div className="bg-white dark:bg-[#202120] rounded-2xl p-4 sm:p-5 border border-neutral-200/85 dark:border-neutral-800 shadow-xs flex flex-col gap-3.5">
-             <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-neutral-200/80 dark:border-neutral-800">
-               <div className="flex items-center gap-2">
-                 <ShoppingBag className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                 <h3 className="text-xs font-mono font-extrabold text-neutral-900 dark:text-neutral-100 uppercase tracking-wider">
-                   Produk Terkait
-                 </h3>
-               </div>
-               <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                 Kios
-               </span>
-             </div>
+            {/* WIDGET 2: PRODUK TERKAIT (KOMIK & MERCHANDISE RELEVAN) */}
+            {relevantKiosItems && relevantKiosItems.length > 0 && (
+            <div className="bg-white dark:bg-[#202120] rounded-2xl p-4 sm:p-5 border border-neutral-200/85 dark:border-neutral-800 shadow-xs flex flex-col gap-3.5">
+              <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-neutral-200/80 dark:border-neutral-800">
+                <div className="flex items-center gap-2">
+                  <ShoppingBag className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                  <h3 className="text-xs font-mono font-extrabold text-neutral-900 dark:text-neutral-100 uppercase tracking-wider">
+                    Produk Terkait
+                  </h3>
+                </div>
+                <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                  Kios
+                </span>
+              </div>
 
-             <div className="flex flex-col gap-3">
-               {relevantKiosItems.map((kiosItem, idx) => {
-                 const coverImage = kiosItem.cover_image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&auto=format&fit=crop&q=80';
-                 const title = kiosItem.comic_title || kiosItem.title;
-                 const volText = kiosItem.vol_number ? `Vol ${kiosItem.vol_number}` : '';
-                 const salePrice = Number(kiosItem.price) || 0;
-                 const origPrice = Number(kiosItem.original_price) || 0;
-                 const rating = kiosItem.condition_rating || 'Tersedia';
-                 const partnerName = kiosItem.publisher_name || 'Konotasi Store';
+              <div className="flex flex-col gap-3">
+                {relevantKiosItems.map((kiosItem, idx) => {
+                  const coverImage = kiosItem.cover_image || null;
+                  const title = kiosItem.comic_title || kiosItem.title || 'Tanpa Judul';
+                  const volText = kiosItem.vol_number ? `Vol ${kiosItem.vol_number}` : '';
+                  const salePrice = Number(kiosItem.price) || 0;
+                  const origPrice = Number(kiosItem.original_price) || 0;
+                  const rating = kiosItem.condition_rating || '';
+                  const partnerName = kiosItem.publisher_name || '';
 
                  return (
                    <div
@@ -907,23 +942,31 @@ export default function DetailNews({
                      className="p-3 rounded-xl bg-emerald-950/5 dark:bg-emerald-950/20 border border-emerald-500/25 dark:border-emerald-500/20 flex flex-col gap-2.5 cursor-pointer group/kios hover:border-emerald-500 transition-all hover:shadow-xs active:scale-[0.99]"
                    >
                      <div className="flex gap-3">
-                       <div className="relative shrink-0">
-                          <img
-                            src={coverImage}
-                            alt={title}
-                            loading="lazy"
-                            decoding="async"
-                            className="w-15 h-20 object-cover rounded-lg border border-emerald-500/30 shadow-2xs group-hover/kios:scale-103 transition-transform"
-                         />
-                         <span className="absolute top-1 left-1 px-1.5 py-0.2 rounded text-[8px] font-mono font-extrabold bg-emerald-600 text-white shadow-xs">
-                           {rating}
-                         </span>
-                       </div>
-                       <div className="flex flex-col justify-between flex-1 min-w-0">
-                         <div>
-                           <div className="text-[10px] font-sans font-semibold text-emerald-600 dark:text-emerald-400 truncate">
-                             {partnerName}
-                           </div>
+                        <div className="relative shrink-0">
+                           {coverImage ? (
+                             <img
+                               src={coverImage}
+                               alt={title}
+                               loading="lazy"
+                               decoding="async"
+                               className="w-15 h-20 object-cover object-top rounded-lg border border-emerald-500/30 shadow-2xs group-hover/kios:scale-103 transition-transform"
+                             />
+                           ) : (
+                             <div className="w-15 h-20 bg-neutral-200 dark:bg-neutral-700 rounded-lg border border-neutral-200 dark:border-neutral-700" />
+                            )}
+                           {rating && (
+                           <span className="absolute top-1 left-1 px-1.5 py-0.2 rounded text-[8px] font-mono font-extrabold bg-emerald-600 text-white shadow-xs">
+                             {rating}
+                           </span>
+                           )}
+                        </div>
+                        <div className="flex flex-col justify-between flex-1 min-w-0">
+                          <div>
+                            {partnerName && (
+                            <div className="text-[10px] font-sans font-semibold text-emerald-600 dark:text-emerald-400 truncate">
+                              {partnerName}
+                            </div>
+                            )}
                            <h4 className="text-xs font-extrabold text-neutral-900 dark:text-neutral-100 line-clamp-1 group-hover/kios:text-emerald-600 dark:group-hover/kios:text-emerald-400 transition-colors">
                              {title} {volText}
                            </h4>
@@ -931,25 +974,32 @@ export default function DetailNews({
                              {kiosItem.notes || kiosItem.deskripsi_produk || kiosItem.synopsis || ''}
                            </p>
                          </div>
-                         <div className="flex items-baseline gap-2 mt-1">
-                           <span className="text-xs font-mono font-black text-emerald-600 dark:text-emerald-400">
-                             Rp {salePrice.toLocaleString('id-ID')}
-                           </span>
-                           {origPrice > salePrice && (
-                             <span className="text-[10px] font-mono text-neutral-400 line-through">
-                               Rp {origPrice.toLocaleString('id-ID')}
-                             </span>
-                           )}
-                         </div>
+                          <div className="flex items-baseline gap-2 mt-1">
+                            {salePrice > 0 ? (
+                              <span className="text-xs font-mono font-black text-emerald-600 dark:text-emerald-400">
+                                Rp {salePrice.toLocaleString('id-ID')}
+                              </span>
+                            ) : (
+                              <span className="text-xs font-mono font-black text-neutral-400">
+                                Hubungi partner
+                              </span>
+                            )}
+                            {origPrice > salePrice && salePrice > 0 && (
+                              <span className="text-[10px] font-mono text-neutral-400 line-through">
+                                Rp {origPrice.toLocaleString('id-ID')}
+                              </span>
+                            )}
+                          </div>
                        </div>
                      </div>
                    </div>
                  );
-               })}
-             </div>
-           </div>
+                })}
+              </div>
+            </div>
+            )}
 
-           {/* WIDGET 3: SPONSORED ADSENSE */}
+            {/* WIDGET 3: SPONSORED ADSENSE */}
            <div className="rounded-2xl bg-white dark:bg-[#202120] p-5 sm:p-6 border border-dashed border-neutral-300 dark:border-neutral-700/80 text-center flex flex-col items-center justify-center gap-3 transition-all">
              <div className="flex items-center justify-center gap-1.5 text-neutral-400 dark:text-neutral-500">
                <span className="text-sm">📣</span>

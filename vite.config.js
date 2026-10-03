@@ -40,4 +40,25 @@ export default defineConfig({
             ],
         },
     },
+    build: {
+        cssCodeSplit: true,
+        chunkSizeWarningLimit: 600,
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('motion')) return 'vendor-motion';
+                        if (id.includes('lucide-react')) return 'vendor-lucide';
+                        if (id.includes('@tiptap')) return 'vendor-tiptap';
+                        if (id.includes('date-fns') || id.includes('react-day-picker')) return 'vendor-date';
+                        if (id.includes('@radix-ui') || id.includes('@headlessui') || id.includes('cmdk') || id.includes('sonner')) return 'vendor-ui';
+                        if (id.includes('react') || id.includes('@inertiajs') || id.includes('ziggy-js')) return 'vendor-react';
+                        return 'vendor';
+                    }
+                    // Pisahkan halaman admin (berat: tiptap, editor) dari bundle user
+                    if (id.includes('resources/js/pages/Admin')) return 'admin-pages';
+                },
+            },
+        },
+    },
 });
