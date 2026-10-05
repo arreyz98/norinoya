@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Tes Isolasi Embed YouTube - Norinoya</title>
+  <style>
+    body { background:#111; color:#eee; font:14px/1.6 system-ui, sans-serif; padding:24px; }
+    .wrap { max-width:900px; margin:0 auto; }
+    h1 { font-size:18px; }
+    h2 { font-size:14px; margin-top:28px; }
+    .note { color:#aaa; font-size:12px; }
+    code { background:#222; padding:2px 6px; border-radius:4px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Tes Isolasi Embed YouTube</h1>
+    <p class="note">
+      PENTING: buka halaman ini lewat HTTP (contoh: <code>http://localhost:8000/test-embed.html</code> atau
+      <code>http://127.0.0.1:8000/test-embed.html</code>) — JANGAN dobel-klik file (file://),
+      karena tanpa referer YouTube pasti error 153.
+    </p>
+
+    <h2>A. Video umum via youtube.com — untuk menguji apakah SEMUA video YouTube gagal di origin ini</h2>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/jNQXAC9IVRw"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    <h2>B. Video Muse (Frieren) via youtube.com — video yang bermasalah</h2>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/n3dEvVDH4rA"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    <h2>C. Video Muse (Frieren) via youtube-nocookie.com — domain embed alternatif</h2>
+    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/n3dEvVDH4rA"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    <h2>D. Playlist (contoh kode embed yang Anda pakai) via youtube.com</h2>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLPanbgyToztZ7OBDPkXwBuhPvgd5OBZ70"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+</body>
+</html>

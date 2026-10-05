@@ -1,5 +1,5 @@
 import { router } from '@inertiajs/react';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, X } from 'lucide-react';
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -1289,12 +1289,27 @@ export default function BookForm({
                             <div className="flex-1 space-y-2">
                                 <Label>Gambar {index + 1}</Label>
 
-                                <Input
-                                    {...getFieldProps(`images.${index}.image_url`)}
-                                    value={image.image_url}
-                                    onChange={(event) => updateImage(index, event.target.value)}
-                                    placeholder="https://example.com/image.jpg"
-                                />
+                                <div className="relative">
+                                    <Input
+                                        {...getFieldProps(`images.${index}.image_url`, [], 'pr-10')}
+                                        value={image.image_url}
+                                        onChange={(event) => updateImage(index, event.target.value)}
+                                        placeholder="https://example.com/image.jpg"
+                                    />
+
+                                    {image.image_url.trim() !== '' && (
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="icon"
+                                            aria-label={`Kosongkan link gambar ${index + 1}`}
+                                            onClick={() => updateImage(index, '')}
+                                            className="text-muted-foreground hover:text-foreground absolute top-1/2 right-1 size-8 -translate-y-1/2"
+                                        >
+                                            <X className="size-4" />
+                                        </Button>
+                                    )}
+                                </div>
 
                                 <FieldError field={`images.${index}.image_url`} errors={activeErrors} />
 
@@ -1316,15 +1331,11 @@ export default function BookForm({
                             </div>
 
                             <div className="flex items-end">
-                                <Button
-                                    type="button"
-                                    variant="destructive"
-                                    size="icon"
-                                    disabled={form.images.length === 1}
-                                    onClick={() => removeImage(index)}
-                                >
-                                    <Trash2 className="size-4" />
-                                </Button>
+                                {form.images.length > 1 && (
+                                    <Button type="button" variant="destructive" size="icon" onClick={() => removeImage(index)}>
+                                        <Trash2 className="size-4" />
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     ))}

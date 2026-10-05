@@ -42,7 +42,6 @@ export default function DetailBuku({
   const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
   const [unlockedComics, setUnlockedComics] = useState<Record<string, boolean>>({});
   const [kiosCandidates, setKiosCandidates] = useState<RawKiosItem[]>([]);
-  const [liveViewsCount, setLiveViewsCount] = useState<number | null>(null);
 
   // Cache kios results per book title so reopening the same book does not refetch.
   const kiosTitleCacheRef = useRef<Map<string, RawKiosItem[]>>(new Map());
@@ -75,23 +74,7 @@ export default function DetailBuku({
       scrollableContainerRef.current.scrollTop = 0;
     }
 
-    // Smooth scroll to position the main comic detail card nicely below the sticky top headers
-    const scrollToTarget = () => {
-      const cardEl = document.getElementById('comic-detail-card');
-      if (cardEl) {
-        const cardTop = cardEl.getBoundingClientRect().top + window.pageYOffset;
-        const headerOffset = 120;
-        window.scrollTo({
-          top: Math.max(0, cardTop - headerOffset),
-          behavior: 'smooth'
-        });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    };
-
-    const timer = setTimeout(scrollToTarget, 60);
-    return () => clearTimeout(timer);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [selectedComic?.id, activeVolumeNum]);
 
   // Urutan volume sudah ditentukan admin lewat kolom sort_order (lihat mapBooksToComic),
@@ -130,16 +113,10 @@ export default function DetailBuku({
         slug: selectedComic?.slug,
       }),
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.success && typeof data.views_count === 'number') {
-          setLiveViewsCount(data.views_count);
-        }
-      })
       .catch(() => {
         // Silently catch network errors
       });
-  }, [selectedComic?.id, activeVolObj?.id, activeVolumeNum]);
+  }, [selectedComic?.id, selectedComic?.bookId, selectedComic?.slug, activeVolObj?.id, activeVolObj?.bookId, activeVolumeNum]);
 
   const activeVolumeCover = selectedComic
     ? (activeVolObj?.coverImage || selectedComic.coverImage)
@@ -423,7 +400,6 @@ export default function DetailBuku({
   const canonicalUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/buku/${selectedComic.slug || selectedComic.id}`
     : `/buku/${selectedComic.slug || selectedComic.id}`;
-  const displayViews = liveViewsCount ?? activeVolObj?.views_count ?? selectedComic?.views_count ?? null;
 
    return (
     <div className="w-full bg-white dark:bg-neutral-950 flex flex-col min-h-screen" ref={scrollableContainerRef}>
@@ -547,7 +523,7 @@ export default function DetailBuku({
 
             <div className="w-full h-fit lg:max-w-[92%] xl:max-w-7xl mx-auto px-3 sm:px-6 lg:px-24 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-neutral-950">
               {/* Title Header with Gradient */}
-              <div id="comic-detail-card" className="bg-neutral-50/80 dark:bg-[#0F0F0F] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
+              <div id="comic-detail-card" className=" dark:bg-[#0F0F0F] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
 
               {/* Left Column: Interactive Slide Carousel Portfolio Component */}
               <div className="flex flex-col gap-3 shrink-0 w-full md:w-80">

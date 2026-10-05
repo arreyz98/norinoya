@@ -858,10 +858,6 @@ const getReadingRatingStyle = (rating?: string) => {
     return uniquePublishers.size;
   }, [totalPublishersCount, dynamicPublishers, activeComics]);
 
-
-
-
-
   return (
     <div className="space-y-6" id="marketplace-search-section">
       {!selectedComic && (
@@ -1545,8 +1541,7 @@ const getReadingRatingStyle = (rating?: string) => {
                           </div>
                         </div>
                       )}
-                      {/* Dark overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/10 z-10 pointer-events-none transition-opacity duration-300 group-hover:opacity-85" />
+                    
 
                       {/* Bottom Quick Category & Age Rating Overlay */}
                       <div className="absolute bottom-2 left-2 z-20 flex items-center gap-1 pointer-events-none">

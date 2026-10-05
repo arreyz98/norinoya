@@ -367,7 +367,7 @@ export default function DetailNews({
               {/* Body Paragraph */}
               {activePost.content && (
                 <div
-                  className="whitespace-pre-line [&_p:empty]:min-h-[1.5rem] text-xs sm:text-sm text-neutral-700 dark:text-[#c0d6d8] leading-relaxed font-sans bg-neutral-50 dark:bg-[#202120] p-4 sm:p-5 rounded-xl border border-neutral-100 dark:border-neutral-800 prose dark:prose-invert max-w-none prose-sm prose-p:my-2.5 prose-p:leading-relaxed prose-headings:mt-4 prose-headings:mb-2 text-justify"
+                  className="whitespace-pre-line [&_p:empty]:min-h-[1.5rem] text-xs sm:text-sm text-neutral-700 dark:text-[#c0d6d8] leading-relaxed font-sans bg-neutral-50 dark:bg-[#202120] p-4 sm:p-5 rounded-xl border border-neutral-100 dark:border-neutral-800 prose dark:prose-invert max-w-none prose-sm prose-p:my-2.5 prose-p:leading-relaxed prose-headings:mt-4 prose-headings:mb-2 text-justify [&_a]:font-semibold [&_a]:text-emerald-700 [&_a]:underline [&_a]:decoration-emerald-600/50 [&_a]:underline-offset-2 [&_a]:break-words hover:[&_a]:text-emerald-800 dark:[&_a]:text-emerald-400 dark:[&_a]:decoration-emerald-400/50 dark:hover:[&_a]:text-emerald-300 [&_iframe]:my-4 [&_iframe]:max-w-full"
                   dangerouslySetInnerHTML={{ __html: activePost.content }}
                 />
               )}
@@ -811,7 +811,7 @@ export default function DetailNews({
                                 {post.title}
                               </h4>
                               <p className="text-[11px] text-neutral-500 dark:text-neutral-400 line-clamp-2 leading-relaxed">
-                                {post.content}
+                                {(post.content || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
                               </p>
                             </div>
                             <div className="pt-3.5 flex items-center gap-1 text-[10px] font-bold text-[#112A12] dark:text-[#112A12] font-mono">
