@@ -152,12 +152,12 @@
     "src": "public/assets/images/white.svg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-D4UZ6-Jg.css",
+    "file": "assets/app-BUdeHFGs.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-CNUYcKXv.js",
+    "file": "assets/app-5c_elpeK.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -256,11 +256,11 @@
       "resources/js/pages/welcome.tsx"
     ],
     "css": [
-      "assets/app-D4UZ6-Jg.css"
+      "assets/app-BUdeHFGs.css"
     ]
   },
   "resources/js/pages/User/bookmark.tsx": {
-    "file": "assets/bookmark-BNDMr7Kf.js",
+    "file": "assets/bookmark-Fewbpq02.js",
     "name": "bookmark",
     "src": "resources/js/pages/User/bookmark.tsx",
     "isDynamicEntry": true,
@@ -289,7 +289,7 @@
     ]
   },
   "resources/js/pages/User/components/BackToTopButton.tsx": {
-    "file": "assets/BackToTopButton-C__dFk8s.js",
+    "file": "assets/BackToTopButton-8njd9TxY.js",
     "name": "BackToTopButton",
     "src": "resources/js/pages/User/components/BackToTopButton.tsx",
     "isDynamicEntry": true,
@@ -355,7 +355,7 @@
     ]
   },
   "resources/js/pages/User/components/EtalaseCatalog.tsx": {
-    "file": "assets/EtalaseCatalog-BoV7rUPF.js",
+    "file": "assets/EtalaseCatalog-D0ztld2f.js",
     "name": "EtalaseCatalog",
     "src": "resources/js/pages/User/components/EtalaseCatalog.tsx",
     "isDynamicEntry": true,
@@ -397,7 +397,7 @@
     ]
   },
   "resources/js/pages/User/components/MarketplaceDB.tsx": {
-    "file": "assets/MarketplaceDB-DvotpmtB.js",
+    "file": "assets/MarketplaceDB-QxeRvqVR.js",
     "name": "MarketplaceDB",
     "src": "resources/js/pages/User/components/MarketplaceDB.tsx",
     "isDynamicEntry": true,
@@ -454,7 +454,7 @@
     ]
   },
   "resources/js/pages/User/components/NewsFeed.tsx": {
-    "file": "assets/NewsFeed-ayPsdXGf.js",
+    "file": "assets/NewsFeed-DyvN6jqQ.js",
     "name": "NewsFeed",
     "src": "resources/js/pages/User/components/NewsFeed.tsx",
     "isDynamicEntry": true,
@@ -547,7 +547,7 @@
     ]
   },
   "resources/js/pages/User/home.tsx": {
-    "file": "assets/home-jvKpIp_x.js",
+    "file": "assets/home-Dpui6n5z.js",
     "name": "home",
     "src": "resources/js/pages/User/home.tsx",
     "isDynamicEntry": true,
@@ -578,7 +578,7 @@
     ]
   },
   "resources/js/pages/User/kios.tsx": {
-    "file": "assets/kios-DJpRR8C9.js",
+    "file": "assets/kios-LhV6fFPJ.js",
     "name": "kios",
     "src": "resources/js/pages/User/kios.tsx",
     "isDynamicEntry": true,
@@ -605,7 +605,7 @@
     ]
   },
   "resources/js/pages/User/news.tsx": {
-    "file": "assets/news-CvTGABf2.js",
+    "file": "assets/news-DKRVs39t.js",
     "name": "news",
     "src": "resources/js/pages/User/news.tsx",
     "isDynamicEntry": true,

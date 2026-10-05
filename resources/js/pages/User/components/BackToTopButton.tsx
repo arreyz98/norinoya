@@ -35,7 +35,7 @@ export default function BackToTopButton({ threshold = 250 }: BackToTopButtonProp
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleScrollToTop}
-          className="fixed bottom-[88px] right-4 md:bottom-8 md:right-8 z-[100] bg-white/95 dark:bg-[#171717]/95 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-800 text-neutral-800 dark:text-white p-3 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.12)] hover:bg-neutral-100 dark:hover:bg-[#262626] hover:text-neutral-950 dark:hover:text-white focus:outline-none flex items-center justify-center cursor-pointer font-bold group transition-colors"
+          className="fixed bottom-[88px] right-4 md:bottom-8 md:right-8 z-[100] bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-800 text-neutral-800 dark:text-white p-3 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.12)] hover:bg-neutral-100 dark:hover:bg-[#262626] hover:text-neutral-950 dark:hover:text-white focus:outline-none flex items-center justify-center cursor-pointer font-bold group transition-colors"
           title="Kembali ke atas"
         >
           <ArrowUp className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />
