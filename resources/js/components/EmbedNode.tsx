@@ -1,9 +1,9 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { NodeViewWrapper, ReactNodeViewRenderer, type ReactNodeViewProps } from '@tiptap/react';
-import { ExternalLink, Instagram, Trash2, Youtube } from 'lucide-react';
+import { ExternalLink, Instagram, Trash2, Twitter, Youtube } from 'lucide-react';
 
-export type EmbedProvider = 'youtube' | 'instagram';
+export type EmbedProvider = 'youtube' | 'instagram' | 'twitter';
 
 export interface EmbedData {
     src: string;
@@ -92,11 +92,27 @@ export const resolveEmbedUrl = (raw: string): EmbedData | null => {
         };
     }
 
+    // ===== Twitter / X =====
+    if (host === 'twitter.com' || host === 'x.com' || host === 'mobile.twitter.com' || host === 'mobile.x.com') {
+        const match = path.match(/\/status(?:es)?\/(\d+)/);
+        return match
+            ? { src: `https://platform.twitter.com/embed/Tweet.html?id=${match[1]}&dnt=true`, provider: 'twitter', title: 'Postingan X' }
+            : null;
+    }
+
+    // URL embed X/Twitter yang sudah jadi (platform.twitter.com/embed/Tweet.html?id=...)
+    if (host === 'platform.twitter.com') {
+        const id = url.searchParams.get('id');
+        return id && /^\d+$/.test(id)
+            ? { src: `https://platform.twitter.com/embed/Tweet.html?id=${id}&dnt=true`, provider: 'twitter', title: 'Postingan X' }
+            : null;
+    }
+
     return null;
 };
 
 /**
- * Validasi src iframe yang sudah tersimpan agar hanya YouTube/Instagram yang lolos parse.
+ * Validasi src iframe yang sudah tersimpan agar hanya YouTube/Instagram/X-Twitter yang lolos parse.
  */
 const allowedProvider = (src: string): EmbedProvider | null => {
     if (!src || DANGEROUS_PROTOCOL.test(src)) return null;
@@ -120,6 +136,10 @@ const allowedProvider = (src: string): EmbedProvider | null => {
         return /\/(p|reel|tv)\/[\w-]+\/embed\/?$/.test(url.pathname) ? 'instagram' : null;
     }
 
+    if (host === 'platform.twitter.com') {
+        return url.pathname.startsWith('/embed/') ? 'twitter' : null;
+    }
+
     return null;
 };
 
@@ -127,12 +147,11 @@ const iframeAttributes = {
     frameborder: '0',
     allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share',
     allowfullscreen: 'true',
-    loading: 'lazy',
     referrerpolicy: 'strict-origin-when-cross-origin',
 };
 
 // ===== Deteksi kode <iframe> yang ditempel sebagai teks =====
-// Saat menyalin kode embed dari YouTube/Instagram, clipboard berisi teks (bukan elemen iframe),
+// Saat menyalin kode embed dari YouTube/Instagram/X, clipboard berisi teks (bukan elemen iframe),
 // sehingga perlu dikonversi manual menjadi node embed.
 
 const IFRAME_SRC_REGEX = /<iframe\b[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi;
@@ -183,8 +202,15 @@ const extractEmbedDataFromClipboard = (data: DataTransfer | null): EmbedData[] =
 function EmbedView({ node, selected, deleteNode }: ReactNodeViewProps) {
     const provider = (node.attrs.provider || 'youtube') as EmbedProvider;
     const src = String(node.attrs.src || '');
-    const title = String(node.attrs.title || (provider === 'youtube' ? 'YouTube Embed' : 'Instagram Embed'));
     const isYoutube = provider === 'youtube';
+    const isInstagram = provider === 'instagram';
+    const providerLabel = isYoutube ? 'YouTube Embed' : isInstagram ? 'Instagram Embed' : 'Twitter / X Embed';
+    const title = String(node.attrs.title || providerLabel);
+    const previewClass = isYoutube
+        ? 'aspect-video w-full'
+        : isInstagram
+          ? 'mx-auto h-[620px] w-full max-w-[400px]'
+          : 'mx-auto h-[600px] w-full max-w-[550px]';
 
     return (
         <NodeViewWrapper className="my-3" data-embed-view={provider} contentEditable={false}>
@@ -195,8 +221,14 @@ function EmbedView({ node, selected, deleteNode }: ReactNodeViewProps) {
             >
                 <div className="flex select-none items-center justify-between gap-2 border-b border-neutral-200 bg-neutral-50 px-2.5 py-1.5 dark:border-neutral-700 dark:bg-neutral-800">
                     <span className="flex items-center gap-1.5 text-[11px] font-bold text-neutral-600 dark:text-neutral-300">
-                        {isYoutube ? <Youtube className="h-3.5 w-3.5 text-red-600" /> : <Instagram className="h-3.5 w-3.5 text-pink-600" />}
-                        {isYoutube ? 'YouTube Embed' : 'Instagram Embed'}
+                        {isYoutube ? (
+                            <Youtube className="h-3.5 w-3.5 text-red-600" />
+                        ) : isInstagram ? (
+                            <Instagram className="h-3.5 w-3.5 text-pink-600" />
+                        ) : (
+                            <Twitter className="h-3.5 w-3.5 text-sky-500" />
+                        )}
+                        {providerLabel}
                     </span>
                     <span className="flex items-center gap-1">
                         <a
@@ -226,33 +258,17 @@ function EmbedView({ node, selected, deleteNode }: ReactNodeViewProps) {
                     </span>
                 </div>
 
-                {isYoutube ? (
-                    <div className="aspect-video w-full">
-                        <iframe
-                            src={src}
-                            title={title}
-                            className="pointer-events-none h-full w-full"
-                            allow={iframeAttributes.allow}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            frameBorder={0}
-                        />
-                    </div>
-                ) : (
-                    <div className="mx-auto h-[620px] w-full max-w-[400px]">
-                        <iframe
-                            src={src}
-                            title={title}
-                            className="pointer-events-none h-full w-full"
-                            allow={iframeAttributes.allow}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            frameBorder={0}
-                        />
-                    </div>
-                )}
+                <div className={previewClass}>
+                    <iframe
+                        src={src}
+                        title={title}
+                        className="pointer-events-none h-full w-full"
+                        allow={iframeAttributes.allow}
+                        allowFullScreen
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        frameBorder={0}
+                    />
+                </div>
             </div>
         </NodeViewWrapper>
     );
@@ -305,7 +321,9 @@ export const Embed = Node.create({
         const style =
             provider === 'instagram'
                 ? 'display:block;width:100%;max-width:400px;height:620px;margin:0 auto;border:0;border-radius:12px;background:#fff'
-                : 'display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#000';
+                : provider === 'twitter'
+                  ? 'display:block;width:100%;max-width:550px;height:600px;margin:0 auto;border:0;border-radius:12px;background:#fff'
+                  : 'display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#000';
 
         return [
             'iframe',

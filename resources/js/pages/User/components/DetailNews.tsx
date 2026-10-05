@@ -66,6 +66,17 @@ const getReadingRatingHoverClass = (rating?: string, groupPrefix: string = 'grou
 
 import type { RawKiosItem } from './EtalaseCatalog';
 
+// Buang atribut loading="lazy" pada iframe embed pada konten lama.
+// iframe lazy dapat dimuat ulang/disaring ulang oleh browser saat halaman di-scroll.
+const stripLazyIframes = (html: string): string =>
+    html.replace(/(<iframe\b[^>]*?)\s+loading=("lazy"|'lazy'|lazy)/gi, '$1');
+
+// Konten dibungkus komponen memo: React tidak akan menyentuh innerHTML selama string HTML sama,
+// sehingga iframe embed tidak pernah di-recreate/di-reload saat re-render (mis. dipicu scroll).
+const NewsBody = React.memo(function NewsBody({ html, className }: { html: string; className: string }) {
+    return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+});
+
 export interface DetailNewsProps {
   activePost: NewsUpdate;
   selectPost: (post: NewsUpdate | null) => void;
@@ -157,6 +168,9 @@ export default function DetailNews({
   const metaTitle = activePost?.title ? `${activePost.title} - Norinoya News` : 'Berita - Norinoya';
   const metaDesc = (activePost?.content || 'Baca update berita dan artikel terbaru seputar manga, anime, dan pop culture di Norinoya.').replace(/<[^>]*>/g, '').slice(0, 160);
   const metaImage = activePost?.attachedImage || '';
+
+  // Normalisasi konten: pastikan iframe embed lama tidak memakai loading="lazy"
+  const contentHtml = React.useMemo(() => stripLazyIframes(activePost?.content || ''), [activePost?.content]);
 
   if (!activePost) return null;
 
@@ -366,9 +380,9 @@ export default function DetailNews({
 
               {/* Body Paragraph */}
               {activePost.content && (
-                <div
-                  className="whitespace-pre-line [&_p:empty]:min-h-[1.5rem] text-xs sm:text-sm text-neutral-700 dark:text-[#c0d6d8] leading-relaxed font-sans bg-neutral-50 dark:bg-[#202120] p-4 sm:p-5 rounded-xl border border-neutral-100 dark:border-neutral-800 prose dark:prose-invert max-w-none prose-sm prose-p:my-2.5 prose-p:leading-relaxed prose-headings:mt-4 prose-headings:mb-2 text-justify [&_a]:font-semibold [&_a]:text-emerald-700 [&_a]:underline [&_a]:decoration-emerald-600/50 [&_a]:underline-offset-2 [&_a]:break-words hover:[&_a]:text-emerald-800 dark:[&_a]:text-emerald-400 dark:[&_a]:decoration-emerald-400/50 dark:hover:[&_a]:text-emerald-300 [&_iframe]:my-4 [&_iframe]:max-w-full"
-                  dangerouslySetInnerHTML={{ __html: activePost.content }}
+                <NewsBody
+                  html={contentHtml}
+                  className="whitespace-pre-line [&_p:empty]:min-h-[1.5rem] text-xs sm:text-sm text-neutral-700 dark:text-[#c0d6d8] leading-relaxed font-sans bg-neutral-50 dark:bg-[#202120] p-4 sm:p-5 rounded-xl border border-neutral-100 dark:border-neutral-800 prose dark:prose-invert max-w-none prose-sm prose-p:my-2.5 prose-p:leading-relaxed prose-headings:mt-4 prose-headings:mb-2 text-justify [&_a]:font-semibold [&_a]:text-emerald-700 [&_a]:underline [&_a]:decoration-emerald-600/50 [&_a]:underline-offset-2 [&_a]:break-words hover:[&_a]:text-emerald-800 dark:[&_a]:text-emerald-400 dark:[&_a]:decoration-emerald-400/50 dark:hover:[&_a]:text-emerald-300 [&_iframe]:my-4 [&_iframe]:max-w-full [&_iframe]:transform-gpu [&_iframe]:backface-hidden"
                 />
               )}
 

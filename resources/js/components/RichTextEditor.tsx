@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Check, ExternalLink, Instagram, Link as LinkIcon, Unlink, Video, Youtube } from 'lucide-react';
+import { Check, ExternalLink, Instagram, Link as LinkIcon, Twitter, Unlink, Video, Youtube } from 'lucide-react';
 import { Embed, resolveEmbedUrl } from './EmbedNode';
 
 interface RichTextEditorProps {
@@ -361,7 +361,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
                                 ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900'
                                 : 'bg-white dark:bg-neutral-700/80 border border-neutral-200 dark:border-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-600'
                         }`}
-                        title="Sisipkan Embed YouTube / Instagram"
+                        title="Sisipkan Embed YouTube / Instagram / X"
                     >
                         <Video className="w-3.5 h-3.5" />
                         Embed
@@ -371,7 +371,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
                         <div className="absolute right-0 top-full z-50 mt-2 w-80 max-w-[calc(100vw-3rem)] space-y-2 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-3 text-left shadow-xl sm:left-0 sm:right-auto">
                             <div className="flex items-center gap-1.5 text-[11px] font-bold text-neutral-700 dark:text-neutral-200">
                                 <Video className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                                <span>Sisipkan Embed YouTube / Instagram</span>
+                                <span>Sisipkan Embed YouTube / Instagram / X</span>
                             </div>
 
                             <div className="flex items-center gap-1.5">
@@ -382,6 +382,10 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
                                 <span className="flex items-center gap-1 rounded-md bg-pink-50 dark:bg-pink-950/40 px-1.5 py-0.5 text-[10px] font-bold text-pink-600 dark:text-pink-400">
                                     <Instagram className="h-3 w-3" />
                                     Instagram
+                                </span>
+                                <span className="flex items-center gap-1 rounded-md bg-sky-50 dark:bg-sky-950/40 px-1.5 py-0.5 text-[10px] font-bold text-sky-600 dark:text-sky-400">
+                                    <Twitter className="h-3 w-3" />
+                                    X / Twitter
                                 </span>
                             </div>
 
@@ -398,7 +402,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
                                         handleInsertEmbed();
                                     }
                                 }}
-                                placeholder="https://www.youtube.com/watch?v=... atau https://www.instagram.com/p/..."
+                                placeholder="https://www.youtube.com/watch?v=... atau https://x.com/user/status/..."
                                 className="w-full rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-2.5 py-2 text-xs text-neutral-900 dark:text-neutral-100 outline-none focus:ring-2 focus:ring-emerald-500/50"
                             />
 
@@ -410,12 +414,12 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
                                     </p>
                                 ) : (
                                     <p className="text-[11px] font-semibold text-red-600 dark:text-red-400">
-                                        URL tidak dikenali. Gunakan link video/playlist/Shorts YouTube atau post/Reel Instagram.
+                                        URL tidak dikenali. Gunakan link YouTube, Instagram, atau X/Twitter.
                                     </p>
                                 )
                             ) : (
                                 <p className="text-[11px] text-neutral-400 dark:text-neutral-500">
-                                    Video, Shorts, dan playlist YouTube serta post, Reel, dan IGTV Instagram.
+                                    Video, Shorts, dan playlist YouTube, post/Reel/IGTV Instagram, serta postingan X/Twitter.
                                 </p>
                             )}
 
@@ -434,7 +438,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
                             </button>
 
                             <p className="text-[10px] leading-relaxed text-neutral-400 dark:text-neutral-500">
-                                Embed dirender sebagai iframe pada halaman berita. Anda juga bisa menempel kode {'<iframe>'} YouTube/Instagram
+                                Embed dirender sebagai iframe pada halaman berita. Anda juga bisa menempel kode {'<iframe>'} YouTube/Instagram/X
                                 langsung ke isi berita — otomatis dikonversi menjadi embed.
                             </p>
                         </div>
