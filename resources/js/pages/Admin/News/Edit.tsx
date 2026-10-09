@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import RichTextEditor from '@/components/RichTextEditor';
+import { normalizeImageKitUrl } from '@/utils/imageUrl';
 
 const CATEGORIES = [
   { id: 'rilisan', label: 'Rilisan' },
@@ -82,8 +83,8 @@ export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [] }: Ne
     ];
 
     const initialGallery = (newsItem.gallery_images && newsItem.gallery_images.length > 0)
-        ? [...newsItem.gallery_images, '', '', '', ''].slice(0, 4)
-        : [newsItem.attached_image || '', '', '', ''];
+        ? [...newsItem.gallery_images, '', '', '', ''].slice(0, 4).map((img) => normalizeImageKitUrl(img))
+        : [normalizeImageKitUrl(newsItem.attached_image || ''), '', '', ''];
 
     const initialHashtags = (newsItem.hash_tags && newsItem.hash_tags.length > 0)
         ? newsItem.hash_tags
@@ -117,7 +118,7 @@ export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [] }: Ne
         category: newsItem.category || 'rilisan',
         username: newsItem.username || 'norinoya_official',
         display_name: newsItem.display_name || 'Norinoya Official',
-        attached_image: newsItem.attached_image || '',
+        attached_image: normalizeImageKitUrl(newsItem.attached_image || ''),
         gallery_images: initialGallery as string[],
         hash_tags: initialHashtags as string[],
         reading_rating: newsItem.reading_rating || '',
@@ -143,7 +144,7 @@ export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [] }: Ne
 
     const handleGalleryChange = (index: number, value: string) => {
         const updated = [...data.gallery_images];
-        updated[index] = value;
+        updated[index] = normalizeImageKitUrl(value);
         setData('gallery_images', updated);
     };
 

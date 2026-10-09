@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import RichTextEditor from '@/components/RichTextEditor';
+import { normalizeImageKitUrl } from '@/utils/imageUrl';
 
 const CATEGORIES = [
   { id: 'rilisan', label: 'Rilisan' },
@@ -117,7 +118,7 @@ export default function NewsCreate({ books = [], tiktokEmbeds = [] }: NewsCreate
 
     const handleGalleryChange = (index: number, value: string) => {
         const updated = [...data.gallery_images];
-        updated[index] = value;
+        updated[index] = normalizeImageKitUrl(value);
         setData('gallery_images', updated);
     };
 

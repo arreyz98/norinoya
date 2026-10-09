@@ -20,6 +20,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import { normalizeImageKitUrl } from '@/utils/imageUrl';
 
 export interface Option {
     id: number;
@@ -103,21 +104,52 @@ const isValidUrl = (value: string): boolean => {
     }
 };
 
-// Previews the slug the backend will generate from title + volume
-// (`Str::slug($title . '-volume-' . $volume)`).
-const buildSlugPreview = (title: string, volume: string): string => {
-    return `${title}-volume-${volume}`
+// Transliterasi mendekati Illuminate\Support\Str::ascii() (portable-ascii)
+// untuk karakter yang tidak terurai lewat NFKD.
+const transliterateForSlug = (value: string): string =>
+    value
         .normalize('NFKD')
         .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ß/g, 'ss')
+        .replace(/[Ææ]/g, 'AE')
+        .replace(/[Œœ]/g, 'OE')
+        .replace(/[Øø]/g, 'O')
+        .replace(/[Þþ]/g, 'TH')
+        .replace(/[ÐðĐđ]/g, 'D')
+        .replace(/[Łł]/g, 'L');
+
+// Meniru Illuminate\Support\Str::slug($title . '-volume-' . $volume):
+// transliterasi -> '_' menjadi '-' -> '@' menjadi '-at-' -> hapus karakter
+// non-alfanumerik (bukan diganti '-') -> kolaps separator/whitespace -> trim.
+const buildSlugPreview = (title: string, volume: string): string =>
+    transliterateForSlug(`${title}-volume-${volume}`)
+        .replace(/_+/g, '-')
+        .replace(/@/g, '-at-')
         .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/-{2,}/g, '-')
+        .replace(/[^\p{L}\p{N}\s-]+/gu, '')
+        .replace(/[-\s]+/g, '-')
         .replace(/^-+|-+$/g, '');
+
+// Meniru BookController::generateUniqueSlug(): bila slug dasar sudah dipakai
+// (termasuk buku soft-deleted), tambahkan sufiks -1, -2, dst.
+const buildUniqueSlugPreview = (baseSlug: string, existingSlugs: ReadonlySet<string>): string => {
+    if (baseSlug === '' || !existingSlugs.has(baseSlug)) {
+        return baseSlug;
+    }
+
+    let counter = 1;
+
+    while (existingSlugs.has(`${baseSlug}-${counter}`)) {
+        counter += 1;
+    }
+
+    return `${baseSlug}-${counter}`;
 };
 
-const validateBook = (form: BookFormData, existingVolumes: string[]): ValidationErrors => {
+const validateBook = (form: BookFormData, volumesBySeries: Record<string, string[]>): ValidationErrors => {
     const nextErrors: ValidationErrors = {};
+    const seriesKey = form.series_id ? String(form.series_id) : 'none';
+    const seriesVolumes = volumesBySeries[seriesKey] ?? [];
 
     if (!form.title.trim()) {
         nextErrors.title = 'Judul buku wajib diisi.';
@@ -127,7 +159,7 @@ const validateBook = (form: BookFormData, existingVolumes: string[]): Validation
         nextErrors.volume = 'Volume wajib diisi.';
     } else if (form.volume.trim().length > 50) {
         nextErrors.volume = 'Volume maksimal 50 karakter.';
-    } else if (existingVolumes.includes(form.volume.trim())) {
+    } else if (seriesVolumes.includes(form.volume.trim())) {
         nextErrors.volume = 'Volume ini sudah ada dalam series yang sama.';
     }
 
@@ -260,7 +292,8 @@ function FieldError({ field, errors }: { field: string; errors: ValidationErrors
 
 interface BookFormProps {
     mode: 'create' | 'edit';
-    existingVolumes: string[];
+    volumesBySeries: Record<string, string[]>;
+    existingSlugs?: string[];
 
     book?: {
         id?: number;
@@ -326,7 +359,8 @@ export default function BookForm({
     affiliateStores,
     bookTypes,
     ageRatings,
-    existingVolumes,
+    volumesBySeries,
+    existingSlugs = [],
     processing,
     errors,
     onSubmit,
@@ -444,7 +478,7 @@ export default function BookForm({
 
         images: book?.images?.map((image) => ({
             id: image.id,
-            image_url: image.image_url,
+            image_url: normalizeImageKitUrl(image.image_url),
             sort_order: image.sort_order,
         })) ?? [
             {
@@ -486,6 +520,29 @@ export default function BookForm({
             },
         ],
     });
+
+    const existingSlugSet = useMemo(() => new Set(existingSlugs), [existingSlugs]);
+
+    const slugPreview = useMemo(
+        () => buildUniqueSlugPreview(buildSlugPreview(form.title, form.volume), existingSlugSet),
+        [existingSlugSet, form.title, form.volume],
+    );
+
+    // Backend hanya meregenerasi slug saat judul/volume berubah, jadi selama
+    // keduanya belum diubah tampilkan slug yang benar-benar tersimpan.
+    const titleVolumeUnchanged = useMemo(() => {
+        if (mode !== 'edit') {
+            return false;
+        }
+
+        const persistedTitle = (book?.title ?? '').trim();
+        const persistedVolume = book?.volume !== undefined && book?.volume !== null ? String(book.volume).trim() : '';
+
+        return form.title.trim() === persistedTitle && form.volume.trim() === persistedVolume;
+    }, [book?.title, book?.volume, form.title, form.volume, mode]);
+
+    const hasSlugInput = form.title.trim() !== '' || form.volume.trim() !== '';
+    const displayedSlug = mode === 'edit' && book?.slug && titleVolumeUnchanged ? book.slug : slugPreview;
 
     useEffect(() => {
         if (form.images.length === 0) {
@@ -539,13 +596,15 @@ export default function BookForm({
     const updateImage = (index: number, value: string) => {
         clearFieldError(`images.${index}.image_url`);
 
+        const normalizedValue = normalizeImageKitUrl(value);
+
         setForm((previous) => ({
             ...previous,
             images: previous.images.map((image, imageIndex) =>
                 imageIndex === index
                     ? {
                           ...image,
-                          image_url: value,
+                          image_url: normalizedValue,
                       }
                     : image,
             ),
@@ -671,7 +730,7 @@ export default function BookForm({
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const nextErrors = validateBook(form, existingVolumes);
+        const nextErrors = validateBook(form, volumesBySeries);
         setClearedFields(new Set());
         setLocalErrors(nextErrors);
 
@@ -683,7 +742,7 @@ export default function BookForm({
         const imageMap: number[] = [];
 
         form.images.forEach((image, index) => {
-            const imageUrl = image.image_url.trim();
+            const imageUrl = normalizeImageKitUrl(image.image_url);
 
             if (imageUrl !== '') {
                 imagesPayload.push({
@@ -831,7 +890,10 @@ export default function BookForm({
 
                             <Select
                                 value={form.series_id || 'none'}
-                                onValueChange={(value) => updateField('series_id', value === 'none' ? '' : value)}
+                                onValueChange={(value) => {
+                                    updateField('series_id', value === 'none' ? '' : value);
+                                    clearFieldError('volume');
+                                }}
                             >
                                 <SelectTrigger {...getFieldProps('series_id')}>
                                     <SelectValue placeholder="Pilih series" />
@@ -877,21 +939,21 @@ export default function BookForm({
                         </div>
                     </div>
 
-                    {/* Slug preview: slug ikut berubah saat judul/volume diubah */}
+                    {/* Slug preview: mengikuti aturan Str::slug + sufiks unik backend */}
                     <div className="rounded-lg border border-dashed bg-neutral-50/60 p-3.5 dark:bg-neutral-900/40">
                         <div className="flex flex-wrap items-center justify-between gap-2">
                             <span className="text-muted-foreground text-[11px] font-semibold tracking-wide uppercase">Slug URL</span>
 
-                            {mode === 'edit' && book?.slug && (
+                            {mode === 'edit' && book?.slug && displayedSlug !== book.slug && (
                                 <span className="text-muted-foreground max-w-full truncate font-mono text-[11px]">Sebelumnya: {book.slug}</span>
                             )}
                         </div>
 
-                        <p className="mt-1 truncate font-mono text-sm">/buku/{buildSlugPreview(form.title, form.volume) || '…'}</p>
+                        <p className="mt-1 truncate font-mono text-sm">/buku/{hasSlugInput ? displayedSlug || '…' : '…'}</p>
 
                         <p className="text-muted-foreground mt-1 text-xs">
-                            Slug dibentuk dari judul dan volume, lalu diperbarui otomatis saat formulir disimpan sehingga URL selalu mengikuti judul
-                            terbaru.
+                            Slug dibentuk dari judul dan volume dengan aturan yang sama seperti server (termasuk sufiks unik bila slug sudah dipakai),
+                            lalu diperbarui otomatis saat formulir disimpan sehingga URL selalu mengikuti data terbaru.
                         </p>
                     </div>
 
@@ -1552,6 +1614,9 @@ export default function BookForm({
                                             <Label>Nama Toko</Label>
 
                                             <Input
+                                                id={`affiliate_links.${index}.store_name`}
+                                                name="affiliate_store_name"
+                                                autoComplete="on"
                                                 value={link.store_name || ''}
                                                 onChange={(event) => updateAffiliateLink(index, 'store_name', event.target.value)}
                                                 placeholder="Official Store"
@@ -1564,6 +1629,9 @@ export default function BookForm({
                                             <Label>Lokasi</Label>
 
                                             <Input
+                                                id={`affiliate_links.${index}.location`}
+                                                name="affiliate_store_location"
+                                                autoComplete="on"
                                                 value={link.location || ''}
                                                 onChange={(event) => updateAffiliateLink(index, 'location', event.target.value)}
                                                 placeholder="Indonesia"
@@ -1577,6 +1645,9 @@ export default function BookForm({
                                         <Label>Link</Label>
 
                                         <Input
+                                            id={`affiliate_links.${index}.url`}
+                                            name="affiliate_store_url"
+                                            autoComplete="on"
                                             type="url"
                                             value={link.url}
                                             onChange={(event) => updateAffiliateLink(index, 'url', event.target.value)}

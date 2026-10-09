@@ -402,7 +402,7 @@ export default function DetailBuku({
     : `/buku/${selectedComic.slug || selectedComic.id}`;
 
    return (
-    <div className="w-full bg-white dark:bg-neutral-950 flex flex-col min-h-screen" ref={scrollableContainerRef}>
+    <div className="w-full bg-white flex flex-col min-h-screen" ref={scrollableContainerRef}>
       {selectedComic ? (
         <Head>
           <title>{metaTitle}</title>
@@ -457,7 +457,7 @@ export default function DetailBuku({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 15 }}
           transition={{ duration: 0.2 }}
-          className="h-full w-full bg-white dark:bg-[#202120] text-neutral-950 dark:text-neutral-50 flex flex-col transition-colors duration-200 relative"
+          className="h-full w-full bg-white text-neutral-950 dark:text-neutral-50 flex flex-col transition-colors duration-200 relative"
         >
           <div id="comic-detail-top" className="absolute top-0 left-0 w-0 h-0 pointer-events-none" />
           {/* Scrollable Content Viewport */}
@@ -521,7 +521,7 @@ export default function DetailBuku({
                     </div>
                   </div>
 
-            <div className="w-full h-fit lg:max-w-[92%] xl:max-w-7xl mx-auto px-3 sm:px-6 lg:px-24 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-neutral-950">
+            <div className="w-full h-fit lg:max-w-[92%] xl:max-w-7xl mx-auto px-3 sm:px-6 lg:px-24 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-[#202120] ">
               {/* Title Header with Gradient */}
               <div id="comic-detail-card" className=" dark:bg-[#0F0F0F] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
 
@@ -898,43 +898,12 @@ export default function DetailBuku({
                                           className={`w-full h-8.5 rounded-xl flex items-center justify-center transition-all shadow-3xs px-3 gap-2 ${style.className} ${hasMultiple ? 'cursor-pointer' : ''}`}
                                           title={hasMultiple ? `Pilih dari ${group.length} link ${brandName}` : `Beli di ${brandName} Resmi`}
                                        >
-                                        {style.brand === 'gramedia' && (
-                                          <svg className="h-4.5 text-white fill-current filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]" viewBox="0 0 100 24" xmlns="http://www.w3.org/2000/svg">
-                                            <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" strokeWidth="2"/>
-                                            <path d="M12 8.5C10 8.5 9 10 9 12s1 3.5 3 3.5c1.2 0 2-.6 2.3-1.2h-2v-1.5h3.5v4H14c-1.5 1.5-3.5 1.5-4.5 1.5C6.5 17.8 5 15.5 5 12c0-3.5 1.5-5.8 4.5-5.8 1.5 0 3 .8 3.8 2l-1.3 1.1c-.5-.7-1.1-.8-1.5-.8z" />
-                                            <text x="25" y="16.5" fill="currentColor" className="font-sans tracking-widest text-[12px] font-extrabold">GRAMEDIA</text>
-                                          </svg>
-                                        )}
-
-                                        {style.brand === 'shopee' && (
-                                          <svg className="h-4.5 text-white fill-current filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]" viewBox="0 0 100 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M10 5h-2c-.2 0-.3.1-.4.2L6 8h6l-1.6-2.8c-.1-.1-.2-.2-.4-.2zM15.5 8h-2.1L11.8 5c-.1-.2-.3-.3-.5-.3h-2.6c-.2 0-.4.1-.5.3L6.6 8H4.5C3.7 8 3 8.7 3 9.5v10c0 .8.7 1.5 1.5 1.5h11c.8 0 1.5-.7 1.5-1.5v-10c0-.8-.7-1.5-1.5-1.5zm-5.5-5.5c.8 0 1.5.7 1.5 1.5H8.5c0-.8.7-1.5 1.5-1.5z" />
-                                            <text x="24" y="16.5" fill="currentColor" className="font-sans tracking-widest text-[13px] font-extrabold">Shopee</text>
-                                          </svg>
-                                        )}
-
-                                        {style.brand === 'tokopedia' && (
-                                          <svg className="h-4.5 text-white fill-current filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]" viewBox="0 0 100 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm1 14H11v-2H9v-2h2v-2h2v2h2v2h-2v2z" />
-                                            <text x="25" y="16.5" fill="currentColor" className="font-sans tracking-tight text-[12px] font-extrabold">Tokopedia</text>
-                                          </svg>
-                                        )}
-
-                                        {style.brand === 'custom' && (
-                                          <span className="font-sans text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5">
-                                            <ShoppingBag className="w-4 h-4" />
-                                            {link.storeName}
-                                          </span>
-                                        )}
-
-                                        {style.brand !== 'gramedia' && style.brand !== 'shopee' && style.brand !== 'tokopedia' && style.brand !== 'custom' && (
-                                          <span className="font-sans text-xs font-extrabold uppercase tracking-wider">
-                                            {link.storeName}
-                                          </span>
-                                        )}
+                                        <span className="font-sans text-sm font-extrabold uppercase tracking-wider">
+                                          {style.brand === 'custom' ? link.storeName : style.label}
+                                        </span>
 
                                         {hasMultiple && (
-                                          <span className="text-[10px] font-mono font-black px-1.5 py-0.5 rounded-md bg-white/25 border border-white/30 shrink-0 leading-none">
+                                          <span className="text-sm font-mono font-black px-1.5 py-0.5 rounded-md bg-white/25 border border-white/30 shrink-0 leading-none">
                                             {group.length} Link
                                           </span>
                                         )}
@@ -1189,7 +1158,7 @@ export default function DetailBuku({
               )}
 
               {/* Ads placeholder inside modal */}
-              <div className="bg-neutral-50 dark:bg-[#262626] border border-dashed border-neutral-250 dark:border-neutral-700 rounded-2xl p-4 text-center space-y-1.5 transition-colors">
+              <div className="bg-neutral-50 dark:bg-[#202120] border border-dashed border-neutral-250 dark:border-neutral-700 rounded-2xl p-4 text-center space-y-1.5 transition-colors">
                 <span className="text-xs font-extrabold tracking-wider text-neutral-400 dark:text-neutral-400 uppercase block leading-normal">PROMOTED AD</span>
                 <div className="bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-800 py-4.5 rounded-xl text-xs text-neutral-500 dark:text-neutral-300 shadow-xs leading-normal">
                   Affiliate Promo Slot

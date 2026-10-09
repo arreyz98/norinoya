@@ -1,20 +1,7 @@
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import type { RequestPayload } from '@inertiajs/core';
-import { Head, Link, router, usePage } from '@inertiajs/react';
-import { Copy } from 'lucide-react';
+import { Head, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import BookForm, { type BookFormData } from './components/BookForm';
 
@@ -90,7 +77,8 @@ interface Props {
     authors: Option[];
     genres: Option[];
     affiliateStores: Option[];
-    existingVolumes: string[];
+    volumesBySeries: Record<string, string[]>;
+    existingSlugs: string[];
     bookTypes: EnumOption[];
     ageRatings: EnumOption[];
 }
@@ -119,7 +107,8 @@ export default function Edit({
     authors,
     genres,
     affiliateStores,
-    existingVolumes,
+    volumesBySeries,
+    existingSlugs,
     bookTypes,
     ageRatings,
 }: Props) {
@@ -139,40 +128,10 @@ export default function Edit({
             <Head title={`Edit ${book.title}`} />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
-                <div className="flex items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Edit Book</h1>
+                <div>
+                    <h1 className="text-2xl font-semibold tracking-tight">Edit Book</h1>
 
-                        <p className="text-muted-foreground">Edit informasi buku.</p>
-                    </div>
-
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button variant="outline" className="flex items-center gap-2">
-                                <Copy className="size-4" />
-                                Duplikat
-                            </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Duplikat buku ini?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    Buku akan disalin ke dalam halaman pembuatan dengan volume yang sudah disesuaikan otomatis.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Batal</AlertDialogCancel>
-                                <AlertDialogAction asChild>
-                                    <Link
-                                        href={route('admin.books.duplicate', book.id)}
-                                        className="bg-primary text-primary-foreground ring-offset-background hover:bg-primary/90 focus-visible:ring-ring inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                    >
-                                        Duplikat Sekarang
-                                    </Link>
-                                </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
+                    <p className="text-muted-foreground">Edit informasi buku.</p>
                 </div>
 
                 <BookForm
@@ -185,7 +144,8 @@ export default function Edit({
                     authors={authors}
                     genres={genres}
                     affiliateStores={affiliateStores}
-                    existingVolumes={existingVolumes}
+                    volumesBySeries={volumesBySeries}
+                    existingSlugs={existingSlugs}
                     bookTypes={bookTypes}
                     ageRatings={ageRatings}
                     processing={processing}

@@ -12,17 +12,20 @@ use App\Models\AffiliateStore;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\BookSeries;
+use App\Models\BookViewLog;
 use App\Models\Edition;
 use App\Models\Genre;
 use App\Models\Publisher;
+use App\Models\SearchLogBuku;
 use App\Models\StoryStatus;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,7 +34,7 @@ class BookController extends Controller
     /**
      * Display a listing of books.
      */
-    public function index(\Illuminate\Http\Request $request): Response
+    public function index(Request $request): Response
     {
         $query = Book::query()
             ->with([
@@ -60,7 +63,7 @@ class BookController extends Controller
                     );
                 } else {
                     $q->where('title', 'like', "%{$search}%")
-                      ->orWhere('synopsis', 'like', "%{$search}%");
+                        ->orWhere('synopsis', 'like', "%{$search}%");
                 }
 
                 $q->orWhereHas('series', function ($sq) use ($search) {
@@ -124,7 +127,7 @@ class BookController extends Controller
     /**
      * Return filter options for the async series/publisher comboboxes.
      */
-    public function filterOptions(\Illuminate\Http\Request $request): JsonResponse
+    public function filterOptions(Request $request): JsonResponse
     {
         $validated = $request->validate([
             'type' => ['required', 'in:series,publisher'],
@@ -165,7 +168,7 @@ class BookController extends Controller
     /**
      * Remove the given books in a single request.
      */
-    public function bulkDestroy(\Illuminate\Http\Request $request): RedirectResponse
+    public function bulkDestroy(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'ids' => ['required', 'array', 'min:1', 'max:100'],
@@ -179,6 +182,8 @@ class BookController extends Controller
                 $book->forceDelete();
             }
         });
+
+        $this->forgetBookCaches();
 
         return redirect()
             ->back(fallback: route('admin.books.index'))
@@ -220,9 +225,9 @@ class BookController extends Controller
     /**
      * Display a listing of book view timestamp logs.
      */
-    public function logs(\Illuminate\Http\Request $request): Response
+    public function logs(Request $request): Response
     {
-        $query = \App\Models\BookViewLog::query()
+        $query = BookViewLog::query()
             ->with([
                 'book:id,title,slug,volume,series_id,publisher_id',
                 'book.series:id,title',
@@ -233,14 +238,14 @@ class BookController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('ip_address', 'like', "%{$search}%")
-                  ->orWhere('user_agent', 'like', "%{$search}%")
-                  ->orWhereHas('book', function ($bq) use ($search) {
-                      $bq->where('title', 'like', "%{$search}%")
-                         ->orWhere('slug', 'like', "%{$search}%")
-                         ->orWhereHas('series', function ($sq) use ($search) {
-                             $sq->where('title', 'like', "%{$search}%");
-                         });
-                  });
+                    ->orWhere('user_agent', 'like', "%{$search}%")
+                    ->orWhereHas('book', function ($bq) use ($search) {
+                        $bq->where('title', 'like', "%{$search}%")
+                            ->orWhere('slug', 'like', "%{$search}%")
+                            ->orWhereHas('series', function ($sq) use ($search) {
+                                $sq->where('title', 'like', "%{$search}%");
+                            });
+                    });
             });
         }
 
@@ -259,9 +264,9 @@ class BookController extends Controller
         $logs = $query->latest('created_at')->paginate(20)->withQueryString();
 
         // Overall log stats
-        $totalLogsCount = \App\Models\BookViewLog::count();
-        $todayLogsCount = \App\Models\BookViewLog::whereDate('created_at', today())->count();
-        $uniqueIpsCount = \App\Models\BookViewLog::distinct('ip_address')->count('ip_address');
+        $totalLogsCount = BookViewLog::count();
+        $todayLogsCount = BookViewLog::whereDate('created_at', today())->count();
+        $uniqueIpsCount = BookViewLog::distinct('ip_address')->count('ip_address');
 
         // Top 5 most viewed books recently
         $topBooks = Book::orderByDesc('views_count')
@@ -283,7 +288,7 @@ class BookController extends Controller
     /**
      * Delete a single book view log manually.
      */
-    public function destroyLog(\App\Models\BookViewLog $log): RedirectResponse
+    public function destroyLog(BookViewLog $log): RedirectResponse
     {
         $log->delete();
 
@@ -293,9 +298,9 @@ class BookController extends Controller
     /**
      * Clear filtered or all logs manually.
      */
-    public function clearLogs(\Illuminate\Http\Request $request): RedirectResponse
+    public function clearLogs(Request $request): RedirectResponse
     {
-        $query = \App\Models\BookViewLog::query();
+        $query = BookViewLog::query();
 
         if ($request->filled('book_id')) {
             $query->where('book_id', $request->book_id);
@@ -317,9 +322,9 @@ class BookController extends Controller
     /**
      * Export book view logs to CSV compatible with Google Sheets & Excel.
      */
-    public function exportLogs(\Illuminate\Http\Request $request)
+    public function exportLogs(Request $request)
     {
-        $query = \App\Models\BookViewLog::query()
+        $query = BookViewLog::query()
             ->with([
                 'book:id,title,slug,volume,series_id,publisher_id',
                 'book.series:id,title',
@@ -330,14 +335,14 @@ class BookController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('ip_address', 'like', "%{$search}%")
-                  ->orWhere('user_agent', 'like', "%{$search}%")
-                  ->orWhereHas('book', function ($bq) use ($search) {
-                      $bq->where('title', 'like', "%{$search}%")
-                         ->orWhere('slug', 'like', "%{$search}%")
-                         ->orWhereHas('series', function ($sq) use ($search) {
-                             $sq->where('title', 'like', "%{$search}%");
-                         });
-                  });
+                    ->orWhere('user_agent', 'like', "%{$search}%")
+                    ->orWhereHas('book', function ($bq) use ($search) {
+                        $bq->where('title', 'like', "%{$search}%")
+                            ->orWhere('slug', 'like', "%{$search}%")
+                            ->orWhereHas('series', function ($sq) use ($search) {
+                                $sq->where('title', 'like', "%{$search}%");
+                            });
+                    });
             });
         }
 
@@ -355,7 +360,7 @@ class BookController extends Controller
 
         $logs = $query->latest('created_at')->get();
 
-        $filename = 'book_view_logs_' . date('Y-m-d_His') . '.csv';
+        $filename = 'book_view_logs_'.date('Y-m-d_His').'.csv';
 
         $headers = [
             'Content-Type' => 'text/csv; charset=UTF-8',
@@ -368,7 +373,7 @@ class BookController extends Controller
         $callback = function () use ($logs) {
             $handle = fopen('php://output', 'w');
             // Add UTF-8 BOM for proper Excel / Google Sheets character handling
-            fputs($handle, "\xEF\xBB\xBF");
+            fwrite($handle, "\xEF\xBB\xBF");
 
             // CSV Header Row
             fputcsv($handle, [
@@ -391,11 +396,17 @@ class BookController extends Controller
                 $isMobile = preg_match('/mobile|android|iphone|ipad|phone/i', $ua);
 
                 $browser = 'Other';
-                if (stripos($ua, 'edg') !== false) $browser = 'Edge';
-                elseif (stripos($ua, 'chrome') !== false || stripos($ua, 'crios') !== false) $browser = 'Chrome';
-                elseif (stripos($ua, 'firefox') !== false || stripos($ua, 'fxios') !== false) $browser = 'Firefox';
-                elseif (stripos($ua, 'safari') !== false) $browser = 'Safari';
-                elseif (stripos($ua, 'opera') !== false || stripos($ua, 'opr') !== false) $browser = 'Opera';
+                if (stripos($ua, 'edg') !== false) {
+                    $browser = 'Edge';
+                } elseif (stripos($ua, 'chrome') !== false || stripos($ua, 'crios') !== false) {
+                    $browser = 'Chrome';
+                } elseif (stripos($ua, 'firefox') !== false || stripos($ua, 'fxios') !== false) {
+                    $browser = 'Firefox';
+                } elseif (stripos($ua, 'safari') !== false) {
+                    $browser = 'Safari';
+                } elseif (stripos($ua, 'opera') !== false || stripos($ua, 'opr') !== false) {
+                    $browser = 'Opera';
+                }
 
                 $device = $isMobile ? 'Mobile' : 'Desktop';
                 $timeString = $log->created_at ? $log->created_at->setTimezone('Asia/Jakarta')->format('Y-m-d H:i:s') : '-';
@@ -424,9 +435,9 @@ class BookController extends Controller
     /**
      * Display a listing of book search keyword logs.
      */
-    public function searchLogs(\Illuminate\Http\Request $request): Response
+    public function searchLogs(Request $request): Response
     {
-        $query = \App\Models\SearchLogBuku::query();
+        $query = SearchLogBuku::query();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -444,12 +455,12 @@ class BookController extends Controller
         $logs = $query->latest('search_date')->latest('search_count')->paginate(20)->withQueryString();
 
         // Overall stats
-        $totalSearchesCount = (int) \App\Models\SearchLogBuku::sum('search_count');
-        $todaySearchesCount = (int) \App\Models\SearchLogBuku::whereDate('search_date', today())->sum('search_count');
-        $uniqueKeywordsCount = \App\Models\SearchLogBuku::distinct('keyword')->count('keyword');
+        $totalSearchesCount = (int) SearchLogBuku::sum('search_count');
+        $todaySearchesCount = (int) SearchLogBuku::whereDate('search_date', today())->sum('search_count');
+        $uniqueKeywordsCount = SearchLogBuku::distinct('keyword')->count('keyword');
 
         // Top 5 most searched keywords
-        $topSearches = \App\Models\SearchLogBuku::select('keyword', DB::raw('SUM(search_count) as total_count'))
+        $topSearches = SearchLogBuku::select('keyword', DB::raw('SUM(search_count) as total_count'))
             ->groupBy('keyword')
             ->orderByDesc('total_count')
             ->take(5)
@@ -470,7 +481,7 @@ class BookController extends Controller
     /**
      * Delete a single search log record.
      */
-    public function destroySearchLog(\App\Models\SearchLogBuku $searchLog): RedirectResponse
+    public function destroySearchLog(SearchLogBuku $searchLog): RedirectResponse
     {
         $searchLog->delete();
 
@@ -480,9 +491,9 @@ class BookController extends Controller
     /**
      * Clear filtered or all search logs.
      */
-    public function clearSearchLogs(\Illuminate\Http\Request $request): RedirectResponse
+    public function clearSearchLogs(Request $request): RedirectResponse
     {
-        $query = \App\Models\SearchLogBuku::query();
+        $query = SearchLogBuku::query();
 
         if ($request->filled('search')) {
             $query->where('keyword', 'like', "%{$request->search}%");
@@ -504,9 +515,9 @@ class BookController extends Controller
     /**
      * Export book search logs to CSV compatible with Google Sheets & Excel.
      */
-    public function exportSearchLogs(\Illuminate\Http\Request $request)
+    public function exportSearchLogs(Request $request)
     {
-        $query = \App\Models\SearchLogBuku::query();
+        $query = SearchLogBuku::query();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -523,7 +534,7 @@ class BookController extends Controller
 
         $logs = $query->latest('search_date')->latest('search_count')->get();
 
-        $filename = 'search_keyword_logs_' . date('Y-m-d_His') . '.csv';
+        $filename = 'search_keyword_logs_'.date('Y-m-d_His').'.csv';
 
         $headers = [
             'Content-Type' => 'text/csv; charset=UTF-8',
@@ -536,7 +547,7 @@ class BookController extends Controller
         $callback = function () use ($logs) {
             $handle = fopen('php://output', 'w');
             // Add UTF-8 BOM for proper Excel / Google Sheets character handling
-            fputs($handle, "\xEF\xBB\xBF");
+            fwrite($handle, "\xEF\xBB\xBF");
 
             // CSV Header Row
             fputcsv($handle, [
@@ -572,7 +583,8 @@ class BookController extends Controller
     public function create()
     {
         return Inertia::render('Admin/Books/Create', array_merge($this->formOptions(), [
-            'existingVolumes' => [],
+            'existingSlugs' => $this->existingSlugs(),
+            'volumesBySeries' => $this->volumesBySeries(),
         ]));
     }
 
@@ -592,18 +604,6 @@ class BookController extends Controller
             'tiktokEmbeds:id,book_id,name,url_video,sort_order',
             'affiliateLinks:id,book_id,affiliate_store_id,store_name,location,url',
         ]);
-
-        $existingVolumes = [];
-        if ($book->series_id) {
-            $existingVolumes = Book::query()
-                ->where('series_id', $book->series_id)
-                ->where('id', '!=', $book->id)
-                ->pluck('volume')
-                ->filter()
-                ->map(fn ($v) => (string) $v)
-                ->values()
-                ->toArray();
-        }
 
         return Inertia::render('Admin/Books/Edit', array_merge($this->formOptions(), [
             'book' => [
@@ -667,7 +667,8 @@ class BookController extends Controller
                     ])
                     ->values(),
             ],
-            'existingVolumes' => $existingVolumes,
+            'existingSlugs' => $this->existingSlugs($book->id),
+            'volumesBySeries' => $this->volumesBySeries($book->id),
         ]));
     }
 
@@ -692,24 +693,28 @@ class BookController extends Controller
             'affiliateLinks:id,book_id,affiliate_store_id,store_name,location,url',
         ]);
 
-        $existingVolumes = [];
+        $existingVolumesQuery = Book::query();
+
         if ($book->series_id) {
-            $existingVolumes = Book::query()
-                ->where('series_id', $book->series_id)
-                ->pluck('volume')
-                ->filter()
-                ->map(fn ($v) => (string) $v)
-                ->values()
-                ->toArray();
+            $existingVolumesQuery->where('series_id', $book->series_id);
+        } else {
+            $existingVolumesQuery->whereNull('series_id');
         }
+
+        $existingVolumes = $existingVolumesQuery
+            ->pluck('volume')
+            ->filter()
+            ->map(fn ($v) => (string) $v)
+            ->values()
+            ->toArray();
 
         $originalVolume = (string) $book->volume;
         $duplicatedVolume = $originalVolume;
 
-        if ($book->series_id && $originalVolume !== '') {
+        if ($originalVolume !== '') {
             $suffix = 2;
             while (in_array($duplicatedVolume, $existingVolumes, true)) {
-                $duplicatedVolume = $originalVolume . ' ' . $suffix;
+                $duplicatedVolume = $originalVolume.' '.$suffix;
                 $suffix++;
             }
         }
@@ -776,8 +781,9 @@ class BookController extends Controller
                     ])
                     ->values(),
             ],
-            'existingVolumes' => $existingVolumes,
             'duplicatedVolume' => $duplicatedVolume,
+            'existingSlugs' => $this->existingSlugs(),
+            'volumesBySeries' => $this->volumesBySeries(),
         ]));
     }
 
@@ -810,301 +816,271 @@ class BookController extends Controller
                 'publisher_id' => $data['publisher_id'],
 
                 'synopsis' => $data['synopsis'],
-                'short_description' =>
-                    $data['short_description'] ?? null,
-                'news_link' =>
-                    $data['news_link'] ?? null,
+                'short_description' => $data['short_description'] ?? null,
+                'news_link' => $data['news_link'] ?? null,
                 'msrp' => $data['msrp'],
                 'isbn' => $data['isbn'] ?? null,
                 'page_count' => $data['page_count'] ?? null,
                 'paper_type' => $data['paper_type'] ?? null,
                 'dimensions' => $data['dimensions'] ?? null,
-            'adaptation' => $data['adaptation'] ?? null,
-            'is_upcoming' => !empty($data['is_upcoming']),
-        ]
-    );
+                'adaptation' => $data['adaptation'] ?? null,
+                'is_upcoming' => ! empty($data['is_upcoming']),
+            ]
+            );
 
-    foreach (
-        $data['tiktok_embeds'] ?? []
-        as $index => $embed
-    ) {
-        $book->tiktokEmbeds()->create([
-            'name' => $embed['name'] ?? '',
-            'url_video' => $embed['url_video'] ?? $embed['embed_url'] ?? '',
-            'sort_order' => $index + 1,
-        ]);
+            foreach (
+                $data['tiktok_embeds'] ?? [] as $index => $embed
+            ) {
+                $book->tiktokEmbeds()->create([
+                    'name' => $embed['name'] ?? '',
+                    'url_video' => $embed['url_video'] ?? $embed['embed_url'] ?? '',
+                    'sort_order' => $index + 1,
+                ]);
+            }
+
+            /*
+             * Images
+             */
+            foreach (
+                $data['images'] ?? [] as $index => $image
+            ) {
+                $book->images()->create([
+                    'image_url' => $image['image_url'],
+                    'sort_order' => $index + 1,
+                ]);
+            }
+
+            /*
+             * Authors
+             */
+            $this->syncAuthors($book, $data);
+
+            /*
+             * Genres
+             */
+            $book->genres()->sync(
+                $data['genres'] ?? []
+            );
+
+            /*
+             * Affiliate Links
+             */
+            foreach (
+                $data['affiliate_links'] ?? [] as $affiliate
+            ) {
+                $book->affiliateLinks()->create([
+                    'affiliate_store_id' => $affiliate[
+                            'affiliate_store_id'
+                        ],
+                    'store_name' => $this->affiliateStoreName($affiliate),
+                    'location' => $this->affiliateLocation($affiliate),
+                    'url' => $affiliate['url'],
+                ]);
+            }
+
+            return $book;
+        });
+
+        $this->forgetBookCaches();
+
+        return redirect()
+            ->route('admin.books.index')
+            ->with(
+                'success',
+                'Buku berhasil ditambahkan.'
+            );
     }
-
-        /*
-         * Images
-         */
-        foreach (
-            $data['images'] ?? []
-            as $index => $image
-        ) {
-            $book->images()->create([
-                'image_url' =>
-                    $image['image_url'],
-                'sort_order' =>
-                    $index + 1,
-            ]);
-        }
-
-        /*
-         * Authors
-         */
-        $this->syncAuthors($book, $data);
-
-        /*
-         * Genres
-         */
-        $book->genres()->sync(
-            $data['genres'] ?? []
-        );
-
-        /*
-         * Affiliate Links
-         */
-        foreach (
-            $data['affiliate_links'] ?? []
-            as $affiliate
-        ) {
-            $book->affiliateLinks()->create([
-                'affiliate_store_id' =>
-                    $affiliate[
-                        'affiliate_store_id'
-                    ],
-                'store_name' =>
-                    $this->affiliateStoreName($affiliate),
-                'location' =>
-                    $this->affiliateLocation($affiliate),
-                'url' =>
-                    $affiliate['url'],
-            ]);
-        }
-
-        return $book;
-    });
-
-    return redirect()
-        ->route('admin.books.index')
-        ->with(
-            'success',
-            'Buku berhasil ditambahkan.'
-        );
-}
 
     /**
      * Update the specified book.
      */
     public function update(
-    UpdateBookRequest $request,
-    Book $book
-) {
-    $data = $request->validated();
-
-    DB::transaction(function () use (
-        $data,
-        $book
+        UpdateBookRequest $request,
+        Book $book
     ) {
-        // Judul atau volume berubah -> slug ikut diperbarui agar URL postingan
-        // selalu mengikuti judul terbaru, bukan slug lama.
-        $slug = $book->slug;
+        $data = $request->validated();
 
-        if (
-            (string) $data['title'] !== (string) $book->title
-            || (string) $data['volume'] !== (string) $book->volume
+        DB::transaction(function () use (
+            $data,
+            $book
         ) {
-            $slug = $this->generateUniqueSlug(
-                $data['title'],
-                (string) $data['volume'],
-                $book->id
+            // Judul atau volume berubah -> slug ikut diperbarui agar URL postingan
+            // selalu mengikuti judul terbaru, bukan slug lama.
+            $slug = $book->slug;
+
+            if (
+                (string) $data['title'] !== (string) $book->title
+                || (string) $data['volume'] !== (string) $book->volume
+            ) {
+                $slug = $this->generateUniqueSlug(
+                    $data['title'],
+                    (string) $data['volume'],
+                    $book->id
+                );
+            }
+
+            $book->update([
+                'title' => $data['title'],
+                'slug' => $slug,
+                'series_id' => $data['series_id'] ?? null,
+                'volume' => $data['volume'],
+                'edition_id' => $data['edition_id'],
+                'book_type' => $data['book_type'],
+                'story_status_id' => $data['story_status_id'],
+                'age_rating' => $data['age_rating'],
+                'publisher_id' => $data['publisher_id'],
+                'synopsis' => $data['synopsis'],
+                'short_description' => $data['short_description'] ?? null,
+                'news_link' => $data['news_link'] ?? null,
+                'msrp' => $data['msrp'],
+                'isbn' => $data['isbn'] ?? null,
+                'page_count' => $data['page_count'] ?? null,
+                'paper_type' => $data['paper_type'] ?? null,
+                'dimensions' => $data['dimensions'] ?? null,
+                'adaptation' => $data['adaptation'] ?? null,
+                'is_upcoming' => ! empty($data['is_upcoming']),
+            ]);
+
+            /*
+             * Authors
+             */
+            $this->syncAuthors($book, $data);
+
+            /*
+             * Genres
+             */
+            $book->genres()->sync(
+                $data['genres'] ?? []
             );
-        }
 
-        $book->update([
-            'title' => $data['title'],
-            'slug' => $slug,
-            'series_id' => $data['series_id'] ?? null,
-            'volume' => $data['volume'],
-            'edition_id' => $data['edition_id'],
-            'book_type' => $data['book_type'],
-            'story_status_id' => $data['story_status_id'],
-            'age_rating' => $data['age_rating'],
-            'publisher_id' => $data['publisher_id'],
-            'synopsis' => $data['synopsis'],
-            'short_description' =>
-                $data['short_description'] ?? null,
-            'news_link' =>
-                $data['news_link'] ?? null,
-            'msrp' => $data['msrp'],
-            'isbn' => $data['isbn'] ?? null,
-            'page_count' => $data['page_count'] ?? null,
-            'paper_type' => $data['paper_type'] ?? null,
-            'dimensions' => $data['dimensions'] ?? null,
-            'adaptation' => $data['adaptation'] ?? null,
-            'is_upcoming' => !empty($data['is_upcoming']),
-        ]);
-
-        /*
-         * Authors
-         */
-        $this->syncAuthors($book, $data);
-
-        /*
-         * Genres
-         */
-        $book->genres()->sync(
-            $data['genres'] ?? []
-        );
-
-        /*
-         * Images
-         */
-        $submittedImageIds = collect(
-            $data['images'] ?? []
-        )
-            ->pluck('id')
-            ->filter()
-            ->values();
-
-        $book->images()
-            ->whereNotIn(
-                'id',
-                $submittedImageIds
+            /*
+             * Images
+             */
+            $submittedImageIds = collect(
+                $data['images'] ?? []
             )
-            ->delete();
+                ->pluck('id')
+                ->filter()
+                ->values();
 
-        foreach (
-            $data['images'] ?? []
-            as $index => $image
-        ) {
-            if (!empty($image['id'])) {
-                $book->images()
-                    ->where('id', $image['id'])
-                    ->update([
-                        'image_url' =>
-                            $image['image_url'],
-                        'sort_order' =>
-                            $index + 1,
+            $book->images()
+                ->whereNotIn(
+                    'id',
+                    $submittedImageIds
+                )
+                ->delete();
+
+            foreach (
+                $data['images'] ?? [] as $index => $image
+            ) {
+                if (! empty($image['id'])) {
+                    $book->images()
+                        ->where('id', $image['id'])
+                        ->update([
+                            'image_url' => $image['image_url'],
+                            'sort_order' => $index + 1,
+                        ]);
+                } else {
+                    $book->images()->create([
+                        'image_url' => $image['image_url'],
+                        'sort_order' => $index + 1,
                     ]);
-            } else {
-                $book->images()->create([
-                    'image_url' =>
-                        $image['image_url'],
-                    'sort_order' =>
-                        $index + 1,
-                ]);
+                }
             }
-        }
 
-        /*
-         * TikTok Embeds
-         */
-        $submittedTikTokIds = collect(
-            $data['tiktok_embeds'] ?? []
-        )
-            ->pluck('id')
-            ->filter()
-            ->values();
-
-        $book->tiktokEmbeds()
-            ->whereNotIn(
-                'id',
-                $submittedTikTokIds
+            /*
+             * TikTok Embeds
+             */
+            $submittedTikTokIds = collect(
+                $data['tiktok_embeds'] ?? []
             )
-            ->delete();
+                ->pluck('id')
+                ->filter()
+                ->values();
 
-        foreach (
-            $data['tiktok_embeds'] ?? []
-            as $index => $embed
-        ) {
-            if (!empty($embed['id'])) {
-                $book->tiktokEmbeds()
-                    ->where('id', $embed['id'])
-                    ->update([
-                        'name' =>
-                            $embed['name'] ?? '',
-                        'url_video' =>
-                            $embed['url_video'] ?? $embed['embed_url'] ?? '',
-                        'sort_order' =>
-                            $index + 1,
+            $book->tiktokEmbeds()
+                ->whereNotIn(
+                    'id',
+                    $submittedTikTokIds
+                )
+                ->delete();
+
+            foreach (
+                $data['tiktok_embeds'] ?? [] as $index => $embed
+            ) {
+                if (! empty($embed['id'])) {
+                    $book->tiktokEmbeds()
+                        ->where('id', $embed['id'])
+                        ->update([
+                            'name' => $embed['name'] ?? '',
+                            'url_video' => $embed['url_video'] ?? $embed['embed_url'] ?? '',
+                            'sort_order' => $index + 1,
+                        ]);
+                } else {
+                    $book->tiktokEmbeds()->create([
+                        'name' => $embed['name'] ?? '',
+                        'url_video' => $embed['url_video'] ?? $embed['embed_url'] ?? '',
+                        'sort_order' => $index + 1,
                     ]);
-            } else {
-                $book->tiktokEmbeds()->create([
-                    'name' =>
-                        $embed['name'] ?? '',
-                    'url_video' =>
-                        $embed['url_video'] ?? $embed['embed_url'] ?? '',
-                    'sort_order' =>
-                        $index + 1,
-                ]);
+                }
             }
-        }
 
-        /*
-         * Affiliate Links
-         */
-        $submittedAffiliateIds = collect(
-            $data['affiliate_links'] ?? []
-        )
-            ->pluck('id')
-            ->filter()
-            ->values();
-
-        $book->affiliateLinks()
-            ->whereNotIn(
-                'id',
-                $submittedAffiliateIds
+            /*
+             * Affiliate Links
+             */
+            $submittedAffiliateIds = collect(
+                $data['affiliate_links'] ?? []
             )
-            ->delete();
+                ->pluck('id')
+                ->filter()
+                ->values();
 
-        foreach (
-            $data['affiliate_links'] ?? []
-            as $affiliate
-        ) {
-            if (!empty($affiliate['id'])) {
-                $book->affiliateLinks()
-                    ->where(
-                        'id',
-                        $affiliate['id']
-                    )
-                    ->update([
-                        'affiliate_store_id' =>
-                            $affiliate[
+            $book->affiliateLinks()
+                ->whereNotIn(
+                    'id',
+                    $submittedAffiliateIds
+                )
+                ->delete();
+
+            foreach (
+                $data['affiliate_links'] ?? [] as $affiliate
+            ) {
+                if (! empty($affiliate['id'])) {
+                    $book->affiliateLinks()
+                        ->where(
+                            'id',
+                            $affiliate['id']
+                        )
+                        ->update([
+                            'affiliate_store_id' => $affiliate[
+                                    'affiliate_store_id'
+                                ],
+                            'store_name' => $this->affiliateStoreName($affiliate),
+                            'location' => $this->affiliateLocation($affiliate),
+                            'url' => $affiliate['url'],
+                        ]);
+                } else {
+                    $book->affiliateLinks()->create([
+                        'affiliate_store_id' => $affiliate[
                                 'affiliate_store_id'
                             ],
-                        'store_name' =>
-                            $this->affiliateStoreName($affiliate),
-                        'location' =>
-                            $this->affiliateLocation($affiliate),
-                        'url' =>
-                            $affiliate['url'],
+                        'store_name' => $this->affiliateStoreName($affiliate),
+                        'location' => $this->affiliateLocation($affiliate),
+                        'url' => $affiliate['url'],
                     ]);
-            } else {
-                $book->affiliateLinks()->create([
-                    'affiliate_store_id' =>
-                        $affiliate[
-                            'affiliate_store_id'
-                        ],
-                    'store_name' =>
-                        $this->affiliateStoreName($affiliate),
-                    'location' =>
-                        $this->affiliateLocation($affiliate),
-                    'url' =>
-                        $affiliate['url'],
-                ]);
+                }
             }
-        }
-    });
+        });
 
-    return redirect()
-        ->route('admin.books.index')
-        ->with(
-            'success',
-            'Buku berhasil diperbarui.'
-        );
-}
+        $this->forgetBookCaches();
+
+        return redirect()
+            ->route('admin.books.index')
+            ->with(
+                'success',
+                'Buku berhasil diperbarui.'
+            );
+    }
 
     /**
      * Remove the specified book.
@@ -1112,6 +1088,8 @@ class BookController extends Controller
     public function destroy(Book $book): RedirectResponse
     {
         $book->forceDelete();
+
+        $this->forgetBookCaches();
 
         return redirect()
             ->back(fallback: route('admin.books.index'))
@@ -1205,7 +1183,7 @@ class BookController extends Controller
         ?int $ignoreId = null
     ): string {
         $slug = Str::slug(
-            $title . '-volume-' . $volume
+            $title.'-volume-'.$volume
         );
 
         $originalSlug = $slug;
@@ -1227,6 +1205,55 @@ class BookController extends Controller
         }
 
         return $slug;
+    }
+
+    /**
+     * Semua slug yang sudah dipakai (termasuk buku soft-deleted) agar pratinjau
+     * slug di form dapat menghitung sufiks unik persis seperti generateUniqueSlug().
+     *
+     * @return array<int, string>
+     */
+    private function existingSlugs(?int $ignoreId = null): array
+    {
+        return Book::withTrashed()
+            ->when($ignoreId, fn ($query) => $query->whereKeyNot($ignoreId))
+            ->whereNotNull('slug')
+            ->where('slug', '!=', '')
+            ->pluck('slug')
+            ->values()
+            ->all();
+    }
+
+    /**
+     * Volume yang sudah dipakai per series (key "none" untuk buku tanpa series)
+     * agar validasi form mengikuti series yang sedang dipilih, bukan series asal
+     * saat menduplikat buku.
+     *
+     * @return array<string, array<int, string>>
+     */
+    private function volumesBySeries(?int $ignoreId = null): array
+    {
+        return Book::query()
+            ->when($ignoreId, fn ($query) => $query->whereKeyNot($ignoreId))
+            ->get(['series_id', 'volume'])
+            ->groupBy(fn (Book $book) => $book->series_id ? (string) $book->series_id : 'none')
+            ->map(fn ($books) => $books
+                ->pluck('volume')
+                ->filter()
+                ->map(fn ($volume) => (string) $volume)
+                ->values()
+                ->all())
+            ->all();
+    }
+
+    /**
+     * Bersihkan cache halaman publik agar perubahan buku langsung tampil.
+     */
+    private function forgetBookCaches(): void
+    {
+        foreach (['home:books:v2', 'bookmark:books:v2', 'news:books:v2', 'kios:books:v2'] as $key) {
+            Cache::forget($key);
+        }
     }
 
     /**
@@ -1294,8 +1321,7 @@ class BookController extends Controller
         $book->images()->delete();
 
         foreach (
-            $data['images'] ?? []
-            as $index => $imageUrl
+            $data['images'] ?? [] as $index => $imageUrl
         ) {
             $book->images()->create([
                 'image_url' => $imageUrl,
@@ -1314,21 +1340,16 @@ class BookController extends Controller
         $book->affiliateLinks()->delete();
 
         foreach (
-            $data['affiliate_links'] ?? []
-            as $affiliateLink
+            $data['affiliate_links'] ?? [] as $affiliateLink
         ) {
             $book->affiliateLinks()->create([
-                'affiliate_store_id' =>
-                    $affiliateLink['affiliate_store_id'],
+                'affiliate_store_id' => $affiliateLink['affiliate_store_id'],
 
-                'store_name' =>
-                    $this->affiliateStoreName($affiliateLink),
+                'store_name' => $this->affiliateStoreName($affiliateLink),
 
-                'location' =>
-                    $this->affiliateLocation($affiliateLink),
+                'location' => $this->affiliateLocation($affiliateLink),
 
-                'url' =>
-                    $affiliateLink['url'],
+                'url' => $affiliateLink['url'],
             ]);
         }
     }

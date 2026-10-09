@@ -1511,7 +1511,7 @@ const getReadingRatingStyle = (rating?: string) => {
                 <div
                    className={`h-full bg-white dark:bg-neutral-900 border-2 rounded-xl overflow-hidden flex flex-col justify-between cursor-pointer transition-all duration-300 ${
                      isBookmarked
-                       ? 'border-[#183619] dark:border-[#183619]'
+                       ? 'border-emerald-400'
                        : 'border-[#EFEFEF] dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_10px_24px_rgba(0,0,0,0.05)] hover:translate-y-[-2px]'
                    } select-none`}
                 >

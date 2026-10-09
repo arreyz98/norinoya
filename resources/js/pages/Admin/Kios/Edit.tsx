@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { normalizeImageKitUrl } from '@/utils/imageUrl';
 import { KiosItemData } from './Index';
 
 // Tipe Merch sesuai menu dropdown di EtalaseCatalog.tsx
@@ -78,7 +79,7 @@ export default function KiosEdit({ kiosItem, partners = [], ageRatings = [] }: K
     ];
 
     const initialCarouselImages = (kiosItem.carousel_images && kiosItem.carousel_images.length > 0)
-        ? [...kiosItem.carousel_images, '', '', '', ''].slice(0, 4)
+        ? [...kiosItem.carousel_images, '', '', '', ''].slice(0, 4).map((img) => normalizeImageKitUrl(img))
         : ['', '', '', ''];
 
     const initialCarouselLabels = (kiosItem.carousel_labels && kiosItem.carousel_labels.length > 0)
@@ -93,7 +94,7 @@ export default function KiosEdit({ kiosItem, partners = [], ageRatings = [] }: K
         title: kiosItem.title || '',
         merch_type: kiosItem.merch_type || kiosItem.category || 'manga',
         categories: initialCategories as string[],
-        cover_image: kiosItem.cover_image || '',
+        cover_image: normalizeImageKitUrl(kiosItem.cover_image || ''),
         carousel_images: initialCarouselImages,
         carousel_labels: initialCarouselLabels,
         deskripsi_produk: kiosItem.deskripsi_produk || kiosItem.synopsis || '',
@@ -165,22 +166,24 @@ export default function KiosEdit({ kiosItem, partners = [], ageRatings = [] }: K
     };
 
     const handleCoverImageChange = (val: string) => {
+        const normalizedValue = normalizeImageKitUrl(val);
         const updatedCarousel = [...data.carousel_images];
-        updatedCarousel[0] = val; // Cover utama otomatis sinkron jadi foto cover depan slide #1
+        updatedCarousel[0] = normalizedValue; // Cover utama otomatis sinkron jadi foto cover depan slide #1
         setData(prev => ({
             ...prev,
-            cover_image: val,
+            cover_image: normalizedValue,
             carousel_images: updatedCarousel,
         }));
     };
 
     const handleCarouselImageChange = (index: number, val: string) => {
+        const normalizedValue = normalizeImageKitUrl(val);
         const updated = [...data.carousel_images];
-        updated[index] = val;
+        updated[index] = normalizedValue;
         if (index === 0) {
             setData(prev => ({
                 ...prev,
-                cover_image: val,
+                cover_image: normalizedValue,
                 carousel_images: updated,
             }));
         } else {

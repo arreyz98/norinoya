@@ -66,7 +66,8 @@ interface Props {
     authors: Option[];
     genres: Option[];
     affiliateStores: Option[];
-    existingVolumes: string[];
+    volumesBySeries: Record<string, string[]>;
+    existingSlugs: string[];
     bookTypes: EnumOption[];
     ageRatings: EnumOption[];
     book?: Book;
@@ -114,7 +115,8 @@ export default function Create({
     authors,
     genres,
     affiliateStores,
-    existingVolumes,
+    volumesBySeries,
+    existingSlugs,
     bookTypes,
     ageRatings,
     book,
@@ -154,7 +156,8 @@ export default function Create({
                     authors={authors}
                     genres={genres}
                     affiliateStores={affiliateStores}
-                    existingVolumes={existingVolumes}
+                    volumesBySeries={volumesBySeries}
+                    existingSlugs={existingSlugs}
                     bookTypes={bookTypes}
                     ageRatings={ageRatings}
                     processing={processing}

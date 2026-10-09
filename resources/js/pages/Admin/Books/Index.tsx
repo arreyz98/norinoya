@@ -1,17 +1,5 @@
 import { Head, Link, router } from '@inertiajs/react';
-import {
-    ArrowDown,
-    ArrowUp,
-    ArrowUpDown,
-    BookOpen,
-    Eye,
-    History,
-    Pencil,
-    Plus,
-    Search,
-    SearchCode,
-    Trash2,
-} from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpDown, BookOpen, Copy, Eye, History, Pencil, Plus, Search, SearchCode, Trash2 } from 'lucide-react';
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { toast } from 'sonner';
 
@@ -159,12 +147,7 @@ const formatPaginationLabel = (label: string) =>
         .replace('pagination.next', 'Berikutnya')
         .trim();
 
-export default function Index({
-    books,
-    selectedSeries = null,
-    selectedPublisher = null,
-    filters: rawFilters,
-}: Props) {
+export default function Index({ books, selectedSeries = null, selectedPublisher = null, filters: rawFilters }: Props) {
     const filters = rawFilters && !Array.isArray(rawFilters) ? rawFilters : {};
     const [deleteBook, setDeleteBook] = useState<Book | null>(null);
     const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
@@ -356,8 +339,7 @@ export default function Index({
         });
     };
 
-    const hasActiveFilters =
-        Boolean(search) || seriesId !== 'all' || publisherId !== 'all' || sort !== 'latest' || perPage !== 15;
+    const hasActiveFilters = Boolean(search) || seriesId !== 'all' || publisherId !== 'all' || sort !== 'latest' || perPage !== 15;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -365,42 +347,51 @@ export default function Index({
 
             <div className="flex flex-1 flex-col gap-5 p-4 sm:p-6">
                 {/* Top Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="text-2xl font-bold flex items-center gap-2 text-neutral-900 dark:text-white">
-                            <BookOpen className="w-6 h-6 text-[#112A12] dark:text-emerald-400" />
+                        <h1 className="flex items-center gap-2 text-2xl font-bold text-neutral-900 dark:text-white">
+                            <BookOpen className="h-6 w-6 text-[#112A12] dark:text-emerald-400" />
                             <span>Books Catalog</span>
                         </h1>
-                        <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+                        <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
                             Kelola seluruh katalog buku, manga, novel, dan informasi volume yang tersedia di website.
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                    <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
                         <Link href={route('admin.books.search-logs')}>
-                            <Button variant="outline" className="border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5 cursor-pointer text-xs font-bold px-3.5 h-9 rounded-lg shadow-2xs">
-                                <SearchCode className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                            <Button
+                                variant="outline"
+                                className="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg border-neutral-300 px-3.5 text-xs font-bold text-neutral-800 shadow-2xs hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                            >
+                                <SearchCode className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                                 <span>Keyword Logs</span>
                             </Button>
                         </Link>
 
                         <Link href={route('admin.books.logs')}>
-                            <Button variant="outline" className="border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5 cursor-pointer text-xs font-bold px-3.5 h-9 rounded-lg shadow-2xs">
-                                <History className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                            <Button
+                                variant="outline"
+                                className="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg border-neutral-300 px-3.5 text-xs font-bold text-neutral-800 shadow-2xs hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                            >
+                                <History className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                                 <span>Lihat Logs</span>
                             </Button>
                         </Link>
 
                         <Link href={route('admin.books.volume-order')}>
-                            <Button variant="outline" className="border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5 cursor-pointer text-xs font-bold px-3.5 h-9 rounded-lg shadow-2xs">
-                                <ArrowUpDown className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                            <Button
+                                variant="outline"
+                                className="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg border-neutral-300 px-3.5 text-xs font-bold text-neutral-800 shadow-2xs hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                            >
+                                <ArrowUpDown className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                                 <span>Urutan Volume</span>
                             </Button>
                         </Link>
 
                         <Link href={route('admin.books.create')}>
-                            <Button className="bg-[#112A12] hover:bg-[#0c1e0d] text-white flex items-center gap-1.5 cursor-pointer text-xs font-bold px-4 h-9 rounded-lg">
-                                <Plus className="w-4 h-4" />
+                            <Button className="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg bg-[#112A12] px-4 text-xs font-bold text-white hover:bg-[#0c1e0d]">
+                                <Plus className="h-4 w-4" />
                                 <span>Tambah Buku</span>
                             </Button>
                         </Link>
@@ -408,15 +399,15 @@ export default function Index({
                 </div>
 
                 {/* Filter & Search Bar */}
-                <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-3.5 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 shadow-2xs">
-                    <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 flex-1 min-w-[240px]">
+                <div className="flex flex-col items-stretch justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-3.5 shadow-2xs lg:flex-row lg:items-center dark:border-neutral-800 dark:bg-neutral-900">
+                    <form onSubmit={handleSearchSubmit} className="flex min-w-[240px] flex-1 items-center gap-2">
                         <div className="relative flex-1">
-                            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+                            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-neutral-400" />
                             <Input
                                 placeholder="Cari judul buku, sinopsis..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="pl-9 h-9 text-xs"
+                                className="h-9 pl-9 text-xs"
                             />
                         </div>
                         <Button type="submit" variant="secondary" className="h-9 px-3 text-xs font-bold">
@@ -424,7 +415,7 @@ export default function Index({
                         </Button>
                     </form>
 
-                    <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                    <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
                         <FilterCombobox
                             value={seriesId}
                             selectedLabel={selectedSeries?.title ?? null}
@@ -451,7 +442,7 @@ export default function Index({
 
                         {/* Sort Filter */}
                         <div className="relative">
-                            <ArrowUpDown className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
+                            <ArrowUpDown className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2" />
                             <select
                                 value={sort}
                                 onChange={(e) => {
@@ -459,7 +450,7 @@ export default function Index({
                                     setSort(next);
                                     handleApplyFilters({ sort: next });
                                 }}
-                                className="h-9 pl-8 pr-7 text-xs font-medium bg-background border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer appearance-none"
+                                className="bg-background border-input focus:ring-ring h-9 cursor-pointer appearance-none rounded-md border pr-7 pl-8 text-xs font-medium focus:ring-1 focus:outline-none"
                             >
                                 {SORT_OPTIONS.map((option) => (
                                     <option key={option.value} value={option.value}>
@@ -470,12 +461,7 @@ export default function Index({
                         </div>
 
                         {hasActiveFilters && (
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={handleReset}
-                                className="h-9 text-xs font-bold"
-                            >
+                            <Button variant="outline" size="sm" onClick={handleReset} className="h-9 text-xs font-bold">
                                 Reset
                             </Button>
                         )}
@@ -485,17 +471,10 @@ export default function Index({
                 {/* Bulk Action Bar */}
                 {selectedIds.length > 0 && (
                     <div className="flex flex-col gap-2 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 sm:flex-row sm:items-center sm:justify-between dark:border-red-900/50 dark:bg-red-950/30">
-                        <p className="text-xs font-semibold text-red-700 dark:text-red-300">
-                            {selectedIds.length} buku dipilih
-                        </p>
+                        <p className="text-xs font-semibold text-red-700 dark:text-red-300">{selectedIds.length} buku dipilih</p>
 
                         <div className="flex items-center gap-2">
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 text-xs font-bold"
-                                onClick={() => setSelectedIds([])}
-                            >
+                            <Button variant="ghost" size="sm" className="h-8 text-xs font-bold" onClick={() => setSelectedIds([])}>
                                 Batal
                             </Button>
 
@@ -516,7 +495,7 @@ export default function Index({
                 )}
 
                 {/* Table Data */}
-                <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden shadow-2xs">
+                <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xs dark:border-neutral-800 dark:bg-neutral-900">
                     <div className="overflow-x-auto">
                         <table className="w-full min-w-[1040px]">
                             <thead className="bg-[#112A12] text-white">
@@ -530,13 +509,9 @@ export default function Index({
                                         />
                                     </th>
 
-                                    <th className="w-[70px] px-4 py-3 text-left text-xs font-bold text-white">
-                                        #
-                                    </th>
+                                    <th className="w-[70px] px-4 py-3 text-left text-xs font-bold text-white">#</th>
 
-                                    <th className="w-[80px] px-4 py-3 text-left text-xs font-bold text-white">
-                                        Cover
-                                    </th>
+                                    <th className="w-[80px] px-4 py-3 text-left text-xs font-bold text-white">Cover</th>
 
                                     <th className="px-4 py-3 text-left text-xs font-bold text-white">
                                         <button
@@ -549,21 +524,13 @@ export default function Index({
                                         </button>
                                     </th>
 
-                                    <th className="px-4 py-3 text-left text-xs font-bold text-white">
-                                        Series
-                                    </th>
+                                    <th className="px-4 py-3 text-left text-xs font-bold text-white">Series</th>
 
-                                    <th className="px-4 py-3 text-left text-xs font-bold text-white">
-                                        Volume
-                                    </th>
+                                    <th className="px-4 py-3 text-left text-xs font-bold text-white">Volume</th>
 
-                                    <th className="px-4 py-3 text-left text-xs font-bold text-white">
-                                        Penerbit
-                                    </th>
+                                    <th className="px-4 py-3 text-left text-xs font-bold text-white">Penerbit</th>
 
-                                    <th className="px-4 py-3 text-left text-xs font-bold text-white">
-                                        Status
-                                    </th>
+                                    <th className="px-4 py-3 text-left text-xs font-bold text-white">Status</th>
 
                                     <th className="px-4 py-3 text-center text-xs font-bold text-white">
                                         <button
@@ -576,19 +543,14 @@ export default function Index({
                                         </button>
                                     </th>
 
-                                    <th className="px-4 py-3 text-right text-xs font-bold text-white">
-                                        Aksi
-                                    </th>
+                                    <th className="px-4 py-3 text-right text-xs font-bold text-white">Aksi</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 {books.data.length > 0 ? (
                                     books.data.map((book, index) => (
-                                        <tr
-                                            key={book.id}
-                                            className="border-b last:border-0 hover:bg-neutral-50/70 dark:hover:bg-neutral-800/40"
-                                        >
+                                        <tr key={book.id} className="border-b last:border-0 hover:bg-neutral-50/70 dark:hover:bg-neutral-800/40">
                                             {/* Select */}
                                             <td className="px-4 py-3">
                                                 <Checkbox
@@ -599,7 +561,7 @@ export default function Index({
                                             </td>
 
                                             {/* Number */}
-                                            <td className="px-4 py-3 text-sm text-muted-foreground">
+                                            <td className="text-muted-foreground px-4 py-3 text-sm">
                                                 {(books.current_page - 1) * books.per_page + index + 1}
                                             </td>
 
@@ -614,7 +576,7 @@ export default function Index({
                                                         className="h-16 w-12 rounded-md border object-cover"
                                                     />
                                                 ) : (
-                                                    <div className="flex h-16 w-12 items-center justify-center rounded-md border bg-muted text-center text-[10px] text-muted-foreground">
+                                                    <div className="bg-muted text-muted-foreground flex h-16 w-12 items-center justify-center rounded-md border text-center text-[10px]">
                                                         No Image
                                                     </div>
                                                 )}
@@ -626,26 +588,18 @@ export default function Index({
                                                     <p className="truncate text-sm font-medium">{book.title}</p>
 
                                                     <div className="mt-1 flex flex-wrap gap-1.5">
-                                                        <span className="text-xs text-muted-foreground">
-                                                            {book.genres_count} genre
-                                                        </span>
+                                                        <span className="text-muted-foreground text-xs">{book.genres_count} genre</span>
 
-                                                        <span className="text-xs text-muted-foreground">•</span>
+                                                        <span className="text-muted-foreground text-xs">•</span>
 
-                                                        <span className="text-xs text-muted-foreground">
-                                                            {book.affiliate_links_count} affiliate
-                                                        </span>
+                                                        <span className="text-muted-foreground text-xs">{book.affiliate_links_count} affiliate</span>
                                                     </div>
                                                 </div>
                                             </td>
 
                                             {/* Series */}
                                             <td className="px-4 py-3 text-sm">
-                                                {book.series ? (
-                                                    book.series.title
-                                                ) : (
-                                                    <span className="text-muted-foreground">-</span>
-                                                )}
+                                                {book.series ? book.series.title : <span className="text-muted-foreground">-</span>}
                                             </td>
 
                                             {/* Volume */}
@@ -653,11 +607,7 @@ export default function Index({
 
                                             {/* Publisher */}
                                             <td className="px-4 py-3 text-sm">
-                                                {book.publisher ? (
-                                                    book.publisher.name
-                                                ) : (
-                                                    <span className="text-muted-foreground">-</span>
-                                                )}
+                                                {book.publisher ? book.publisher.name : <span className="text-muted-foreground">-</span>}
                                             </td>
 
                                             {/* Status */}
@@ -667,14 +617,14 @@ export default function Index({
                                                         {book.story_status?.name}
                                                     </span>
                                                 ) : (
-                                                    <span className="text-sm text-muted-foreground">-</span>
+                                                    <span className="text-muted-foreground text-sm">-</span>
                                                 )}
                                             </td>
 
                                             {/* Views */}
                                             <td className="px-4 py-3 text-center">
-                                                <span className="inline-flex items-center gap-1 font-mono text-xs font-bold text-neutral-700 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-800 px-2.5 py-1 rounded-md">
-                                                    <Eye className="w-3.5 h-3.5 text-neutral-400" />
+                                                <span className="inline-flex items-center gap-1 rounded-md bg-neutral-100 px-2.5 py-1 font-mono text-xs font-bold text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
+                                                    <Eye className="h-3.5 w-3.5 text-neutral-400" />
                                                     <span>{(book.views_count ?? 0).toLocaleString('id-ID')}</span>
                                                 </span>
                                             </td>
@@ -698,18 +648,25 @@ export default function Index({
                                                         </a>
                                                     </Button>
 
+                                                    <Button
+                                                        variant="outline"
+                                                        size="icon"
+                                                        asChild
+                                                        title="Duplikat Buku"
+                                                        className="text-neutral-600 hover:text-neutral-950 dark:text-neutral-300 dark:hover:text-white"
+                                                    >
+                                                        <Link href={route('admin.books.duplicate', book.id)}>
+                                                            <Copy className="size-4" />
+                                                        </Link>
+                                                    </Button>
+
                                                     <Button variant="outline" size="icon" asChild title="Edit Buku">
                                                         <Link href={route('admin.books.edit', book.id)}>
                                                             <Pencil className="size-4" />
                                                         </Link>
                                                     </Button>
 
-                                                    <Button
-                                                        variant="destructive"
-                                                        size="icon"
-                                                        title="Hapus Buku"
-                                                        onClick={() => setDeleteBook(book)}
-                                                    >
+                                                    <Button variant="destructive" size="icon" title="Hapus Buku" onClick={() => setDeleteBook(book)}>
                                                         <Trash2 className="size-4" />
                                                     </Button>
                                                 </div>
@@ -720,8 +677,8 @@ export default function Index({
                                     <tr>
                                         <td colSpan={10} className="px-4 py-16 text-center">
                                             <div className="flex flex-col items-center gap-3">
-                                                <div className="flex size-12 items-center justify-center rounded-full bg-muted">
-                                                    <BookOpen className="size-5 text-muted-foreground" />
+                                                <div className="bg-muted flex size-12 items-center justify-center rounded-full">
+                                                    <BookOpen className="text-muted-foreground size-5" />
                                                 </div>
 
                                                 <div>
@@ -729,7 +686,7 @@ export default function Index({
                                                         {hasActiveFilters ? 'Tidak ada buku yang cocok' : 'Belum ada buku'}
                                                     </p>
 
-                                                    <p className="mt-1 text-sm text-muted-foreground">
+                                                    <p className="text-muted-foreground mt-1 text-sm">
                                                         {hasActiveFilters
                                                             ? 'Coba ubah kata kunci atau filter pencarian.'
                                                             : 'Tambahkan buku pertama Anda.'}
@@ -760,7 +717,7 @@ export default function Index({
                 {/* Pagination */}
                 {books.total > 0 && (
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                        <div className="text-muted-foreground flex flex-wrap items-center gap-3 text-sm">
                             <p>
                                 Menampilkan {books.from ?? 0}–{books.to ?? 0} dari {books.total} buku.
                             </p>
@@ -774,7 +731,7 @@ export default function Index({
                                         setPerPage(next);
                                         handleApplyFilters({ per_page: next });
                                     }}
-                                    className="h-8 rounded-md border border-input bg-background px-2 text-xs font-medium cursor-pointer focus:outline-none focus:ring-1 focus:ring-ring"
+                                    className="border-input bg-background focus:ring-ring h-8 cursor-pointer rounded-md border px-2 text-xs font-medium focus:ring-1 focus:outline-none"
                                 >
                                     {PER_PAGE_OPTIONS.map((option) => (
                                         <option key={option} value={option}>
@@ -800,12 +757,7 @@ export default function Index({
                                         }
 
                                         return (
-                                            <Button
-                                                key={index}
-                                                variant={link.active ? 'default' : 'outline'}
-                                                size="sm"
-                                                asChild
-                                            >
+                                            <Button key={index} variant={link.active ? 'default' : 'outline'} size="sm" asChild>
                                                 <Link href={link.url} preserveScroll>
                                                     {label}
                                                 </Link>
@@ -825,12 +777,7 @@ export default function Index({
                                         aria-label="Lompat ke halaman"
                                         className="h-8 w-16 text-center text-xs"
                                     />
-                                    <Button
-                                        type="submit"
-                                        variant="secondary"
-                                        size="sm"
-                                        className="h-8 px-2.5 text-xs font-bold"
-                                    >
+                                    <Button type="submit" variant="secondary" size="sm" className="h-8 px-2.5 text-xs font-bold">
                                         Ke
                                     </Button>
                                 </form>
@@ -873,8 +820,7 @@ export default function Index({
                         <AlertDialogTitle>Hapus {bulkCount} buku?</AlertDialogTitle>
 
                         <AlertDialogDescription>
-                            Buku yang dihapus tidak dapat dikembalikan. Apakah Anda yakin ingin menghapus{' '}
-                            <strong>{bulkCount} buku</strong> terpilih?
+                            Buku yang dihapus tidak dapat dikembalikan. Apakah Anda yakin ingin menghapus <strong>{bulkCount} buku</strong> terpilih?
                         </AlertDialogDescription>
                     </AlertDialogHeader>
 
