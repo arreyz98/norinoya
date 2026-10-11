@@ -157,7 +157,7 @@
     "isEntry": true
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-VRCSnGYL.js",
+    "file": "assets/app-DXfDX70p.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -260,7 +260,7 @@
     ]
   },
   "resources/js/pages/User/bookmark.tsx": {
-    "file": "assets/bookmark-BbL3WDEn.js",
+    "file": "assets/bookmark-DS-wgeL9.js",
     "name": "bookmark",
     "src": "resources/js/pages/User/bookmark.tsx",
     "isDynamicEntry": true,
@@ -355,7 +355,7 @@
     ]
   },
   "resources/js/pages/User/components/EtalaseCatalog.tsx": {
-    "file": "assets/EtalaseCatalog-BVl8DYVA.js",
+    "file": "assets/EtalaseCatalog-BfbQEYHZ.js",
     "name": "EtalaseCatalog",
     "src": "resources/js/pages/User/components/EtalaseCatalog.tsx",
     "isDynamicEntry": true,
@@ -397,7 +397,7 @@
     ]
   },
   "resources/js/pages/User/components/MarketplaceDB.tsx": {
-    "file": "assets/MarketplaceDB-BwtbNat6.js",
+    "file": "assets/MarketplaceDB-DImQPkDH.js",
     "name": "MarketplaceDB",
     "src": "resources/js/pages/User/components/MarketplaceDB.tsx",
     "isDynamicEntry": true,
@@ -454,7 +454,7 @@
     ]
   },
   "resources/js/pages/User/components/NewsFeed.tsx": {
-    "file": "assets/NewsFeed-CZ0lWwtL.js",
+    "file": "assets/NewsFeed-C9RdKvUK.js",
     "name": "NewsFeed",
     "src": "resources/js/pages/User/components/NewsFeed.tsx",
     "isDynamicEntry": true,
@@ -547,7 +547,7 @@
     ]
   },
   "resources/js/pages/User/home.tsx": {
-    "file": "assets/home-R8o0N9ef.js",
+    "file": "assets/home-Ll7btiU9.js",
     "name": "home",
     "src": "resources/js/pages/User/home.tsx",
     "isDynamicEntry": true,
@@ -578,7 +578,7 @@
     ]
   },
   "resources/js/pages/User/kios.tsx": {
-    "file": "assets/kios-DItLld-O.js",
+    "file": "assets/kios-BdcYg-zD.js",
     "name": "kios",
     "src": "resources/js/pages/User/kios.tsx",
     "isDynamicEntry": true,
@@ -605,7 +605,7 @@
     ]
   },
   "resources/js/pages/User/news.tsx": {
-    "file": "assets/news-CAJGfJso.js",
+    "file": "assets/news-DHUqvwM0.js",
     "name": "news",
     "src": "resources/js/pages/User/news.tsx",
     "isDynamicEntry": true,
