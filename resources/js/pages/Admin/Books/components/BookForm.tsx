@@ -47,11 +47,41 @@ export interface AffiliateLink {
     url: string;
 }
 
+export interface VideoLink {
+    id?: number;
+    platform_name: string;
+    title?: string;
+    access_type: string;
+    url: string;
+}
+
+// Ignore only untouched new placeholders; keep partial and persisted rows for validation.
+const hasVideoLinkContent = (video: VideoLink): boolean =>
+    Boolean(video.id || video.platform_name.trim() || video.title?.trim() || video.url.trim() || video.access_type !== 'free');
+
 export interface TiktokEmbed {
     id?: number;
     name: string;
     embed_url: string;
     url_video: string;
+}
+
+export interface InstagramEmbed {
+    id?: number;
+    name: string;
+    url: string;
+    thumbnail_url: string;
+    title: string;
+    description: string;
+    // Hanya dipakai di form (tempat admin menempel embed HTML dari Microlink).
+    embed_html?: string;
+}
+
+// Link berita terkait (tabel book_news_links). Bisa lebih dari satu per buku.
+export interface NewsLink {
+    id?: number;
+    title: string;
+    url: string;
 }
 
 export interface BookFormData {
@@ -68,6 +98,7 @@ export interface BookFormData {
     synopsis: string;
     short_description: string;
     news_link: string;
+    news_links: NewsLink[];
     msrp: string;
 
     isbn: string;
@@ -79,12 +110,14 @@ export interface BookFormData {
 
     images: ImageItem[];
     tiktok_embeds: TiktokEmbed[];
+    instagram_embeds: InstagramEmbed[];
 
     story_authors: string[];
     art_authors: string[];
     genres: string[];
 
     affiliate_links: AffiliateLink[];
+    video_links: VideoLink[];
 }
 
 type ValidationErrors = Record<string, string>;
@@ -92,7 +125,10 @@ type ValidationErrors = Record<string, string>;
 interface SubmissionMaps {
     images: number[];
     tiktok_embeds: number[];
+    instagram_embeds: number[];
+    news_links: number[];
     affiliate_links: number[];
+    video_links: number[];
 }
 
 const isValidUrl = (value: string): boolean => {
@@ -221,6 +257,30 @@ const validateBook = (form: BookFormData, volumesBySeries: Record<string, string
         }
     });
 
+    if (form.instagram_embeds.length > 10) {
+        nextErrors.instagram_embeds = 'Maksimal 10 postingan Instagram.';
+    }
+
+    form.instagram_embeds.forEach((embed, index) => {
+        const url = (embed.url || '').trim();
+
+        if (url && !isValidUrl(url)) {
+            nextErrors[`instagram_embeds.${index}.url`] = 'URL Instagram tidak valid.';
+        }
+    });
+
+    if (form.news_links.length > 10) {
+        nextErrors.news_links = 'Maksimal 10 link berita.';
+    }
+
+    form.news_links.forEach((link, index) => {
+        const url = (link.url || '').trim();
+
+        if (url && !isValidUrl(url)) {
+            nextErrors[`news_links.${index}.url`] = 'URL berita tidak valid.';
+        }
+    });
+
     form.affiliate_links.forEach((link, index) => {
         const hasStore = Boolean(link.affiliate_store_id);
         const url = link.url.trim();
@@ -233,6 +293,32 @@ const validateBook = (form: BookFormData, volumesBySeries: Record<string, string
             nextErrors[`affiliate_links.${index}.url`] = 'URL affiliate wajib diisi.';
         } else if (url && !isValidUrl(url)) {
             nextErrors[`affiliate_links.${index}.url`] = 'URL affiliate tidak valid.';
+        }
+    });
+
+    if (form.video_links.length > 20) {
+        nextErrors.video_links = 'Maksimal 20 link video.';
+    }
+
+    form.video_links.forEach((video, index) => {
+        const platform = video.platform_name.trim();
+        const url = video.url.trim();
+        const hasAny = hasVideoLinkContent(video);
+
+        if (hasAny && !platform) {
+            nextErrors[`video_links.${index}.platform_name`] = 'Nama platform wajib diisi.';
+        }
+
+        if (hasAny && !url) {
+            nextErrors[`video_links.${index}.url`] = 'Link video wajib diisi.';
+        } else if (url && !isValidUrl(url)) {
+            nextErrors[`video_links.${index}.url`] = 'Link video tidak valid.';
+        }
+
+        if (hasAny && !video.access_type) {
+            nextErrors[`video_links.${index}.access_type`] = 'Pilih tipe akses.';
+        } else if (hasAny && !['free', 'subscription'].includes(video.access_type)) {
+            nextErrors[`video_links.${index}.access_type`] = 'Tipe akses video tidak valid.';
         }
     });
 
@@ -261,12 +347,39 @@ const normalizeServerErrors = (serverErrors: ValidationErrors, maps: SubmissionM
             continue;
         }
 
+        const instagramMatch = key.match(/^instagram_embeds\.(\d+)\.([\w.]+)$/);
+
+        if (instagramMatch) {
+            const payloadIndex = Number(instagramMatch[1]);
+            const formIndex = maps.instagram_embeds[payloadIndex] ?? payloadIndex;
+            normalized[`instagram_embeds.${formIndex}.${instagramMatch[2]}`] = message;
+            continue;
+        }
+
+        const newsLinkMatch = key.match(/^news_links\.(\d+)\.([\w.]+)$/);
+
+        if (newsLinkMatch) {
+            const payloadIndex = Number(newsLinkMatch[1]);
+            const formIndex = maps.news_links[payloadIndex] ?? payloadIndex;
+            normalized[`news_links.${formIndex}.${newsLinkMatch[2]}`] = message;
+            continue;
+        }
+
         const affiliateMatch = key.match(/^affiliate_links\.(\d+)\.([\w.]+)$/);
 
         if (affiliateMatch) {
             const payloadIndex = Number(affiliateMatch[1]);
             const formIndex = maps.affiliate_links[payloadIndex] ?? payloadIndex;
             normalized[`affiliate_links.${formIndex}.${affiliateMatch[2]}`] = message;
+            continue;
+        }
+
+        const videoMatch = key.match(/^video_links\.(\d+)\.([\w.]+)$/);
+
+        if (videoMatch) {
+            const payloadIndex = Number(videoMatch[1]);
+            const formIndex = maps.video_links[payloadIndex] ?? payloadIndex;
+            normalized[`video_links.${formIndex}.${videoMatch[2]}`] = message;
             continue;
         }
 
@@ -309,6 +422,7 @@ interface BookFormProps {
         synopsis?: string;
         short_description?: string | null;
         news_link?: string | null;
+        news_links?: { id?: number; title?: string; url: string; sort_order?: number }[];
         msrp?: number | string | null;
         isbn?: string | null;
         page_count?: number | string | null;
@@ -318,6 +432,15 @@ interface BookFormProps {
         is_upcoming?: boolean | null;
         images?: { id?: number; image_url: string; sort_order?: number }[];
         tiktok_embeds?: { id?: number; name?: string; embed_url?: string; url_video?: string; sort_order?: number }[];
+        instagram_embeds?: {
+            id?: number;
+            name?: string;
+            url?: string;
+            thumbnail_url?: string;
+            title?: string;
+            description?: string;
+            sort_order?: number;
+        }[];
         story_authors?: (number | string)[];
         art_authors?: (number | string)[];
         genres?: (number | string)[];
@@ -326,6 +449,13 @@ interface BookFormProps {
             affiliate_store_id: number | string;
             store_name?: string;
             location?: string;
+            url: string;
+        }[];
+        video_links?: {
+            id?: number;
+            platform_name: string;
+            title?: string | null;
+            access_type: string;
             url: string;
         }[];
     };
@@ -337,6 +467,7 @@ interface BookFormProps {
     authors: Option[];
     genres: Option[];
     affiliateStores: Option[];
+    videoAccessTypes: EnumOption[];
 
     bookTypes: EnumOption[];
     ageRatings: EnumOption[];
@@ -357,6 +488,7 @@ export default function BookForm({
     authors,
     genres,
     affiliateStores,
+    videoAccessTypes,
     bookTypes,
     ageRatings,
     volumesBySeries,
@@ -370,7 +502,10 @@ export default function BookForm({
     const [submissionMaps, setSubmissionMaps] = useState<SubmissionMaps>({
         images: [],
         tiktok_embeds: [],
+        instagram_embeds: [],
+        news_links: [],
         affiliate_links: [],
+        video_links: [],
     });
 
     const formRef = useRef<HTMLFormElement>(null);
@@ -467,6 +602,17 @@ export default function BookForm({
         synopsis: book?.synopsis ?? '',
         short_description: book?.short_description ?? '',
         news_link: book?.news_link ?? '',
+
+        news_links: book?.news_links?.map((link) => ({
+            id: link.id,
+            title: link.title ?? '',
+            url: link.url ?? '',
+        })) ?? [
+            {
+                title: '',
+                url: '',
+            },
+        ],
         msrp: book?.msrp !== undefined && book?.msrp !== null ? String(book.msrp) : '',
 
         isbn: book?.isbn ?? '',
@@ -499,6 +645,25 @@ export default function BookForm({
             },
         ],
 
+        instagram_embeds: book?.instagram_embeds?.map((embed) => ({
+            id: embed.id,
+            name: embed.name ?? '',
+            url: embed.url ?? '',
+            thumbnail_url: embed.thumbnail_url ?? '',
+            title: embed.title ?? '',
+            description: embed.description ?? '',
+            embed_html: '',
+        })) ?? [
+            {
+                name: '',
+                url: '',
+                thumbnail_url: '',
+                title: '',
+                description: '',
+                embed_html: '',
+            },
+        ],
+
         story_authors: book?.story_authors?.map(String) ?? [],
 
         art_authors: book?.art_authors?.map(String) ?? [],
@@ -516,6 +681,21 @@ export default function BookForm({
                 affiliate_store_id: '',
                 store_name: 'Official Store',
                 location: 'Indonesia',
+                url: '',
+            },
+        ],
+
+        video_links: book?.video_links?.map((video) => ({
+            id: video.id,
+            platform_name: video.platform_name,
+            title: video.title ?? '',
+            access_type: video.access_type ?? 'free',
+            url: video.url,
+        })) ?? [
+            {
+                platform_name: '',
+                title: '',
+                access_type: 'free',
                 url: '',
             },
         ],
@@ -685,6 +865,196 @@ export default function BookForm({
         }));
     };
 
+    const cleanInstagramUrl = (url: string): string => {
+        if (!url) {
+            return '';
+        }
+
+        const trimmed = url.trim();
+        const match = trimmed.match(/^(https?:\/\/(?:www\.)?instagram\.com\/(?:p|reel|reels|tv)\/[A-Za-z0-9_-]+)/i);
+
+        if (match && match[1]) {
+            return match[1];
+        }
+
+        if (trimmed.includes('instagram.com') && (trimmed.includes('?') || trimmed.includes('#'))) {
+            return trimmed.split('?')[0].split('#')[0];
+        }
+
+        return trimmed;
+    };
+
+    const addInstagramEmbed = () => {
+        if (form.instagram_embeds.length >= 10) {
+            return;
+        }
+
+        clearErrorPrefix('instagram_embeds');
+
+        setForm((previous) => ({
+            ...previous,
+            instagram_embeds: [
+                ...previous.instagram_embeds,
+                {
+                    name: '',
+                    url: '',
+                    thumbnail_url: '',
+                    title: '',
+                    description: '',
+                    embed_html: '',
+                },
+            ],
+        }));
+    };
+
+    const removeInstagramEmbed = (index: number) => {
+        clearErrorPrefix('instagram_embeds');
+
+        setForm((previous) => ({
+            ...previous,
+            instagram_embeds: previous.instagram_embeds.filter((_, embedIndex) => embedIndex !== index),
+        }));
+    };
+
+    const updateInstagramEmbed = (index: number, field: keyof InstagramEmbed, value: string) => {
+        clearFieldError(`instagram_embeds.${index}.${field}`);
+
+        const finalValue = field === 'url' ? cleanInstagramUrl(value) : value;
+
+        setForm((previous) => ({
+            ...previous,
+            instagram_embeds: previous.instagram_embeds.map((embed, embedIndex) =>
+                embedIndex === index
+                    ? {
+                          ...embed,
+                          [field]: finalValue,
+                      }
+                    : embed,
+            ),
+        }));
+    };
+
+    // Ambil metadata (thumbnail, judul, deskripsi) dari embed HTML yang di-generate
+    // di https://microlink.io/tools/embed-url/instagram, lalu isi ke field terkait.
+    const parseInstagramEmbedHtml = (
+        raw: string,
+    ): { url: string; thumbnail_url: string; title: string; description: string } | null => {
+        const value = (raw || '').trim();
+
+        if (value === '') {
+            return null;
+        }
+
+        // Kalau admin hanya menempel URL (tanpa HTML), pakai URL-nya langsung.
+        if (!/[<>]/.test(value)) {
+            return {
+                url: cleanInstagramUrl(value),
+                thumbnail_url: '',
+                title: '',
+                description: '',
+            };
+        }
+
+        const doc = new DOMParser().parseFromString(value, 'text/html');
+        const anchor = doc.querySelector('a[href*="instagram.com"]') ?? doc.querySelector('a');
+
+        if (!anchor) {
+            return null;
+        }
+
+        const href = anchor.getAttribute('href') ?? '';
+
+        // Thumbnail = <img> pertama yang bukan logo (logo memakai path /rsrc.php/).
+        const images = Array.from(anchor.querySelectorAll('img'));
+        const thumbnail =
+            images.find((img) => !/\/rsrc\.php\//i.test(img.getAttribute('src') ?? '')) ?? images[0];
+        const thumbnailUrl = (thumbnail?.getAttribute('src') ?? '').trim();
+
+        // Judul & deskripsi dikenali dari inline font-size yang dipakai Microlink.
+        const divs = Array.from(anchor.querySelectorAll('div'));
+        const titleEl = divs.find((div) => /font-size:\s*16px/i.test(div.getAttribute('style') ?? ''));
+        const descriptionEl = divs.find((div) => /font-size:\s*13px/i.test(div.getAttribute('style') ?? ''));
+
+        return {
+            url: cleanInstagramUrl(href),
+            thumbnail_url: thumbnailUrl,
+            title: (titleEl?.textContent ?? '').trim(),
+            description: (descriptionEl?.textContent ?? '').trim(),
+        };
+    };
+
+    const applyInstagramEmbedHtml = (index: number, raw: string) => {
+        clearErrorPrefix('instagram_embeds');
+
+        const parsed = parseInstagramEmbedHtml(raw);
+
+        setForm((previous) => ({
+            ...previous,
+            instagram_embeds: previous.instagram_embeds.map((embed, embedIndex) => {
+                if (embedIndex !== index) {
+                    return embed;
+                }
+
+                if (!parsed) {
+                    return { ...embed, embed_html: raw };
+                }
+
+                return {
+                    ...embed,
+                    embed_html: raw,
+                    url: parsed.url || embed.url,
+                    thumbnail_url: parsed.thumbnail_url || embed.thumbnail_url,
+                    title: parsed.title || embed.title,
+                    description: parsed.description || embed.description,
+                };
+            }),
+        }));
+    };
+
+    const addNewsLink = () => {
+        if (form.news_links.length >= 10) {
+            return;
+        }
+
+        clearErrorPrefix('news_links');
+
+        setForm((previous) => ({
+            ...previous,
+            news_links: [
+                ...previous.news_links,
+                {
+                    title: '',
+                    url: '',
+                },
+            ],
+        }));
+    };
+
+    const removeNewsLink = (index: number) => {
+        clearErrorPrefix('news_links');
+
+        setForm((previous) => ({
+            ...previous,
+            news_links: previous.news_links.filter((_, linkIndex) => linkIndex !== index),
+        }));
+    };
+
+    const updateNewsLink = (index: number, field: keyof NewsLink, value: string) => {
+        clearFieldError(`news_links.${index}.${field}`);
+
+        setForm((previous) => ({
+            ...previous,
+            news_links: previous.news_links.map((link, linkIndex) =>
+                linkIndex === index
+                    ? {
+                          ...link,
+                          [field]: value,
+                      }
+                    : link,
+            ),
+        }));
+    };
+
     const addAffiliateLink = () => {
         clearErrorPrefix('affiliate_links');
 
@@ -723,6 +1093,52 @@ export default function BookForm({
                           [field]: value,
                       }
                     : link,
+            ),
+        }));
+    };
+
+    const addVideoLink = () => {
+        if (form.video_links.length >= 20) {
+            return;
+        }
+
+        clearErrorPrefix('video_links');
+
+        setForm((previous) => ({
+            ...previous,
+            video_links: [
+                ...previous.video_links,
+                {
+                    platform_name: '',
+                    title: '',
+                    access_type: 'free',
+                    url: '',
+                },
+            ],
+        }));
+    };
+
+    const removeVideoLink = (index: number) => {
+        clearErrorPrefix('video_links');
+
+        setForm((previous) => ({
+            ...previous,
+            video_links: previous.video_links.filter((_, videoIndex) => videoIndex !== index),
+        }));
+    };
+
+    const updateVideoLink = (index: number, field: keyof VideoLink, value: string) => {
+        clearFieldError(`video_links.${index}.${field}`);
+
+        setForm((previous) => ({
+            ...previous,
+            video_links: previous.video_links.map((video, videoIndex) =>
+                videoIndex === index
+                    ? {
+                          ...video,
+                          [field]: value,
+                      }
+                    : video,
             ),
         }));
     };
@@ -784,10 +1200,67 @@ export default function BookForm({
             }
         });
 
+        const instagramPayload: InstagramEmbed[] = [];
+        const instagramMap: number[] = [];
+
+        form.instagram_embeds.forEach((embed, index) => {
+            const url = (embed.url || '').trim();
+
+            if (url !== '') {
+                // embed_html sengaja tidak dikirim: hanya dipakai untuk parsing di form.
+                instagramPayload.push({
+                    id: embed.id,
+                    name: embed.name,
+                    url,
+                    thumbnail_url: embed.thumbnail_url,
+                    title: embed.title,
+                    description: embed.description,
+                });
+                instagramMap.push(index);
+            }
+        });
+
+        const newsLinksPayload: NewsLink[] = [];
+        const newsLinksMap: number[] = [];
+
+        form.news_links.forEach((link, index) => {
+            const url = (link.url || '').trim();
+
+            if (url !== '') {
+                newsLinksPayload.push({
+                    id: link.id,
+                    title: link.title,
+                    url,
+                });
+                newsLinksMap.push(index);
+            }
+        });
+
+        const videoPayload: VideoLink[] = [];
+        const videoMap: number[] = [];
+
+        form.video_links.forEach((video, index) => {
+            const platform = video.platform_name.trim();
+            const url = video.url.trim();
+
+            if (hasVideoLinkContent(video)) {
+                videoPayload.push({
+                    ...video,
+                    platform_name: platform,
+                    title: video.title?.trim() ?? '',
+                    url,
+                });
+                videoMap.push(index);
+            }
+        });
+
         setSubmissionMaps({
             images: imageMap,
             tiktok_embeds: tiktokMap,
+            instagram_embeds: instagramMap,
+            news_links: newsLinksMap,
             affiliate_links: affiliateMap,
+            video_links: videoMap,
         });
         setLocalErrors({});
 
@@ -795,7 +1268,10 @@ export default function BookForm({
             ...form,
             images: imagesPayload,
             tiktok_embeds: tiktokPayload,
+            instagram_embeds: instagramPayload,
+            news_links: newsLinksPayload,
             affiliate_links: affiliatePayload,
+            video_links: videoPayload,
         });
     };
 
@@ -1462,21 +1938,66 @@ export default function BookForm({
                         <FieldError field="short_description" errors={activeErrors} />
                     </div>
 
-                    <div className="grid gap-5 md:grid-cols-2">
-                        {/* News */}
-                        <div className="space-y-2">
-                            <Label htmlFor="news_link">Link Berita</Label>
+                    <div className="grid gap-5">
+                        {/* Link Berita (bisa lebih dari satu) */}
+                        <div className="space-y-3">
+                            <Label>Link Berita</Label>
+                            <CardDescription>
+                                Bisa menambahkan lebih dari satu link (maksimal 10) — berita Norinoya maupun artikel dari situs lain. Tiap link tampil sebagai card terpisah di halaman detail buku.
+                            </CardDescription>
 
-                            <Input
-                                id="news_link"
-                                {...getFieldProps('news_link')}
-                                type="url"
-                                value={form.news_link}
-                                onChange={(event) => updateField('news_link', event.target.value)}
-                                placeholder="https://..."
-                            />
+                            {form.news_links.map((item, index) => (
+                                <div key={index} className="bg-muted/20 space-y-3 rounded-lg border p-4">
+                                    <div className="flex items-center justify-between">
+                                        <Label className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+                                            Link Berita #{index + 1}
+                                        </Label>
 
-                            <FieldError field="news_link" errors={activeErrors} />
+                                        <Button
+                                            type="button"
+                                            variant="destructive"
+                                            size="sm"
+                                            className="h-7 px-2 text-xs"
+                                            onClick={() => removeNewsLink(index)}
+                                        >
+                                            <Trash2 className="mr-1 size-3.5" />
+                                            Hapus
+                                        </Button>
+                                    </div>
+
+                                    <div className="grid gap-3 md:grid-cols-2">
+                                        <div className="space-y-1.5">
+                                            <Label className="text-xs">Judul (opsional)</Label>
+                                            <Input
+                                                {...getFieldProps(`news_links.${index}.title`)}
+                                                value={item.title || ''}
+                                                onChange={(e) => updateNewsLink(index, 'title', e.target.value)}
+                                                placeholder="Contoh: Review Lengkap Volume 1"
+                                            />
+                                            <FieldError field={`news_links.${index}.title`} errors={activeErrors} />
+                                        </div>
+
+                                        <div className="space-y-1.5">
+                                            <Label className="text-xs">URL Berita</Label>
+                                            <Input
+                                                {...getFieldProps(`news_links.${index}.url`)}
+                                                type="url"
+                                                value={item.url || ''}
+                                                onChange={(e) => updateNewsLink(index, 'url', e.target.value)}
+                                                placeholder="https://situs.com/news/judul-berita"
+                                            />
+                                            <FieldError field={`news_links.${index}.url`} errors={activeErrors} />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            <Button type="button" variant="outline" onClick={addNewsLink} disabled={form.news_links.length >= 10}>
+                                <Plus className="mr-2 size-4" />
+                                Tambah Link Berita
+                            </Button>
+
+                            <FieldError field="news_links" errors={activeErrors} />
                         </div>
 
                         {/* MSRP */}
@@ -1562,6 +2083,120 @@ export default function BookForm({
                         </Button>
 
                         <FieldError field="tiktok_embeds" errors={activeErrors} />
+                    </div>
+
+                    {/* Instagram Embeds */}
+                    <div className="space-y-3 pt-2">
+                        <Label>Instagram Post Links & Review</Label>
+                        <CardDescription>
+                            Tempel <strong>kode embed HTML</strong> dari Microlink (maksimal 10 postingan). Judul & deskripsi terisi otomatis; thumbnail opsional — kalau dikosongkan, kartu tampil sebagai teks saja.
+                        </CardDescription>
+
+                        {form.instagram_embeds.map((item, index) => (
+                            <div key={index} className="bg-muted/20 space-y-3 rounded-lg border p-4">
+                                <div className="flex items-center justify-between">
+                                    <Label className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+                                        Postingan Instagram #{index + 1}
+                                    </Label>
+
+                                    <Button
+                                        type="button"
+                                        variant="destructive"
+                                        size="sm"
+                                        className="h-7 px-2 text-xs"
+                                        onClick={() => removeInstagramEmbed(index)}
+                                    >
+                                        <Trash2 className="mr-1 size-3.5" />
+                                        Hapus
+                                    </Button>
+                                </div>
+
+                                <div className="grid gap-3 md:grid-cols-2">
+                                    <div className="space-y-1.5">
+                                        <Label className="text-xs">Nama (opsional)</Label>
+                                        <Input
+                                            {...getFieldProps(`instagram_embeds.${index}.name`)}
+                                            value={item.name || ''}
+                                            onChange={(e) => updateInstagramEmbed(index, 'name', e.target.value)}
+                                            placeholder="Contoh: Review Instagram Jilid 1"
+                                        />
+                                        <FieldError field={`instagram_embeds.${index}.name`} errors={activeErrors} />
+                                    </div>
+
+                                    <div className="space-y-1.5">
+                                        <Label className="text-xs">Link Instagram (terisi otomatis)</Label>
+                                        <Input
+                                            {...getFieldProps(`instagram_embeds.${index}.url`)}
+                                            value={item.url || ''}
+                                            onChange={(e) => updateInstagramEmbed(index, 'url', e.target.value)}
+                                            placeholder="https://www.instagram.com/reel/..."
+                                        />
+                                        <FieldError field={`instagram_embeds.${index}.url`} errors={activeErrors} />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-1.5">
+                                    <Label className="text-xs">Embed HTML Instagram</Label>
+                                    <Textarea
+                                        value={item.embed_html || ''}
+                                        onChange={(e) => applyInstagramEmbedHtml(index, e.target.value)}
+                                        placeholder="Tempel kode embed HTML dari https://microlink.io/tools/embed-url/instagram di sini…"
+                                        rows={4}
+                                        className="font-mono text-xs"
+                                    />
+                                    <p className="text-muted-foreground text-xs">
+                                        Buka <span className="font-medium">microlink.io/tools/embed-url/instagram</span> → tempel link postingan → Generate → salin kode HTML-nya ke kolom ini.
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-3 rounded-lg border p-3">
+                                    <div className="bg-muted flex h-24 w-20 shrink-0 items-center justify-center overflow-hidden rounded-md">
+                                        {item.thumbnail_url ? (
+                                            <img
+                                                src={item.thumbnail_url}
+                                                alt={item.title || ''}
+                                                referrerPolicy="no-referrer"
+                                                className="h-full w-full object-cover"
+                                                onError={(e) => {
+                                                    e.currentTarget.style.display = 'none';
+                                                }}
+                                            />
+                                        ) : (
+                                            <span className="text-muted-foreground text-[10px]">Tidak ada gambar</span>
+                                        )}
+                                    </div>
+
+                                    <div className="min-w-0 flex-1 space-y-1.5">
+                                        <Input
+                                            {...getFieldProps(`instagram_embeds.${index}.thumbnail_url`)}
+                                            value={item.thumbnail_url || ''}
+                                            onChange={(e) => updateInstagramEmbed(index, 'thumbnail_url', e.target.value)}
+                                            placeholder="URL Thumbnail (opsional)"
+                                        />
+                                        <Input
+                                            {...getFieldProps(`instagram_embeds.${index}.title`)}
+                                            value={item.title || ''}
+                                            onChange={(e) => updateInstagramEmbed(index, 'title', e.target.value)}
+                                            placeholder="Judul (terisi otomatis)"
+                                        />
+                                        <Textarea
+                                            {...getFieldProps(`instagram_embeds.${index}.description`)}
+                                            value={item.description || ''}
+                                            onChange={(e) => updateInstagramEmbed(index, 'description', e.target.value)}
+                                            placeholder="Deskripsi (terisi otomatis)"
+                                            rows={2}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+                        <Button type="button" variant="outline" onClick={addInstagramEmbed} disabled={form.instagram_embeds.length >= 10}>
+                            <Plus className="mr-2 size-4" />
+                            Tambah Instagram Link
+                        </Button>
+
+                        <FieldError field="instagram_embeds" errors={activeErrors} />
                     </div>
                 </CardContent>
             </Card>
@@ -1673,6 +2308,127 @@ export default function BookForm({
                     </Button>
 
                     <FieldError field="affiliate_links" errors={activeErrors} />
+                </CardContent>
+            </Card>
+
+            {/* ================================= */}
+            {/* VIDEO LINKS */}
+            {/* ================================= */}
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Link Video</CardTitle>
+
+                    <CardDescription>Tambahkan link video terkait buku ini.</CardDescription>
+                </CardHeader>
+
+                <CardContent className="space-y-4">
+                    {form.video_links.length === 0 ? (
+                        <div className="rounded-lg border border-dashed p-6 text-center">
+                            <p className="text-muted-foreground text-sm">Belum ada link video.</p>
+                        </div>
+                    ) : (
+                        form.video_links.map((video, index) => (
+                            <div key={index} className="space-y-3 rounded-lg border p-4">
+                                <FieldError field={`video_links.${index}.id`} errors={activeErrors} />
+
+                                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-[220px_1fr_180px_1fr_auto]">
+                                    <div className="space-y-2">
+                                        <Label htmlFor={`video_links.${index}.platform_name`}>Nama Platform</Label>
+
+                                        <Input
+                                            id={`video_links.${index}.platform_name`}
+                                            {...getFieldProps(`video_links.${index}.platform_name`)}
+                                            maxLength={255}
+                                            name="video_platform_name"
+                                            value={video.platform_name}
+                                            onChange={(event) => updateVideoLink(index, 'platform_name', event.target.value)}
+                                            placeholder="YouTube"
+                                        />
+
+                                        <FieldError field={`video_links.${index}.platform_name`} errors={activeErrors} />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor={`video_links.${index}.title`}>Judul</Label>
+
+                                        <Input
+                                            id={`video_links.${index}.title`}
+                                            {...getFieldProps(`video_links.${index}.title`)}
+                                            maxLength={255}
+                                            name="video_title"
+                                            value={video.title || ''}
+                                            onChange={(event) => updateVideoLink(index, 'title', event.target.value)}
+                                            placeholder="Review volume 1"
+                                        />
+
+                                        <FieldError field={`video_links.${index}.title`} errors={activeErrors} />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor={`video_links.${index}.access_type`}>Akses</Label>
+
+                                        <Select value={video.access_type} onValueChange={(value) => updateVideoLink(index, 'access_type', value)}>
+                                            <SelectTrigger
+                                                id={`video_links.${index}.access_type`}
+                                                {...getFieldProps(`video_links.${index}.access_type`)}
+                                            >
+                                                <SelectValue placeholder="Pilih akses" />
+                                            </SelectTrigger>
+
+                                            <SelectContent>
+                                                {videoAccessTypes.map((option) => (
+                                                    <SelectItem key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+
+                                        <FieldError field={`video_links.${index}.access_type`} errors={activeErrors} />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor={`video_links.${index}.url`}>Link</Label>
+
+                                        <Input
+                                            id={`video_links.${index}.url`}
+                                            {...getFieldProps(`video_links.${index}.url`)}
+                                            maxLength={2048}
+                                            name="video_url"
+                                            type="url"
+                                            value={video.url}
+                                            onChange={(event) => updateVideoLink(index, 'url', event.target.value)}
+                                            placeholder="https://youtube.com/watch?v=..."
+                                        />
+
+                                        <FieldError field={`video_links.${index}.url`} errors={activeErrors} />
+                                    </div>
+
+                                    <div className="flex items-end">
+                                        <Button
+                                            type="button"
+                                            variant="destructive"
+                                            size="icon"
+                                            aria-label={`Hapus link video ${index + 1}`}
+                                            onClick={() => removeVideoLink(index)}
+                                        >
+                                            <Trash2 className="size-4" />
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )}
+
+                    <Button type="button" variant="outline" onClick={addVideoLink} disabled={form.video_links.length >= 20}>
+                        <Plus className="mr-2 size-4" />
+                        Tambah Link Video
+                    </Button>
+
+                    <p className="text-muted-foreground text-xs">{form.video_links.length}/20 link video digunakan.</p>
+
+                    <FieldError field="video_links" errors={activeErrors} />
                 </CardContent>
             </Card>
 

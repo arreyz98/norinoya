@@ -167,6 +167,7 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
         timestamp: dbItem.created_at ? new Date(dbItem.created_at as string).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Baru saja',
         createdAt: dbItem.created_at ? String(dbItem.created_at) : undefined,
         title: dbItem.title as string,
+        slug: (dbItem.slug as string) || undefined,
         content: (dbItem.content as string) || '',
         category: ((dbItem.category as string) || 'rilisan') as NewsUpdate['category'],
         hashTags: (dbItem.hash_tags as string[]) || [],
@@ -487,6 +488,30 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
     }
   }, [activePost]);
 
+  // Sinkronkan berita terpilih dengan URL saat tombol Back/Forward ditekan.
+  useEffect(() => {
+    const applyLocation = () => {
+      const match = window.location.pathname.match(/^\/news\/([^/?#]+)\/?$/);
+      const reference = match ? decodeURIComponent(match[1]) : null;
+
+      if (!reference) {
+        setLocalSelectedPost(null);
+        setSelectedNewsId?.(null);
+        return;
+      }
+
+      const post = newsFeedData.find(
+        (item) => item.slug === reference || String(item.id) === reference
+      ) || null;
+
+      setLocalSelectedPost(post);
+      setSelectedNewsId?.(post ? post.id : null);
+    };
+
+    window.addEventListener('popstate', applyLocation);
+    return () => window.removeEventListener('popstate', applyLocation);
+  }, [newsFeedData, setSelectedNewsId]);
+
   const relevantCatalogItems = useMemo(() => {
     if (!activePost) return [];
 
@@ -686,6 +711,18 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
     return [];
   }, [activePost, dbKiosList]);
 
+  const buildNewsUrl = (post: NewsUpdate | null) => {
+    const query = new URLSearchParams(window.location.search).toString();
+    const search = query ? `?${query}` : '';
+
+    if (post) {
+      const targetSlug = post.slug || post.id;
+      return `/news/${encodeURIComponent(targetSlug)}${search}`;
+    }
+
+    return `/news${search}`;
+  };
+
   const selectPost = (post: NewsUpdate | null) => {
     if (post) {
       window.scrollTo(0, 0);
@@ -698,14 +735,11 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
     } else {
       setLocalSelectedPost(post);
     }
-    
-    if (post) {
-      const targetSlug = post.slug || post.id;
-      window.history.pushState({ newsId: post.id }, '', `/news/${targetSlug}`);
-    } else {
-      if (window.location.pathname.startsWith('/news/')) {
-        window.history.pushState({}, '', '/news');
-      }
+
+    const nextUrl = buildNewsUrl(post);
+
+    if (window.location.pathname + window.location.search !== nextUrl) {
+      window.history.pushState({ newsId: post ? post.id : null }, '', nextUrl);
     }
   };
 

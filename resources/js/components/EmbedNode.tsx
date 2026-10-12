@@ -2,6 +2,8 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { NodeViewWrapper, ReactNodeViewRenderer, type ReactNodeViewProps } from '@tiptap/react';
 import { ExternalLink, Instagram, Trash2, Twitter, Youtube } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { instagramFrameHeight, prepareEmbedFrames, syncEmbedHeights, TWITTER_EMBED_HEIGHT } from '../utils/embedFrame';
 
 export type EmbedProvider = 'youtube' | 'instagram' | 'twitter';
 
@@ -204,13 +206,26 @@ function EmbedView({ node, selected, deleteNode }: ReactNodeViewProps) {
     const src = String(node.attrs.src || '');
     const isYoutube = provider === 'youtube';
     const isInstagram = provider === 'instagram';
+    const isTwitter = !isYoutube && !isInstagram;
     const providerLabel = isYoutube ? 'YouTube Embed' : isInstagram ? 'Instagram Embed' : 'Twitter / X Embed';
     const title = String(node.attrs.title || providerLabel);
     const previewClass = isYoutube
         ? 'aspect-video w-full'
         : isInstagram
-          ? 'mx-auto h-[620px] w-full max-w-[400px]'
-          : 'mx-auto h-[600px] w-full max-w-[550px]';
+          ? 'mx-auto w-full max-w-[400px]'
+          : 'mx-auto w-full max-w-[550px]';
+    // Instagram & X/Twitter memakai tinggi eksplisit supaya tingginya bisa
+    // disinkronkan dengan konten asli (scrollbar internal tidak muncul).
+    const previewHeight = isInstagram ? instagramFrameHeight(src) : isTwitter ? TWITTER_EMBED_HEIGHT : null;
+    const previewRef = useRef<HTMLDivElement>(null);
+
+    // Samakan tinggi iframe Instagram/X dengan tinggi konten aslinya agar
+    // scrollbar internal tidak muncul di pratinjau editor.
+    useEffect(() => {
+        const element = previewRef.current;
+        prepareEmbedFrames(element);
+        return syncEmbedHeights(element);
+    }, [src, provider]);
 
     return (
         <NodeViewWrapper className="my-3" data-embed-view={provider} contentEditable={false}>
@@ -258,11 +273,12 @@ function EmbedView({ node, selected, deleteNode }: ReactNodeViewProps) {
                     </span>
                 </div>
 
-                <div className={previewClass}>
+                <div ref={previewRef} className={previewClass}>
                     <iframe
                         src={src}
                         title={title}
-                        className="pointer-events-none h-full w-full"
+                        className={`pointer-events-none w-full ${previewHeight === null ? 'h-full' : ''}`}
+                        style={previewHeight === null ? undefined : { height: previewHeight }}
                         allow={iframeAttributes.allow}
                         allowFullScreen
                         referrerPolicy="strict-origin-when-cross-origin"
@@ -318,12 +334,14 @@ export const Embed = Node.create({
 
     renderHTML({ node, HTMLAttributes }) {
         const provider = (node.attrs.provider || 'youtube') as EmbedProvider;
-        const style =
-            provider === 'instagram'
-                ? 'display:block;width:100%;max-width:400px;height:620px;margin:0 auto;border:0;border-radius:12px;background:#fff'
-                : provider === 'twitter'
-                  ? 'display:block;width:100%;max-width:550px;height:600px;margin:0 auto;border:0;border-radius:12px;background:#fff'
-                  : 'display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#000';
+        const src = String(node.attrs.src || '');
+        const isInstagram = provider === 'instagram';
+        const isTwitter = provider === 'twitter';
+        const style = isInstagram
+            ? `display:block;width:100%;max-width:400px;height:${instagramFrameHeight(src)}px;margin:0 auto;border:0;border-radius:12px;background:#fff`
+            : isTwitter
+              ? `display:block;width:100%;max-width:550px;height:${TWITTER_EMBED_HEIGHT}px;margin:0 auto;border:0;border-radius:12px;background:#fff`
+              : 'display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#000';
 
         return [
             'iframe',
@@ -331,6 +349,10 @@ export const Embed = Node.create({
                 class: 'norinoya-embed',
                 style,
                 ...iframeAttributes,
+                // Instagram melaporkan tinggi aslinya lewat postMessage, jadi scrollbar
+                // internalnya aman dimatikan. X/Twitter tidak melaporkan apa pun,
+                // jadi scrolling dibiarkan aktif agar konten tidak pernah terpotong.
+                ...(isInstagram ? { scrolling: 'no' } : {}),
             }),
         ];
     },

@@ -28,6 +28,40 @@ export interface BookTiktokEmbed {
   sort_order?: number;
 }
 
+// Postingan Instagram per buku (tabel book_instagram_embeds). Metadata
+// (thumbnail/judul/deskripsi) diambil otomatis lewat Microlink saat admin input.
+export interface BookInstagramEmbed {
+  id: number;
+  book_id?: number;
+  name?: string;
+  url?: string;
+  thumbnail_url?: string;
+  title?: string;
+  description?: string;
+  sort_order?: number;
+}
+
+// Link berita terkait per buku (tabel book_news_links). Bisa lebih dari satu.
+export interface BookNewsLink {
+  id: number;
+  book_id?: number;
+  title?: string;
+  url?: string;
+  sort_order?: number;
+}
+
+// Link video per buku (tabel book_video_links). `access_type` berisi
+// 'free' | 'subscription' sesuai enum App\Enums\VideoAccessType.
+export interface BookVideoLink {
+  id: number;
+  book_id?: number;
+  platform_name: string;
+  title?: string | null;
+  access_type?: string;
+  url: string;
+  sort_order?: number;
+}
+
 export interface BookModel {
   id: number;
   title: string;
@@ -90,6 +124,12 @@ export interface BookModel {
   affiliate_links?: BookAffiliateLink[];
   tiktokEmbeds?: BookTiktokEmbed[];
   tiktok_embeds?: BookTiktokEmbed[];
+  instagramEmbeds?: BookInstagramEmbed[];
+  instagram_embeds?: BookInstagramEmbed[];
+  newsLinks?: BookNewsLink[];
+  news_links?: BookNewsLink[];
+  videoLinks?: BookVideoLink[];
+  video_links?: BookVideoLink[];
 }
 
 /**
@@ -259,6 +299,52 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
 
       const rawEmbeds = b.tiktokEmbeds || b.tiktok_embeds || [];
 
+      // Postingan Instagram (highlight review). Metadata sudah tersimpan di DB,
+      // jadi tidak perlu fetch ulang di sisi klien.
+      const rawInstagramEmbeds = b.instagramEmbeds || b.instagram_embeds || [];
+      const instagramEmbeds = rawInstagramEmbeds
+        .slice()
+        .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+        .map((i) => ({
+          id: String(i.id),
+          name: (i.name || '').trim(),
+          url: (i.url || '').trim(),
+          thumbnail_url: (i.thumbnail_url || '').trim(),
+          title: (i.title || i.name || 'Review Instagram').trim(),
+          description: (i.description || '').trim(),
+          sort_order: i.sort_order,
+        }))
+        .filter((i) => i.url !== '');
+
+      // Link berita terkait (bisa lebih dari satu). Diurutkan dan disaring
+      // agar baris tanpa URL tidak ikut dirender.
+      const rawNewsLinks = b.newsLinks || b.news_links || [];
+      const newsLinks = rawNewsLinks
+        .slice()
+        .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+        .map((n) => ({
+          id: String(n.id),
+          title: (n.title || '').trim(),
+          url: (n.url || '').trim(),
+          sort_order: n.sort_order,
+        }))
+        .filter((n) => n.url !== '');
+
+      // Link video resmi per volume (mis. YouTube, iQiyi, Crunchyroll).
+      // Diurutkan mengikuti sort_order lalu disaring agar baris tanpa URL tidak dirender.
+      const rawVideoLinks = b.videoLinks || b.video_links || [];
+      const videoLinks = rawVideoLinks
+        .slice()
+        .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+        .map((v) => ({
+          id: String(v.id),
+          platform_name: (v.platform_name || '').trim(),
+          title: (v.title || '').trim(),
+          access_type: v.access_type || 'free',
+          url: (v.url || '').trim(),
+        }))
+        .filter((v) => v.url !== '');
+
       // Volume-specific author extraction
       const volStoryAuthors: string[] = [];
       const volArtAuthors: string[] = [];
@@ -299,6 +385,7 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
         isUpcoming: Boolean(b.is_upcoming),
         affiliateLinks: affiliateLinksObj,
         affiliateLinksList,
+        videoLinks,
         tiktokEmbeds: rawEmbeds.map((t) => ({
           id: String(t.id),
           title: t.name || t.title || `Review TikTok`,
@@ -306,7 +393,9 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
           embed_url: t.url_video || t.embed_url || '',
           url_video: t.url_video || t.embed_url || '',
           sort_order: t.sort_order
-        }))
+        })),
+        instagramEmbeds,
+        newsLinks,
       };
     });
 
@@ -318,6 +407,8 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
     }
 
     const comicTikTokEmbeds = volumes.flatMap(v => v.tiktokEmbeds || []);
+    const comicInstagramEmbeds = volumes.flatMap(v => v.instagramEmbeds || []);
+    const comicNewsLinks = volumes.flatMap(v => v.newsLinks || []);
 
      comics.push({
       id: key,
@@ -351,6 +442,8 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
       paperType: mainBook.paper_type || undefined,
       dimensions: mainBook.dimensions || undefined,
       tiktokEmbeds: comicTikTokEmbeds,
+      instagramEmbeds: comicInstagramEmbeds,
+      newsLinks: comicNewsLinks,
     });
   });
 

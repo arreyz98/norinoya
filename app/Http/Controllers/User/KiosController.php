@@ -154,9 +154,11 @@ class KiosController extends Controller
 
     public function show(Request $request, $slug)
     {
-        $kiosItem = KiosItem::where('slug', $slug)
-            ->orWhere('id', $slug)
-            ->with(['kiosPartner', 'linkedBook'])
+        $kiosItem = KiosItem::with(['kiosPartner', 'linkedBook'])
+            ->where('slug', $slug)
+            // Guard is_numeric — alasan sama seperti User\BookController::show():
+            // MySQL meng-cast string ke angka dari awalan numeriknya.
+            ->when(is_numeric($slug), fn ($query) => $query->orWhere('id', $slug))
             ->first();
 
         if (! $kiosItem) {
@@ -226,8 +228,14 @@ class KiosController extends Controller
 
         if (! $item) {
             $targetSlug = $slug ?: $id;
-            $item = KiosItem::where('slug', $targetSlug)->first()
-                ?? KiosItem::where('id', $id)->first();
+            $item = KiosItem::where('slug', $targetSlug)->first();
+
+            // Fallback lewat id HANYA bila parameternya benar-benar angka — alasan
+            // sama seperti User\BookController::show(): MySQL meng-cast string ke
+            // angka dari awalan numeriknya.
+            if (! $item && is_numeric($id)) {
+                $item = KiosItem::where('id', $id)->first();
+            }
         }
 
         if ($item) {
@@ -276,8 +284,14 @@ class KiosController extends Controller
 
         if (! $item) {
             $targetSlug = $slug ?: $id;
-            $item = KiosItem::where('slug', $targetSlug)->first()
-                ?? KiosItem::where('id', $id)->first();
+            $item = KiosItem::where('slug', $targetSlug)->first();
+
+            // Fallback lewat id HANYA bila parameternya benar-benar angka — alasan
+            // sama seperti User\BookController::show(): MySQL meng-cast string ke
+            // angka dari awalan numeriknya.
+            if (! $item && is_numeric($id)) {
+                $item = KiosItem::where('id', $id)->first();
+            }
         }
 
         if ($item) {

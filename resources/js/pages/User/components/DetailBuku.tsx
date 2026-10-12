@@ -3,9 +3,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Head } from '@inertiajs/react';
 import { ShareModal } from './ShareModal';
 import { HighlightReview } from './HighlightReview';
+import { HighlightReviewInstagram } from './HighlightReviewInstagram';
 import { ModalAffiliateStore } from './ModalAffiliateStore';
 import {
-  BookOpen, ArrowUpRight, ArrowLeft, Send, Store, ShieldAlert, Info, ShoppingBag, Bookmark
+  BookOpen, ArrowUpRight, ArrowLeft, Send, Store, ShieldAlert, Info, ShoppingBag, Bookmark, Play
 } from 'lucide-react';
 import { useBookmarks } from '../../../utils/bookmarkStorage';
 import { BookmarkToast, useBookmarkToast } from './BookmarkToast';
@@ -262,6 +263,56 @@ export default function DetailBuku({
       className: 'bg-neutral-800 hover:bg-neutral-900 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white',
       label: 'Toko Resmi',
       brand: 'custom'
+    };
+  };
+
+  // Warna tombol link video mengikuti brand platform (pola sama seperti
+  // getAffiliateStoreStyle). Platform yang tidak dikenali memakai gaya netral
+  // dan tetap menampilkan nama platform apa adanya dari input admin.
+  const getVideoPlatformStyle = (platform: string) => {
+    const name = (platform || '').toLowerCase();
+
+    if (name.includes('youtube') || name.includes('youtu.be')) {
+      return { className: 'bg-[#FF0000] hover:bg-[#CC0000] text-white', label: 'YouTube', isKnown: true };
+    }
+    if (name.includes('iqiyi')) {
+      return { className: 'bg-[#00CC33] hover:bg-[#00A82A] text-white', label: 'iQiyi', isKnown: true };
+    }
+    if (name.includes('crunchyroll')) {
+      return { className: 'bg-[#F47521] hover:bg-[#D2611A] text-white', label: 'Crunchyroll', isKnown: true };
+    }
+    if (name.includes('bilibili') || name.includes('bstation')) {
+      return { className: 'bg-[#00A1D6] hover:bg-[#0089B8] text-white', label: 'Bilibili', isKnown: true };
+    }
+    if (name.includes('netflix')) {
+      return { className: 'bg-[#E50914] hover:bg-[#C00812] text-white', label: 'Netflix', isKnown: true };
+    }
+    if (name.includes('wetv') || name.includes('we tv')) {
+      return { className: 'bg-[#00A650] hover:bg-[#008C43] text-white', label: 'WeTV', isKnown: true };
+    }
+    if (name.includes('vidio')) {
+      return { className: 'bg-[#F5362B] hover:bg-[#D42A20] text-white', label: 'Vidio', isKnown: true };
+    }
+    if (name.includes('viu')) {
+      return { className: 'bg-[#FFC000] hover:bg-[#E0A800] text-black', label: 'Viu', isKnown: true };
+    }
+    if (name.includes('prime') || name.includes('amazon')) {
+      return { className: 'bg-[#00A8E1] hover:bg-[#0090C2] text-white', label: 'Prime Video', isKnown: true };
+    }
+    if (name.includes('disney')) {
+      return { className: 'bg-[#113CCF] hover:bg-[#0E32AF] text-white', label: 'Disney+', isKnown: true };
+    }
+    if (name.includes('dailymotion')) {
+      return { className: 'bg-[#0066DC] hover:bg-[#0057BC] text-white', label: 'Dailymotion', isKnown: true };
+    }
+    if (name.includes('vimeo')) {
+      return { className: 'bg-[#1AB7EA] hover:bg-[#159CC7] text-white', label: 'Vimeo', isKnown: true };
+    }
+
+    return {
+      className: 'bg-neutral-800 hover:bg-neutral-900 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white',
+      label: 'Video',
+      isKnown: false
     };
   };
 
@@ -523,7 +574,7 @@ export default function DetailBuku({
 
             <div className="w-full h-fit lg:max-w-[92%] xl:max-w-7xl mx-auto px-3 sm:px-6 lg:px-24 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-[#202120] ">
               {/* Title Header with Gradient */}
-              <div id="comic-detail-card" className=" dark:bg-[#0F0F0F] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
+              <div id="comic-detail-card" className=" dark:bg-[#171717] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
 
               {/* Left Column: Interactive Slide Carousel Portfolio Component */}
               <div className="flex flex-col gap-3 shrink-0 w-full md:w-80">
@@ -677,9 +728,20 @@ export default function DetailBuku({
               <div className="space-y-3">
 
                 {(() => {
-                  const targetNewsUrl = activeVolObj?.news_link || activeVolObj?.newsLink || selectedComic.news_link || selectedComic.newsLink;
+                  const legacyNewsUrl = activeVolObj?.news_link || activeVolObj?.newsLink || selectedComic.news_link || selectedComic.newsLink;
 
-                  if (!targetNewsUrl) {
+                  // Utamakan tabel baru (book_news_links) yang bisa menampung banyak
+                  // link. Kalau buku belum punya baris di sana, pakai kolom lama
+                  // (news_link) sebagai fallback agar data lama tetap tampil.
+                  const volumeNewsLinks = (activeVolObj?.newsLinks ?? [])
+                    .map((l) => ({ url: (l.url || '').trim(), title: (l.title || '').trim() }))
+                    .filter((l) => l.url !== '');
+
+                  const newsLinkItems = volumeNewsLinks.length > 0
+                    ? volumeNewsLinks
+                    : (legacyNewsUrl ? [{ url: String(legacyNewsUrl), title: '' }] : []);
+
+                  if (newsLinkItems.length === 0) {
                     return (
                       <div className="space-y-3">
                         <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans whitespace-pre-line select-text">
@@ -689,92 +751,76 @@ export default function DetailBuku({
                     );
                   }
 
-                  const isInternalNews = targetNewsUrl.startsWith('/news');
+                  // Menentukan judul card: pakai judul manual bila diisi admin; kalau
+                  // tidak, cari berita yang cocok dari newsList; kalau tidak ada juga,
+                  // humanize slug URL.
+                  const resolveNewsTitle = (rawUrl: string, manualTitle: string): string => {
+                    if (manualTitle) return manualTitle;
 
-                  // Find matched news title from newsList or NEWS_UPDATES.
-                  // Bekerja untuk path relatif ("/news/slug"), URL penuh ("https://domain/news/slug?utm=..."),
-                  // link berbasis id ("/news/123"), maupun query ("?slug=..." atau "?id=...").
-                  let matchedTitle = '';
-                  const cleanPath = targetNewsUrl.split(/[?#]/)[0];
-                  const rawLastSegment = cleanPath.split('/').filter(Boolean).pop() || '';
-                  const lastSegment = rawLastSegment === 'news' ? '' : decodeURIComponent(rawLastSegment).trim();
-                  const queryKeyMatch = targetNewsUrl.match(/[?&](?:slug|news|news_id|post|post_id|id)=([^&#]+)/i);
-                  const queryKey = queryKeyMatch ? decodeURIComponent(queryKeyMatch[1]).trim() : '';
-                  const lookupKeys = Array.from(new Set([lastSegment, queryKey].filter(Boolean)));
-                  const urlLower = targetNewsUrl.toLowerCase();
+                    const cleanPath = rawUrl.split(/[?#]/)[0];
+                    const rawLastSegment = cleanPath.split('/').filter(Boolean).pop() || '';
+                    const lastSegment = rawLastSegment === 'news' ? '' : decodeURIComponent(rawLastSegment).trim();
+                    const queryKeyMatch = rawUrl.match(/[?&](?:slug|news|news_id|post|post_id|id)=([^&#]+)/i);
+                    const queryKey = queryKeyMatch ? decodeURIComponent(queryKeyMatch[1]).trim() : '';
+                    const lookupKeys = Array.from(new Set([lastSegment, queryKey].filter(Boolean)));
+                    const urlLower = rawUrl.toLowerCase();
 
-                  const matchNewsTitle = (n: { id: string | number; title?: string; slug?: string }): string => {
-                    if (lookupKeys.some(k => (n.slug ? k === n.slug : false) || k === String(n.id))) return n.title || '';
-                    if (n.slug && n.slug.length > 3 && urlLower.includes(`/${n.slug.toLowerCase()}`)) return n.title || '';
-                    return '';
-                  };
+                    const matchNewsTitle = (n: { id: string | number; title?: string; slug?: string }): string => {
+                      if (lookupKeys.some(k => (n.slug ? k === n.slug : false) || k === String(n.id))) return n.title || '';
+                      if (n.slug && n.slug.length > 3 && urlLower.includes(`/${n.slug.toLowerCase()}`)) return n.title || '';
+                      return '';
+                    };
 
-                  for (const n of newsList) {
-                    matchedTitle = matchNewsTitle(n);
-                    if (matchedTitle) break;
-                  }
-
-                  if (!matchedTitle) {
-                    for (const n of NEWS_UPDATES) {
-                      matchedTitle = matchNewsTitle(n);
-                      if (matchedTitle) break;
+                    for (const n of newsList) {
+                      const t = matchNewsTitle(n);
+                      if (t) return t;
                     }
-                  }
 
-                  // Link internal yang tidak ada di daftar berita: pakai slug yang di-humanize agar tetap judul berita.
-                  const humanizedSlug = isInternalNews && lastSegment && !/^\d+$/.test(lastSegment)
-                    ? lastSegment.replace(/[-_]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
-                    : '';
+                    for (const n of NEWS_UPDATES) {
+                      const t = matchNewsTitle(n);
+                      if (t) return t;
+                    }
 
-                  const displayTitle = matchedTitle || humanizedSlug || `Berita & Informasi Terkait: ${activeVolObj?.title || selectedComic.title}`;
+                    const isInternal = rawUrl.startsWith('/news');
+                    const humanizedSlug = isInternal && lastSegment && !/^\d+$/.test(lastSegment)
+                      ? lastSegment.replace(/[-_]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+                      : '';
+
+                    return humanizedSlug || `Berita & Informasi Terkait: ${activeVolObj?.title || selectedComic.title}`;
+                  };
 
                   return (
                     <div className="space-y-3">
                    
 
-                      {isInternalNews ? (
-                        <a
-                          href={targetNewsUrl}
-                          className="w-full text-left p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-[#262626] hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group flex items-start gap-3.5 cursor-pointer shadow-xs"
-                        >
-                          <div className="p-2.5 bg-neutral-100 dark:bg-neutral-800 rounded-full group-hover:scale-105 transition-transform shrink-0 flex items-center justify-center">
-                            <Info className="w-5 h-5 text-neutral-600 dark:text-neutral-400" />
-                          </div>
-                          <div className="space-y-1 flex-1 min-w-0">
-                            <div className="text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100">
-                              Baca Berita Terkait:
+                      {newsLinkItems.map((item, idx) => {
+                        const isInternalNews = item.url.startsWith('/news');
+                        const displayTitle = resolveNewsTitle(item.url, item.title);
+
+                        return (
+                          <a
+                            key={`${item.url}-${idx}`}
+                            href={item.url}
+                            {...(isInternalNews ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+                            className="w-full text-left p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-[#262626] hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group flex items-start gap-3.5 cursor-pointer shadow-xs"
+                          >
+                            <div className="p-2.5 bg-neutral-100 dark:bg-neutral-800 rounded-full group-hover:scale-105 transition-transform shrink-0 flex items-center justify-center">
+                              <Info className="w-5 h-5 text-neutral-600 dark:text-neutral-400" />
                             </div>
-                            <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-200 font-sans font-medium leading-relaxed group-hover:text-neutral-950 dark:group-hover:text-white transition-colors line-clamp-2">
-                              {displayTitle}
-                            </p>
-                          </div>
-                          <div className="p-1 rounded-lg text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-200 transition-all self-center shrink-0">
-                            <ArrowUpRight className="w-4 h-4" />
-                          </div>
-                        </a>
-                      ) : (
-                        <a
-                          href={targetNewsUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full text-left p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-[#262626] hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group flex items-start gap-3.5 cursor-pointer shadow-xs"
-                        >
-                          <div className="p-2.5 bg-neutral-100 dark:bg-neutral-800 rounded-full group-hover:scale-105 transition-transform shrink-0 flex items-center justify-center">
-                            <Info className="w-5 h-5 text-neutral-600 dark:text-neutral-400" />
-                          </div>
-                          <div className="space-y-1 flex-1 min-w-0">
-                            <div className="text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100">
-                              Baca Berita Terkait:
+                            <div className="space-y-1 flex-1 min-w-0">
+                              <div className="text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100">
+                                Baca Berita Terkait:
+                              </div>
+                              <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-200 font-sans font-medium leading-relaxed group-hover:text-neutral-950 dark:group-hover:text-white transition-colors line-clamp-2">
+                                {displayTitle}
+                              </p>
                             </div>
-                            <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-200 font-sans font-medium leading-relaxed group-hover:text-neutral-950 dark:group-hover:text-white transition-colors line-clamp-2">
-                              {displayTitle}
-                            </p>
-                          </div>
-                          <div className="p-1 rounded-lg text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-200 transition-all self-center shrink-0">
-                            <ArrowUpRight className="w-4 h-4" />
-                          </div>
-                        </a>
-                      )}
+                            <div className="p-1 rounded-lg text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-200 transition-all self-center shrink-0">
+                              <ArrowUpRight className="w-4 h-4" />
+                            </div>
+                          </a>
+                        );
+                      })}
                     </div>
                   );
                 })()}
@@ -914,6 +960,54 @@ export default function DetailBuku({
                               </div>
                             );
                           })()}
+
+                          {/* Link Video Resmi — tombol berwarna sesuai platform,
+                              tanpa badge; klik langsung membuka link video. */}
+                          {(() => {
+                            const videoLinks = activeVolObj.videoLinks || [];
+
+                            if (videoLinks.length === 0) return null;
+
+                            return (
+                              <div className="space-y-3">
+                                <h6 className="text-xs font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5 leading-normal">
+                                  <Play className="w-3.5 h-3.5 text-neutral-400" />
+                                  Tonton di platform video resmi
+                                </h6>
+
+                                <div className="space-y-2">
+                                  {videoLinks.map((video) => {
+                                    const style = getVideoPlatformStyle(video.platform_name);
+                                    const platformLabel = style.isKnown ? style.label : (video.platform_name || 'Video');
+                                    const accessLabel = video.access_type === 'subscription' ? 'Berlangganan' : 'Gratis';
+
+                                    return (
+                                      <a
+                                        key={video.id}
+                                        href={video.url}
+                                        target="_blank"
+                                        rel="no-referrer"
+                                        title={`Tonton di ${platformLabel} (${accessLabel})`}
+                                        className={`w-full rounded-xl flex items-center gap-3 px-3.5 py-3 transition-all shadow-3xs ${style.className}`}
+                                      >
+                                        {/* Slot logo: mengikuti proporsi kartu pada desain referensi.
+                                            Platform tidak ditulis karena sudah dikenali dari warnanya. */}
+                                        <span className="shrink-0 w-11 h-11 rounded-lg bg-white/20 border border-white/25 flex items-center justify-center">
+                                          <Play className="w-5 h-5" />
+                                        </span>
+
+                                        <span className="flex-1 min-w-0 text-left font-sans text-sm sm:text-[15px] font-extrabold truncate leading-snug">
+                                          {video.title || platformLabel}
+                                        </span>
+
+                                        <ArrowUpRight className="w-5 h-5 shrink-0 opacity-85" />
+                                      </a>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })()}
                                         </div>
                       );
 
@@ -955,6 +1049,9 @@ export default function DetailBuku({
 
                     {/* Educational Preview Shorts Shelf */}
                     <HighlightReview activeVolObj={activeVolObj} selectedComic={selectedComic} />
+
+                    {/* Instagram Highlight Review Shelf */}
+                    <HighlightReviewInstagram activeVolObj={activeVolObj} selectedComic={selectedComic} />
                   </div>
                 );
               })()}

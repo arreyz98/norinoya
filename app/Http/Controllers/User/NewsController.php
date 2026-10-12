@@ -39,12 +39,24 @@ class NewsController extends Controller
 
     public function show(Request $request, $slug)
     {
-        $news = News::where('slug', $slug)
-            ->orWhere('id', $slug)
-            ->first();
+        // Prioritas: slug aktif -> slug lama -> ID numerik (URL lama).
+        $news = News::findBySlugOrHistory($slug);
+
+        if (! $news && ctype_digit((string) $slug)) {
+            $news = News::find((int) $slug);
+
+            if ($news) {
+                return redirect()->route('news.detail', $this->canonicalParams($request, $news->slug), 301);
+            }
+        }
 
         if (! $news) {
-            return redirect()->route('news');
+            abort(404);
+        }
+
+        // URL lama (ID atau slug lama) diarahkan permanen ke slug kanonik.
+        if ($news->slug !== $slug) {
+            return redirect()->route('news.detail', $this->canonicalParams($request, $news->slug), 301);
         }
 
         $ip = $request->ip();
@@ -78,6 +90,7 @@ class NewsController extends Controller
             'genres',
             'affiliateLinks.affiliateStore',
             'tiktokEmbeds',
+            'instagramEmbeds',
         ])->get();
 
         $totalNewsCount = News::count();
@@ -99,6 +112,17 @@ class NewsController extends Controller
         ]);
     }
 
+    /**
+     * Parameter redirect kanonik: slug baru + query string asli (kecuali slug).
+     */
+    protected function canonicalParams(Request $request, string $slug): array
+    {
+        $query = $request->query();
+        unset($query['slug']);
+
+        return array_merge($query, ['slug' => $slug]);
+    }
+
     public function incrementView(Request $request, $id)
     {
         $cleanId = preg_replace('/^news-/', '', $id);
@@ -111,8 +135,14 @@ class NewsController extends Controller
 
         if (! $news) {
             $targetSlug = $slug ?: $id;
-            $news = News::where('slug', $targetSlug)->first()
-                ?? News::where('id', $id)->first();
+            $news = News::where('slug', $targetSlug)->first();
+
+            // Fallback lewat id HANYA bila parameternya benar-benar angka. MySQL
+            // meng-cast string ke angka dari awalan numeriknya, sehingga slug
+            // seperti "5-hal-seru-..." bisa salah cocok ke news id 5.
+            if (! $news && is_numeric($id)) {
+                $news = News::where('id', $id)->first();
+            }
         }
 
         if ($news) {

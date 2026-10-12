@@ -17,6 +17,7 @@ export interface NewsRecommendationItemInput {
     description: string;
     book_id?: number | string | null;
     tiktok_embed_id?: number | string | null;
+    instagram_embed_id?: number | string | null;
 }
 
 export interface NewsItem {

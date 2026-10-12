@@ -20,9 +20,7 @@ class BookController extends Controller
 {
     public function show(Request $request, $slug)
     {
-        $book = Book::where('slug', $slug)
-            ->orWhere('id', $slug)
-            ->with([
+        $book = Book::with([
                 'series',
                 'edition',
                 'storyStatus',
@@ -32,7 +30,17 @@ class BookController extends Controller
                 'genres',
                 'affiliateLinks.affiliateStore',
                 'tiktokEmbeds',
-            ])->first();
+                'instagramEmbeds',
+                'newsLinks',
+                'videoLinks',
+            ])
+            ->where('slug', $slug)
+            // Guard is_numeric: MySQL meng-cast string ke angka berdasarkan awalan
+            // numeriknya, sehingga slug seperti "5-centimeters-per-second-volume-2"
+            // dibaca sebagai id 5 dan salah membuka buku lain. Pencarian lewat id
+            // hanya dilakukan bila parameter benar-benar berupa angka.
+            ->when(is_numeric($slug), fn ($query) => $query->orWhere('id', $slug))
+            ->first();
 
         $requestedVolume = $request->query('vol', null);
         $initialVolume = $requestedVolume

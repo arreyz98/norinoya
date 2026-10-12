@@ -1,5 +1,5 @@
 import { Head, useForm, Link } from '@inertiajs/react';
-import { ArrowLeft, Save, Plus, Trash2, HelpCircle, Flame, Tag, Image as ImageIcon, Sparkles, BookOpen, Video, Search, ShoppingBag, X, Check } from 'lucide-react';
+import { ArrowLeft, Save, Plus, Trash2, HelpCircle, Flame, Tag, Image as ImageIcon, Sparkles, BookOpen, Video, Search, ShoppingBag, X, Check, Instagram } from 'lucide-react';
 import React, { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -55,13 +55,25 @@ interface TiktokOption {
     sort_order?: number;
 }
 
+interface InstagramOption {
+    id: number;
+    book_id: number;
+    name?: string | null;
+    url?: string | null;
+    thumbnail_url?: string | null;
+    title?: string | null;
+    description?: string | null;
+    sort_order?: number;
+}
+
 interface NewsEditProps {
     newsItem: NewsItem;
     books?: BookOption[];
     tiktokEmbeds?: TiktokOption[];
+    instagramEmbeds?: InstagramOption[];
 }
 
-export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [] }: NewsEditProps) {
+export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [], instagramEmbeds = [] }: NewsEditProps) {
     const [bookSearchTerm, setBookSearchTerm] = useState('');
     const [isBookDropdownOpen, setIsBookDropdownOpen] = useState(false);
     const bookDropdownRef = React.useRef<HTMLDivElement>(null);
@@ -105,6 +117,7 @@ export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [] }: Ne
             description: r.description || '',
             book_id: r.book_id || '',
             tiktok_embed_id: r.tiktok_embed_id || '',
+            instagram_embed_id: r.instagram_embed_id || '',
         }))
         : [];
 
@@ -130,6 +143,7 @@ export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [] }: Ne
             description: string;
             book_id: string | number;
             tiktok_embed_id: string | number;
+            instagram_embed_id: string | number;
         }>,
 
         // Katalog Relevan (Array book_id)
@@ -176,6 +190,7 @@ export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [] }: Ne
                 description: '',
                 book_id: '',
                 tiktok_embed_id: '',
+                instagram_embed_id: '',
             },
         ]);
     };
@@ -185,15 +200,22 @@ export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [] }: Ne
         setData('recommendations', updated);
     };
 
-    const handleRecommendationChange = (index: number, field: 'number' | 'title' | 'description' | 'book_id' | 'tiktok_embed_id', value: string | number) => {
+    const handleRecommendationChange = (index: number, field: 'number' | 'title' | 'description' | 'book_id' | 'tiktok_embed_id' | 'instagram_embed_id', value: string | number) => {
         const updated = [...data.recommendations];
         const item = { ...updated[index], [field]: value };
 
-        // Auto populate title when book is selected if title is empty
-        if (field === 'book_id' && value) {
-            const selectedBook = books.find(b => String(b.id) === String(value));
-            if (selectedBook && !item.title) {
-                item.title = `${selectedBook.title} Vol ${selectedBook.volume}`;
+        // Ganti buku -> pilihan embed dari buku sebelumnya tidak relevan lagi,
+        // jadi dikosongkan supaya tidak muncul card yang tidak sesuai di berita.
+        if (field === 'book_id') {
+            item.tiktok_embed_id = '';
+            item.instagram_embed_id = '';
+
+            // Auto populate title when book is selected if title is empty
+            if (value) {
+                const selectedBook = books.find(b => String(b.id) === String(value));
+                if (selectedBook && !item.title) {
+                    item.title = `${selectedBook.title} Vol ${selectedBook.volume}`;
+                }
             }
         }
 
@@ -411,7 +433,7 @@ export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [] }: Ne
                                         </span>
                                     </h3>
                                     <p className="text-xs text-muted-foreground">
-                                        Tambahkan daftar rekomendasi buku berseri, ulasan singkat, nomor urut, dan video TikTok review.
+                                        Tambahkan daftar rekomendasi buku berseri, ulasan singkat, nomor urut, video TikTok review, dan card Instagram review.
                                     </p>
                                 </div>
                             </div>
@@ -450,6 +472,11 @@ export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [] }: Ne
                                     const availableTiktoks = rec.book_id
                                         ? tiktokEmbeds.filter(t => String(t.book_id) === String(rec.book_id))
                                         : tiktokEmbeds;
+
+                                    // Filter card Instagram dengan aturan yang sama seperti TikTok
+                                    const availableInstagram = rec.book_id
+                                        ? instagramEmbeds.filter(i => String(i.book_id) === String(rec.book_id))
+                                        : instagramEmbeds;
 
                                     return (
                                         <div 
@@ -551,6 +578,35 @@ export default function NewsEdit({ newsItem, books = [], tiktokEmbeds = [] }: Ne
                                                             return (
                                                                 <option key={t.id} value={t.id}>
                                                                     {t.name} {relatedBook ? `[Buku: ${relatedBook.title} V${relatedBook.volume}]` : ''}
+                                                                </option>
+                                                            );
+                                                        })}
+                                                    </select>
+                                                </div>
+
+                                                {/* Pilihan Card Instagram */}
+                                                <div className="space-y-1">
+                                                    <Label className="text-[11px] flex items-center gap-1.5 font-semibold">
+                                                        <Instagram className="w-3.5 h-3.5 text-pink-600" />
+                                                        <span>Pilih Card Instagram Review (BookInstagramEmbed)</span>
+                                                    </Label>
+                                                    <select
+                                                        value={rec.instagram_embed_id || ''}
+                                                        onChange={(e) => handleRecommendationChange(idx, 'instagram_embed_id', e.target.value)}
+                                                        className="w-full h-9 px-2.5 rounded-md border border-input bg-background text-xs ring-offset-background outline-none focus:ring-1 focus:ring-ring"
+                                                    >
+                                                        <option value="">-- Tanpa Card / Pilih Card Instagram --</option>
+                                                        {rec.book_id && availableInstagram.length === 0 && (
+                                                            <option value="" disabled>
+                                                                -- Buku ini belum punya card Instagram --
+                                                            </option>
+                                                        )}
+                                                        {availableInstagram.map((ig) => {
+                                                            const relatedBook = books.find(b => b.id === ig.book_id);
+                                                            const igUrl = (ig.url || '').replace(/^https?:\/\/(www\.)?/, '');
+                                                            return (
+                                                                <option key={ig.id} value={ig.id}>
+                                                                    {ig.title || ig.name || `Instagram #${ig.id}`}{igUrl ? ` — ${igUrl}` : ''}{relatedBook ? ` [Buku: ${relatedBook.title} V${relatedBook.volume}]` : ''}
                                                                 </option>
                                                             );
                                                         })}

@@ -121,6 +121,27 @@ class Book extends Model
         )->orderBy('sort_order');
     }
 
+    public function instagramEmbeds(): HasMany
+    {
+        return $this->hasMany(
+            BookInstagramEmbed::class
+        )->orderBy('sort_order');
+    }
+
+    public function newsLinks(): HasMany
+    {
+        return $this->hasMany(
+            BookNewsLink::class
+        )->orderBy('sort_order');
+    }
+
+    public function videoLinks(): HasMany
+    {
+        return $this->hasMany(
+            BookVideoLink::class
+        )->orderBy('sort_order');
+    }
+
     public function viewLogs(): HasMany
     {
         return $this->hasMany(BookViewLog::class, 'book_id');
@@ -138,6 +159,9 @@ class Book extends Model
             'genres:id,name',
             'affiliateLinks.affiliateStore:id,name,slug,logo_url',
             'tiktokEmbeds:id,book_id,name,url_video,sort_order',
+            'instagramEmbeds:id,book_id,name,url,thumbnail_url,title,description,sort_order',
+            'newsLinks:id,book_id,title,url,sort_order',
+            'videoLinks:id,book_id,platform_name,title,access_type,url,sort_order',
         ]);
     }
 }

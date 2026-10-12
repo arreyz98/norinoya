@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\AgeRating;
 use App\Enums\BookType;
+use App\Enums\VideoAccessType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
@@ -602,6 +603,9 @@ class BookController extends Controller
             'authors:id,name',
             'genres:id,name',
             'tiktokEmbeds:id,book_id,name,url_video,sort_order',
+            'instagramEmbeds:id,book_id,name,url,thumbnail_url,title,description,sort_order',
+            'newsLinks:id,book_id,title,url,sort_order',
+            'videoLinks:id,book_id,platform_name,title,access_type,url,sort_order',
             'affiliateLinks:id,book_id,affiliate_store_id,store_name,location,url',
         ]);
 
@@ -657,6 +661,35 @@ class BookController extends Controller
                     ])
                     ->values(),
 
+                'instagram_embeds' => $book->instagramEmbeds
+                    ->sortBy('sort_order')
+                    ->map(fn ($item) => [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                        'url' => $item->url,
+                        'thumbnail_url' => $item->thumbnail_url,
+                        'title' => $item->title,
+                        'description' => $item->description,
+                        'sort_order' => $item->sort_order,
+                    ])
+                    ->values(),
+
+                // Link berita. Bila belum ada baris di tabel baru, pakai kolom lama
+                // (news_link) sebagai prefill supaya data lama tidak hilang saat admin menyimpan.
+                'news_links' => $book->newsLinks->isNotEmpty()
+                    ? $book->newsLinks
+                        ->sortBy('sort_order')
+                        ->map(fn ($item) => [
+                            'id' => $item->id,
+                            'title' => $item->title,
+                            'url' => $item->url,
+                            'sort_order' => $item->sort_order,
+                        ])
+                        ->values()
+                    : ($book->news_link
+                        ? [['id' => null, 'title' => '', 'url' => $book->news_link, 'sort_order' => 1]]
+                        : []),
+
                 'affiliate_links' => $book->affiliateLinks
                     ->map(fn ($link) => [
                         'id' => $link->id,
@@ -664,6 +697,18 @@ class BookController extends Controller
                         'store_name' => $link->store_name ?: AffiliateLink::DEFAULT_STORE_NAME,
                         'location' => $link->location ?: AffiliateLink::DEFAULT_LOCATION,
                         'url' => $link->url,
+                    ])
+                    ->values(),
+
+                'video_links' => $book->videoLinks
+                    ->sortBy('sort_order')
+                    ->map(fn ($video) => [
+                        'id' => $video->id,
+                        'platform_name' => $video->platform_name,
+                        'title' => $video->title,
+                        'access_type' => $video->access_type?->value ?? $video->access_type,
+                        'url' => $video->url,
+                        'sort_order' => $video->sort_order,
                     ])
                     ->values(),
             ],
@@ -690,6 +735,9 @@ class BookController extends Controller
             'authors:id,name',
             'genres:id,name',
             'tiktokEmbeds:id,book_id,name,url_video,sort_order',
+            'instagramEmbeds:id,book_id,name,url,thumbnail_url,title,description,sort_order',
+            'newsLinks:id,book_id,title,url,sort_order',
+            'videoLinks:id,book_id,platform_name,title,access_type,url,sort_order',
             'affiliateLinks:id,book_id,affiliate_store_id,store_name,location,url',
         ]);
 
@@ -771,6 +819,35 @@ class BookController extends Controller
                     ])
                     ->values(),
 
+                'instagram_embeds' => $book->instagramEmbeds
+                    ->sortBy('sort_order')
+                    ->map(fn ($item) => [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                        'url' => $item->url,
+                        'thumbnail_url' => $item->thumbnail_url,
+                        'title' => $item->title,
+                        'description' => $item->description,
+                        'sort_order' => $item->sort_order,
+                    ])
+                    ->values(),
+
+                // Link berita. Bila belum ada baris di tabel baru, pakai kolom lama
+                // (news_link) sebagai prefill supaya data lama tidak hilang saat admin menyimpan.
+                'news_links' => $book->newsLinks->isNotEmpty()
+                    ? $book->newsLinks
+                        ->sortBy('sort_order')
+                        ->map(fn ($item) => [
+                            'id' => $item->id,
+                            'title' => $item->title,
+                            'url' => $item->url,
+                            'sort_order' => $item->sort_order,
+                        ])
+                        ->values()
+                    : ($book->news_link
+                        ? [['id' => null, 'title' => '', 'url' => $book->news_link, 'sort_order' => 1]]
+                        : []),
+
                 'affiliate_links' => $book->affiliateLinks
                     ->map(fn ($link) => [
                         'id' => $link->id,
@@ -778,6 +855,18 @@ class BookController extends Controller
                         'store_name' => $link->store_name ?: AffiliateLink::DEFAULT_STORE_NAME,
                         'location' => $link->location ?: AffiliateLink::DEFAULT_LOCATION,
                         'url' => $link->url,
+                    ])
+                    ->values(),
+
+                'video_links' => $book->videoLinks
+                    ->sortBy('sort_order')
+                    ->map(fn ($video) => [
+                        'id' => $video->id,
+                        'platform_name' => $video->platform_name,
+                        'title' => $video->title,
+                        'access_type' => $video->access_type?->value ?? $video->access_type,
+                        'url' => $video->url,
+                        'sort_order' => $video->sort_order,
                     ])
                     ->values(),
             ],
@@ -839,6 +928,47 @@ class BookController extends Controller
             }
 
             /*
+             * Instagram Embeds
+             */
+            foreach (
+                $data['instagram_embeds'] ?? [] as $index => $embed
+            ) {
+                $url = trim((string) ($embed['url'] ?? ''));
+
+                if ($url === '') {
+                    continue;
+                }
+
+                $book->instagramEmbeds()->create([
+                    'name' => $embed['name'] ?? '',
+                    'url' => $url,
+                    'thumbnail_url' => $embed['thumbnail_url'] ?? null,
+                    'title' => $embed['title'] ?? null,
+                    'description' => $embed['description'] ?? null,
+                    'sort_order' => $index + 1,
+                ]);
+            }
+
+            /*
+             * News Links
+             */
+            foreach (
+                $data['news_links'] ?? [] as $index => $link
+            ) {
+                $url = trim((string) ($link['url'] ?? ''));
+
+                if ($url === '') {
+                    continue;
+                }
+
+                $book->newsLinks()->create([
+                    'title' => $link['title'] ?? '',
+                    'url' => $url,
+                    'sort_order' => $index + 1,
+                ]);
+            }
+
+            /*
              * Images
              */
             foreach (
@@ -875,6 +1005,21 @@ class BookController extends Controller
                     'store_name' => $this->affiliateStoreName($affiliate),
                     'location' => $this->affiliateLocation($affiliate),
                     'url' => $affiliate['url'],
+                ]);
+            }
+
+            /*
+             * Video Links
+             */
+            foreach (
+                $data['video_links'] ?? [] as $index => $video
+            ) {
+                $book->videoLinks()->create([
+                    'platform_name' => $video['platform_name'],
+                    'title' => $video['title'] ?? '',
+                    'access_type' => $video['access_type'] ?? VideoAccessType::FREE->value,
+                    'url' => $video['url'],
+                    'sort_order' => $index + 1,
                 ]);
             }
 
@@ -1026,6 +1171,91 @@ class BookController extends Controller
             }
 
             /*
+             * Instagram Embeds
+             */
+            $submittedInstagramIds = collect(
+                $data['instagram_embeds'] ?? []
+            )
+                ->pluck('id')
+                ->filter()
+                ->values();
+
+            $book->instagramEmbeds()
+                ->whereNotIn(
+                    'id',
+                    $submittedInstagramIds
+                )
+                ->delete();
+
+            foreach (
+                $data['instagram_embeds'] ?? [] as $index => $embed
+            ) {
+                $url = trim((string) ($embed['url'] ?? ''));
+
+                if ($url === '') {
+                    continue;
+                }
+
+                $payload = [
+                    'name' => $embed['name'] ?? '',
+                    'url' => $url,
+                    'thumbnail_url' => $embed['thumbnail_url'] ?? null,
+                    'title' => $embed['title'] ?? null,
+                    'description' => $embed['description'] ?? null,
+                    'sort_order' => $index + 1,
+                ];
+
+                if (! empty($embed['id'])) {
+                    $book->instagramEmbeds()
+                        ->where('id', $embed['id'])
+                        ->update($payload);
+                } else {
+                    $book->instagramEmbeds()->create($payload);
+                }
+            }
+
+            /*
+             * News Links
+             */
+            $submittedNewsLinkIds = collect(
+                $data['news_links'] ?? []
+            )
+                ->pluck('id')
+                ->filter()
+                ->values();
+
+            $book->newsLinks()
+                ->whereNotIn(
+                    'id',
+                    $submittedNewsLinkIds
+                )
+                ->delete();
+
+            foreach (
+                $data['news_links'] ?? [] as $index => $link
+            ) {
+                $url = trim((string) ($link['url'] ?? ''));
+
+                if ($url === '') {
+                    continue;
+                }
+
+                $payload = [
+                    'title' => $link['title'] ?? '',
+                    'url' => $url,
+                    'sort_order' => $index + 1,
+                ];
+
+                if (! empty($link['id'])) {
+                    $book->newsLinks()
+                        ->where('id', $link['id'])
+                        ->update($payload);
+                } else {
+                    $book->newsLinks()->create($payload);
+                }
+            }
+
+            /*
              * Affiliate Links
              */
             $submittedAffiliateIds = collect(
@@ -1068,6 +1298,43 @@ class BookController extends Controller
                         'location' => $this->affiliateLocation($affiliate),
                         'url' => $affiliate['url'],
                     ]);
+                }
+            }
+
+            /*
+             * Video Links
+             */
+            // Omitted lists preserve existing links; an explicit empty list clears them.
+            if (array_key_exists('video_links', $data)) {
+                $submittedVideoIds = collect(
+                    $data['video_links'] ?? []
+                )
+                    ->pluck('id')
+                    ->filter()
+                    ->values();
+
+                $book->videoLinks()
+                    ->whereNotIn('id', $submittedVideoIds)
+                    ->delete();
+
+                foreach (
+                    $data['video_links'] ?? [] as $index => $video
+                ) {
+                    $payload = [
+                        'platform_name' => $video['platform_name'],
+                        'title' => $video['title'] ?? '',
+                        'access_type' => $video['access_type'] ?? VideoAccessType::FREE->value,
+                        'url' => $video['url'],
+                        'sort_order' => $index + 1,
+                    ];
+
+                    if (! empty($video['id'])) {
+                        $book->videoLinks()
+                            ->where('id', $video['id'])
+                            ->update($payload);
+                    } else {
+                        $book->videoLinks()->create($payload);
+                    }
                 }
             }
         });
@@ -1166,6 +1433,13 @@ class BookController extends Controller
                 ->map(fn (AgeRating $rating) => [
                     'value' => $rating->value,
                     'label' => $rating->value,
+                ])
+                ->values(),
+
+            'videoAccessTypes' => collect(VideoAccessType::cases())
+                ->map(fn (VideoAccessType $type) => [
+                    'value' => $type->value,
+                    'label' => $type->label(),
                 ])
                 ->values(),
         ];

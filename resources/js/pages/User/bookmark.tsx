@@ -1111,10 +1111,11 @@ export function SavedBookmarks({
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
+                                const articleUrl = `${window.location.origin}/news/${news.slug || news.id}`;
                                 if (navigator.share) {
-                                  navigator.share({ title: news.title, url: window.location.href }).catch(() => {});
+                                  navigator.share({ title: news.title, url: articleUrl }).catch(() => {});
                                 } else if (navigator.clipboard) {
-                                  navigator.clipboard.writeText(window.location.href);
+                                  navigator.clipboard.writeText(articleUrl);
                                   showToast('🔗 Tautan berita disalin ke clipboard');
                                 }
                               }}

@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
         BookSeeder::class,
         BookImagesSeeder::class,
         BookTiktokEmbedSeeder::class,
+        BookInstagramEmbedSeeder::class,
     ]);
 }
 }

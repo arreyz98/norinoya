@@ -28,9 +28,27 @@ interface TikTokEmbed {
     sort_order: number;
 }
 
+interface InstagramEmbed {
+    id: number;
+    name?: string;
+    url?: string;
+    thumbnail_url?: string;
+    title?: string;
+    description?: string;
+    sort_order?: number;
+}
+
 interface AffiliateLink {
     id: number;
     affiliate_store_id: number;
+    url: string;
+}
+
+interface VideoLink {
+    id?: number;
+    platform_name: string;
+    title?: string | null;
+    access_type: string;
     url: string;
 }
 
@@ -63,8 +81,10 @@ interface Book {
     genres: number[];
 
     tiktok_embeds: TikTokEmbed[];
+    instagram_embeds: InstagramEmbed[];
 
     affiliate_links: AffiliateLink[];
+    video_links: VideoLink[];
 }
 
 interface Props {
@@ -81,6 +101,7 @@ interface Props {
     existingSlugs: string[];
     bookTypes: EnumOption[];
     ageRatings: EnumOption[];
+    videoAccessTypes: EnumOption[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -111,6 +132,7 @@ export default function Edit({
     existingSlugs,
     bookTypes,
     ageRatings,
+    videoAccessTypes,
 }: Props) {
     const { errors } = usePage().props as unknown as { errors: Record<string, string> };
     const [processing, setProcessing] = useState(false);
@@ -148,6 +170,7 @@ export default function Edit({
                     existingSlugs={existingSlugs}
                     bookTypes={bookTypes}
                     ageRatings={ageRatings}
+                    videoAccessTypes={videoAccessTypes}
                     processing={processing}
                     errors={errors || {}}
                     onSubmit={handleSubmit}

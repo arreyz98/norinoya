@@ -6,12 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\Book;
 use App\Models\BookTiktokEmbed;
+use App\Models\BookInstagramEmbed;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class NewsController extends Controller
 {
+    /**
+     * Hapus cache daftar berita & sitemap agar perubahan slug langsung terlihat.
+     */
+    protected function flushNewsCaches(): void
+    {
+        foreach (['news:list:v2', 'news:kios_items', 'news:books:v2', 'news:total', 'sitemap:xml:v1'] as $key) {
+            Cache::forget($key);
+        }
+    }
+
     public function index(Request $request)
     {
         $query = News::query();
@@ -370,9 +381,15 @@ class NewsController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        $instagramEmbeds = BookInstagramEmbed::select('id', 'book_id', 'name', 'url', 'thumbnail_url', 'title', 'description', 'sort_order')
+            ->orderBy('book_id')
+            ->orderBy('sort_order')
+            ->get();
+
         return Inertia::render('Admin/News/Create', [
             'books' => $books,
             'tiktokEmbeds' => $tiktokEmbeds,
+            'instagramEmbeds' => $instagramEmbeds,
         ]);
     }
 
@@ -400,11 +417,12 @@ class NewsController extends Controller
             'recommendations.*.description' => 'nullable|string',
             'recommendations.*.book_id' => 'nullable',
             'recommendations.*.tiktok_embed_id' => 'nullable',
+            'recommendations.*.instagram_embed_id' => 'nullable',
             'relevant_books' => 'nullable|array',
             'relevant_books.*' => 'nullable',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
+        $validated['slug'] = News::makeUniqueSlug($validated['title']);
         $validated['username'] = $validated['username'] ?? 'norinoya_official';
         $validated['display_name'] = $validated['display_name'] ?? 'Norinoya Official';
 
@@ -467,6 +485,7 @@ class NewsController extends Controller
                         'description' => trim($rec['description'] ?? ''),
                         'book_id' => !empty($rec['book_id']) ? (int)$rec['book_id'] : null,
                         'tiktok_embed_id' => !empty($rec['tiktok_embed_id']) ? (int)$rec['tiktok_embed_id'] : null,
+                        'instagram_embed_id' => !empty($rec['instagram_embed_id']) ? (int)$rec['instagram_embed_id'] : null,
                     ];
                 }
             }
@@ -490,6 +509,8 @@ class NewsController extends Controller
 
         News::create($validated);
 
+        $this->flushNewsCaches();
+
         return redirect()->route('admin.news.index')->with('success', 'Berita & Poling berhasil dipublikasikan!');
     }
 
@@ -501,15 +522,21 @@ class NewsController extends Controller
             'edition',
             'tiktokEmbeds' => function ($query) {
                 $query->orderBy('sort_order', 'asc');
+            },
+            'instagramEmbeds' => function ($query) {
+                $query->orderBy('sort_order', 'asc');
             }
         ])->orderBy('title', 'asc')->get();
 
         $tiktokEmbeds = BookTiktokEmbed::orderBy('name', 'asc')->get();
 
+        $instagramEmbeds = BookInstagramEmbed::orderBy('name', 'asc')->get();
+
         return Inertia::render('Admin/News/Edit', [
             'newsItem' => $news,
             'books' => $books,
             'tiktokEmbeds' => $tiktokEmbeds,
+            'instagramEmbeds' => $instagramEmbeds,
         ]);
     }
 
@@ -537,12 +564,20 @@ class NewsController extends Controller
             'recommendations.*.description' => 'nullable|string',
             'recommendations.*.book_id' => 'nullable',
             'recommendations.*.tiktok_embed_id' => 'nullable',
+            'recommendations.*.instagram_embed_id' => 'nullable',
             'relevant_books' => 'nullable|array',
             'relevant_books.*' => 'nullable',
         ]);
 
+        // Slug ikut judul: kalau judul berubah, slug diperbarui dan slug lama
+        // disimpan sebagai riwayat agar URL lama tetap di-redirect 301.
         if ($news->title !== $validated['title']) {
-            $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
+            $newSlug = News::makeUniqueSlug($validated['title'], $news->id);
+
+            if ($newSlug !== $news->slug) {
+                $news->rememberOldSlug($news->slug);
+                $validated['slug'] = $newSlug;
+            }
         }
 
         // Clean & filter gallery_images (max 4 non-empty URLs)
@@ -594,6 +629,7 @@ class NewsController extends Controller
                         'description' => trim($rec['description'] ?? ''),
                         'book_id' => !empty($rec['book_id']) ? (int)$rec['book_id'] : null,
                         'tiktok_embed_id' => !empty($rec['tiktok_embed_id']) ? (int)$rec['tiktok_embed_id'] : null,
+                        'instagram_embed_id' => !empty($rec['instagram_embed_id']) ? (int)$rec['instagram_embed_id'] : null,
                     ];
                 }
             }
@@ -617,12 +653,16 @@ class NewsController extends Controller
 
         $news->update($validated);
 
+        $this->flushNewsCaches();
+
         return redirect()->route('admin.news.index')->with('success', 'Berita berhasil diperbarui!');
     }
 
     public function destroy(News $news)
     {
         $news->delete();
+
+        $this->flushNewsCaches();
 
         return redirect()->route('admin.news.index')->with('success', 'Berita berhasil dihapus!');
     }

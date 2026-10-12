@@ -39,6 +39,15 @@ export interface Volume {
     logoUrl?: string;
     location?: string;
   }[];
+  // Link video resmi per volume (mis. YouTube, iQiyi, Crunchyroll).
+  // access_type: 'free' | 'subscription' (enum App\Enums\VideoAccessType).
+  videoLinks?: {
+    id: string;
+    platform_name: string;
+    title?: string;
+    access_type?: string;
+    url: string;
+  }[];
   animeAdaptation?: {
     platformName: string;
     watchLink: string;
@@ -65,6 +74,21 @@ export interface Volume {
     title?: string;
     url_video?: string;
     embed_url?: string;
+    sort_order?: number;
+  }[];
+  instagramEmbeds?: {
+    id: string;
+    name?: string;
+    url?: string;
+    thumbnail_url?: string;
+    title?: string;
+    description?: string;
+    sort_order?: number;
+  }[];
+  newsLinks?: {
+    id: string;
+    title?: string;
+    url?: string;
     sort_order?: number;
   }[];
 }
@@ -109,6 +133,21 @@ export interface Comic {
     embed_url?: string;
     sort_order?: number;
   }[];
+  instagramEmbeds?: {
+    id: string;
+    name?: string;
+    url?: string;
+    thumbnail_url?: string;
+    title?: string;
+    description?: string;
+    sort_order?: number;
+  }[];
+  newsLinks?: {
+    id: string;
+    title?: string;
+    url?: string;
+    sort_order?: number;
+  }[];
 }
 
 export interface PreOwnedItem {
@@ -135,6 +174,7 @@ export interface NewsRecommendationItem {
   comicId?: string;
   book_id?: number | string | null;
   tiktok_embed_id?: number | string | null;
+  instagram_embed_id?: number | string | null;
   shortReview?: {
     id: string;
     title: string;

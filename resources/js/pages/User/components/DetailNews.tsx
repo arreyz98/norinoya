@@ -5,9 +5,10 @@ import {
   ArrowLeft, Send, CheckCircle2,
   Newspaper, RefreshCw, Sparkles, Tag, Ticket, Mic, Tv, Gamepad2, Flame,
   Users, Eye, Heart, ShoppingBag, ChevronRight, BookOpen, BookMarked, BookText,
-  Play, ArrowUpRight, Video, Bookmark
+  Play, ArrowUpRight, Video, Bookmark, Instagram
 } from 'lucide-react';
 import { useBookmarks } from '../../../utils/bookmarkStorage';
+import { prepareEmbedFrames, syncEmbedHeights } from '../../../utils/embedFrame';
 import { BookmarkToast, useBookmarkToast } from './BookmarkToast';
 import { COMICS_DATA } from '../../../types/mockData';
 import { NewsUpdate, Comic, Volume } from '../../../types/demo';
@@ -74,7 +75,21 @@ const stripLazyIframes = (html: string): string =>
 // Konten dibungkus komponen memo: React tidak akan menyentuh innerHTML selama string HTML sama,
 // sehingga iframe embed tidak pernah di-recreate/di-reload saat re-render (mis. dipicu scroll).
 const NewsBody = React.memo(function NewsBody({ html, className }: { html: string; className: string }) {
-    return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+    const containerRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        const container = containerRef.current;
+
+        // 1) Rapikan iframe embed: buang loading="lazy" dan pasang tinggi awal
+        //    (Instagram: matikan scrollbar; X/Twitter: naikkan ke tinggi terukur).
+        prepareEmbedFrames(container);
+
+        // 2) Samakan tinggi iframe dengan tinggi konten aslinya bila provider
+        //    mengirimnya lewat postMessage (Instagram "MEASURE", X "twttr.private.resize").
+        return syncEmbedHeights(container);
+    }, [html]);
+
+    return <div ref={containerRef} className={className} dangerouslySetInnerHTML={{ __html: html }} />;
 });
 
 export interface DetailNewsProps {
@@ -403,7 +418,7 @@ export default function DetailNews({
                           <span>INSERT KATALOG & REVIEW SHORT</span>
                         </h4>
                         <p className="text-[10px] sm:text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
-                          Katalog (Kiri) • Review Short Konotasi (Kanan)
+                          Katalog (Kiri) • Review Short Konotasi &amp; Card Instagram (Kanan)
                         </p>
                       </div>
                     </div>
@@ -445,15 +460,33 @@ export default function DetailNews({
                          ? (imagesArr[0].image_url || imagesArr[0].file_path)
                          : (matchedMockComic?.coverImage || rec.shortReview?.thumbnail || null);
 
-                      // TikTok video matching from book's tiktok embeds or specific id
+                      // TikTok video: hanya dipakai kalau admin MEMILIH video-nya di form
+                      // berita (rec.tiktok_embed_id). Sengaja TIDAK fallback ke embed
+                      // pertama milik buku — kalau tidak dipilih, card-nya tidak muncul.
                       const tiktokEmbedsArr = matchedDbBook?.tiktok_embeds as Array<{ id?: string | number; name?: string; url_video?: string }> | undefined;
-                      const matchedTiktokEmbed = tiktokEmbedsArr?.find(t => String(t.id) === String(rec.tiktok_embed_id))
-                        || (tiktokEmbedsArr && tiktokEmbedsArr.length > 0 ? tiktokEmbedsArr[0] : null);
+                      const matchedTiktokEmbed = rec.tiktok_embed_id
+                        ? (tiktokEmbedsArr?.find(t => String(t.id) === String(rec.tiktok_embed_id)) ?? null)
+                        : null;
 
                       // Gunakan thumbnail tiktok dari public/assets/images/thumbnail-tiktok.jpeg
                       const shortThumbnail = '/assets/images/thumbnail-tiktok.jpeg';
                       const shortTitle = rec.shortReview?.title || matchedTiktokEmbed?.name || `Review Short: ${rec.title}`;
                       const videoUrl = rec.shortReview?.url_video || matchedTiktokEmbed?.url_video;
+                      const hasShortVideo = Boolean(videoUrl);
+
+                      // Card Instagram: diambil dari embed IG milik buku yang sama (bukan input baru).
+                      // Hanya tampil kalau admin memang memilih card-nya di form berita.
+                      const instagramEmbedsArr = matchedDbBook?.instagram_embeds as Array<{
+                        id?: string | number;
+                        name?: string;
+                        url?: string;
+                        thumbnail_url?: string;
+                        title?: string;
+                        description?: string;
+                      }> | undefined;
+                      const matchedInstagramEmbed = rec.instagram_embed_id
+                        ? instagramEmbedsArr?.find(i => String(i.id) === String(rec.instagram_embed_id))
+                        : null;
 
                       return (
                         <div
@@ -546,7 +579,9 @@ export default function DetailNews({
                               </div>
                             </div>
 
-                            {/* RIGHT CARD: INSERT SHORT KONOTASI (9:16 aspect ratio) */}
+                            {/* RIGHT CARD: INSERT SHORT KONOTASI (9:16 aspect ratio) —
+                                hanya tampil kalau admin memilih video TikTok di form berita. */}
+                            {hasShortVideo && (
                             <div
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -618,6 +653,67 @@ export default function DetailNews({
                                 </div>
                               </div>
                             </div>
+                            )}
+
+                            {/* THIRD CARD: CARD INSTAGRAM REVIEW (dari embed IG buku terkait) */}
+                            {matchedInstagramEmbed?.url && (
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  window.open(String(matchedInstagramEmbed.url), '_blank', 'noopener,noreferrer');
+                                }}
+                                className="group/ig relative w-full sm:w-[260px] shrink-0 bg-white dark:bg-[#181912] hover:bg-neutral-50 dark:hover:bg-[#222319] border border-neutral-200/90 dark:border-neutral-700/60 rounded-2xl overflow-hidden transition-all shadow-2xs hover:shadow-md cursor-pointer flex flex-col justify-between"
+                              >
+                                <div>
+                                  {matchedInstagramEmbed.thumbnail_url ? (
+                                    <div className="relative w-full h-40 sm:h-44 bg-gradient-to-r from-[#F58529] via-[#DD2A7B] to-[#8134AF] overflow-hidden shrink-0">
+                                      <img
+                                        src={matchedInstagramEmbed.thumbnail_url}
+                                        alt={matchedInstagramEmbed.title || 'Instagram'}
+                                        loading="lazy"
+                                        decoding="async"
+                                        referrerPolicy="no-referrer"
+                                        onError={(e) => {
+                                          e.currentTarget.style.display = 'none';
+                                        }}
+                                        className="absolute inset-0 w-full h-full object-cover object-top group-hover/ig:scale-105 transition-transform duration-300"
+                                      />
+                                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
+                                      <div className="absolute top-2.5 left-2.5 z-10">
+                                        <span className="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold bg-white/90 text-neutral-900 shadow-xs border border-white/40 flex items-center gap-1">
+                                          <Instagram className="w-3 h-3 text-[#E1306C]" />
+                                          INSTAGRAM
+                                        </span>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="w-full h-11 bg-gradient-to-r from-[#F58529] via-[#DD2A7B] to-[#8134AF] flex items-center px-3.5 gap-2">
+                                      <Instagram className="w-4 h-4 text-white" />
+                                      <span className="text-[10px] font-mono font-black tracking-wider text-white uppercase">
+                                        Instagram
+                                      </span>
+                                    </div>
+                                  )}
+
+                                  <div className="p-3.5 space-y-1">
+                                    <h5 className="text-sm font-extrabold text-neutral-900 dark:text-neutral-50 line-clamp-2 leading-snug">
+                                      {matchedInstagramEmbed.title || matchedInstagramEmbed.name || 'Review Instagram'}
+                                    </h5>
+                                    {matchedInstagramEmbed.description && (
+                                      <p className="text-xs font-sans text-neutral-500 dark:text-neutral-400 line-clamp-3">
+                                        {matchedInstagramEmbed.description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+
+                                <div className="px-3.5 pb-3.5 pt-2 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between">
+                                  <span className="text-[10.5px] font-sans font-bold text-neutral-700 dark:text-neutral-300 flex items-center gap-1">
+                                    Lihat Postingan <ArrowUpRight className="w-3 h-3 text-[#112A12] dark:text-[#457347]" />
+                                  </span>
+                                </div>
+                              </div>
+                            )}
 
                           </div>
                         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\BookType;
+use App\Enums\VideoAccessType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -230,6 +231,78 @@ class UpdateBookRequest extends FormRequest
             ],
 
             /*
+             * Instagram
+             */
+            'instagram_embeds' => [
+                'nullable',
+                'array',
+                'max:10',
+            ],
+
+            'instagram_embeds.*.id' => [
+                'nullable',
+                'integer',
+                'exists:book_instagram_embeds,id',
+            ],
+
+            'instagram_embeds.*.name' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'instagram_embeds.*.url' => [
+                'nullable',
+                'url',
+                'max:2048',
+            ],
+
+            'instagram_embeds.*.thumbnail_url' => [
+                'nullable',
+                'url',
+                'max:4096',
+            ],
+
+            'instagram_embeds.*.title' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'instagram_embeds.*.description' => [
+                'nullable',
+                'string',
+                'max:2000',
+            ],
+
+            /*
+             * News Links
+             */
+            'news_links' => [
+                'nullable',
+                'array',
+                'max:10',
+            ],
+
+            'news_links.*.id' => [
+                'nullable',
+                'integer',
+                'exists:book_news_links,id',
+            ],
+
+            'news_links.*.title' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'news_links.*.url' => [
+                'nullable',
+                'url',
+                'max:2048',
+            ],
+
+            /*
              * Affiliate
              */
             'affiliate_links' => [
@@ -266,6 +339,49 @@ class UpdateBookRequest extends FormRequest
                 'url',
                 'max:2048',
             ],
+
+            /*
+             * Video Links
+             */
+            'video_links' => [
+                'nullable',
+                'array',
+                'list',
+                'max:20',
+            ],
+
+            'video_links.*' => ['array'],
+
+            'video_links.*.id' => [
+                'nullable',
+                'integer',
+                'distinct',
+                Rule::exists('book_video_links', 'id')->where('book_id', $bookId),
+            ],
+
+            'video_links.*.platform_name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+
+            'video_links.*.title' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'video_links.*.access_type' => [
+                'required',
+                'string',
+                Rule::enum(VideoAccessType::class),
+            ],
+
+            'video_links.*.url' => [
+                'required',
+                'url:http,https',
+                'max:2048',
+            ],
         ];
     }
 
@@ -298,6 +414,45 @@ class UpdateBookRequest extends FormRequest
 
             'msrp.numeric' =>
                 'Harga MSRP harus berupa angka.',
+
+            'video_links.*.url.url' =>
+                'URL video tidak valid.',
+
+            'video_links.*.platform_name.required' =>
+                'Nama platform wajib diisi.',
+
+            'video_links.*.url.required' =>
+                'Link video wajib diisi.',
+
+            'video_links.max' =>
+                'Maksimal 20 link video.',
+
+            'video_links.list' =>
+                'Link video harus berupa daftar berurutan.',
+
+            'video_links.*.access_type.required' =>
+                'Pilih tipe akses.',
+
+            'video_links.*.access_type.enum' =>
+                'Tipe akses video tidak valid.',
+
+            'video_links.*.id.exists' =>
+                'Link video tidak ditemukan pada buku ini.',
+
+            'video_links.*.id.distinct' =>
+                'Link video yang sama tidak boleh dikirim dua kali.',
+
+            'instagram_embeds.max' =>
+                'Maksimal 10 postingan Instagram.',
+
+            'instagram_embeds.*.url.url' =>
+                'URL Instagram tidak valid.',
+
+            'news_links.max' =>
+                'Maksimal 10 link berita.',
+
+            'news_links.*.url.url' =>
+                'URL berita tidak valid.',
         ];
     }
 }

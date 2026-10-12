@@ -69,11 +69,12 @@ function TikTokCard({ item, coverImage }: { item: TikTokCardItem; coverImage?: s
 export const HighlightReview: React.FC<HighlightReviewProps> = ({ activeVolObj, selectedComic }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const embedsSource = (activeVolObj?.tiktokEmbeds && activeVolObj.tiktokEmbeds.length > 0)
-    ? activeVolObj.tiktokEmbeds
-    : (selectedComic?.tiktokEmbeds && selectedComic.tiktokEmbeds.length > 0)
-      ? selectedComic.tiktokEmbeds
-      : (selectedComic?.volumes?.flatMap(v => v.tiktokEmbeds || []) ?? []);
+  // Hanya tampilkan video TikTok milik VOLUME yang sedang dibuka (sama seperti
+  // HighlightReviewInstagram) — sengaja TIDAK jatuh ke video volume lain dalam
+  // series yang sama, supaya video tidak bocor ke halaman volume lain.
+  const embedsSource = activeVolObj
+    ? (activeVolObj.tiktokEmbeds ?? [])
+    : (selectedComic?.tiktokEmbeds ?? []);
 
   const coverImage = activeVolObj?.coverImage || selectedComic?.coverImage || undefined;
 

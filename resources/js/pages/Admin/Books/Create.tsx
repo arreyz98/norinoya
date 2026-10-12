@@ -21,11 +21,29 @@ interface TikTokEmbed {
     sort_order?: number;
 }
 
+interface InstagramEmbed {
+    id?: number;
+    name?: string;
+    url?: string;
+    thumbnail_url?: string;
+    title?: string;
+    description?: string;
+    sort_order?: number;
+}
+
 interface AffiliateLink {
     id?: number;
     affiliate_store_id: number | string;
     store_name?: string;
     location?: string;
+    url: string;
+}
+
+interface VideoLink {
+    id?: number;
+    platform_name: string;
+    title?: string | null;
+    access_type: string;
     url: string;
 }
 
@@ -43,6 +61,7 @@ interface Book {
     synopsis?: string;
     short_description?: string | null;
     news_link?: string | null;
+    news_links?: { id?: number; title?: string; url: string; sort_order?: number }[];
     msrp?: number | string | null;
     isbn?: string | null;
     page_count?: number | string | null;
@@ -52,10 +71,12 @@ interface Book {
     is_upcoming?: boolean | null;
     images?: BookImage[];
     tiktok_embeds?: TikTokEmbed[];
+    instagram_embeds?: InstagramEmbed[];
     story_authors?: (number | string)[];
     art_authors?: (number | string)[];
     genres?: (number | string)[];
     affiliate_links?: AffiliateLink[];
+    video_links?: VideoLink[];
 }
 
 interface Props {
@@ -70,6 +91,7 @@ interface Props {
     existingSlugs: string[];
     bookTypes: EnumOption[];
     ageRatings: EnumOption[];
+    videoAccessTypes: EnumOption[];
     book?: Book;
 }
 
@@ -119,6 +141,7 @@ export default function Create({
     existingSlugs,
     bookTypes,
     ageRatings,
+    videoAccessTypes,
     book,
 }: Props) {
     const { errors } = usePage().props as unknown as { errors: Record<string, string> };
@@ -160,6 +183,7 @@ export default function Create({
                     existingSlugs={existingSlugs}
                     bookTypes={bookTypes}
                     ageRatings={ageRatings}
+                    videoAccessTypes={videoAccessTypes}
                     processing={processing}
                     errors={errors || {}}
                     onSubmit={handleSubmit}
