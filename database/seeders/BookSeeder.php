@@ -19,7 +19,6 @@ class BookSeeder extends Seeder
                 'series_id'         => 1, // Pastikan data di tabel book_series sudah ada
                 'slug'              => Str::slug('The Beginning After The End Vol. 1'),
                 'synopsis'          => 'King Grey has unmatched strength, wealth, and prestige in a society governed by martial ability...',
-                'short_description' => 'Awal kisah perjalanan King Grey di dunia baru.',
                 'volume'            => 1,
                 'msrp'              => 125000.00,
                 'news_link'         => 'https://example.com/news/tbate-1',
@@ -41,7 +40,6 @@ class BookSeeder extends Seeder
                 'series_id'         => 2,
                 'slug'              => Str::slug('Solo Leveling Vol. 1'),
                 'synopsis'          => 'In a world where hunters with magical powers battle deadly monsters, a weak hunter named Sung Jinwoo...',
-                'short_description' => 'Petualangan Hunter terkecil yang bangkit menjadi penguasa bayangan.',
                 'volume'            => 1,
                 'msrp'              => 135000.00,
                 'news_link'         => 'https://example.com/news/solo-leveling-1',

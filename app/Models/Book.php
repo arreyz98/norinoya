@@ -28,7 +28,6 @@ class Book extends Model
         'age_rating',
         'publisher_id',
         'synopsis',
-        'short_description',
         'news_link',
         'msrp',
         'isbn',

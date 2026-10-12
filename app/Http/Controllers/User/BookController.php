@@ -96,7 +96,7 @@ class BookController extends Controller
             'meta' => [
                 'title' => $book ? $book->title.' - Norinoya' : 'Katalog Buku - Norinoya',
                 'description' => $book
-                    ? Str::limit(strip_tags($book->synopsis ?? $book->short_description ?? 'Lihat informasi lengkap dan detail buku komik di Norinoya.'), 160)
+                    ? Str::limit(strip_tags($book->synopsis ?? 'Lihat informasi lengkap dan detail buku komik di Norinoya.'), 160)
                     : 'Katalog manga, komik, novel, dan light novel lengkap di Norinoya.',
                 'image' => ($book && ($img = $book->images->first()?->image_url)) ? (Str::startsWith($img, ['http://', 'https://']) ? $img : url($img)) : url('/favicon.png'),
                 'url' => $book ? url("/buku/{$book->slug}") : url("/buku/{$slug}"),

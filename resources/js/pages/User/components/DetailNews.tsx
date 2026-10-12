@@ -563,7 +563,9 @@ export default function DetailNews({
                                     {bookTitle}
                                   </h5>
                                   <p className="text-xs font-sans text-neutral-500 dark:text-neutral-400 line-clamp-1">
-                                    {typeof matchedDbBook?.short_description === 'string' ? matchedDbBook.short_description : (matchedMockComic?.genres?.join(', ') || 'Koleksi Resmi Norinoya')}
+                                    {typeof matchedDbBook?.synopsis === 'string' && matchedDbBook.synopsis.trim() !== ''
+                                      ? String(matchedDbBook.synopsis).replace(/<[^>]*>/g, '')
+                                      : (matchedMockComic?.genres?.join(', ') || 'Koleksi Resmi Norinoya')}
                                   </p>
                                 </div>
                               </div>

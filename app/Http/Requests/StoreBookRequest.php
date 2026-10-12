@@ -81,11 +81,6 @@ class StoreBookRequest extends FormRequest
                 'string',
             ],
 
-            'short_description' => [
-                'nullable',
-                'string',
-            ],
-
             'news_link' => [
                 'nullable',
                 'url',

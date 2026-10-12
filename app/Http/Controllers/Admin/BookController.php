@@ -58,7 +58,7 @@ class BookController extends Controller
 
                 if ($this->fullTextIndexAvailable() && mb_strlen($search) >= 3 && $booleanTerm !== '') {
                     $q->whereFullText(
-                        ['title', 'synopsis', 'short_description'],
+                        ['title', 'synopsis'],
                         $booleanTerm,
                         ['mode' => 'boolean']
                     );
@@ -622,7 +622,6 @@ class BookController extends Controller
                 'age_rating' => $book->age_rating?->value ?? $book->age_rating,
                 'publisher_id' => $book->publisher_id,
                 'synopsis' => $book->synopsis,
-                'short_description' => $book->short_description,
                 'news_link' => $book->news_link,
                 'msrp' => $book->msrp,
                 'isbn' => $book->isbn,
@@ -780,7 +779,6 @@ class BookController extends Controller
                 'age_rating' => $book->age_rating?->value ?? $book->age_rating,
                 'publisher_id' => $book->publisher_id,
                 'synopsis' => $book->synopsis,
-                'short_description' => $book->short_description,
                 'news_link' => $book->news_link,
                 'msrp' => $book->msrp,
                 'isbn' => $book->isbn,
@@ -905,7 +903,6 @@ class BookController extends Controller
                 'publisher_id' => $data['publisher_id'],
 
                 'synopsis' => $data['synopsis'],
-                'short_description' => $data['short_description'] ?? null,
                 'news_link' => $data['news_link'] ?? null,
                 'msrp' => $data['msrp'],
                 'isbn' => $data['isbn'] ?? null,
@@ -1075,7 +1072,6 @@ class BookController extends Controller
                 'age_rating' => $data['age_rating'],
                 'publisher_id' => $data['publisher_id'],
                 'synopsis' => $data['synopsis'],
-                'short_description' => $data['short_description'] ?? null,
                 'news_link' => $data['news_link'] ?? null,
                 'msrp' => $data['msrp'],
                 'isbn' => $data['isbn'] ?? null,

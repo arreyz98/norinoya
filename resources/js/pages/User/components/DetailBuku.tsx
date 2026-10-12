@@ -741,14 +741,11 @@ export default function DetailBuku({
                     ? volumeNewsLinks
                     : (legacyNewsUrl ? [{ url: String(legacyNewsUrl), title: '' }] : []);
 
+                  // Tanpa link berita, section ini tidak menampilkan apa pun.
+                  // Sinopsis sudah ditampilkan di panel informasi (kolom kanan hero),
+                  // jadi jangan diulang di sini supaya tidak muncul dobel.
                   if (newsLinkItems.length === 0) {
-                    return (
-                      <div className="space-y-3">
-                        <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans whitespace-pre-line select-text">
-                          {activeVolObj?.synopsis || selectedComic.synopsis}
-                        </p>
-                      </div>
-                    );
+                    return null;
                   }
 
                   // Menentukan judul card: pakai judul manual bila diisi admin; kalau

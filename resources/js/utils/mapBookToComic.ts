@@ -67,7 +67,6 @@ export interface BookModel {
   title: string;
   slug: string;
   synopsis?: string;
-  short_description?: string;
   volume: string | number;
   sort_order?: number;
   msrp?: number | string;
@@ -417,7 +416,7 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
       title,
       slug,
       altSlugs,
-      synopsis: mainBook.synopsis || mainBook.short_description || '',
+      synopsis: mainBook.synopsis || '',
       news_link: mainBook.news_link || undefined,
       newsLink: mainBook.news_link || undefined,
       category,

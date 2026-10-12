@@ -96,7 +96,6 @@ export interface BookFormData {
     publisher_id: string;
 
     synopsis: string;
-    short_description: string;
     news_link: string;
     news_links: NewsLink[];
     msrp: string;
@@ -420,7 +419,6 @@ interface BookFormProps {
         age_rating?: string;
         publisher_id?: number | string;
         synopsis?: string;
-        short_description?: string | null;
         news_link?: string | null;
         news_links?: { id?: number; title?: string; url: string; sort_order?: number }[];
         msrp?: number | string | null;
@@ -600,7 +598,6 @@ export default function BookForm({
         publisher_id: book?.publisher_id ? String(book.publisher_id) : '',
 
         synopsis: book?.synopsis ?? '',
-        short_description: book?.short_description ?? '',
         news_link: book?.news_link ?? '',
 
         news_links: book?.news_links?.map((link) => ({
@@ -1920,22 +1917,6 @@ export default function BookForm({
                         />
 
                         <FieldError field="synopsis" errors={activeErrors} />
-                    </div>
-
-                    {/* Short Description */}
-                    <div className="space-y-2">
-                        <Label htmlFor="short_description">Deskripsi Singkat</Label>
-
-                        <Textarea
-                            id="short_description"
-                            {...getFieldProps('short_description')}
-                            value={form.short_description}
-                            onChange={(event) => updateField('short_description', event.target.value)}
-                            placeholder="Deskripsi singkat buku"
-                            rows={3}
-                        />
-
-                        <FieldError field="short_description" errors={activeErrors} />
                     </div>
 
                     <div className="grid gap-5">

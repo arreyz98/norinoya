@@ -59,7 +59,6 @@ interface Book {
     age_rating?: string;
     publisher_id?: number | string;
     synopsis?: string;
-    short_description?: string | null;
     news_link?: string | null;
     news_links?: { id?: number; title?: string; url: string; sort_order?: number }[];
     msrp?: number | string | null;

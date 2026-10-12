@@ -96,7 +96,6 @@ class DummyPaginationSeeder extends Seeder
                 'book_type' => $i % 2 === 0 ? 'Manga' : 'Light Novel',
                 'age_rating' => $i % 3 === 0 ? 'Dewasa Ringan' : 'Remaja',
                 'synopsis' => "Sinopsis lengkap dan review ulasan untuk buku dummy {$title}. Cerita yang sangat menarik dengan alur yang seru dan menegangkan untuk dibaca.",
-                'short_description' => "Ulasan singkat buku dummy {$title}.",
                 'msrp' => 45000 + ($i * 2500),
                 'isbn' => '978-602-' . str_pad((string)$i, 6, '0', STR_PAD_LEFT),
                 'page_count' => 180 + ($i * 10),
