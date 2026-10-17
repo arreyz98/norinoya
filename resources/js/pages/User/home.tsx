@@ -4,7 +4,7 @@ import { Head, router } from '@inertiajs/react';
 import {
   BookOpen, Sparkles,
   MessageCircle,
-  Mail, ChevronLeft, ChevronRight,
+  Mail, ChevronLeft, ChevronRight, BookMarked,
 } from 'lucide-react';
 
 // Sub-components - lazy untuk split chunk & cepat first paint
@@ -198,6 +198,10 @@ export default function App({
     router.visit('/kios');
   };
 
+  const handleNavPanduan = () => {
+    router.visit('/panduan-adaptasi');
+  };
+
   const handleNavCalendar = () => {
     setActiveTab('calendar');
     window.location.hash = '#calendar';
@@ -355,6 +359,7 @@ export default function App({
                         window.location.hash = `#news`;
                       }}
                       onNavigateToCalendar={handleNavCalendar}
+                      onNavigateToPanduan={handleNavPanduan}
                     />
                   </Suspense>
                 )}
@@ -391,7 +396,7 @@ export default function App({
                     <div className="flex flex-wrap items-center justify-center gap-3 pt-1.5 relative z-10">
                       <button
                         onClick={handleNavHome}
-                        className="px-4.5 py-2 bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 hover:bg-neutral-900 dark:hover:bg-neutral-100 active:scale-95 duration-100 text-xs font-mono font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-transparent"
+                        className="px-4.5 py-2 bg-neutral-950 text-red-500 dark:bg-white dark:text-neutral-950 hover:bg-neutral-900 dark:hover:bg-neutral-100 active:scale-95 duration-100 text-xs font-mono font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-transparent"
                       >
                         <BookOpen className="w-3.5 h-3.5" />
                         <span>norinoya</span>
@@ -407,6 +412,13 @@ export default function App({
                         </svg>
                         <span className="text-white font-bold">konotasi.sukasuka</span>
                       </a>
+                      <button
+                        onClick={handleNavPanduan}
+                        className="px-4.5 py-2 bg-white dark:bg-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-100 active:scale-95 duration-100 text-xs font-mono font-bold tracking-tight rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-neutral-200 dark:border-neutral-700"
+                      >
+                        <BookMarked className="w-3.5 h-3.5" />
+                        <span>Panduan Adaptasi</span>
+                      </button>
                     </div>
 
                     {/* Counter Widget Info */}

@@ -812,9 +812,9 @@ export default function DetailNews({
                 );
 
                 if (!postReactions || postReactions.length === 0) return null;
-
+                // Reaksi di hide dulu
                 return (
-                  <div className="flex flex-col gap-2">
+                  <div className=" flex-col gap-2 hidden">
                     <h4 className="text-xs font-mono font-extrabold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase">
                       Beri Reaksi Instan
                     </h4>
@@ -959,10 +959,6 @@ export default function DetailNews({
                     {relevantCatalogItems.length} Jilid
                  </span>
                </div>
-
-               <p className="text-[11px] text-neutral-500 dark:text-neutral-400 font-sans leading-tight">
-                 Manga & volume terbitan resmi yang berhubungan dengan berita ini:
-               </p>
 
                <div className="flex flex-col gap-2.5">
                  {relevantCatalogItems.map(({ comic, vol }, idx) => (

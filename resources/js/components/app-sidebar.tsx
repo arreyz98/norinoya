@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { useAppearance } from '@/hooks/use-appearance';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, ExternalLink, Folder, LayoutGrid, LayoutPanelTop, Newspaper, Store } from 'lucide-react';
+import { BookOpen, ExternalLink, Folder, LayoutGrid, LayoutPanelTop, Newspaper, Route, Store } from 'lucide-react';
 import logoDarkUrl from '/public/assets/images/logo-dark.png';
 import logoLightUrl from '/public/assets/images/logo-light.png';
 
@@ -29,6 +29,11 @@ const mainNavItems: (NavItem & { target?: string })[] = [
         title: 'Kios & Preloved',
         url: '/admin/kios',
         icon: Store,
+    },
+    {
+        title: 'Panduan Adaptasi',
+        url: '/admin/panduan-adaptasi',
+        icon: Route,
     },
     {
         title: 'Lihat Website',

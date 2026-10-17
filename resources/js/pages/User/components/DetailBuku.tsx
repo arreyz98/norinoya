@@ -22,6 +22,9 @@ interface DetailBukuProps {
   handleCloseModal: () => void;
   onNavigateToNews?: (newsId: string) => void;
   setSelectedGenres: (genres: string[]) => void;
+  setSelectedCategories?: (categories: string[]) => void;
+  setSelectedReadingRatings?: (ratings: string[]) => void;
+  setSelectedStatuses?: (statuses: string[]) => void;
   setSelectedComic: (comic: Comic | null) => void;
   allComics?: Comic[];
   newsList?: RawNewsItem[];
@@ -33,6 +36,9 @@ export default function DetailBuku({
   setActiveVolumeNum,
   handleCloseModal,
   setSelectedGenres,
+  setSelectedCategories,
+  setSelectedReadingRatings,
+  setSelectedStatuses,
   setSelectedComic,
   allComics,
   newsList = [],
@@ -578,7 +584,7 @@ export default function DetailBuku({
 
               {/* Left Column: Interactive Slide Carousel Portfolio Component */}
               <div className="flex flex-col gap-3 shrink-0 w-full md:w-80">
-                <div className="relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-2xl overflow-hidden bg-neutral-950 flex flex-col justify-between p-3 border border-neutral-150 dark:border-neutral-800 shadow-md group">
+                <div className="relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-2xl overflow-hidden flex flex-col justify-between p-3 border border-neutral-150 dark:border-neutral-800 shadow-md group">
 
                 {/* Active Slide Image */}
                 {carouselImages && carouselImages.length > 0 ? (
@@ -634,7 +640,7 @@ export default function DetailBuku({
               </p>
 
               {/* Collector badge triggers */}
-              <div className="p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900/60 shadow-xs max-w-xl space-y-4">
+              <div className="p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900/60 shadow-xs  space-y-4">
                 <div className="flex items-start gap-2.5">
                   <Info className="w-4.5 h-4.5 text-neutral-500 dark:text-neutral-400 mt-0.5 shrink-0" />
                   <div className="space-y-3.5 flex-1">
@@ -669,20 +675,53 @@ export default function DetailBuku({
               {/* Divider separating curator details and the original comic metadata */}
               <div className="h-px bg-neutral-200 my-4" />
 
-              {/* Combined Metadata: Category, Reading Rating, and Status Badges */}
+              {/* Combined Metadata: Category, Reading Rating, and Status Badges.
+                  Ketiganya klikabel dengan pola yang sama seperti pill genre di bawah:
+                  terapkan filter di MarketplaceDB lalu tutup detail (halaman
+                  otomatis menampilkan postingan buku yang cocok). */}
               <div className="space-y-3 pt-0.5">
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-xs px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 border dark:border-neutral-800 rounded-md capitalize font-bold leading-normal">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!setSelectedCategories) return;
+                      setSelectedCategories([selectedComic.category]);
+                      handleCloseModal();
+                    }}
+                    disabled={!setSelectedCategories}
+                    title={`Lihat buku kategori ${getBookTypeLabel(selectedComic.category)}`}
+                    className="text-xs px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 border dark:border-neutral-800 rounded-md capitalize font-bold leading-normal transition-all enabled:cursor-pointer enabled:hover:bg-neutral-200 dark:enabled:hover:bg-neutral-800 enabled:hover:border-neutral-400 dark:enabled:hover:border-neutral-600 enabled:active:scale-[0.97] disabled:cursor-default"
+                  >
                     {getBookTypeLabel(selectedComic.category)}
-                  </span>
+                  </button>
                   {selectedComic.readingRating && (
-                    <span className={`text-xs px-2.5 py-0.5 rounded-md font-bold border leading-normal ${getReadingRatingStyle(selectedComic.readingRating).bg}`}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!setSelectedReadingRatings) return;
+                        setSelectedReadingRatings([selectedComic.readingRating as string]);
+                        handleCloseModal();
+                      }}
+                      disabled={!setSelectedReadingRatings}
+                      title={`Lihat buku dengan rating ${getReadingRatingStyle(selectedComic.readingRating).text}`}
+                      className={`text-xs px-2.5 py-0.5 rounded-md font-bold border leading-normal transition-all enabled:cursor-pointer enabled:hover:opacity-90 enabled:active:scale-[0.97] disabled:cursor-default ${getReadingRatingStyle(selectedComic.readingRating).bg}`}
+                    >
                       {getReadingRatingStyle(selectedComic.readingRating).text}
-                    </span>
+                    </button>
                   )}
-                  <span className="text-xs px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 border dark:border-neutral-800 rounded-md capitalize font-bold leading-normal">
-                    {selectedComic.status}
-                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!setSelectedStatuses) return;
+                      setSelectedStatuses([selectedComic.statusId ?? selectedComic.status]);
+                      handleCloseModal();
+                    }}
+                    disabled={!setSelectedStatuses}
+                    title={`Lihat buku dengan status ${selectedComic.statusName || selectedComic.status}`}
+                    className="text-xs px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 border dark:border-neutral-800 rounded-md capitalize font-bold leading-normal transition-all enabled:cursor-pointer enabled:hover:bg-neutral-200 dark:enabled:hover:bg-neutral-800 enabled:hover:border-neutral-400 dark:enabled:hover:border-neutral-600 enabled:active:scale-[0.97] disabled:cursor-default"
+                  >
+                    {selectedComic.statusName || selectedComic.status}
+                  </button>
                 </div>
 
                 {/* Publisher and Authors list text */}
@@ -1099,9 +1138,6 @@ export default function DetailBuku({
                   </span>
                 </div>
 
-                <p className="text-[11px] text-neutral-500 dark:text-neutral-400 font-sans leading-relaxed">
-                  Manga & volume terbitan resmi yang berhubungan dengan berita/buku ini:
-                </p>
 
                 <div className="space-y-2">
                   {relevantComics.map((relComic) => {
@@ -1225,7 +1261,6 @@ export default function DetailBuku({
                                 <h6 className="text-xs font-sans font-bold text-neutral-900 dark:text-neutral-100 line-clamp-1 group-hover/kios:text-emerald-600 dark:group-hover/kios:text-emerald-400 transition-colors">
                                   {itemTitle}{item.vol_number ? ` Vol ${item.vol_number}` : ''}
                                 </h6>
-                                <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 group-hover/kios:text-emerald-600 dark:group-hover/kios:text-emerald-400 transition-colors shrink-0" />
                               </div>
                               {itemNotes && (
                                 <p className="text-[10px] font-sans text-neutral-600 dark:text-neutral-400 line-clamp-2 leading-snug">

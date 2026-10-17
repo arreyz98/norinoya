@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Books\CreateBookRelations;
+use App\Actions\Books\UpdateBookRelations;
 use App\Enums\AgeRating;
 use App\Enums\BookType;
 use App\Enums\VideoAccessType;
@@ -131,7 +133,7 @@ class BookController extends Controller
     public function filterOptions(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'type' => ['required', 'in:series,publisher'],
+            'type' => ['required', 'in:series,publisher,book'],
             'q' => ['nullable', 'string', 'max:100'],
         ]);
 
@@ -148,6 +150,18 @@ class BookController extends Controller
                 ->map(fn (BookSeries $series) => [
                     'value' => (string) $series->id,
                     'label' => $series->title,
+                ]);
+        } elseif ($validated['type'] === 'book') {
+            $options = Book::query()
+                ->when($term !== '', function ($q) use ($term) {
+                    $q->where('title', 'like', "%{$term}%");
+                })
+                ->orderBy('title')
+                ->limit(25)
+                ->get(['id', 'title', 'volume'])
+                ->map(fn (Book $book) => [
+                    'value' => (string) $book->id,
+                    'label' => $book->title.($book->volume ? ' — Vol.'.$book->volume : ''),
                 ]);
         } else {
             $options = Publisher::query()
@@ -914,111 +928,12 @@ class BookController extends Controller
             ]
             );
 
-            foreach (
-                $data['tiktok_embeds'] ?? [] as $index => $embed
-            ) {
-                $book->tiktokEmbeds()->create([
-                    'name' => $embed['name'] ?? '',
-                    'url_video' => $embed['url_video'] ?? $embed['embed_url'] ?? '',
-                    'sort_order' => $index + 1,
-                ]);
-            }
-
             /*
-             * Instagram Embeds
+             * Semua relasi (TikTok/Instagram/News Links, Images, Authors,
+             * Genres, Affiliate Links, Video Links) disimpan lewat Action
+             * class agar controller tetap ringkas.
              */
-            foreach (
-                $data['instagram_embeds'] ?? [] as $index => $embed
-            ) {
-                $url = trim((string) ($embed['url'] ?? ''));
-
-                if ($url === '') {
-                    continue;
-                }
-
-                $book->instagramEmbeds()->create([
-                    'name' => $embed['name'] ?? '',
-                    'url' => $url,
-                    'thumbnail_url' => $embed['thumbnail_url'] ?? null,
-                    'title' => $embed['title'] ?? null,
-                    'description' => $embed['description'] ?? null,
-                    'sort_order' => $index + 1,
-                ]);
-            }
-
-            /*
-             * News Links
-             */
-            foreach (
-                $data['news_links'] ?? [] as $index => $link
-            ) {
-                $url = trim((string) ($link['url'] ?? ''));
-
-                if ($url === '') {
-                    continue;
-                }
-
-                $book->newsLinks()->create([
-                    'title' => $link['title'] ?? '',
-                    'url' => $url,
-                    'sort_order' => $index + 1,
-                ]);
-            }
-
-            /*
-             * Images
-             */
-            foreach (
-                $data['images'] ?? [] as $index => $image
-            ) {
-                $book->images()->create([
-                    'image_url' => $image['image_url'],
-                    'sort_order' => $index + 1,
-                ]);
-            }
-
-            /*
-             * Authors
-             */
-            $this->syncAuthors($book, $data);
-
-            /*
-             * Genres
-             */
-            $book->genres()->sync(
-                $data['genres'] ?? []
-            );
-
-            /*
-             * Affiliate Links
-             */
-            foreach (
-                $data['affiliate_links'] ?? [] as $affiliate
-            ) {
-                $book->affiliateLinks()->create([
-                    'affiliate_store_id' => $affiliate[
-                            'affiliate_store_id'
-                        ],
-                    'store_name' => $this->affiliateStoreName($affiliate),
-                    'location' => $this->affiliateLocation($affiliate),
-                    'url' => $affiliate['url'],
-                ]);
-            }
-
-            /*
-             * Video Links
-             */
-            foreach (
-                $data['video_links'] ?? [] as $index => $video
-            ) {
-                $book->videoLinks()->create([
-                    'platform_name' => $video['platform_name'],
-                    'title' => $video['title'] ?? '',
-                    'access_type' => $video['access_type'] ?? VideoAccessType::FREE->value,
-                    'url' => $video['url'],
-                    'sort_order' => $index + 1,
-                ]);
-            }
+            app(CreateBookRelations::class)->execute($book, $data);
 
             return $book;
         });
@@ -1083,256 +998,11 @@ class BookController extends Controller
             ]);
 
             /*
-             * Authors
+             * Semua relasi (Authors, Genres, Images, TikTok/Instagram/News Links,
+             * Affiliate Links, Video Links) disinkronkan lewat Action class agar
+             * controller tetap ringkas.
              */
-            $this->syncAuthors($book, $data);
-
-            /*
-             * Genres
-             */
-            $book->genres()->sync(
-                $data['genres'] ?? []
-            );
-
-            /*
-             * Images
-             */
-            $submittedImageIds = collect(
-                $data['images'] ?? []
-            )
-                ->pluck('id')
-                ->filter()
-                ->values();
-
-            $book->images()
-                ->whereNotIn(
-                    'id',
-                    $submittedImageIds
-                )
-                ->delete();
-
-            foreach (
-                $data['images'] ?? [] as $index => $image
-            ) {
-                if (! empty($image['id'])) {
-                    $book->images()
-                        ->where('id', $image['id'])
-                        ->update([
-                            'image_url' => $image['image_url'],
-                            'sort_order' => $index + 1,
-                        ]);
-                } else {
-                    $book->images()->create([
-                        'image_url' => $image['image_url'],
-                        'sort_order' => $index + 1,
-                    ]);
-                }
-            }
-
-            /*
-             * TikTok Embeds
-             */
-            $submittedTikTokIds = collect(
-                $data['tiktok_embeds'] ?? []
-            )
-                ->pluck('id')
-                ->filter()
-                ->values();
-
-            $book->tiktokEmbeds()
-                ->whereNotIn(
-                    'id',
-                    $submittedTikTokIds
-                )
-                ->delete();
-
-            foreach (
-                $data['tiktok_embeds'] ?? [] as $index => $embed
-            ) {
-                if (! empty($embed['id'])) {
-                    $book->tiktokEmbeds()
-                        ->where('id', $embed['id'])
-                        ->update([
-                            'name' => $embed['name'] ?? '',
-                            'url_video' => $embed['url_video'] ?? $embed['embed_url'] ?? '',
-                            'sort_order' => $index + 1,
-                        ]);
-                } else {
-                    $book->tiktokEmbeds()->create([
-                        'name' => $embed['name'] ?? '',
-                        'url_video' => $embed['url_video'] ?? $embed['embed_url'] ?? '',
-                        'sort_order' => $index + 1,
-                    ]);
-                }
-            }
-
-            /*
-             * Instagram Embeds
-             */
-            $submittedInstagramIds = collect(
-                $data['instagram_embeds'] ?? []
-            )
-                ->pluck('id')
-                ->filter()
-                ->values();
-
-            $book->instagramEmbeds()
-                ->whereNotIn(
-                    'id',
-                    $submittedInstagramIds
-                )
-                ->delete();
-
-            foreach (
-                $data['instagram_embeds'] ?? [] as $index => $embed
-            ) {
-                $url = trim((string) ($embed['url'] ?? ''));
-
-                if ($url === '') {
-                    continue;
-                }
-
-                $payload = [
-                    'name' => $embed['name'] ?? '',
-                    'url' => $url,
-                    'thumbnail_url' => $embed['thumbnail_url'] ?? null,
-                    'title' => $embed['title'] ?? null,
-                    'description' => $embed['description'] ?? null,
-                    'sort_order' => $index + 1,
-                ];
-
-                if (! empty($embed['id'])) {
-                    $book->instagramEmbeds()
-                        ->where('id', $embed['id'])
-                        ->update($payload);
-                } else {
-                    $book->instagramEmbeds()->create($payload);
-                }
-            }
-
-            /*
-             * News Links
-             */
-            $submittedNewsLinkIds = collect(
-                $data['news_links'] ?? []
-            )
-                ->pluck('id')
-                ->filter()
-                ->values();
-
-            $book->newsLinks()
-                ->whereNotIn(
-                    'id',
-                    $submittedNewsLinkIds
-                )
-                ->delete();
-
-            foreach (
-                $data['news_links'] ?? [] as $index => $link
-            ) {
-                $url = trim((string) ($link['url'] ?? ''));
-
-                if ($url === '') {
-                    continue;
-                }
-
-                $payload = [
-                    'title' => $link['title'] ?? '',
-                    'url' => $url,
-                    'sort_order' => $index + 1,
-                ];
-
-                if (! empty($link['id'])) {
-                    $book->newsLinks()
-                        ->where('id', $link['id'])
-                        ->update($payload);
-                } else {
-                    $book->newsLinks()->create($payload);
-                }
-            }
-
-            /*
-             * Affiliate Links
-             */
-            $submittedAffiliateIds = collect(
-                $data['affiliate_links'] ?? []
-            )
-                ->pluck('id')
-                ->filter()
-                ->values();
-
-            $book->affiliateLinks()
-                ->whereNotIn(
-                    'id',
-                    $submittedAffiliateIds
-                )
-                ->delete();
-
-            foreach (
-                $data['affiliate_links'] ?? [] as $affiliate
-            ) {
-                if (! empty($affiliate['id'])) {
-                    $book->affiliateLinks()
-                        ->where(
-                            'id',
-                            $affiliate['id']
-                        )
-                        ->update([
-                            'affiliate_store_id' => $affiliate[
-                                    'affiliate_store_id'
-                                ],
-                            'store_name' => $this->affiliateStoreName($affiliate),
-                            'location' => $this->affiliateLocation($affiliate),
-                            'url' => $affiliate['url'],
-                        ]);
-                } else {
-                    $book->affiliateLinks()->create([
-                        'affiliate_store_id' => $affiliate[
-                                'affiliate_store_id'
-                            ],
-                        'store_name' => $this->affiliateStoreName($affiliate),
-                        'location' => $this->affiliateLocation($affiliate),
-                        'url' => $affiliate['url'],
-                    ]);
-                }
-            }
-
-            /*
-             * Video Links
-             */
-            // Omitted lists preserve existing links; an explicit empty list clears them.
-            if (array_key_exists('video_links', $data)) {
-                $submittedVideoIds = collect(
-                    $data['video_links'] ?? []
-                )
-                    ->pluck('id')
-                    ->filter()
-                    ->values();
-
-                $book->videoLinks()
-                    ->whereNotIn('id', $submittedVideoIds)
-                    ->delete();
-
-                foreach (
-                    $data['video_links'] ?? [] as $index => $video
-                ) {
-                    $payload = [
-                        'platform_name' => $video['platform_name'],
-                        'title' => $video['title'] ?? '',
-                        'access_type' => $video['access_type'] ?? VideoAccessType::FREE->value,
-                        'url' => $video['url'],
-                        'sort_order' => $index + 1,
-                    ];
-
-                    if (! empty($video['id'])) {
-                        $book->videoLinks()
-                            ->where('id', $video['id'])
-                            ->update($payload);
-                    } else {
-                        $book->videoLinks()->create($payload);
-                    }
-                }
-            }
+            app(UpdateBookRelations::class)->execute($book, $data);
         });
 
         $this->forgetBookCaches();
@@ -1524,117 +1194,5 @@ class BookController extends Controller
         foreach (['home:books:v2', 'bookmark:books:v2', 'news:books:v2', 'kios:books:v2'] as $key) {
             Cache::forget($key);
         }
-    }
-
-    /**
-     * Sync book authors.
-     *
-     * Satu author boleh memegang peran story sekaligus art pada buku yang sama,
-     * sehingga pivot tidak bisa di-key hanya oleh author_id (role art akan
-     * menimpa role story). Karena unique index tabel pivot mencakup kolom role
-     * (book_id, author_id, role), tiap peran di-attach sebagai baris terpisah.
-     */
-    private function syncAuthors(
-        Book $book,
-        array $data
-    ): void {
-        $storyAuthorIds = collect(
-            $data['story_authors'] ?? []
-        )
-            ->filter(fn ($authorId) => $authorId !== null && $authorId !== '')
-            ->unique()
-            ->values();
-
-        $artAuthorIds = collect(
-            $data['art_authors'] ?? []
-        )
-            ->filter(fn ($authorId) => $authorId !== null && $authorId !== '')
-            ->unique()
-            ->values();
-
-        $book->authors()->detach();
-
-        if ($storyAuthorIds->isNotEmpty()) {
-            $book->authors()->attach(
-                $storyAuthorIds->all(),
-                ['role' => 'story']
-            );
-        }
-
-        if ($artAuthorIds->isNotEmpty()) {
-            $book->authors()->attach(
-                $artAuthorIds->all(),
-                ['role' => 'art']
-            );
-        }
-    }
-
-    /**
-     * Sync book genres.
-     */
-    private function syncGenres(
-        Book $book,
-        array $data
-    ): void {
-        $book->genres()->sync(
-            $data['genres'] ?? []
-        );
-    }
-
-    /**
-     * Sync book images.
-     */
-    private function syncImages(
-        Book $book,
-        array $data
-    ): void {
-        $book->images()->delete();
-
-        foreach (
-            $data['images'] ?? [] as $index => $imageUrl
-        ) {
-            $book->images()->create([
-                'image_url' => $imageUrl,
-                'sort_order' => $index + 1,
-            ]);
-        }
-    }
-
-    /**
-     * Sync affiliate links.
-     */
-    private function syncAffiliateLinks(
-        Book $book,
-        array $data
-    ): void {
-        $book->affiliateLinks()->delete();
-
-        foreach (
-            $data['affiliate_links'] ?? [] as $affiliateLink
-        ) {
-            $book->affiliateLinks()->create([
-                'affiliate_store_id' => $affiliateLink['affiliate_store_id'],
-
-                'store_name' => $this->affiliateStoreName($affiliateLink),
-
-                'location' => $this->affiliateLocation($affiliateLink),
-
-                'url' => $affiliateLink['url'],
-            ]);
-        }
-    }
-
-    private function affiliateStoreName(array $affiliate): string
-    {
-        return trim($affiliate['store_name'] ?? '') !== ''
-            ? $affiliate['store_name']
-            : AffiliateLink::DEFAULT_STORE_NAME;
-    }
-
-    private function affiliateLocation(array $affiliate): string
-    {
-        return trim($affiliate['location'] ?? '') !== ''
-            ? $affiliate['location']
-            : AffiliateLink::DEFAULT_LOCATION;
     }
 }

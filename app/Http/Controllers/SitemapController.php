@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\KiosItem;
 use App\Models\News;
+use App\Models\PanduanAdaptasi;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
@@ -12,7 +13,7 @@ class SitemapController extends Controller
 {
     public function index(): Response
     {
-        $xml = Cache::remember('sitemap:xml:v1', 3600, function () {
+        $xml = Cache::remember('sitemap:xml:v2', 3600, function () {
             $base = rtrim(config('app.url'), '/');
 
             $urls = [];
@@ -22,6 +23,7 @@ class SitemapController extends Controller
                 ['loc' => $base.'/', 'priority' => '1.0', 'freq' => 'daily'],
                 ['loc' => $base.'/news', 'priority' => '0.8', 'freq' => 'daily'],
                 ['loc' => $base.'/kios', 'priority' => '0.8', 'freq' => 'daily'],
+                ['loc' => $base.'/panduan-adaptasi', 'priority' => '0.7', 'freq' => 'weekly'],
             ];
             foreach ($static as $s) {
                 $urls[] = $this->urlEntry($s['loc'], now()->toAtomString(), $s['freq'], $s['priority']);
@@ -71,6 +73,21 @@ class SitemapController extends Controller
                 $loc = $base.'/kios/'.$item->slug;
                 $lastmod = $item->updated_at ? $item->updated_at->toAtomString() : now()->toAtomString();
                 $urls[] = $this->urlEntry($loc, $lastmod, 'weekly', '0.7');
+            }
+
+            // Panduan Adaptasi
+            $panduanList = PanduanAdaptasi::query()
+                ->select(['id', 'slug', 'updated_at'])
+                ->whereNotNull('slug')
+                ->where('slug', '!=', '')
+                ->orderByDesc('updated_at')
+                ->limit(2000)
+                ->get();
+
+            foreach ($panduanList as $panduan) {
+                $loc = $base.'/panduan-adaptasi/'.$panduan->slug;
+                $lastmod = $panduan->updated_at ? $panduan->updated_at->toAtomString() : now()->toAtomString();
+                $urls[] = $this->urlEntry($loc, $lastmod, 'weekly', '0.6');
             }
 
             $body = implode("\n", $urls);

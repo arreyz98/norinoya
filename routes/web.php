@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\GenreController;
 use App\Http\Controllers\Admin\KiosItemController;
 use App\Http\Controllers\Admin\KiosPartnerController;
 use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\PanduanAdaptasiController as AdminPanduanAdaptasiController;
 use App\Http\Controllers\Admin\PublisherController;
 use App\Http\Controllers\Admin\StoryStatusController;
 use App\Http\Controllers\SitemapController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\User\BookmarkController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\KiosController;
 use App\Http\Controllers\User\NewsController as UserNewsController;
+use App\Http\Controllers\User\PanduanAdaptasiController;
 use Illuminate\Support\Facades\Route;
 
 // SEO: sitemap.xml dinamis (cache 1 jam)
@@ -32,6 +34,11 @@ Route::get('/news', [UserNewsController::class, 'index'])->name('news');
 Route::get('/kios', [KiosController::class, 'index'])->name('kios');
 
 Route::get('/bookmark', [BookmarkController::class, 'index'])->name('bookmark');
+
+// Panduan adaptasi — halaman indeks dulu, baru detail per slug (konten masih statis)
+Route::get('/panduan-adaptasi', [PanduanAdaptasiController::class, 'index'])->name('panduan-adaptasi.index');
+
+Route::get('/panduan-adaptasi/{slug}', [PanduanAdaptasiController::class, 'show'])->name('panduan-adaptasi.detail');
 
 Route::get('/buku/{slug}', [UserBookController::class, 'show'])->name('book.detail');
 
@@ -160,6 +167,11 @@ Route::middleware(['auth'])->group(function () {
             Route::resource(
                 'affiliate-stores',
                 AffiliateStoreController::class
+            )->except(['show']);
+
+            Route::resource(
+                'panduan-adaptasi',
+                AdminPanduanAdaptasiController::class
             )->except(['show']);
 
         });

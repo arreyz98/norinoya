@@ -7,7 +7,7 @@ const DetailBuku = lazy(() => import('./DetailBuku'));
 import {
   Search, BookOpen, Filter,  Check, X,
   Tv, Video, AlertCircle, ChevronRight, ChevronLeft, ChevronDown, ShieldAlert, ArrowUpDown,
-  Sparkles, Clock, Flame, TrendingDown, TrendingUp, ArrowDownAZ, ArrowUpAZ, Layers, Building2, Tag, Activity, Shield, BookText} from 'lucide-react';
+  Sparkles, Clock, Flame, TrendingDown, TrendingUp, ArrowDownAZ, ArrowUpAZ, Layers, Building2, Tag, Activity, Shield, BookText, BookMarked} from 'lucide-react';
 import { COMICS_DATA } from '../../../types/mockData';
 import { Comic, Volume } from '../../../types/demo';
 import { RawNewsItem } from '../news';
@@ -171,6 +171,7 @@ interface MarketplaceDbProps {
   onClearSelectedComicId?: () => void;
   onNavigateToNews?: (newsId: string) => void;
   onNavigateToCalendar?: () => void;
+  onNavigateToPanduan?: () => void;
 }
 
 export default function MarketplaceDb({
@@ -185,7 +186,8 @@ export default function MarketplaceDb({
   initialSelectedComicId,
   initialVolume,
   onClearSelectedComicId,
-  onNavigateToNews
+  onNavigateToNews,
+  onNavigateToPanduan
 }: MarketplaceDbProps = {}) {
   const { isSaved } = useBookmarks();
 
@@ -454,12 +456,22 @@ const getReadingRatingStyle = (rating?: string) => {
 
 
   const getAuthorNameOnly = (c: { authorStory?: string; authorArt?: string }) => {
-    const story = c.authorStory;
-    const art = c.authorArt;
-    if (!story && !art) return '';
-    if (story === art) return story || '';
-    return [story, art].filter(Boolean).join(', ');
+    // Gabungkan author story & art lalu dedupe; satu orang bisa memegang kedua
+    // peran sekaligus, sehingga nama yang sama tidak perlu tampil dua kali.
+    const names = `${c.authorStory || ''}, ${c.authorArt || ''}`
+      .split(',')
+      .map((n) => n.trim())
+      .filter(Boolean);
+    return Array.from(new Set(names)).join(', ');
   };
+
+  // Author untuk kartu per-volume: utamakan author milik volume itu sendiri,
+  // baru fallback ke author level series (comic). Tanpa ini, kartu menampilkan
+  // author gabungan dari semua buku dalam series yang sama.
+  const getVolumeAuthorName = (
+    c: { authorStory?: string; authorArt?: string },
+    v: { authorStory?: string; authorArt?: string },
+  ) => getAuthorNameOnly(v) || getAuthorNameOnly(c);
 
 
   const hadInitialSelectionRef = useRef<boolean>(Boolean(initialSelectedComicId));
@@ -901,6 +913,13 @@ const getReadingRatingStyle = (rating?: string) => {
                 </svg>
                 <span className="text-white font-bold">konotasi.sukasuka</span>
               </a>
+              <button
+                onClick={onNavigateToPanduan}
+                className="px-4.5 py-2 bg-white dark:bg-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-100 active:scale-95 duration-100 text-xs font-mono font-bold tracking-tight rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-neutral-200 dark:border-neutral-700"
+              >
+                <BookMarked className="w-3.5 h-3.5" />
+                <span>Panduan Adaptasi</span>
+              </button>
             </div>
 
             {/* Counter Widget Info */}
@@ -1014,9 +1033,9 @@ const getReadingRatingStyle = (rating?: string) => {
                         <div className="text-[9.5px] font-mono font-extrabold text-[#112A12] dark:text-[#457347] leading-tight">
                           Vol.{volume.volNumber}
                         </div>
-                        {(comic.authorStory || comic.authorArt) && (
+                        {getVolumeAuthorName(comic, volume) && (
                           <p className="text-[9px] font-sans text-neutral-500 dark:text-neutral-400 truncate leading-tight">
-                            {getAuthorNameOnly(comic)}
+                            {getVolumeAuthorName(comic, volume)}
                           </p>
                         )}
                         {comic.genres && comic.genres.length > 0 && (
@@ -1259,7 +1278,9 @@ const getReadingRatingStyle = (rating?: string) => {
 
             {/* Render Category tags */}
             {!selectedCategories.includes('all') && selectedCategories.map(cat => {
-              const label = cat === 'manga' ? 'Komik (Manga)' : cat === 'light_novel' ? 'Light Novel' : 'Novel';
+              // Pakai label resmi dari mapBookToComic agar chip tidak salah tampil
+              // (sebelumnya hardcoded: komik_lokal & j_lit jatuh ke 'Novel').
+              const label = getBookTypeLabel(cat);
               return (
                 <span key={`cat-${cat}`} className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-[#EFEFEF] dark:bg-neutral-800/80 border border-neutral-200/50 dark:border-neutral-700/50 text-neutral-850 dark:text-neutral-200 text-[11px] sm:text-xs font-sans font-extrabold tracking-wide rounded-md transition-all select-none">
                   {label}
@@ -1574,10 +1595,10 @@ const getReadingRatingStyle = (rating?: string) => {
                           Vol.{volume.volNumber}
                         </div>
 
-                        {/* Author */}
-                        {(comic.authorStory || comic.authorArt) && (
+                        {/* Author (author volume ini, fallback ke series) */}
+                        {getVolumeAuthorName(comic, volume) && (
                           <p className="text-[9.5px] sm:text-[10px] font-sans text-neutral-600 dark:text-neutral-400 leading-tight truncate pt-0.5">
-                            {getAuthorNameOnly(comic)}
+                            {getVolumeAuthorName(comic, volume)}
                           </p>
                         )}
 
@@ -1746,6 +1767,18 @@ const getReadingRatingStyle = (rating?: string) => {
               handleCloseModal={handleCloseModal}
               onNavigateToNews={onNavigateToNews}
               setSelectedGenres={setSelectedGenres}
+              setSelectedCategories={(cats) => {
+                setSelectedCategories(cats);
+                setIsFiltersExpanded(true);
+              }}
+              setSelectedReadingRatings={(ratings) => {
+                setSelectedReadingRatings(ratings);
+                setIsFiltersExpanded(true);
+              }}
+              setSelectedStatuses={(statuses) => {
+                setSelectedStatuses(statuses);
+                setIsFiltersExpanded(true);
+              }}
               setSelectedComic={setSelectedComic}
               allComics={activeComics}
               newsList={newsList}

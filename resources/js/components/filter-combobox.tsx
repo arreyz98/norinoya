@@ -16,7 +16,7 @@ interface FilterComboboxProps {
     selectedLabel?: string | null;
     allLabel: string;
     placeholder: string;
-    type: 'series' | 'publisher';
+    type: 'series' | 'publisher' | 'book';
     onChange: (value: string) => void;
     className?: string;
 }

@@ -98,6 +98,13 @@ export interface BookModel {
     id: number;
     name: string;
   };
+  // Laravel men-serialisasi relasi `storyStatus` sebagai `story_status`
+  // (snake_case) saat dikirim lewat Inertia. Key camelCase di atas hanya
+  // kompatibilitas untuk payload lama/manual, jadi keduanya perlu dibaca.
+  story_status?: {
+    id: number;
+    name: string;
+  };
   publisher?: {
     id: number;
     name: string;
@@ -219,10 +226,13 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
     // Category mapping (supports all BookType enum values from backend)
     const category = mapBookTypeToCategory(mainBook.book_type);
 
-    // Status mapping
-    const statusName = (mainBook.storyStatus?.name || '').toLowerCase();
+    // Status mapping. Payload Laravel mengirim relasi sebagai `story_status`
+    // (snake_case); `storyStatus` dipertahankan sebagai fallback.
+    const rawStatusName = mainBook.story_status?.name || mainBook.storyStatus?.name;
+    const statusName = (rawStatusName || '').toLowerCase();
     const status: 'ongoing' | 'completed' = (statusName.includes('tamat') || statusName.includes('complete') || statusName.includes('completed')) ? 'completed' : 'ongoing';
-    const statusId = mainBook.story_status_id ? String(mainBook.story_status_id) : (mainBook.storyStatus?.id ? String(mainBook.storyStatus.id) : undefined);
+    const rawStatusId = mainBook.story_status_id ?? mainBook.story_status?.id ?? mainBook.storyStatus?.id;
+    const statusId = rawStatusId ? String(rawStatusId) : undefined;
 
     // Demographic mapping
     let demographic: 'Shonen' | 'Shojo' | 'Seinen' | 'Josei' | 'General' = 'Shonen';
@@ -424,7 +434,7 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
       rating: 9.0,
       status,
       statusId,
-      statusName: mainBook.storyStatus?.name,
+      statusName: rawStatusName,
       demographic,
       genres,
       publisherId: String(mainBook.publisher_id || 'p1'),

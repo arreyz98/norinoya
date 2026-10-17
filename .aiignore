@@ -1,0 +1,34 @@
+# .aiignore — file/folder yang TIDAK perlu dibaca AI
+# Dipakai untuk menghemat token saat coding. Hapus baris jika memang perlu dibaca.
+
+# Dependensi & build output
+/vendor/
+/node_modules/
+/public/build/
+/public/hot
+/bootstrap/cache/
+
+# Storage (log, cache, session, upload)
+/storage/
+
+# Lockfile (isi identik dengan composer.json/package.json yang sudah diringkas)
+/composer.lock
+/package-lock.json
+
+# Secret — jangan pernah dibaca/dikirim AI
+/.env
+
+# Version control & IDE
+/.git/
+/.idea/
+/.vscode/
+
+# Dokumentasi historis / catatan lama (bukan kode produk)
+/error.md
+/plan.md
+
+# Data fallback demo 3221 baris — baca HANYA jika mengerjakan halaman bookmark.tsx
+/resources/js/types/mockData.ts
+
+# Data internal WorkBuddy
+/.workbuddy-ai/
