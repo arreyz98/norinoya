@@ -67,6 +67,7 @@ export interface Volume {
   };
   id?: number | string;
   bookId?: number | string;
+  slug?: string;
   views_count?: number;
   tiktokEmbeds?: {
     id: string;

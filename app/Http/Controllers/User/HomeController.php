@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Actions\Books\QueryCatalog;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\BookSeries;
@@ -9,32 +10,39 @@ use App\Models\Genre;
 use App\Models\News;
 use App\Models\Publisher;
 use App\Models\StoryStatus;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request, QueryCatalog $catalog)
     {
-        $books = Cache::remember('home:books:v2', 300, fn () => Book::homeQuery()
-            ->latest('updated_at')
-            ->limit(300)
-            ->get());
-
         $publishers = Cache::remember('home:publishers', 600, fn () => Publisher::orderBy('name')->get(['id', 'name', 'slug']));
         $storyStatuses = Cache::remember('home:story_statuses', 600, fn () => StoryStatus::orderBy('name')->get(['id', 'name', 'slug']));
         $genres = Cache::remember('home:genres', 600, fn () => Genre::orderBy('name')->get(['id', 'name', 'slug']));
 
-        $totalBooksCount = Cache::remember('home:total_books', 300, fn () => Book::count());
+        $totalBooksCount = Cache::remember('home:total_books', 300, fn () => Book::published()->count());
         $totalSeriesCount = Cache::remember('home:total_series', 300, fn () => BookSeries::count());
         $totalPublishersCount = Cache::remember('home:total_publishers', 300, fn () => Publisher::count());
 
         return Inertia::render('User/home', [
-            'books' => $books,
+            'catalog' => $catalog->paginate($request),
+            'upcoming' => $catalog->upcoming(),
+            'filters' => $catalog->filters($request),
             'publishers' => $publishers,
             'storyStatuses' => $storyStatuses,
             'genres' => $genres,
-            'newsList' => Inertia::defer(fn () => News::latest()->limit(50)->get()),
+            'newsList' => Inertia::defer(fn () => Cache::remember(
+                'home:news:v1',
+                300,
+                fn () => News::latest()->limit(50)->get()
+            )),
+            'relevantBooks' => Inertia::defer(function () use ($catalog) {
+                $news = Cache::remember('home:news:v1', 300, fn () => News::latest()->limit(50)->get());
+
+                return $catalog->cardsForNews($news);
+            }),
             'totalBooksCount' => $totalBooksCount,
             'totalSeriesCount' => $totalSeriesCount,
             'totalPublishersCount' => $totalPublishersCount,

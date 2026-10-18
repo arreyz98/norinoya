@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback, Suspense, lazy } from 'react';
+import { router } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'motion/react';
 import LoadingDetailBuku from './SkeletonLoading/LoadingDetailBuku';
 
@@ -12,7 +13,7 @@ import { COMICS_DATA } from '../../../types/mockData';
 import { Comic, Volume } from '../../../types/demo';
 import { RawNewsItem } from '../news';
 import { useBookmarks } from '../../../utils/bookmarkStorage';
-import { getBookTypeLabel } from '../../../utils/mapBookToComic';
+import { getBookTypeLabel, mapBooksToComics, CatalogFilters, BookModel } from '../../../utils/mapBookToComic';
 
 interface CustomSelectProps {
   label: string;
@@ -159,6 +160,13 @@ function volumeTimestamp(volume: Volume): number {
 
 interface MarketplaceDbProps {
   customComics?: Comic[];
+  serverCatalog?: boolean;
+  catalogPage?: number;
+  catalogLastPage?: number;
+  catalogTotal?: number;
+  filters?: CatalogFilters;
+  upcomingComics?: Comic[];
+  detailComics?: Comic[];
   dynamicPublishers?: FilterOptionItem[];
   dynamicStoryStatuses?: FilterOptionItem[];
   dynamicGenres?: FilterOptionItem[];
@@ -176,6 +184,13 @@ interface MarketplaceDbProps {
 
 export default function MarketplaceDb({
   customComics,
+  serverCatalog = false,
+  catalogPage = 1,
+  catalogLastPage = 1,
+  catalogTotal = 0,
+  filters,
+  upcomingComics,
+  detailComics = [],
   dynamicPublishers = [],
   dynamicStoryStatuses = [],
   dynamicGenres = [],
@@ -201,11 +216,14 @@ export default function MarketplaceDb({
   // Katalog untuk deep-link: hasil DB diutamakan, item mock ditambahkan
   // sebagai fallback karena item mock tidak punya baris di tabel books.
   const linkComics = useMemo(() => {
+    if (serverCatalog) {
+      return detailComics.length > 0 ? detailComics : activeComics;
+    }
     if (!customComics || customComics.length === 0) return COMICS_DATA;
     const seen = new Set(customComics.map(c => c.id));
     const mockExtras = COMICS_DATA.filter(c => !seen.has(c.id));
     return mockExtras.length > 0 ? [...customComics, ...mockExtras] : customComics;
-  }, [customComics]);
+  }, [serverCatalog, detailComics, activeComics, customComics]);
 
   const findComicByRef = useMemo(() => {
     return (ref: string): Comic | null => {
@@ -300,21 +318,22 @@ export default function MarketplaceDb({
         return found ?? null;
       };
 
-      return searchIn(activeComics) || searchIn(linkComics) || null;
+      return searchIn(detailComics) || searchIn(activeComics) || searchIn(linkComics) || null;
     };
-  }, [activeComics, linkComics]);
+  }, [detailComics, activeComics, linkComics]);
 
-  const [searchInput, setSearchInput] = useState('');
-  const [activeSearchTerm, setActiveSearchTerm] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(['all']);
-  const [selectedPublishers, setSelectedPublishers] = useState<string[]>(['all']);
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>(['all']);
-  const [selectedGenres, setSelectedGenres] = useState<string[]>(['all']);
-  const [selectedAdaptations, setSelectedAdaptations] = useState<string[]>(['all']);
-  const [selectedReadingRatings, setSelectedReadingRatings] = useState<string[]>(['all']);
+  const filled = (values?: string[]) => (values && values.length > 0 ? values : ['all']);
+  const [searchInput, setSearchInput] = useState(filters?.q ?? '');
+  const [activeSearchTerm, setActiveSearchTerm] = useState(filters?.q ?? '');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(filled(filters?.format));
+  const [selectedPublishers, setSelectedPublishers] = useState<string[]>(filled(filters?.publisher));
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>(filled(filters?.status));
+  const [selectedGenres, setSelectedGenres] = useState<string[]>(filled(filters?.genre));
+  const [selectedAdaptations, setSelectedAdaptations] = useState<string[]>(filled(filters?.adaptation));
+  const [selectedReadingRatings, setSelectedReadingRatings] = useState<string[]>(filled(filters?.rating));
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<string>('relevan');
+  const [sortBy, setSortBy] = useState<string>(filters?.sort || 'relevan');
 
   const sortOptions = [
     { value: 'relevan', label: 'Paling Relevan', icon: Sparkles },
@@ -368,6 +387,8 @@ export default function MarketplaceDb({
     if (!initialSelectedComicId) return null;
     return findComicByRef(initialSelectedComicId);
   });
+  const [isDetailLoading, setIsDetailLoading] = useState(false);
+  const detailRequestRef = useRef(0);
 
   const [activeVolumeNum, setActiveVolumeNum] = useState<number | string>(() => {
     if (!initialSelectedComicId) return 1;
@@ -390,9 +411,10 @@ export default function MarketplaceDb({
 
   const upcomingReleases = useMemo(() => {
     const list: Array<{ comic: Comic; volume: Volume; dateStr: string }> = [];
+    const source = serverCatalog ? (upcomingComics ?? []) : activeComics;
 
     // Bagian segera rilis berdiri sendiri dan tidak terpengaruh oleh filter atau input pencarian
-    activeComics.forEach((comic) => {
+    source.forEach((comic) => {
       comic.volumes.forEach((vol) => {
         if (vol.isUpcoming || comic.isUpcoming) {
           list.push({
@@ -405,7 +427,7 @@ export default function MarketplaceDb({
     });
 
     return list.slice(0, 6);
-  }, [activeComics]);
+  }, [serverCatalog, upcomingComics, activeComics]);
 
 const getReadingRatingStyle = (rating?: string) => {
     switch (rating) {
@@ -520,14 +542,52 @@ const getReadingRatingStyle = (rating?: string) => {
     syncVolumeToUrl(selectedComic, volNumber);
   };
 
+  const cancelDetailRequest = () => {
+    detailRequestRef.current += 1;
+    setIsDetailLoading(false);
+  };
+
   const openVolumeModal = (comic: Comic, volNumber: number | string) => {
-    // Simpan posisi katalog sebelum konten detail mengambil alih dokumen
-    catalogScrollRef.current = window.scrollY;
+    // Simpan posisi katalog hanya saat detail pertama kali dibuka.
+    // Ganti buku dari dalam detail tidak boleh menimpa posisi itu.
+    if (!selectedComic) {
+      catalogScrollRef.current = window.scrollY;
+    }
+    window.scrollTo({ top: 0, behavior: 'auto' });
     setSelectedComic(comic);
     setActiveVolumeNum(volNumber);
-    // Update browser URL using slug + volume for SEO without full-page reload
-    const targetSlug = comic.slug || comic.id;
+    const volume = comic.volumes.find(v => String(v.volNumber) === String(volNumber));
+    const targetSlug = volume?.slug || comic.slug || comic.id;
     window.history.pushState({ comicId: comic.id, volNumber }, '', `/buku/${targetSlug}?vol=${volNumber}`);
+
+    const requestId = ++detailRequestRef.current;
+
+    if (!serverCatalog || !volume?.slug) {
+      setIsDetailLoading(false);
+      return;
+    }
+
+    setIsDetailLoading(true);
+
+    fetch(`/buku/${encodeURIComponent(volume.slug)}/data`, {
+      headers: { Accept: 'application/json' },
+    })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: { books?: BookModel[] } | null) => {
+        if (detailRequestRef.current !== requestId) return;
+        const mapped = mapBooksToComics(payload?.books ?? []);
+        if (mapped[0]) {
+          setSelectedComic(mapped[0]);
+        }
+      })
+      .catch(() => {
+        // Kartu ringan tetap terbuka bila detail gagal dimuat.
+      })
+      .finally(() => {
+        if (detailRequestRef.current === requestId) {
+          setIsDetailLoading(false);
+        }
+      });
   };
 
   // Reposisi scroll ke area katalog setelah detail ditutup, supaya posisi dari
@@ -553,6 +613,7 @@ const getReadingRatingStyle = (rating?: string) => {
   }, []);
 
   const handleCloseModal = () => {
+    cancelDetailRequest();
     setSelectedComic(null);
     if (onClearSelectedComicId) {
       onClearSelectedComicId();
@@ -570,6 +631,7 @@ const getReadingRatingStyle = (rating?: string) => {
     if (!selectedComic) return;
     const onPopState = () => {
       if (!window.location.pathname.startsWith('/buku/')) {
+        cancelDetailRequest();
         setSelectedComic(null);
         if (onClearSelectedComicId) onClearSelectedComicId();
         requestAnimationFrame(restoreCatalogScroll);
@@ -651,6 +713,7 @@ const getReadingRatingStyle = (rating?: string) => {
 
   // Filter logic on volume posts
   const filteredVolumePosts = useMemo(() => {
+    if (serverCatalog) return allVolumePosts;
     return allVolumePosts.filter(post => {
       const { comic, volume } = post;
       const term = activeSearchTerm.trim().toLowerCase();
@@ -759,9 +822,10 @@ const getReadingRatingStyle = (rating?: string) => {
 
       return matchesSearch && matchesCat && matchesPublisher && matchesStatus && matchesGenre && matchesAdaptation && matchesReadingRating;
     });
-  }, [allVolumePosts, activeSearchTerm, selectedCategories, selectedPublishers, selectedStatuses, selectedGenres, selectedAdaptations, selectedReadingRatings, publisherOptions, statusOptions]);
+  }, [serverCatalog, allVolumePosts, activeSearchTerm, selectedCategories, selectedPublishers, selectedStatuses, selectedGenres, selectedAdaptations, selectedReadingRatings, publisherOptions, statusOptions]);
 
   const sortedVolumePosts = useMemo(() => {
+    if (serverCatalog) return filteredVolumePosts;
     const list = [...filteredVolumePosts];
     const searchTerm = activeSearchTerm.trim().toLowerCase();
 
@@ -828,25 +892,82 @@ const getReadingRatingStyle = (rating?: string) => {
           return (a.comic.title || '').localeCompare(b.comic.title || '');
         });
     }
-  }, [filteredVolumePosts, sortBy, activeSearchTerm]);
+  }, [serverCatalog, filteredVolumePosts, sortBy, activeSearchTerm]);
 
-  // Reset page when filters or sorting change
+  const skipCatalogVisit = useRef(true);
+
+  const catalogParams = useCallback((page: number) => {
+    const params: Record<string, string | string[]> = {};
+    const q = activeSearchTerm.trim();
+    if (q) params.q = q;
+    if (sortBy && sortBy !== 'relevan') params.sort = sortBy;
+    if (page > 1) params.page = String(page);
+    const assign = (key: string, values: string[]) => {
+      const cleaned = values.filter((value) => value !== 'all');
+      if (cleaned.length > 0) params[key] = cleaned;
+    };
+    assign('format', selectedCategories);
+    assign('publisher', selectedPublishers);
+    assign('status', selectedStatuses);
+    assign('genre', selectedGenres);
+    assign('adaptation', selectedAdaptations);
+    assign('rating', selectedReadingRatings);
+    return params;
+  }, [activeSearchTerm, sortBy, selectedCategories, selectedPublishers, selectedStatuses, selectedGenres, selectedAdaptations, selectedReadingRatings]);
+
+  const visitCatalog = useCallback((page: number) => {
+    router.get('/', catalogParams(page), {
+      only: ['catalog', 'upcoming', 'filters'],
+      preserveState: true,
+      preserveScroll: true,
+    });
+  }, [catalogParams]);
+
   useEffect(() => {
-    setCurrentPage(1);
-  }, [activeSearchTerm, selectedCategories, selectedPublishers, selectedStatuses, selectedGenres, selectedAdaptations, selectedReadingRatings, sortBy]);
+    if (!serverCatalog) {
+      setCurrentPage(1);
+      return;
+    }
+    if (skipCatalogVisit.current) {
+      skipCatalogVisit.current = false;
+      return;
+    }
+    visitCatalog(1);
+  }, [serverCatalog, activeSearchTerm, selectedCategories, selectedPublishers, selectedStatuses, selectedGenres, selectedAdaptations, selectedReadingRatings, sortBy, visitCatalog]);
 
-  // Pagination calculations
-  const totalPages = useMemo(() => {
-    return Math.max(1, Math.ceil(sortedVolumePosts.length / ITEMS_PER_PAGE));
-  }, [sortedVolumePosts.length, ITEMS_PER_PAGE]);
+  useEffect(() => {
+    if (!serverCatalog) return;
+    const handle = window.setTimeout(() => {
+      const next = searchInput.trim();
+      setActiveSearchTerm((prev) => (prev === next ? prev : next));
+    }, 400);
+    return () => window.clearTimeout(handle);
+  }, [searchInput, serverCatalog]);
 
-  // Use clamped currentPage to ensure instantaneous update on search/filter without empty slice race condition
-  const effectivePage = Math.min(Math.max(1, currentPage), totalPages);
+  const totalPages = serverCatalog
+    ? Math.max(1, catalogLastPage)
+    : Math.max(1, Math.ceil(sortedVolumePosts.length / ITEMS_PER_PAGE));
+
+  const effectivePage = serverCatalog
+    ? Math.min(Math.max(1, catalogPage), totalPages)
+    : Math.min(Math.max(1, currentPage), totalPages);
 
   const paginatedVolumePosts = useMemo(() => {
+    if (serverCatalog) return sortedVolumePosts;
     const startIndex = (effectivePage - 1) * ITEMS_PER_PAGE;
     return sortedVolumePosts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [sortedVolumePosts, effectivePage, ITEMS_PER_PAGE]);
+  }, [serverCatalog, sortedVolumePosts, effectivePage, ITEMS_PER_PAGE]);
+
+  const listedCount = serverCatalog ? catalogTotal : sortedVolumePosts.length;
+
+  const goToCatalogPage = (page: number) => {
+    if (serverCatalog) {
+      visitCatalog(page);
+    } else {
+      setCurrentPage(page);
+    }
+    document.getElementById('catalog-sort-wrapper')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   // Static database counts for Counter Widget Info, unaffected by search/filters
   const comicCount = useMemo(() => {
@@ -1663,17 +1784,14 @@ const getReadingRatingStyle = (rating?: string) => {
       {sortedVolumePosts.length > 0 && totalPages > 1 && (
         <div className="pt-8 mt-6 border-t border-neutral-150 dark:border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4 select-none">
           <div className="text-xs font-mono text-neutral-500 dark:text-neutral-400">
-            Halaman <span className="font-bold text-neutral-900 dark:text-neutral-100">{effectivePage}</span> dari <span className="font-bold text-neutral-900 dark:text-neutral-100">{totalPages}</span> ({sortedVolumePosts.length} Volume)
+            Halaman <span className="font-bold text-neutral-900 dark:text-neutral-100">{effectivePage}</span> dari <span className="font-bold text-neutral-900 dark:text-neutral-100">{totalPages}</span> ({listedCount} Volume)
           </div>
 
           <div className="flex items-center gap-1.5">
             <button
               type="button"
               onClick={() => {
-                if (effectivePage > 1) {
-                  setCurrentPage(effectivePage - 1);
-                  document.getElementById('catalog-sort-wrapper')?.scrollIntoView({ behavior: 'smooth' });
-                }
+                if (effectivePage > 1) goToCatalogPage(effectivePage - 1);
               }}
               disabled={effectivePage === 1}
               className="px-2.5 sm:px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-mono font-bold text-neutral-700 dark:text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all flex items-center gap-1 cursor-pointer"
@@ -1707,10 +1825,7 @@ const getReadingRatingStyle = (rating?: string) => {
                     <button
                       key={p}
                       type="button"
-                      onClick={() => {
-                        setCurrentPage(p);
-                        document.getElementById('catalog-sort-wrapper')?.scrollIntoView({ behavior: 'smooth' });
-                      }}
+                      onClick={() => goToCatalogPage(p)}
                       className={`w-8 h-8 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
                         effectivePage === p
                           ? 'bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 shadow-xs'
@@ -1727,10 +1842,7 @@ const getReadingRatingStyle = (rating?: string) => {
             <button
               type="button"
               onClick={() => {
-                if (effectivePage < totalPages) {
-                  setCurrentPage(effectivePage + 1);
-                  document.getElementById('catalog-sort-wrapper')?.scrollIntoView({ behavior: 'smooth' });
-                }
+                if (effectivePage < totalPages) goToCatalogPage(effectivePage + 1);
               }}
               disabled={effectivePage === totalPages}
               className="px-2.5 sm:px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-mono font-bold text-neutral-700 dark:text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all flex items-center gap-1 cursor-pointer"
@@ -1759,6 +1871,9 @@ const getReadingRatingStyle = (rating?: string) => {
       {/* Advanced Fullscreen Detailed View */}
       <AnimatePresence onExitComplete={restoreCatalogScroll}>
         {selectedComic && (
+          isDetailLoading ? (
+            <LoadingDetailBuku onClose={handleCloseModal} />
+          ) : (
           <Suspense fallback={<LoadingDetailBuku />}>
             <DetailBuku
               selectedComic={selectedComic}
@@ -1779,11 +1894,12 @@ const getReadingRatingStyle = (rating?: string) => {
                 setSelectedStatuses(statuses);
                 setIsFiltersExpanded(true);
               }}
-              setSelectedComic={setSelectedComic}
+              onOpenComic={openVolumeModal}
               allComics={activeComics}
               newsList={newsList}
             />
           </Suspense>
+          )
         )}
       </AnimatePresence>
 

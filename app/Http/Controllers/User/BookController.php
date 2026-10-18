@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Actions\Books\QueryCatalog;
+use App\Enums\PublicationStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\BookSeries;
@@ -18,29 +20,63 @@ use Inertia\Inertia;
 
 class BookController extends Controller
 {
-    public function show(Request $request, $slug)
+    public function data(string $slug)
+    {
+        $book = $this->findPublished($slug);
+
+        if (! $book) {
+            abort(404);
+        }
+
+        return response()->json([
+            'books' => $this->seriesBooks($book)->values(),
+        ]);
+    }
+
+    public function lookup(Request $request, QueryCatalog $catalog)
+    {
+        $validated = $request->validate([
+            'ids' => ['array', 'max:100'],
+            'ids.*' => ['string', 'max:200'],
+        ]);
+
+        return response()->json([
+            'books' => $catalog->cardsForBookmarks($validated['ids'] ?? [])->values(),
+        ]);
+    }
+
+    public function show(Request $request, $slug, QueryCatalog $catalog)
     {
         $book = Book::with([
-                'series',
-                'edition',
-                'storyStatus',
-                'publisher',
-                'images',
-                'authors',
-                'genres',
-                'affiliateLinks.affiliateStore',
-                'tiktokEmbeds',
-                'instagramEmbeds',
-                'newsLinks',
-                'videoLinks',
-            ])
-            ->where('slug', $slug)
-            // Guard is_numeric: MySQL meng-cast string ke angka berdasarkan awalan
-            // numeriknya, sehingga slug seperti "5-centimeters-per-second-volume-2"
-            // dibaca sebagai id 5 dan salah membuka buku lain. Pencarian lewat id
-            // hanya dilakukan bila parameter benar-benar berupa angka.
-            ->when(is_numeric($slug), fn ($query) => $query->orWhere('id', $slug))
+            'series',
+            'edition',
+            'storyStatus',
+            'publisher',
+            'images',
+            'authors',
+            'genres',
+            'affiliateLinks.affiliateStore',
+            'tiktokEmbeds',
+            'instagramEmbeds',
+            'newsLinks',
+            'videoLinks',
+        ])
+            ->where(function ($query) use ($slug) {
+                $query->where('slug', $slug);
+
+                // Guard is_numeric: MySQL meng-cast string ke angka berdasarkan awalan
+                // numeriknya, sehingga slug seperti "5-centimeters-per-second-volume-2"
+                // dibaca sebagai id 5 dan salah membuka buku lain. Pencarian lewat id
+                // hanya dilakukan bila parameter benar-benar berupa angka.
+                if (is_numeric($slug)) {
+                    $query->orWhere('id', $slug);
+                }
+            })
             ->first();
+
+        if ($book && $book->publication_status !== PublicationStatus::Published) {
+            abort(404);
+        }
 
         $requestedVolume = $request->query('vol', null);
         $initialVolume = $requestedVolume
@@ -59,10 +95,6 @@ class BookController extends Controller
 
             if (! $alreadyLogged) {
                 $book->increment('views_count');
-                Cache::forget('home:books:v2');
-                Cache::forget('bookmark:books:v2');
-                Cache::forget('news:books:v2');
-                Cache::forget('kios:books:v2');
 
                 BookViewLog::create([
                     'book_id' => $book->id,
@@ -72,24 +104,35 @@ class BookController extends Controller
             }
         }
 
-        $books = Cache::remember('home:books:v2', 300, fn () => Book::homeQuery()->latest('updated_at')->limit(300)->get());
         $publishers = Cache::remember('home:publishers', 600, fn () => Publisher::orderBy('name')->get(['id', 'name', 'slug']));
         $storyStatuses = Cache::remember('home:story_statuses', 600, fn () => StoryStatus::orderBy('name')->get(['id', 'name', 'slug']));
         $genres = Cache::remember('home:genres', 600, fn () => Genre::orderBy('name')->get(['id', 'name', 'slug']));
 
-        $totalBooksCount = Cache::remember('home:total_books', 300, fn () => Book::count());
+        $totalBooksCount = Cache::remember('home:total_books', 300, fn () => Book::published()->count());
         $totalSeriesCount = Cache::remember('home:total_series', 300, fn () => BookSeries::count());
         $totalPublishersCount = Cache::remember('home:total_publishers', 300, fn () => Publisher::count());
 
         return Inertia::render('User/home', [
-            'books' => $books,
+            'catalog' => $catalog->defaultPage(),
+            'upcoming' => $catalog->upcoming(),
+            'filters' => $catalog->filters(Request::create('/')),
             'publishers' => $publishers,
             'storyStatuses' => $storyStatuses,
             'genres' => $genres,
-            'newsList' => Inertia::defer(fn () => News::latest()->limit(50)->get()),
+            'newsList' => Inertia::defer(fn () => Cache::remember(
+                'home:news:v1',
+                300,
+                fn () => News::latest()->limit(50)->get()
+            )),
+            'relevantBooks' => Inertia::defer(function () use ($catalog) {
+                $news = Cache::remember('home:news:v1', 300, fn () => News::latest()->limit(50)->get());
+
+                return $catalog->cardsForNews($news);
+            }),
             'totalBooksCount' => $totalBooksCount,
             'totalSeriesCount' => $totalSeriesCount,
             'totalPublishersCount' => $totalPublishersCount,
+            'detailBooks' => $book ? $this->seriesBooks($book)->values() : [],
             'initialBook' => $book,
             'initialSlug' => $slug,
             'initialVolume' => $initialVolume,
@@ -115,22 +158,22 @@ class BookController extends Controller
 
         if (is_numeric($cleanId)) {
             if ($volume) {
-                $book = Book::where('id', $cleanId)->first()
-                    ?? Book::where('series_id', $cleanId)->where('volume', $volume)->first();
+                $book = Book::published()->where('id', $cleanId)->first()
+                    ?? Book::published()->where('series_id', $cleanId)->where('volume', $volume)->first();
             } else {
-                $book = Book::where('id', $cleanId)->first()
-                    ?? Book::where('series_id', $cleanId)->first();
+                $book = Book::published()->where('id', $cleanId)->first()
+                    ?? Book::published()->where('series_id', $cleanId)->first();
             }
         }
 
         if (! $book) {
             $targetSlug = $slug ?: $id;
-            $book = Book::where('slug', $targetSlug)->first();
+            $book = Book::published()->where('slug', $targetSlug)->first();
         }
 
         if (! $book && $volume) {
             $escaped = addcslashes($cleanId, '%_\\');
-            $book = Book::where('volume', $volume)
+            $book = Book::published()->where('volume', $volume)
                 ->where(function ($q) use ($escaped, $cleanId) {
                     $q->where('slug', 'like', "%{$escaped}%")
                         ->orWhere('title', 'like', "%{$escaped}%")
@@ -155,10 +198,6 @@ class BookController extends Controller
 
             if (! $alreadyLogged) {
                 $book->increment('views_count');
-                Cache::forget('home:books:v2');
-                Cache::forget('bookmark:books:v2');
-                Cache::forget('news:books:v2');
-                Cache::forget('kios:books:v2');
 
                 BookViewLog::create([
                     'book_id' => $book->id,
@@ -218,5 +257,38 @@ class BookController extends Controller
             'search_count' => (int) $log->search_count,
             'search_date' => $today,
         ]);
+    }
+
+    private function findPublished(string $slug): ?Book
+    {
+        $book = Book::query()
+            ->where(function ($query) use ($slug) {
+                $query->where('slug', $slug);
+
+                if (is_numeric($slug)) {
+                    $query->orWhere('id', $slug);
+                }
+            })
+            ->first();
+
+        if (! $book || $book->publication_status !== PublicationStatus::Published) {
+            return null;
+        }
+
+        return $book;
+    }
+
+    /**
+     * Volume lain dalam seri yang sama, supaya pemilih volume di detail tetap lengkap.
+     */
+    private function seriesBooks(Book $book)
+    {
+        $query = Book::homeQuery()->orderBy('sort_order')->orderBy('id');
+
+        if ($book->series_id) {
+            return $query->where('series_id', $book->series_id)->limit(80)->get();
+        }
+
+        return $query->whereKey($book->id)->get();
     }
 }

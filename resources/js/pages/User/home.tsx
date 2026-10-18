@@ -22,7 +22,7 @@ const EtalaseCatalog = lazy(() => import('./components/EtalaseCatalog'));
 
 // Data
 import { COMICS_DATA, NEWS_UPDATES } from '../../types/mockData';
-import { mapBooksToComics, BookModel } from '../../utils/mapBookToComic';
+import { mapBooksToComics, BookModel, CatalogPage, CatalogFilters } from '../../utils/mapBookToComic';
 import { usePageLoading } from '../../hooks/use-page-loading';
 import { RawNewsItem } from './news';
 
@@ -45,47 +45,62 @@ export interface VideoShortItem {
 }
 
 interface HomeProps {
-  books?: BookModel[];
+  catalog?: CatalogPage;
+  upcoming?: BookModel[];
+  filters?: CatalogFilters;
   publishers?: FilterOption[];
   storyStatuses?: FilterOption[];
   genres?: FilterOption[];
   newsList?: RawNewsItem[];
+  relevantBooks?: BookModel[];
   totalBooksCount?: number;
   totalSeriesCount?: number;
   totalPublishersCount?: number;
+  detailBooks?: BookModel[];
   initialBook?: BookModel | null;
   initialSlug?: string;
   initialVolume?: number | string | null;
 }
 
 export default function App({
-  books = [],
+  catalog,
+  upcoming = [],
+  filters,
   publishers = [],
   storyStatuses = [],
   genres = [],
   newsList = [],
+  relevantBooks = [],
   totalBooksCount,
   totalSeriesCount,
   totalPublishersCount,
+  detailBooks = [],
   initialBook,
   initialSlug,
   initialVolume,
 }: HomeProps) {
+  const useDatabase = (totalBooksCount ?? 0) > 0 || (catalog?.data?.length ?? 0) > 0;
+
   const comicsData = React.useMemo(() => {
-    if (books && books.length > 0) {
-      return mapBooksToComics(books);
+    if (useDatabase) {
+      return mapBooksToComics(catalog?.data ?? []);
     }
     return COMICS_DATA;
-  }, [books]);
+  }, [useDatabase, catalog]);
 
-  // Katalog gabungan untuk deep-link: hasil DB lebih diutamakan, lalu mock.
-  // Item mock tidak punya baris di tabel books, jadi tanpa fallback ini
-  // /buku/{slug-mock} tidak akan pernah membuka detail setelah refresh.
+  const detailComics = React.useMemo(() => mapBooksToComics(detailBooks), [detailBooks]);
+
+  const upcomingComics = React.useMemo(() => mapBooksToComics(upcoming), [upcoming]);
+
+  // Mock hanya dipakai bila database belum punya buku terbit.
   const deepLinkCatalog = React.useMemo(() => {
+    if (useDatabase) {
+      return detailComics.length > 0 ? detailComics : comicsData;
+    }
     const seen = new Set(comicsData.map(c => c.id));
     const mockExtras = COMICS_DATA.filter(c => !seen.has(c.id));
     return mockExtras.length > 0 ? [...comicsData, ...mockExtras] : comicsData;
-  }, [comicsData]);
+  }, [useDatabase, comicsData, detailComics]);
 
   // Initial comic ID if accessed via /buku/{slug} (with optional ?vol=)
   const initialComicId = React.useMemo(() => {
@@ -343,6 +358,13 @@ export default function App({
                   <Suspense fallback={<LoadingHome />}>
                     <MarketplaceDb
                       customComics={comicsData}
+                      serverCatalog={useDatabase}
+                      catalogPage={catalog?.current_page ?? 1}
+                      catalogLastPage={catalog?.last_page ?? 1}
+                      catalogTotal={catalog?.total ?? 0}
+                      filters={filters}
+                      upcomingComics={upcomingComics}
+                      detailComics={detailComics}
                       dynamicPublishers={publishers}
                       dynamicStoryStatuses={storyStatuses}
                       dynamicGenres={genres}
@@ -441,7 +463,7 @@ export default function App({
                   <Suspense fallback={<LoadingHome />}>
                     <NewsFeed
                       dbNewsList={newsList}
-                      dbBooksList={books}
+                      dbBooksList={relevantBooks}
                       selectedNewsId={selectedNewsId}
                       setSelectedNewsId={setSelectedNewsId}
                       onNavigateToCatalog={handleNavHome}

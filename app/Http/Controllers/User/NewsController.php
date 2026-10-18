@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Actions\Books\QueryCatalog;
 use App\Http\Controllers\Controller;
-use App\Models\Book;
 use App\Models\KiosItem;
 use App\Models\News;
 use App\Models\NewsViewLog;
@@ -19,7 +19,7 @@ class NewsController extends Controller
     {
         $newsList = Cache::remember('news:list:v2', 300, fn () => News::latest()->limit(80)->get());
         $kiosItems = Cache::remember('news:kios_items', 300, fn () => KiosItem::with(['kiosPartner:id,name,slug', 'linkedBook:id,title'])->available()->latest()->limit(40)->get());
-        $books = Cache::remember('news:books:v2', 300, fn () => Book::homeQuery()->latest('updated_at')->limit(100)->get());
+        $books = app(QueryCatalog::class)->cardsForNews($newsList);
         $totalNewsCount = Cache::remember('news:total', 300, fn () => News::count());
 
         return Inertia::render('User/news', [
@@ -80,18 +80,7 @@ class NewsController extends Controller
 
         $newsList = News::latest()->get();
         $kiosItems = KiosItem::with(['kiosPartner', 'linkedBook'])->available()->latest()->get();
-        $books = Book::with([
-            'series',
-            'edition',
-            'storyStatus',
-            'publisher',
-            'images',
-            'authors',
-            'genres',
-            'affiliateLinks.affiliateStore',
-            'tiktokEmbeds',
-            'instagramEmbeds',
-        ])->get();
+        $books = app(QueryCatalog::class)->cardsForNews(collect([$news])->merge($newsList));
 
         $totalNewsCount = News::count();
 

@@ -18,7 +18,7 @@ class NewsController extends Controller
      */
     protected function flushNewsCaches(): void
     {
-        foreach (['news:list:v2', 'news:kios_items', 'news:books:v2', 'news:total', 'sitemap:xml:v1'] as $key) {
+        foreach (['news:list:v2', 'news:kios_items', 'news:books:v2', 'news:total', 'home:news:v1', 'sitemap:xml:v1'] as $key) {
             Cache::forget($key);
         }
     }

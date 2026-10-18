@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Bookmark, BookOpen, Newspaper, ShoppingBag, Trash2,
@@ -7,7 +7,7 @@ import {
   BookMarked, BookText, Ticket, Mic, Tv, Gamepad2, Globe, Flame
 } from 'lucide-react';
 import { Head, router } from '@inertiajs/react';
-import { useBookmarks } from '../../utils/bookmarkStorage';
+import { bookmarkStorage, useBookmarks } from '../../utils/bookmarkStorage';
 import { COMICS_DATA, PRE_OWNED_ITEMS } from '../../types/mockData';
 import { Comic, NewsUpdate } from '../../types/demo';
 import { mapBooksToComics, BookModel, getBookTypeLabel } from '../../utils/mapBookToComic';
@@ -1177,15 +1177,39 @@ interface BookmarkPageProps {
 }
 
 export default function BookmarkPage({
-  books = [],
   newsList = [],
   kiosItems = [],
 }: BookmarkPageProps) {
+  const [books, setBooks] = useState<BookModel[]>([]);
+
+  useEffect(() => {
+    const ids = bookmarkStorage.get().comics.slice(0, 100);
+    if (ids.length === 0) return;
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+    fetch('/books/lookup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-CSRF-TOKEN': csrfToken,
+      },
+      body: JSON.stringify({ ids }),
+    })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: { books?: BookModel[] } | null) => {
+        if (payload?.books) setBooks(payload.books);
+      })
+      .catch(() => {
+        // Bookmark mock tetap bisa dibuka bila lookup gagal.
+      });
+  }, []);
+
   const comicsData: Comic[] = React.useMemo(() => {
-    if (books && books.length > 0) {
-      return mapBooksToComics(books);
-    }
-    return COMICS_DATA;
+    const fromDb = mapBooksToComics(books);
+    if (fromDb.length === 0) return COMICS_DATA;
+    const seen = new Set(fromDb.map((comic) => comic.id));
+    return [...fromDb, ...COMICS_DATA.filter((comic) => !seen.has(comic.id))];
   }, [books]);
 
   const newsData: BookmarkNewsItem[] = React.useMemo(() => {

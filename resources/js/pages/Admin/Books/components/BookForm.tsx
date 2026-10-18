@@ -58,6 +58,7 @@ interface BookFormProps {
         dimensions?: string | null;
         adaptation?: string | null;
         is_upcoming?: boolean | null;
+        publication_status?: 'draft' | 'published';
         images?: { id?: number; image_url: string; sort_order?: number }[];
         tiktok_embeds?: { id?: number; name?: string; embed_url?: string; url_video?: string; sort_order?: number }[];
         instagram_embeds?: {
@@ -195,7 +196,10 @@ export default function BookForm({
         const errorFields = [field, ...alternateFields].filter((candidate) => Boolean(activeErrors[candidate]));
         const hasError = errorFields.length > 0;
 
-        const isRequired = REQUIRED_FIELDS.has(field) || alternateFields.some((candidate) => REQUIRED_FIELDS.has(candidate));
+        const publishing = form.publication_status === 'published';
+        const isRequired =
+            field === 'title' ||
+            (publishing && (REQUIRED_FIELDS.has(field) || alternateFields.some((candidate) => REQUIRED_FIELDS.has(candidate))));
 
         return {
             'aria-invalid': hasError || undefined,
@@ -236,6 +240,8 @@ export default function BookForm({
         dimensions: book?.dimensions ?? '',
         adaptation: book?.adaptation ?? '',
         is_upcoming: Boolean(book?.is_upcoming),
+        publication_status:
+            mode === 'edit' ? (book?.publication_status === 'draft' ? 'draft' : 'published') : book?.publication_status === 'published' ? 'published' : 'draft',
 
         images: book?.images?.map((image) => ({
             id: image.id,
@@ -723,10 +729,17 @@ export default function BookForm({
         }));
     };
 
+    const submitIntent = useRef<'draft' | 'published'>('published');
+
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const nextErrors = validateBook(form, volumesBySeries);
+        const publicationStatus = submitIntent.current;
+        const formToValidate: BookFormData = {
+            ...form,
+            publication_status: publicationStatus,
+        };
+        const nextErrors = validateBook(formToValidate, volumesBySeries);
         setClearedFields(new Set());
         setLocalErrors(nextErrors);
 
@@ -846,6 +859,7 @@ export default function BookForm({
 
         onSubmit({
             ...form,
+            publication_status: publicationStatus,
             images: imagesPayload,
             tiktok_embeds: tiktokPayload,
             instagram_embeds: instagramPayload,
@@ -902,6 +916,19 @@ export default function BookForm({
 
     return (
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-6" noValidate>
+            {mode === 'edit' && (
+                <div>
+                    {form.publication_status === 'draft' ? (
+                        <span className="inline-flex rounded-full border border-amber-300 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+                            Draf — belum tampil di situs publik
+                        </span>
+                    ) : (
+                        <span className="inline-flex rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">
+                            Terbit
+                        </span>
+                    )}
+                </div>
+            )}
             {errorCount > 0 && (
                 <Alert ref={errorSummaryRef} variant="destructive">
                     <AlertTitle>Terdapat {errorCount} kesalahan pada formulir</AlertTitle>
@@ -987,8 +1014,25 @@ export default function BookForm({
                     Batal
                 </Button>
 
-                <Button type="submit" disabled={processing}>
-                    {processing ? 'Menyimpan...' : mode === 'create' ? 'Simpan Buku' : 'Simpan Perubahan'}
+                <Button
+                    type="submit"
+                    variant="outline"
+                    disabled={processing}
+                    onClick={() => {
+                        submitIntent.current = 'draft';
+                    }}
+                >
+                    {processing ? 'Menyimpan...' : 'Simpan sebagai draf'}
+                </Button>
+
+                <Button
+                    type="submit"
+                    disabled={processing}
+                    onClick={() => {
+                        submitIntent.current = 'published';
+                    }}
+                >
+                    {processing ? 'Menyimpan...' : mode === 'edit' && form.publication_status === 'published' ? 'Simpan & tetap terbit' : 'Terbitkan'}
                 </Button>
             </div>
         </form>

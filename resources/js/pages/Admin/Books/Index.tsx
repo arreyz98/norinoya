@@ -1,5 +1,5 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { ArrowDown, ArrowUp, ArrowUpDown, BookOpen, Copy, Eye, History, Pencil, Plus, Search, SearchCode, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpDown, BookOpen, Copy, Eye, FilePenLine, Globe, History, Pencil, Plus, Search, SearchCode, Trash2 } from 'lucide-react';
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { toast } from 'sonner';
 
@@ -30,7 +30,8 @@ interface Book {
     id: number;
     title: string;
     slug?: string | null;
-    volume: number;
+    volume: string | null;
+    publication_status?: 'draft' | 'published';
 
     series: {
         id: number;
@@ -103,6 +104,7 @@ interface FilterOverrides {
     sort?: string;
     per_page?: number;
     page?: number;
+    publication_status?: string;
 }
 
 interface Props {
@@ -115,6 +117,7 @@ interface Props {
         publisher_id?: string;
         sort?: string;
         per_page?: string | number;
+        publication_status?: string;
     };
 }
 
@@ -157,6 +160,8 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
     const [publisherId, setPublisherId] = useState(filters.publisher_id || 'all');
     const [sort, setSort] = useState(filters.sort || 'latest');
     const [perPage, setPerPage] = useState(Number(filters.per_page) || 15);
+    const [publicationStatus, setPublicationStatus] = useState(filters.publication_status || 'all');
+    const [publicationTarget, setPublicationTarget] = useState<Book | null>(null);
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [pageInput, setPageInput] = useState('');
 
@@ -194,6 +199,7 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
         const nextPublisher = overrides?.publisher_id ?? publisherId;
         const nextSort = overrides?.sort ?? sort;
         const nextPerPage = overrides?.per_page ?? perPage;
+        const nextPublication = overrides?.publication_status ?? publicationStatus;
 
         const payload: Record<string, string> = {};
 
@@ -215,6 +221,10 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
 
         if (nextPerPage !== 15) {
             payload.per_page = String(nextPerPage);
+        }
+
+        if (nextPublication && nextPublication !== 'all') {
+            payload.publication_status = nextPublication;
         }
 
         if (overrides?.page && overrides.page > 1) {
@@ -245,6 +255,7 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
         setPublisherId('all');
         setSort('latest');
         setPerPage(15);
+        setPublicationStatus('all');
         setSelectedIds([]);
 
         router.get(route('admin.books.index'), {}, { preserveState: true, preserveScroll: true });
@@ -339,7 +350,25 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
         });
     };
 
-    const hasActiveFilters = Boolean(search) || seriesId !== 'all' || publisherId !== 'all' || sort !== 'latest' || perPage !== 15;
+    const hasActiveFilters =
+        Boolean(search) || seriesId !== 'all' || publisherId !== 'all' || sort !== 'latest' || perPage !== 15 || publicationStatus !== 'all';
+
+    const confirmPublicationChange = () => {
+        if (!publicationTarget) {
+            return;
+        }
+
+        const nextStatus = publicationTarget.publication_status === 'draft' ? 'published' : 'draft';
+
+        router.patch(
+            route('admin.books.publication.update', publicationTarget.id),
+            { publication_status: nextStatus },
+            {
+                preserveScroll: true,
+                onFinish: () => setPublicationTarget(null),
+            },
+        );
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -428,6 +457,20 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
                             }}
                         />
 
+                        <select
+                            value={publicationStatus}
+                            onChange={(e) => {
+                                const next = e.target.value;
+                                setPublicationStatus(next);
+                                handleApplyFilters({ publication_status: next });
+                            }}
+                            className="bg-background border-input focus:ring-ring h-9 cursor-pointer appearance-none rounded-md border px-3 text-xs font-medium focus:ring-1 focus:outline-none"
+                        >
+                            <option value="all">Semua status</option>
+                            <option value="draft">Draf</option>
+                            <option value="published">Terbit</option>
+                        </select>
+
                         <FilterCombobox
                             value={publisherId}
                             selectedLabel={selectedPublisher?.name ?? null}
@@ -497,7 +540,7 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
                 {/* Table Data */}
                 <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xs dark:border-neutral-800 dark:bg-neutral-900">
                     <div className="overflow-x-auto">
-                        <table className="w-full min-w-[1040px]">
+                        <table className="w-full min-w-[1180px]">
                             <thead className="bg-[#112A12] text-white">
                                 <tr className="border-b border-[#112A12]">
                                     <th className="w-[44px] px-4 py-3 text-left">
@@ -542,6 +585,8 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
                                             {renderSortIcon('views_desc', 'views_asc')}
                                         </button>
                                     </th>
+
+                                    <th className="px-4 py-3 text-left text-xs font-bold text-white">Publikasi</th>
 
                                     <th className="px-4 py-3 text-right text-xs font-bold text-white">Aksi</th>
                                 </tr>
@@ -603,7 +648,9 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
                                             </td>
 
                                             {/* Volume */}
-                                            <td className="px-4 py-3 text-sm">Vol. {book.volume}</td>
+                                            <td className="px-4 py-3 text-sm">
+                                                {book.volume ? `Vol. ${book.volume}` : <span className="text-muted-foreground">-</span>}
+                                            </td>
 
                                             {/* Publisher */}
                                             <td className="px-4 py-3 text-sm">
@@ -629,23 +676,57 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
                                                 </span>
                                             </td>
 
+                                            <td className="px-4 py-3">
+                                                {book.publication_status === 'draft' ? (
+                                                    <span className="inline-flex rounded-full border border-amber-300 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+                                                        Draf
+                                                    </span>
+                                                ) : (
+                                                    <span className="inline-flex rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">
+                                                        Terbit
+                                                    </span>
+                                                )}
+                                            </td>
+
                                             {/* Actions */}
                                             <td className="px-4 py-3">
                                                 <div className="flex justify-end gap-1.5">
+                                                    {book.publication_status === 'draft' ? (
+                                                        <Button
+                                                            variant="outline"
+                                                            size="icon"
+                                                            disabled
+                                                            title="Draf tidak tampil di publik"
+                                                            className="text-neutral-600"
+                                                        >
+                                                            <Eye className="size-4" />
+                                                        </Button>
+                                                    ) : (
+                                                        <Button
+                                                            variant="outline"
+                                                            size="icon"
+                                                            asChild
+                                                            title="Lihat Tampilan User"
+                                                            className="text-neutral-600 hover:text-neutral-950 dark:text-neutral-300 dark:hover:text-white"
+                                                        >
+                                                            <a
+                                                                href={route('book.detail', book.slug || book.id)}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                <Eye className="size-4" />
+                                                            </a>
+                                                        </Button>
+                                                    )}
+
                                                     <Button
                                                         variant="outline"
                                                         size="icon"
-                                                        asChild
-                                                        title="Lihat Tampilan User"
+                                                        title={book.publication_status === 'draft' ? 'Terbitkan' : 'Jadikan draf'}
                                                         className="text-neutral-600 hover:text-neutral-950 dark:text-neutral-300 dark:hover:text-white"
+                                                        onClick={() => setPublicationTarget(book)}
                                                     >
-                                                        <a
-                                                            href={route('book.detail', book.slug || book.id)}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            <Eye className="size-4" />
-                                                        </a>
+                                                        {book.publication_status === 'draft' ? <Globe className="size-4" /> : <FilePenLine className="size-4" />}
                                                     </Button>
 
                                                     <Button
@@ -675,7 +756,7 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan={10} className="px-4 py-16 text-center">
+                                        <td colSpan={11} className="px-4 py-16 text-center">
                                             <div className="flex flex-col items-center gap-3">
                                                 <div className="bg-muted flex size-12 items-center justify-center rounded-full">
                                                     <BookOpen className="text-muted-foreground size-5" />
@@ -809,6 +890,27 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
                         <AlertDialogCancel>Batal</AlertDialogCancel>
 
                         <AlertDialogAction onClick={handleDelete}>Hapus Buku</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog open={publicationTarget !== null} onOpenChange={(open) => !open && setPublicationTarget(null)}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>
+                            {publicationTarget?.publication_status === 'draft' ? 'Terbitkan buku?' : 'Jadikan draf?'}
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {publicationTarget?.publication_status === 'draft'
+                                ? `Buku "${publicationTarget.title}" akan tampil di situs publik.`
+                                : `Buku "${publicationTarget?.title}" akan disembunyikan dari situs publik.`}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Batal</AlertDialogCancel>
+                        <AlertDialogAction onClick={confirmPublicationChange}>
+                            {publicationTarget?.publication_status === 'draft' ? 'Terbitkan' : 'Jadikan draf'}
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

@@ -32,6 +32,7 @@ class SitemapController extends Controller
             // Books — each volume is a distinct sitemap entry via /buku/{slug}?vol= but canonical is per book slug.
             // We emit one URL per unique slug to avoid duplicate content; volume is handled via canonical.
             $books = Book::query()
+                ->published()
                 ->select(['id', 'slug', 'updated_at'])
                 ->whereNotNull('slug')
                 ->where('slug', '!=', '')

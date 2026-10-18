@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\BookType;
+use App\Enums\PublicationStatus;
 use App\Enums\VideoAccessType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -14,9 +15,23 @@ class StoreBookRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if (! $this->filled('publication_status')) {
+            $this->merge([
+                'publication_status' => PublicationStatus::Published->value,
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [
+            'publication_status' => [
+                'required',
+                Rule::enum(PublicationStatus::class),
+            ],
+
             'title' => [
                 'required',
                 'string',
@@ -30,7 +45,8 @@ class StoreBookRequest extends FormRequest
             ],
 
             'volume' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'string',
                 'max:50',
                 Rule::unique('books', 'volume')
@@ -48,36 +64,42 @@ class StoreBookRequest extends FormRequest
             ],
 
             'edition_id' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'integer',
                 'exists:editions,id',
             ],
 
             'book_type' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'string',
                 Rule::enum(BookType::class),
             ],
 
             'story_status_id' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'integer',
                 'exists:story_statuses,id',
             ],
 
             'age_rating' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'string',
             ],
 
             'publisher_id' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'integer',
                 'exists:publishers,id',
             ],
 
             'synopsis' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'string',
             ],
 
@@ -88,7 +110,8 @@ class StoreBookRequest extends FormRequest
             ],
 
             'msrp' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'numeric',
                 'min:0',
             ],
@@ -333,77 +356,77 @@ class StoreBookRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' =>
-                'Judul buku wajib diisi.',
+            'publication_status.required' => 'Status publikasi wajib dipilih.',
 
-            'volume.required' =>
-                'Volume wajib diisi.',
+            'publication_status.enum' => 'Status publikasi tidak valid.',
 
-            'volume.max' =>
-                'Volume maksimal 50 karakter.',
+            'title.required' => 'Judul buku wajib diisi.',
 
-            'volume.unique' =>
-                'Volume tersebut sudah digunakan dalam series ini.',
+            'volume.required' => 'Volume wajib diisi.',
 
-            'edition_id.required' =>
-                'Edisi cetakan wajib dipilih.',
+            'volume.required_if' => 'Volume wajib diisi.',
 
-            'book_type.required' =>
-                'Tipe buku wajib dipilih.',
+            'volume.max' => 'Volume maksimal 50 karakter.',
 
-            'story_status_id.required' =>
-                'Status cerita wajib dipilih.',
+            'volume.unique' => 'Volume tersebut sudah digunakan dalam series ini.',
 
-            'age_rating.required' =>
-                'Rating umur wajib dipilih.',
+            'edition_id.required' => 'Edisi cetakan wajib dipilih.',
 
-            'publisher_id.required' =>
-                'Penerbit wajib dipilih.',
+            'edition_id.required_if' => 'Edisi cetakan wajib dipilih.',
 
-            'images.max' =>
-                'Maksimal 5 gambar.',
+            'book_type.required' => 'Tipe buku wajib dipilih.',
 
-            'images.*.image_url.url' =>
-                'URL gambar tidak valid.',
+            'book_type.required_if' => 'Tipe buku wajib dipilih.',
 
-            'news_link.url' =>
-                'Link berita tidak valid.',
+            'story_status_id.required' => 'Status cerita wajib dipilih.',
 
-            'affiliate_links.*.url.url' =>
-                'URL affiliate tidak valid.',
+            'story_status_id.required_if' => 'Status cerita wajib dipilih.',
 
-            'video_links.*.url.url' =>
-                'URL video tidak valid.',
+            'age_rating.required' => 'Rating umur wajib dipilih.',
 
-            'video_links.*.platform_name.required' =>
-                'Nama platform wajib diisi.',
+            'age_rating.required_if' => 'Rating umur wajib dipilih.',
 
-            'video_links.*.url.required' =>
-                'Link video wajib diisi.',
+            'publisher_id.required' => 'Penerbit wajib dipilih.',
 
-            'video_links.max' =>
-                'Maksimal 20 link video.',
+            'publisher_id.required_if' => 'Penerbit wajib dipilih.',
 
-            'video_links.list' =>
-                'Link video harus berupa daftar berurutan.',
+            'synopsis.required' => 'Sinopsis wajib diisi.',
 
-            'video_links.*.access_type.required' =>
-                'Pilih tipe akses.',
+            'synopsis.required_if' => 'Sinopsis wajib diisi.',
 
-            'video_links.*.access_type.enum' =>
-                'Tipe akses video tidak valid.',
+            'msrp.required' => 'Harga MSRP wajib diisi.',
 
-            'instagram_embeds.max' =>
-                'Maksimal 10 postingan Instagram.',
+            'msrp.required_if' => 'Harga MSRP wajib diisi.',
 
-            'instagram_embeds.*.url.url' =>
-                'URL Instagram tidak valid.',
+            'images.max' => 'Maksimal 5 gambar.',
 
-            'news_links.max' =>
-                'Maksimal 10 link berita.',
+            'images.*.image_url.url' => 'URL gambar tidak valid.',
 
-            'news_links.*.url.url' =>
-                'URL berita tidak valid.',
+            'news_link.url' => 'Link berita tidak valid.',
+
+            'affiliate_links.*.url.url' => 'URL affiliate tidak valid.',
+
+            'video_links.*.url.url' => 'URL video tidak valid.',
+
+            'video_links.*.platform_name.required' => 'Nama platform wajib diisi.',
+
+            'video_links.*.url.required' => 'Link video wajib diisi.',
+
+            'video_links.max' => 'Maksimal 20 link video.',
+
+            'video_links.list' => 'Link video harus berupa daftar berurutan.',
+
+            'video_links.*.access_type.required' => 'Pilih tipe akses.',
+
+            'video_links.*.access_type.enum' => 'Tipe akses video tidak valid.',
+
+            'instagram_embeds.max' => 'Maksimal 10 postingan Instagram.',
+
+            'instagram_embeds.*.url.url' => 'URL Instagram tidak valid.',
+
+            'news_links.max' => 'Maksimal 10 link berita.',
+
+            'news_links.*.url.url' => 'URL berita tidak valid.',
         ];
     }
 }

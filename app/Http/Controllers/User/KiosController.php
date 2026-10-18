@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Actions\Books\QueryCatalog;
 use App\Http\Controllers\Controller;
-use App\Models\Book;
 use App\Models\KiosItem;
 use App\Models\KiosPartner;
 use App\Models\KiosViewLog;
@@ -18,15 +18,13 @@ class KiosController extends Controller
     public function index()
     {
         $kiosItems = Cache::remember('kios:list:v2', 300, fn () => KiosItem::with(['kiosPartner:id,name,slug', 'linkedBook:id,title'])->available()->latest()->limit(80)->get());
-        $books = Cache::remember('kios:books:v2', 300, fn () => Book::with([
-            'series:id,title', 'edition:id,name', 'storyStatus:id,name', 'publisher:id,name', 'images:id,book_id,image_url,sort_order', 'genres:id,name',
-        ])->latest('updated_at')->limit(100)->get());
+        $linkedIds = $kiosItems->pluck('linked_book_id')->filter()->unique()->all();
         $totalKiosItemsCount = Cache::remember('kios:total_items', 300, fn () => KiosItem::count());
         $totalPartnersCount = Cache::remember('kios:total_partners', 300, fn () => KiosPartner::count());
 
         return Inertia::render('User/kios', [
             'kiosItems' => $kiosItems,
-            'books' => Inertia::defer(fn () => $books),
+            'books' => Inertia::defer(fn () => app(QueryCatalog::class)->cardsForIds($linkedIds)),
             'totalKiosItemsCount' => $totalKiosItemsCount,
             'totalPartnersCount' => $totalPartnersCount,
             'meta' => [
@@ -187,14 +185,9 @@ class KiosController extends Controller
         }
 
         $kiosItems = KiosItem::with(['kiosPartner', 'linkedBook'])->available()->latest()->get();
-        $books = Book::with([
-            'series',
-            'edition',
-            'storyStatus',
-            'publisher',
-            'images',
-            'genres',
-        ])->get();
+        $books = app(QueryCatalog::class)->cardsForIds(
+            $kiosItems->pluck('linked_book_id')->filter()->unique()->all()
+        );
 
         $totalKiosItemsCount = KiosItem::count();
         $totalPartnersCount = KiosPartner::count();

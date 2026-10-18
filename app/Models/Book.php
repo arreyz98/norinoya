@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\NormalizedBookType;
 use App\Enums\AgeRating;
+use App\Enums\PublicationStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,7 @@ class Book extends Model
 
     protected $fillable = [
         'title',
+        'publication_status',
         'slug',
         'series_id',
         'volume',
@@ -42,6 +44,7 @@ class Book extends Model
     protected function casts(): array
     {
         return [
+            'publication_status' => PublicationStatus::class,
             'book_type' => NormalizedBookType::class,
             'age_rating' => AgeRating::class,
             'msrp' => 'decimal:2',
@@ -146,9 +149,32 @@ class Book extends Model
         return $this->hasMany(BookViewLog::class, 'book_id');
     }
 
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('publication_status', PublicationStatus::Published);
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->publication_status === PublicationStatus::Published;
+    }
+
+    public function isReadyToPublish(): bool
+    {
+        return trim((string) $this->title) !== ''
+            && trim((string) $this->volume) !== ''
+            && $this->edition_id !== null
+            && $this->book_type !== null
+            && $this->story_status_id !== null
+            && $this->age_rating !== null
+            && $this->publisher_id !== null
+            && trim(strip_tags((string) $this->synopsis)) !== ''
+            && $this->msrp !== null;
+    }
+
     public static function homeQuery(): Builder
     {
-        return static::query()->with([
+        return static::query()->published()->with([
             'series:id,title',
             'edition:id,name',
             'storyStatus:id,name',
@@ -162,5 +188,43 @@ class Book extends Model
             'newsLinks:id,book_id,title,url,sort_order',
             'videoLinks:id,book_id,platform_name,title,access_type,url,sort_order',
         ]);
+    }
+
+    /**
+     * Kartu katalog: tanpa sinopsis, embed, dan link afiliasi.
+     *
+     * @return Builder<Book>
+     */
+    public static function catalogQuery(): Builder
+    {
+        return static::query()
+            ->published()
+            ->select([
+                'id',
+                'title',
+                'slug',
+                'volume',
+                'sort_order',
+                'book_type',
+                'age_rating',
+                'msrp',
+                'is_upcoming',
+                'views_count',
+                'adaptation',
+                'series_id',
+                'publisher_id',
+                'story_status_id',
+                'edition_id',
+                'created_at',
+                'updated_at',
+            ])
+            ->with([
+                'series:id,title',
+                'edition:id,name',
+                'storyStatus:id,name',
+                'publisher:id,name',
+                'authors:id,name',
+                'genres:id,name',
+            ]);
     }
 }

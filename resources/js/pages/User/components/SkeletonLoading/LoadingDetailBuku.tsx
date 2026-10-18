@@ -1,6 +1,7 @@
 import React from 'react';
+import { ArrowLeft } from 'lucide-react';
 
-export default function LoadingDetailBuku() {
+export default function LoadingDetailBuku({ onClose }: { onClose?: () => void }) {
   return (
     <div className="w-full bg-white dark:bg-neutral-950 flex flex-col min-h-screen animate-pulse select-none pointer-events-none">
       <div className="h-full w-full bg-white dark:bg-[#202120] text-neutral-950 dark:text-neutral-50 flex flex-col relative">
@@ -8,8 +9,18 @@ export default function LoadingDetailBuku() {
         {/* Top Header Sticky Bar Skeleton */}
         <div className="fixed top-[58px] sm:top-[64px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">
           <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
-            {/* Tombol Kembali Skeleton */}
-            <div className="h-9 w-24 bg-neutral-200 dark:bg-neutral-800 rounded-lg" />
+            {onClose ? (
+              <button
+                type="button"
+                onClick={onClose}
+                className="h-9 inline-flex items-center gap-2 px-3.5 bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-xs font-bold rounded-lg cursor-pointer border border-neutral-200/50 dark:border-neutral-700 pointer-events-auto animate-none"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Kembali</span>
+              </button>
+            ) : (
+              <div className="h-9 w-24 bg-neutral-200 dark:bg-neutral-800 rounded-lg" />
+            )}
             {/* Tombol Bagikan Skeleton */}
             <div className="w-9 h-9 bg-neutral-200 dark:bg-neutral-800 rounded-lg" />
           </div>

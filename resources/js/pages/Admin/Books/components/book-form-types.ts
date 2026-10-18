@@ -86,6 +86,7 @@ export interface BookFormData {
     dimensions: string;
     adaptation: string;
     is_upcoming: boolean;
+    publication_status: 'draft' | 'published';
 
     images: ImageItem[];
     tiktok_embeds: TiktokEmbed[];

@@ -40,6 +40,10 @@ Route::get('/panduan-adaptasi', [PanduanAdaptasiController::class, 'index'])->na
 
 Route::get('/panduan-adaptasi/{slug}', [PanduanAdaptasiController::class, 'show'])->name('panduan-adaptasi.detail');
 
+Route::get('/buku/{slug}/data', [UserBookController::class, 'data'])->name('book.data');
+
+Route::post('/books/lookup', [UserBookController::class, 'lookup'])->middleware('throttle:30,1')->name('books.lookup');
+
 Route::get('/buku/{slug}', [UserBookController::class, 'show'])->name('book.detail');
 
 Route::post('/books/{id}/view', [UserBookController::class, 'incrementView'])->middleware('throttle:60,1')->name('books.increment-view');
@@ -120,6 +124,8 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('books/search-logs-clear', [BookController::class, 'clearSearchLogs'])->name('books.search-logs.clear');
 
             Route::get('books/{book}/duplicate', [BookController::class, 'duplicate'])->name('books.duplicate');
+
+            Route::patch('books/{book}/publication', [BookController::class, 'updatePublication'])->name('books.publication.update');
 
             Route::get('books/filter-options', [BookController::class, 'filterOptions'])->name('books.filter-options');
 

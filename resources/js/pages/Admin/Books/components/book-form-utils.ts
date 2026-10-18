@@ -53,6 +53,7 @@ export const buildUniqueSlugPreview = (baseSlug: string, existingSlugs: Readonly
 
 export const validateBook = (form: BookFormData, volumesBySeries: Record<string, string[]>): ValidationErrors => {
     const nextErrors: ValidationErrors = {};
+    const publishing = form.publication_status === 'published';
     const seriesKey = form.series_id ? String(form.series_id) : 'none';
     const seriesVolumes = volumesBySeries[seriesKey] ?? [];
 
@@ -60,41 +61,41 @@ export const validateBook = (form: BookFormData, volumesBySeries: Record<string,
         nextErrors.title = 'Judul buku wajib diisi.';
     }
 
-    if (!form.volume.trim()) {
+    if (publishing && !form.volume.trim()) {
         nextErrors.volume = 'Volume wajib diisi.';
     } else if (form.volume.trim().length > 50) {
         nextErrors.volume = 'Volume maksimal 50 karakter.';
-    } else if (seriesVolumes.includes(form.volume.trim())) {
+    } else if (form.volume.trim() && seriesVolumes.includes(form.volume.trim())) {
         nextErrors.volume = 'Volume ini sudah ada dalam series yang sama.';
     }
 
-    if (!form.edition_id) {
+    if (publishing && !form.edition_id) {
         nextErrors.edition_id = 'Edisi cetakan wajib dipilih.';
     }
 
-    if (!form.book_type) {
+    if (publishing && !form.book_type) {
         nextErrors.book_type = 'Tipe buku wajib dipilih.';
     }
 
-    if (!form.story_status_id) {
+    if (publishing && !form.story_status_id) {
         nextErrors.story_status_id = 'Status cerita wajib dipilih.';
     }
 
-    if (!form.age_rating) {
+    if (publishing && !form.age_rating) {
         nextErrors.age_rating = 'Rating umur wajib dipilih.';
     }
 
-    if (!form.publisher_id) {
+    if (publishing && !form.publisher_id) {
         nextErrors.publisher_id = 'Penerbit wajib dipilih.';
     }
 
-    if (!form.synopsis.trim()) {
+    if (publishing && !form.synopsis.trim()) {
         nextErrors.synopsis = 'Sinopsis wajib diisi.';
     }
 
-    if (!form.msrp.trim()) {
+    if (publishing && !form.msrp.trim()) {
         nextErrors.msrp = 'Harga MSRP wajib diisi.';
-    } else if (!Number.isFinite(Number(form.msrp)) || Number(form.msrp) < 0) {
+    } else if (form.msrp.trim() && (!Number.isFinite(Number(form.msrp)) || Number(form.msrp) < 0)) {
         nextErrors.msrp = 'Harga MSRP harus berupa angka minimal 0.';
     }
 

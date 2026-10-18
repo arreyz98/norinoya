@@ -6,6 +6,7 @@ use App\Actions\Books\CreateBookRelations;
 use App\Actions\Books\UpdateBookRelations;
 use App\Enums\AgeRating;
 use App\Enums\BookType;
+use App\Enums\PublicationStatus;
 use App\Enums\VideoAccessType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookRequest;
@@ -29,6 +30,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -85,6 +87,12 @@ class BookController extends Controller
             $query->where('publisher_id', $request->publisher_id);
         }
 
+        $publicationStatus = (string) $request->input('publication_status', '');
+
+        if (in_array($publicationStatus, [PublicationStatus::Draft->value, PublicationStatus::Published->value], true)) {
+            $query->where('publication_status', $publicationStatus);
+        }
+
         $sort = (string) $request->input('sort', 'latest');
 
         match ($sort) {
@@ -122,7 +130,7 @@ class BookController extends Controller
                 'books' => $books,
                 'selectedSeries' => $selectedSeries,
                 'selectedPublisher' => $selectedPublisher,
-                'filters' => (object) $request->only(['search', 'series_id', 'publisher_id', 'sort', 'per_page']),
+                'filters' => (object) $request->only(['search', 'series_id', 'publisher_id', 'sort', 'per_page', 'publication_status']),
             ]
         );
     }
@@ -627,6 +635,9 @@ class BookController extends Controller
             'book' => [
                 'id' => $book->id,
                 'title' => $book->title,
+                'publication_status' => $book->publication_status instanceof PublicationStatus
+                    ? $book->publication_status->value
+                    : PublicationStatus::Published->value,
                 'slug' => $book->slug,
                 'series_id' => $book->series_id,
                 'volume' => $book->volume,
@@ -784,6 +795,7 @@ class BookController extends Controller
             'book' => [
                 'id' => $book->id,
                 'title' => $book->title,
+                'publication_status' => PublicationStatus::Draft->value,
                 'slug' => $book->slug,
                 'series_id' => $book->series_id,
                 'volume' => $duplicatedVolume,
@@ -895,30 +907,31 @@ class BookController extends Controller
             $data = $request->validated();
             $slug = $this->generateUniqueSlug(
                 $data['title'],
-                $data['volume']
+                $data['volume'] ?? null
             );
 
             $sortOrder = 0;
-            if ($data['series_id']) {
+            if (! empty($data['series_id'])) {
                 $maxSortOrder = Book::where('series_id', $data['series_id'])->max('sort_order');
                 $sortOrder = ($maxSortOrder ?? -1) + 1;
             }
 
             $book = Book::create([
                 'title' => $data['title'],
+                'publication_status' => $data['publication_status'],
                 'slug' => $slug,
                 'series_id' => $data['series_id'] ?? null,
-                'volume' => $data['volume'],
+                'volume' => $data['volume'] ?? null,
                 'sort_order' => $sortOrder,
-                'edition_id' => $data['edition_id'],
-                'book_type' => $data['book_type'],
-                'story_status_id' => $data['story_status_id'],
-                'age_rating' => $data['age_rating'],
-                'publisher_id' => $data['publisher_id'],
+                'edition_id' => $data['edition_id'] ?? null,
+                'book_type' => $data['book_type'] ?? null,
+                'story_status_id' => $data['story_status_id'] ?? null,
+                'age_rating' => $data['age_rating'] ?? null,
+                'publisher_id' => $data['publisher_id'] ?? null,
 
-                'synopsis' => $data['synopsis'],
+                'synopsis' => $data['synopsis'] ?? null,
                 'news_link' => $data['news_link'] ?? null,
-                'msrp' => $data['msrp'],
+                'msrp' => $data['msrp'] ?? null,
                 'isbn' => $data['isbn'] ?? null,
                 'page_count' => $data['page_count'] ?? null,
                 'paper_type' => $data['paper_type'] ?? null,
@@ -944,7 +957,9 @@ class BookController extends Controller
             ->route('admin.books.index')
             ->with(
                 'success',
-                'Buku berhasil ditambahkan.'
+                $book->publication_status === PublicationStatus::Draft
+                    ? 'Buku disimpan sebagai draf.'
+                    : 'Buku berhasil diterbitkan.'
             );
     }
 
@@ -967,28 +982,29 @@ class BookController extends Controller
 
             if (
                 (string) $data['title'] !== (string) $book->title
-                || (string) $data['volume'] !== (string) $book->volume
+                || (string) ($data['volume'] ?? '') !== (string) ($book->volume ?? '')
             ) {
                 $slug = $this->generateUniqueSlug(
                     $data['title'],
-                    (string) $data['volume'],
+                    $data['volume'] ?? null,
                     $book->id
                 );
             }
 
             $book->update([
                 'title' => $data['title'],
+                'publication_status' => $data['publication_status'],
                 'slug' => $slug,
                 'series_id' => $data['series_id'] ?? null,
-                'volume' => $data['volume'],
-                'edition_id' => $data['edition_id'],
-                'book_type' => $data['book_type'],
-                'story_status_id' => $data['story_status_id'],
-                'age_rating' => $data['age_rating'],
-                'publisher_id' => $data['publisher_id'],
-                'synopsis' => $data['synopsis'],
+                'volume' => $data['volume'] ?? null,
+                'edition_id' => $data['edition_id'] ?? null,
+                'book_type' => $data['book_type'] ?? null,
+                'story_status_id' => $data['story_status_id'] ?? null,
+                'age_rating' => $data['age_rating'] ?? null,
+                'publisher_id' => $data['publisher_id'] ?? null,
+                'synopsis' => $data['synopsis'] ?? null,
                 'news_link' => $data['news_link'] ?? null,
-                'msrp' => $data['msrp'],
+                'msrp' => $data['msrp'] ?? null,
                 'isbn' => $data['isbn'] ?? null,
                 'page_count' => $data['page_count'] ?? null,
                 'paper_type' => $data['paper_type'] ?? null,
@@ -1007,12 +1023,48 @@ class BookController extends Controller
 
         $this->forgetBookCaches();
 
+        $status = PublicationStatus::tryFrom((string) ($data['publication_status'] ?? ''));
+
         return redirect()
             ->route('admin.books.index')
             ->with(
                 'success',
-                'Buku berhasil diperbarui.'
+                $status === PublicationStatus::Draft
+                    ? 'Buku disimpan sebagai draf.'
+                    : 'Buku berhasil diterbitkan.'
             );
+    }
+
+    public function updatePublication(Request $request, Book $book): RedirectResponse
+    {
+        $validated = $request->validate([
+            'publication_status' => ['required', Rule::enum(PublicationStatus::class)],
+        ], [
+            'publication_status.required' => 'Status publikasi wajib dipilih.',
+            'publication_status.enum' => 'Status publikasi tidak valid.',
+        ]);
+
+        $status = PublicationStatus::from($validated['publication_status']);
+
+        if ($status === PublicationStatus::Published && ! $book->isReadyToPublish()) {
+            return back()->with(
+                'error',
+                'Lengkapi volume, edisi, tipe, status cerita, rating umur, penerbit, sinopsis, dan harga sebelum diterbitkan.'
+            );
+        }
+
+        $book->update([
+            'publication_status' => $status,
+        ]);
+
+        $this->forgetBookCaches();
+
+        return back()->with(
+            'success',
+            $status === PublicationStatus::Draft
+                ? 'Buku dijadikan draf.'
+                : 'Buku berhasil diterbitkan.'
+        );
     }
 
     /**
@@ -1119,12 +1171,20 @@ class BookController extends Controller
      */
     private function generateUniqueSlug(
         string $title,
-        string $volume,
+        ?string $volume,
         ?int $ignoreId = null
     ): string {
-        $slug = Str::slug(
-            $title.'-volume-'.$volume
-        );
+        $base = trim($title);
+
+        if ($volume !== null && trim($volume) !== '') {
+            $base .= '-volume-'.$volume;
+        }
+
+        $slug = Str::slug($base);
+
+        if ($slug === '') {
+            $slug = 'buku';
+        }
 
         $originalSlug = $slug;
         $counter = 1;
@@ -1191,7 +1251,16 @@ class BookController extends Controller
      */
     private function forgetBookCaches(): void
     {
-        foreach (['home:books:v2', 'bookmark:books:v2', 'news:books:v2', 'kios:books:v2'] as $key) {
+        foreach ([
+            'catalog:page:v1',
+            'catalog:upcoming:v1',
+            'home:books:v2',
+            'bookmark:books:v2',
+            'news:books:v2',
+            'kios:books:v2',
+            'home:total_books',
+            'sitemap:xml:v2',
+        ] as $key) {
             Cache::forget($key);
         }
     }

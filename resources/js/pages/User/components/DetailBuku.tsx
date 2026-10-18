@@ -25,7 +25,7 @@ interface DetailBukuProps {
   setSelectedCategories?: (categories: string[]) => void;
   setSelectedReadingRatings?: (ratings: string[]) => void;
   setSelectedStatuses?: (statuses: string[]) => void;
-  setSelectedComic: (comic: Comic | null) => void;
+  onOpenComic: (comic: Comic, volNumber: number | string) => void;
   allComics?: Comic[];
   newsList?: RawNewsItem[];
 }
@@ -39,7 +39,7 @@ export default function DetailBuku({
   setSelectedCategories,
   setSelectedReadingRatings,
   setSelectedStatuses,
-  setSelectedComic,
+  onOpenComic,
   allComics,
   newsList = [],
 }: DetailBukuProps) {
@@ -1149,10 +1149,7 @@ export default function DetailBuku({
                     return (
                       <div
                         key={relComic.id}
-                        onClick={() => {
-                          setSelectedComic(relComic);
-                          setActiveVolumeNum(firstVol?.volNumber || 1);
-                        }}
+                        onClick={() => onOpenComic(relComic, firstVol?.volNumber || 1)}
                         className="p-2.5 bg-neutral-50/80 dark:bg-neutral-800/40 border border-neutral-200/80 dark:border-neutral-800 rounded-xl flex gap-3 items-center hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group cursor-pointer"
                       >
                         {relCover ? (

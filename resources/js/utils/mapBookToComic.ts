@@ -62,6 +62,26 @@ export interface BookVideoLink {
   sort_order?: number;
 }
 
+export interface CatalogPage {
+  data: BookModel[];
+  current_page: number;
+  last_page: number;
+  per_page?: number;
+  total: number;
+}
+
+export interface CatalogFilters {
+  q: string;
+  sort: string;
+  page: number;
+  format: string[];
+  publisher: string[];
+  status: string[];
+  genre: string[];
+  adaptation: string[];
+  rating: string[];
+}
+
 export interface BookModel {
   id: number;
   title: string;
@@ -390,6 +410,7 @@ export function mapBooksToComics(books: BookModel[]): Comic[] {
         editionName: b.edition?.name || undefined,
         authorStory: volAuthorStory,
         authorArt: volAuthorArt,
+        slug: b.slug,
         price: typeof b.msrp === 'string' ? parseFloat(b.msrp) : (b.msrp || 0),
         isUpcoming: Boolean(b.is_upcoming),
         affiliateLinks: affiliateLinksObj,

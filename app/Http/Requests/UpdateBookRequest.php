@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\BookType;
+use App\Enums\PublicationStatus;
 use App\Enums\VideoAccessType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -14,6 +15,15 @@ class UpdateBookRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if (! $this->filled('publication_status')) {
+            $this->merge([
+                'publication_status' => PublicationStatus::Published->value,
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         $book = $this->route('book');
@@ -23,6 +33,11 @@ class UpdateBookRequest extends FormRequest
             : $book;
 
         return [
+            'publication_status' => [
+                'required',
+                Rule::enum(PublicationStatus::class),
+            ],
+
             'title' => [
                 'required',
                 'string',
@@ -36,7 +51,8 @@ class UpdateBookRequest extends FormRequest
             ],
 
             'volume' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'string',
                 'max:50',
                 Rule::unique('books', 'volume')
@@ -55,36 +71,42 @@ class UpdateBookRequest extends FormRequest
             ],
 
             'edition_id' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'integer',
                 'exists:editions,id',
             ],
 
             'book_type' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'string',
                 Rule::enum(BookType::class),
             ],
 
             'story_status_id' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'integer',
                 'exists:story_statuses,id',
             ],
 
             'age_rating' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'string',
             ],
 
             'publisher_id' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'integer',
                 'exists:publishers,id',
             ],
 
             'synopsis' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'string',
             ],
 
@@ -95,7 +117,8 @@ class UpdateBookRequest extends FormRequest
             ],
 
             'msrp' => [
-                'required',
+                'nullable',
+                'required_if:publication_status,published',
                 'numeric',
                 'min:0',
             ],
@@ -383,71 +406,69 @@ class UpdateBookRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' =>
-                'Judul buku wajib diisi.',
+            'publication_status.required' => 'Status publikasi wajib dipilih.',
 
-            'volume.required' =>
-                'Volume wajib diisi.',
+            'publication_status.enum' => 'Status publikasi tidak valid.',
 
-            'volume.max' =>
-                'Volume maksimal 50 karakter.',
+            'title.required' => 'Judul buku wajib diisi.',
 
-            'volume.unique' =>
-                'Volume tersebut sudah digunakan dalam series ini.',
+            'volume.required' => 'Volume wajib diisi.',
 
-            'images.max' =>
-                'Maksimal 5 gambar.',
+            'volume.required_if' => 'Volume wajib diisi.',
 
-            'tiktok_embeds.max' =>
-                'Maksimal 10 video TikTok.',
+            'edition_id.required_if' => 'Edisi cetakan wajib dipilih.',
 
-            'news_link.url' =>
-                'Link berita tidak valid.',
+            'book_type.required_if' => 'Tipe buku wajib dipilih.',
 
-            'msrp.required' =>
-                'Harga MSRP wajib diisi.',
+            'story_status_id.required_if' => 'Status cerita wajib dipilih.',
 
-            'msrp.numeric' =>
-                'Harga MSRP harus berupa angka.',
+            'age_rating.required_if' => 'Rating umur wajib dipilih.',
 
-            'video_links.*.url.url' =>
-                'URL video tidak valid.',
+            'publisher_id.required_if' => 'Penerbit wajib dipilih.',
 
-            'video_links.*.platform_name.required' =>
-                'Nama platform wajib diisi.',
+            'synopsis.required_if' => 'Sinopsis wajib diisi.',
 
-            'video_links.*.url.required' =>
-                'Link video wajib diisi.',
+            'msrp.required_if' => 'Harga MSRP wajib diisi.',
 
-            'video_links.max' =>
-                'Maksimal 20 link video.',
+            'volume.max' => 'Volume maksimal 50 karakter.',
 
-            'video_links.list' =>
-                'Link video harus berupa daftar berurutan.',
+            'volume.unique' => 'Volume tersebut sudah digunakan dalam series ini.',
 
-            'video_links.*.access_type.required' =>
-                'Pilih tipe akses.',
+            'images.max' => 'Maksimal 5 gambar.',
 
-            'video_links.*.access_type.enum' =>
-                'Tipe akses video tidak valid.',
+            'tiktok_embeds.max' => 'Maksimal 10 video TikTok.',
 
-            'video_links.*.id.exists' =>
-                'Link video tidak ditemukan pada buku ini.',
+            'news_link.url' => 'Link berita tidak valid.',
 
-            'video_links.*.id.distinct' =>
-                'Link video yang sama tidak boleh dikirim dua kali.',
+            'msrp.required' => 'Harga MSRP wajib diisi.',
 
-            'instagram_embeds.max' =>
-                'Maksimal 10 postingan Instagram.',
+            'msrp.numeric' => 'Harga MSRP harus berupa angka.',
 
-            'instagram_embeds.*.url.url' =>
-                'URL Instagram tidak valid.',
+            'video_links.*.url.url' => 'URL video tidak valid.',
 
-            'news_links.max' =>
-                'Maksimal 10 link berita.',
+            'video_links.*.platform_name.required' => 'Nama platform wajib diisi.',
 
-            'news_links.*.url.url' =>
-                'URL berita tidak valid.',
+            'video_links.*.url.required' => 'Link video wajib diisi.',
+
+            'video_links.max' => 'Maksimal 20 link video.',
+
+            'video_links.list' => 'Link video harus berupa daftar berurutan.',
+
+            'video_links.*.access_type.required' => 'Pilih tipe akses.',
+
+            'video_links.*.access_type.enum' => 'Tipe akses video tidak valid.',
+
+            'video_links.*.id.exists' => 'Link video tidak ditemukan pada buku ini.',
+
+            'video_links.*.id.distinct' => 'Link video yang sama tidak boleh dikirim dua kali.',
+
+            'instagram_embeds.max' => 'Maksimal 10 postingan Instagram.',
+
+            'instagram_embeds.*.url.url' => 'URL Instagram tidak valid.',
+
+            'news_links.max' => 'Maksimal 10 link berita.',
+
+            'news_links.*.url.url' => 'URL berita tidak valid.',
         ];
     }
 }
