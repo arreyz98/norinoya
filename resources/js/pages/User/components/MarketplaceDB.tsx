@@ -134,6 +134,10 @@ function resolveVolumeFor(comic: Comic, parsedVol: number | string): number | st
   return comic.volumes[0]?.volNumber || 1;
 }
 
+// Jumlah jilid per halaman. WAJIB sama dengan QueryCatalog::PER_PAGE di backend
+// (app/Actions/Books/QueryCatalog.php) supaya rentang nomor di toolbar akurat.
+const ITEMS_PER_PAGE = 24;
+
 const MONTH_ID_MAP: Record<string, number> = {
   jan: 0, feb: 1, mar: 2, apr: 3, mei: 4, 'mey': 4, jun: 5, jul: 6,
   agu: 7, ago: 7, agt: 7, aug: 7, sep: 8, 'oct': 9, okt: 9, nov: 10, des: 11, dec: 11,
@@ -406,7 +410,6 @@ export default function MarketplaceDb({
   });
 
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const ITEMS_PER_PAGE = 24;
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   const upcomingReleases = useMemo(() => {
@@ -956,9 +959,15 @@ const getReadingRatingStyle = (rating?: string) => {
     if (serverCatalog) return sortedVolumePosts;
     const startIndex = (effectivePage - 1) * ITEMS_PER_PAGE;
     return sortedVolumePosts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [serverCatalog, sortedVolumePosts, effectivePage, ITEMS_PER_PAGE]);
+  }, [serverCatalog, sortedVolumePosts, effectivePage]);
 
+  // Total jilid yang benar: catalogTotal (ikut filter dari backend) di mode server,
+  // atau panjang hasil filter di mode lokal/mock.
   const listedCount = serverCatalog ? catalogTotal : sortedVolumePosts.length;
+
+  // Rentang nomor urut yang sedang tampil, mis. "25 - 26" di halaman terakhir.
+  const rangeStart = listedCount > 0 ? (effectivePage - 1) * ITEMS_PER_PAGE + 1 : 0;
+  const rangeEnd = listedCount > 0 ? Math.min(effectivePage * ITEMS_PER_PAGE, listedCount) : 0;
 
   const goToCatalogPage = (page: number) => {
     if (serverCatalog) {
@@ -1009,7 +1018,7 @@ const getReadingRatingStyle = (rating?: string) => {
               NORINOYA
             </h2>
             <div className="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap">
-              {['Manga', 'Novel', 'Light Novel'].map((label) => (
+              {['Manga', 'Novel', 'Light Novel', 'J-Lit'].map((label) => (
                 <div
                   key={label}
                   className="px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-white/90 dark:bg-neutral-800/90 text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs font-sans font-semibold select-none shadow-3xs"
@@ -1570,7 +1579,7 @@ const getReadingRatingStyle = (rating?: string) => {
             DATA TERBITAN RESMI
           </span>
           <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300">
-            Menampilkan <strong className="text-neutral-950 dark:text-white font-bold">{sortedVolumePosts.length > 0 ? (effectivePage - 1) * ITEMS_PER_PAGE + 1 : 0} - {Math.min(effectivePage * ITEMS_PER_PAGE, sortedVolumePosts.length)}</strong> dari <strong className="text-neutral-950 dark:text-white font-bold">{sortedVolumePosts.length}</strong> Jilid Komik / Novel
+            Menampilkan <strong className="text-neutral-950 dark:text-white font-bold">{rangeStart} - {rangeEnd}</strong> dari <strong className="text-neutral-950 dark:text-white font-bold">{listedCount}</strong> Jilid Buku
           </p>
         </div>
 

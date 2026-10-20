@@ -152,12 +152,12 @@
     "src": "public/assets/images/white.svg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-GkSM4hov.css",
+    "file": "assets/app-CFXPdtwQ.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-BO8AXliv.js",
+    "file": "assets/app-CExZalEX.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -274,11 +274,11 @@
       "resources/js/pages/welcome.tsx"
     ],
     "css": [
-      "assets/app-GkSM4hov.css"
+      "assets/app-CFXPdtwQ.css"
     ]
   },
   "resources/js/pages/User/bookmark.tsx": {
-    "file": "assets/bookmark-B6mry4_N.js",
+    "file": "assets/bookmark-IR05vLuW.js",
     "name": "bookmark",
     "src": "resources/js/pages/User/bookmark.tsx",
     "isDynamicEntry": true,
@@ -328,7 +328,7 @@
     ]
   },
   "resources/js/pages/User/components/DetailBuku.tsx": {
-    "file": "assets/DetailBuku-rBios6TO.js",
+    "file": "assets/DetailBuku-7cndjBHE.js",
     "name": "DetailBuku",
     "src": "resources/js/pages/User/components/DetailBuku.tsx",
     "isDynamicEntry": true,
@@ -347,7 +347,7 @@
     ]
   },
   "resources/js/pages/User/components/DetailKios.tsx": {
-    "file": "assets/DetailKios-D_Jj7atQ.js",
+    "file": "assets/DetailKios-C5wUiBbs.js",
     "name": "DetailKios",
     "src": "resources/js/pages/User/components/DetailKios.tsx",
     "isDynamicEntry": true,
@@ -360,7 +360,7 @@
     ]
   },
   "resources/js/pages/User/components/DetailNews.tsx": {
-    "file": "assets/DetailNews-B3acViQY.js",
+    "file": "assets/DetailNews-DXPMvJyD.js",
     "name": "DetailNews",
     "src": "resources/js/pages/User/components/DetailNews.tsx",
     "isDynamicEntry": true,
@@ -369,6 +369,7 @@
       "_vendor-motion-Cot2WfL4.js",
       "_bookmarkStorage-BwPagtS8.js",
       "_admin-pages-BxOP9zx6.js",
+      "_mapBookToComic-oOjqncDu.js",
       "resources/js/pages/User/components/BookmarkToast.tsx",
       "_mockData-B5EXHPit.js",
       "_vendor-lucide-N3VDnFeC.js",
@@ -395,7 +396,7 @@
     ]
   },
   "resources/js/pages/User/components/EtalaseCatalog.tsx": {
-    "file": "assets/EtalaseCatalog-DVV9X2NA.js",
+    "file": "assets/EtalaseCatalog-BkCD1g70.js",
     "name": "EtalaseCatalog",
     "src": "resources/js/pages/User/components/EtalaseCatalog.tsx",
     "isDynamicEntry": true,
@@ -447,7 +448,7 @@
     ]
   },
   "resources/js/pages/User/components/MarketplaceDB.tsx": {
-    "file": "assets/MarketplaceDB-D6VY4MT7.js",
+    "file": "assets/MarketplaceDB-DrinMnDc.js",
     "name": "MarketplaceDB",
     "src": "resources/js/pages/User/components/MarketplaceDB.tsx",
     "isDynamicEntry": true,
@@ -504,7 +505,7 @@
     ]
   },
   "resources/js/pages/User/components/NewsFeed.tsx": {
-    "file": "assets/NewsFeed-Bhr5RRsJ.js",
+    "file": "assets/NewsFeed-GdTI78uc.js",
     "name": "NewsFeed",
     "src": "resources/js/pages/User/components/NewsFeed.tsx",
     "isDynamicEntry": true,
@@ -561,7 +562,7 @@
     ]
   },
   "resources/js/pages/User/components/SkeletonLoading/LoadingDetailBuku.tsx": {
-    "file": "assets/LoadingDetailBuku-LiJYa9Jn.js",
+    "file": "assets/LoadingDetailBuku-D2Rmey-Y.js",
     "name": "LoadingDetailBuku",
     "src": "resources/js/pages/User/components/SkeletonLoading/LoadingDetailBuku.tsx",
     "isDynamicEntry": true,
@@ -589,7 +590,7 @@
     ]
   },
   "resources/js/pages/User/components/SkeletonLoading/LoadingNews.tsx": {
-    "file": "assets/LoadingNews-BEXrLgDc.js",
+    "file": "assets/LoadingNews-DCbkB-rM.js",
     "name": "LoadingNews",
     "src": "resources/js/pages/User/components/SkeletonLoading/LoadingNews.tsx",
     "isDynamicEntry": true,
@@ -598,7 +599,7 @@
     ]
   },
   "resources/js/pages/User/home.tsx": {
-    "file": "assets/home-DnryBy4N.js",
+    "file": "assets/home-CV_nxaU3.js",
     "name": "home",
     "src": "resources/js/pages/User/home.tsx",
     "isDynamicEntry": true,
@@ -629,7 +630,7 @@
     ]
   },
   "resources/js/pages/User/kios.tsx": {
-    "file": "assets/kios-CAbn8U4e.js",
+    "file": "assets/kios-SFMdKvb8.js",
     "name": "kios",
     "src": "resources/js/pages/User/kios.tsx",
     "isDynamicEntry": true,
@@ -656,7 +657,7 @@
     ]
   },
   "resources/js/pages/User/news.tsx": {
-    "file": "assets/news-DQ6JdXer.js",
+    "file": "assets/news-CrMmmyQX.js",
     "name": "news",
     "src": "resources/js/pages/User/news.tsx",
     "isDynamicEntry": true,
@@ -686,7 +687,7 @@
     ]
   },
   "resources/js/pages/User/panduanAdaptasi.tsx": {
-    "file": "assets/panduanAdaptasi-C4hcPLDY.js",
+    "file": "assets/panduanAdaptasi-B4pXX7zS.js",
     "name": "panduanAdaptasi",
     "src": "resources/js/pages/User/panduanAdaptasi.tsx",
     "isDynamicEntry": true,

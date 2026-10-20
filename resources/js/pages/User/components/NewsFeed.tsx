@@ -894,7 +894,7 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.25 }}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 max-w-7xl mx-auto px-1"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 max-w-7xl mx-auto px-1 sm:px-0"
           >
             {/* LEFT COLUMN: STICKY SEARCH & CATEGORY FILTER SIDEBAR WIDGET (3 Columns) */}
             <NewsCategorySidebar
@@ -913,8 +913,8 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
               NEWS_UPDATES={newsFeedData}
             />
 
-            {/* MIDDLE COLUMN: FEATURED POST & ARTICLE LIST (5 Columns) */}
-            <div className="lg:col-span-5 flex flex-col gap-6">
+            {/* MIDDLE COLUMN: FEATURED POST & ARTICLE LIST (6 Columns) */}
+            <div className="lg:col-span-6 flex flex-col gap-6">
               
               {/* MOBILE & TABLET SEARCH BAR & CATEGORIES (lg:hidden) */}
               <div className="lg:hidden flex flex-col gap-3">

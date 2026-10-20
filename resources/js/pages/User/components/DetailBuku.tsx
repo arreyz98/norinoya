@@ -521,7 +521,7 @@ export default function DetailBuku({
           <div className="w-full">
             {/* Top Header Navigation sticky full-width block */}
           <div className="fixed top-[58px] sm:top-[64px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800 transition-colors">
-                    <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
+                    <div className="max-w-7xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
                       <button
                         onClick={handleCloseModal}
                         className="h-9 inline-flex items-center gap-2 px-3.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none"
@@ -578,7 +578,7 @@ export default function DetailBuku({
                     </div>
                   </div>
 
-            <div className="w-full h-fit lg:max-w-[92%] xl:max-w-7xl mx-auto px-3 sm:px-6 lg:px-24 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-[#202120] ">
+            <div className="w-full h-fit max-w-7xl mx-auto px-3 sm:px-0 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-[#202120]">
               {/* Title Header with Gradient */}
               <div id="comic-detail-card" className=" dark:bg-[#171717] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
 
@@ -1169,7 +1169,7 @@ export default function DetailBuku({
 
                         <div className="flex-1 min-w-0 text-left space-y-0.5">
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-[8.5px] font-extrabold bg-neutral-200/80 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 px-1.5 py-0.2 rounded uppercase leading-none">
+                            <span className="text-[8.5px] bg-white dark:bg-neutral-900 text-neutral-850 dark:text-neutral-200 px-1.5 py-0.5 rounded-md border border-neutral-200 dark:border-neutral-800 font-medium leading-normal shadow-2xs">
                               {relComic.category ? getBookTypeLabel(relComic.category) : 'Buku'}
                             </span>
                             <span className="text-[9.5px] text-neutral-400 truncate">
@@ -1203,7 +1203,7 @@ export default function DetailBuku({
                 </div>
               </div>
 
-              {/* KIOS PENJUALAN Widget (hidden while no relevant kios post exists) */}
+              {/* PRODUK TERKAIT Widget (hidden while no relevant kios post exists) */}
               {relevantKiosItems.length > 0 && (
                 <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 space-y-3 shadow-xs text-left">
                   <div className="flex items-center justify-between pb-2 border-b border-neutral-150 dark:border-neutral-800">
@@ -1212,7 +1212,7 @@ export default function DetailBuku({
                         <Store className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <h5 className="font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs tracking-wider">
-                        KIOS
+                        Produk Terkait
                       </h5>
                     </div>
                     <span className="text-[10px] font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2 py-0.5 rounded-md">

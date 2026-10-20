@@ -8,7 +8,7 @@ export default function LoadingDetailBuku({ onClose }: { onClose?: () => void })
         
         {/* Top Header Sticky Bar Skeleton */}
         <div className="fixed top-[58px] sm:top-[64px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">
-          <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
+          <div className="max-w-7xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
             {onClose ? (
               <button
                 type="button"
@@ -27,7 +27,7 @@ export default function LoadingDetailBuku({ onClose }: { onClose?: () => void })
         </div>
 
         {/* Scrollable Container Area */}
-        <div className="w-full h-fit lg:max-w-[92%] xl:max-w-7xl mx-auto px-3 sm:px-6 lg:px-24 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-neutral-950">
+        <div className="w-full h-fit max-w-7xl mx-auto px-3 sm:px-0 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-neutral-950">
           
           {/* Main Book Card Skeleton (Cover + Right Column) */}
           <div className="bg-neutral-50/80 dark:bg-[#0F0F0F] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">

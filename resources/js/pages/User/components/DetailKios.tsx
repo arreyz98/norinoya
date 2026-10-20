@@ -75,7 +75,6 @@ export default function DetailKios({
   onClose,
   onSelectItem,
   onOpenShareModal,
-  onAddToCart,
   onFilterCategory,
 }: DetailKiosProps) {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -320,7 +319,7 @@ export default function DetailKios({
       >
         {/* Top Header Navigation sticky full-width block */}
         <div className="fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">
-          <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
             <button
               onClick={onClose}
               className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none"
@@ -364,13 +363,13 @@ export default function DetailKios({
           </div>
         </div>
 
-        <div className="max-w-4xl w-full mx-auto px-3 sm:px-6 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28">
+        <div className="max-w-7xl w-full mx-auto px-3 sm:px-0 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28">
           {/* Title Header Block */}
           <div className="bg-neutral-50/80 dark:bg-neutral-900/40 p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs">
 
             {/* Left Column: Cover carousel/image portfolio */}
             <div className="flex flex-col gap-3 shrink-0 w-full md:w-80">
-              <div className="relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-xl overflow-hidden bg-neutral-950 flex flex-col justify-between p-3 border border-neutral-150 dark:border-neutral-800 shadow-md group">
+              <div className="relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-3xl overflow-hidden bg-neutral-950 flex flex-col justify-between p-3 border border-neutral-150 dark:border-neutral-800 shadow-md group">
 
                 {selectedItem.isPreloved && selectedItem.carouselImages && selectedItem.carouselImages.length > 0 ? (
                   <img
@@ -647,7 +646,7 @@ export default function DetailKios({
 
             {/* Left Detail Column */}
             <div className="col-span-1 md:col-span-8 space-y-6 w-full max-w-full overflow-hidden text-left">
-              <div className="space-y-3">
+              <div className="space-y-3 px-6">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-150 dark:border-neutral-850 pb-1 leading-normal">
                   Deskripsi Produk
                 </h4>

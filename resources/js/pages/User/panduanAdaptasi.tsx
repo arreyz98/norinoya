@@ -127,9 +127,9 @@ export default function PanduanAdaptasiPage({
         onNavigateKios={handleNavKios}
       />
 
-      <main className="flex-1 w-full px-3 sm:px-6 py-8 sm:py-12 flex items-start justify-center">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-6 py-8 sm:py-12 flex items-start justify-center">
         {/* Floating content board */}
-        <section className="w-full max-w-5xl bg-white dark:bg-neutral-900 rounded-2xl sm:rounded-3xl border border-neutral-200/80 dark:border-neutral-800/60 shadow-[0_8px_30px_rgba(19,42,30,0.04)] dark:shadow-none p-6 sm:p-10 md:p-12 transition-all">
+        <section className="w-full max-w-7xl bg-white dark:bg-neutral-900 rounded-2xl sm:rounded-3xl border border-neutral-200/80 dark:border-neutral-800/60 shadow-[0_8px_30px_rgba(19,42,30,0.04)] dark:shadow-none p-6 sm:p-10 md:p-12 transition-all">
           {/* Header area */}
           <header className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-8 border-b border-neutral-200/60 dark:border-neutral-800/60">
             <div>

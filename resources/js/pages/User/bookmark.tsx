@@ -575,7 +575,7 @@ export function SavedBookmarks({
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto">
+    <div className="space-y-6 max-w-7xl mx-auto">
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (
@@ -633,7 +633,7 @@ export function SavedBookmarks({
       </div>
 
       {/* Beta Notice: Local Device Storage */}
-      <div className="mb-4 p-3 sm:p-3.5 bg-neutral-50/80 dark:bg-neutral-900/50 border border-neutral-200/80 dark:border-neutral-800 rounded-xl sm:rounded-2xl flex items-start sm:items-center gap-2.5 shadow-2xs">
+      <div className="mb-4 p-3 sm:p-3.5 bg-white dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 rounded-xl sm:rounded-2xl flex items-start sm:items-center gap-2.5 shadow-xs">
         <Info className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5 sm:mt-0" />
         <div className="text-[11.5px] sm:text-xs leading-relaxed text-neutral-600 dark:text-neutral-300 flex-1">
           <span className="inline-flex items-center gap-1 mr-1.5 align-middle">
@@ -767,7 +767,7 @@ export function SavedBookmarks({
       {/* Main Content Area */}
       {counts.total === 0 ? (
         /* Empty State Overall */
-        <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/70 dark:border-neutral-800 p-8 sm:p-12 text-center flex flex-col items-center justify-center space-y-4">
+        <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/60 dark:border-neutral-800 shadow-xs p-8 sm:p-12 text-center flex flex-col items-center justify-center space-y-4">
           <div className="w-16 h-16 rounded-full bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400">
             <Bookmark className="w-8 h-8 stroke-[1.5]" />
           </div>
@@ -808,7 +808,7 @@ export function SavedBookmarks({
         </div>
       ) : totalFilteredCount === 0 ? (
         /* Empty State on Search */
-        <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/70 dark:border-neutral-800 p-8 text-center flex flex-col items-center justify-center space-y-3">
+        <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/60 dark:border-neutral-800 shadow-xs p-8 text-center flex flex-col items-center justify-center space-y-3">
           <Search className="w-8 h-8 text-neutral-400" />
           <h4 className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
             Tidak ada hasil untuk "{searchQuery}"
@@ -1289,7 +1289,7 @@ export default function BookmarkPage({
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans flex flex-col transition-colors duration-200">
+    <div className="bg-[#FEFFFE] dark:bg-[#202120] min-h-screen text-neutral-950 dark:text-neutral-50 selection:bg-neutral-900 dark:selection:bg-neutral-100 selection:text-white dark:selection:text-neutral-900 flex flex-col justify-between font-sans">
       <Head>
         <title>Bookmark &amp; Favorit - Norinoya</title>
         <meta name="description" content="Kumpulan katalog buku, komik, berita, dan item kios yang Anda simpan di Norinoya." />

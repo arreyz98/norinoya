@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useBookmarks } from '../../../utils/bookmarkStorage';
 import { prepareEmbedFrames, syncEmbedHeights } from '../../../utils/embedFrame';
+import { getBookTypeLabel } from '../../../utils/mapBookToComic';
 import { BookmarkToast, useBookmarkToast } from './BookmarkToast';
 import { COMICS_DATA } from '../../../types/mockData';
 import { NewsUpdate, Comic, Volume } from '../../../types/demo';
@@ -190,7 +191,7 @@ export default function DetailNews({
   if (!activePost) return null;
 
    return (
-    <div className="w-full max-w-6xl mx-auto relative -mt-4 sm:-mt-6">
+    <div className="w-full max-w-7xl mx-auto relative -mt-4 sm:-mt-6">
       <Head>
         <title>{metaTitle}</title>
         <meta name="description" content={metaDesc} />
@@ -232,7 +233,7 @@ export default function DetailNews({
        </Head>
        {/* Full-width Fixed Top Navigation Bar */}
       <div className="fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">
-        <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+        <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
           <button
             onClick={() => selectPost(null)}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-mono font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0"
@@ -307,7 +308,7 @@ export default function DetailNews({
 
           {/* Main Detail Content Area */}
           <div className="flex flex-col">
-            <div className="p-5 sm:p-7 flex flex-col gap-5">
+            <div className="flex flex-col gap-5">
 
               {/* Headline & Meta */}
               <div className="space-y-2.5">
@@ -946,22 +947,23 @@ export default function DetailNews({
         <div className="lg:col-span-4 flex flex-col gap-5">
 
            {/* WIDGET 1: MINI KATALOG BUKU RELEVAN */}
-           {relevantCatalogItems && relevantCatalogItems.length > 0 && (
-             <div className="bg-white dark:bg-[#202120] rounded-2xl p-4 sm:p-5 border border-neutral-200/85 dark:border-neutral-800 shadow-xs flex flex-col gap-3.5">
-               <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-neutral-200/80 dark:border-neutral-800">
+           <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 space-y-3 shadow-xs text-left">
+             <div className="flex items-center justify-between pb-2 border-b border-neutral-150 dark:border-neutral-800">
                  <div className="flex items-center gap-2">
-                   <ShoppingBag className="w-4 h-4 text-neutral-100 dark:text-neutral-100 shrink-0" />
-                   <h3 className="text-xs font-mono font-extrabold text-neutral-900 dark:text-neutral-100 uppercase tracking-wider">
+                   <div className="p-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-lg shrink-0">
+                     <BookOpen className="w-4 h-4 text-neutral-700 dark:text-neutral-300" />
+                   </div>
+                   <h5 className="font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs tracking-wider">
                      Katalog Relevan
-                   </h3>
+                   </h5>
                  </div>
-                 <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-[#112A12]/15 text-[#112A12]">
-                    {relevantCatalogItems.length} Jilid
+                 <span className="text-[10px] font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2 py-0.5 rounded-md">
+                   {(relevantCatalogItems ?? []).length} Buku
                  </span>
                </div>
 
-               <div className="flex flex-col gap-2.5">
-                 {relevantCatalogItems.map(({ comic, vol }, idx) => (
+               <div className="space-y-2">
+                 {(relevantCatalogItems ?? []).map(({ comic, vol }, idx) => (
                    <div
                      key={`${comic.id}-${vol.volNumber}-${idx}`}
                       onClick={() => {
@@ -977,43 +979,56 @@ export default function DetailNews({
                           triggerToast(`📚 Membuka Katalog: ${comic.title} Vol ${vol.volNumber}`);
                         }
                       }}
-                     className="flex gap-3 p-2.5 rounded-xl bg-neutral-50 dark:bg-[#1A2321] hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200/60 dark:border-emerald-500/20 transition-all cursor-pointer group/kat hover:shadow-xs active:scale-[0.99]"
+                     className="p-2.5 bg-neutral-50/80 dark:bg-neutral-800/40 border border-neutral-200/80 dark:border-neutral-800 rounded-xl flex gap-3 items-center hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group cursor-pointer"
                    >
-                      <img
-                        src={vol.coverImage || comic.coverImage}
-                        alt={`${comic.title} Vol ${vol.volNumber}`}
-                        loading="lazy"
-                        decoding="async"
-                        className="w-13 h-18 object-cover rounded-lg border border-neutral-200 dark:border-neutral-700 shrink-0 shadow-2xs group-hover/kat:scale-103 transition-transform"
-                     />
-                     <div className="flex flex-col justify-between flex-1 min-w-0 py-0.5">
-                       <div>
-                         <div className="flex items-center gap-1.5 mb-1">
-                           <span className="text-[9px] font-mono font-extrabold uppercase px-1.5 py-0.2 rounded bg-neutral-200/80 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200">
-                             Vol {vol.volNumber}
-                           </span>
-                           <span className="text-[9px] font-mono text-neutral-400 font-medium truncate">
-                             {comic.originalPublisher || 'Official'}
-                           </span>
-                         </div>
-                         <h4 className={`text-xs font-extrabold text-neutral-900 dark:text-neutral-100 line-clamp-1 ${getReadingRatingHoverClass(comic.readingRating, 'group-hover/kat')} transition-colors`}>
-                           {comic.title}
-                         </h4>
-                         <p className="text-[10px] text-neutral-500 dark:text-neutral-400 line-clamp-1 font-sans">
-                           {comic.genres?.slice(0, 2).join(', ') || comic.demographic}
-                         </p>
+                     {vol.coverImage || comic.coverImage ? (
+                       <img
+                         src={vol.coverImage || comic.coverImage}
+                         alt={`${comic.title} Vol ${vol.volNumber}`}
+                         loading="lazy"
+                         decoding="async"
+                         referrerPolicy="no-referrer"
+                         className="w-11 h-15 object-cover rounded-md bg-neutral-900 shrink-0 shadow-2xs group-hover:scale-102 transition-transform"
+                       />
+                     ) : (
+                       <div className="w-11 h-15 bg-neutral-200 dark:bg-neutral-700 rounded-md shrink-0 flex items-center justify-center text-neutral-400">
+                         <BookOpen className="w-5 h-5" />
                        </div>
-                       <div className="flex items-center justify-between gap-1 pt-1.5 border-t border-neutral-200/50 dark:border-neutral-800/80 mt-1">
-                         <span className="text-xs font-mono font-black text-[#112A12]">
+                     )}
+                     <div className="flex-1 min-w-0 text-left space-y-0.5">
+                       <div className="flex items-center gap-1.5 flex-wrap">
+                         <span className="text-[8.5px] bg-white dark:bg-neutral-900 text-neutral-850 dark:text-neutral-200 px-1.5 py-0.5 rounded-md border border-neutral-200 dark:border-neutral-800 font-medium leading-normal shadow-2xs">
+                           {comic.category ? getBookTypeLabel(comic.category) : 'Buku'}
+                         </span>
+                         <span className="text-[9.5px] text-neutral-400 truncate">
+                           {comic.publisherName || 'Penerbit'}
+                         </span>
+                       </div>
+
+                       <h6 className={`text-xs font-sans font-bold text-neutral-900 dark:text-neutral-100 line-clamp-1 ${getReadingRatingHoverClass(comic.readingRating, 'group-hover')} transition-colors leading-snug`}>
+                         {comic.title}
+                       </h6>
+
+                       <p className="text-[10px] font-sans text-neutral-500 dark:text-neutral-400 line-clamp-1">
+                         {comic.genres?.slice(0, 2).join(', ') || 'Komik & Novel'}
+                       </p>
+
+                       <div className="flex items-center justify-between pt-0.5">
+                         <span className="text-xs font-extrabold text-neutral-900 dark:text-neutral-100">
                            Rp {vol.price ? vol.price.toLocaleString('id-ID') : '45.000'}
                          </span>
                        </div>
                      </div>
                    </div>
                  ))}
+
+                 {(relevantCatalogItems ?? []).length === 0 && (
+                   <p className="text-xs text-neutral-400 font-sans italic py-3 text-center">
+                     Belum ada katalog relevan lainnya.
+                   </p>
+                 )}
                </div>
              </div>
-           )}
 
             {/* WIDGET 2: PRODUK TERKAIT (KOMIK & MERCHANDISE RELEVAN) */}
             {relevantKiosItems && relevantKiosItems.length > 0 && (

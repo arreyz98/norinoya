@@ -32,7 +32,7 @@ export default function LoadingNews() {
       </div>
 
       {/* 2. Main 3-Column Layout Skeleton (Category Sidebar, Feed Posts List, Right Sidebar) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 max-w-7xl mx-auto px-1">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 max-w-7xl mx-auto px-1 sm:px-0">
         
         {/* LEFT COLUMN: Sticky Filter & Category Sidebar (3 Columns on lg) */}
         <div className="hidden lg:flex lg:col-span-4 flex-col gap-4 self-start">
