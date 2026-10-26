@@ -1,24 +1,24 @@
-import { c as cn, T as Toaster, L as Label, I as Input, B as Button, A as AppLayout, u as useAppearance, S as Separator, D as Dialog, a as DialogTrigger, b as DialogContent, d as DialogTitle, e as DialogDescription, f as DialogFooter, g as DialogClose, _ as __vite_glob_0_45, h as __vite_glob_0_44, i as __vite_glob_0_43, j as __vite_glob_0_42, k as __vite_glob_0_41, l as __vite_glob_0_40, m as __vite_glob_0_39, n as __vite_glob_0_38, o as __vite_glob_0_37, p as __vite_glob_0_36, q as __vite_glob_0_35, r as __vite_glob_0_34, s as __vite_glob_0_33, t as __vite_glob_0_32, v as __vite_glob_0_31, w as __vite_glob_0_30, x as __vite_glob_0_29, y as __vite_glob_0_28, z as __vite_glob_0_27, C as __vite_glob_0_26, E as __vite_glob_0_25, F as __vite_glob_0_24, G as __vite_glob_0_23, H as __vite_glob_0_22, J as __vite_glob_0_21, K as __vite_glob_0_20, M as __vite_glob_0_19, N as __vite_glob_0_18, O as __vite_glob_0_17, P as __vite_glob_0_16, Q as __vite_glob_0_15, R as __vite_glob_0_14, U as __vite_glob_0_13, V as __vite_glob_0_12, W as __vite_glob_0_11, X as __vite_glob_0_10, Y as __vite_glob_0_9, Z as __vite_glob_0_8, $ as __vite_glob_0_7, a0 as __vite_glob_0_6, a1 as __vite_glob_0_5, a2 as __vite_glob_0_4, a3 as __vite_glob_0_3, a4 as __vite_glob_0_2, a5 as __vite_glob_0_1, a6 as __vite_glob_0_0 } from "./assets/admin-pages-DaABfFwt.js";
+import { p as prepareEmbedFrames, s as syncEmbedHeights, c as cn, T as Toaster, L as Label, I as Input, B as Button, A as AppLayout, u as useAppearance, S as Separator, D as Dialog, a as DialogTrigger, b as DialogContent, d as DialogTitle, e as DialogDescription, f as DialogFooter, g as DialogClose, _ as __vite_glob_0_63, h as __vite_glob_0_62, i as __vite_glob_0_61, j as __vite_glob_0_60, k as __vite_glob_0_59, l as __vite_glob_0_58, m as __vite_glob_0_57, n as __vite_glob_0_56, o as __vite_glob_0_55, q as __vite_glob_0_54, r as __vite_glob_0_53, t as __vite_glob_0_52, v as __vite_glob_0_51, w as __vite_glob_0_50, x as __vite_glob_0_49, y as __vite_glob_0_48, z as __vite_glob_0_47, C as __vite_glob_0_46, E as __vite_glob_0_45, F as __vite_glob_0_44, G as __vite_glob_0_43, H as __vite_glob_0_42, J as __vite_glob_0_41, K as __vite_glob_0_40, M as __vite_glob_0_39, N as __vite_glob_0_38, O as __vite_glob_0_37, P as __vite_glob_0_36, Q as __vite_glob_0_35, R as __vite_glob_0_34, U as __vite_glob_0_33, V as __vite_glob_0_32, W as __vite_glob_0_31, X as __vite_glob_0_30, Y as __vite_glob_0_29, Z as __vite_glob_0_28, $ as __vite_glob_0_27, a0 as __vite_glob_0_26, a1 as __vite_glob_0_25, a2 as __vite_glob_0_24, a3 as __vite_glob_0_23, a4 as __vite_glob_0_22, a5 as __vite_glob_0_21, a6 as __vite_glob_0_20, a7 as __vite_glob_0_19, a8 as __vite_glob_0_18, a9 as __vite_glob_0_17, aa as __vite_glob_0_16, ab as __vite_glob_0_15, ac as __vite_glob_0_14, ad as __vite_glob_0_13, ae as __vite_glob_0_12, af as __vite_glob_0_11, ag as __vite_glob_0_10, ah as __vite_glob_0_9, ai as __vite_glob_0_8, aj as __vite_glob_0_7, ak as __vite_glob_0_6, al as __vite_glob_0_5, am as __vite_glob_0_4, an as __vite_glob_0_3, ao as __vite_glob_0_2, ap as __vite_glob_0_1, aq as __vite_glob_0_0 } from "./assets/admin-pages-CKA1DdGt.js";
 import { jsxs, Fragment, jsx } from "react/jsx-runtime";
 import React__default, { useState, useEffect, useCallback, useMemo, useRef, lazy, Suspense } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Sun, Moon, Home, ShoppingBag, Newspaper, Bookmark, Instagram, Youtube, ArrowUp, Check, Info, Layers, BookOpen, Search, Trash2, ChevronRight, Send, Clock, Flame, Globe, Gamepad2, Tv, Mic, Ticket, Tag, Sparkles, BookText, BookMarked, RefreshCw, ShieldCheck, Scale, Lock, FileText, X, Copy, Video, ChevronLeft, Play, ArrowLeft, ArrowUpRight, ShieldAlert, Store, ExternalLink, Eye, Heart, Users, CheckCircle2, CreditCard, Shirt, Palette, Building2, Filter, ShoppingCart, TrendingDown, TrendingUp, Star, ArrowDownAZ, ArrowUpAZ, ArrowUpDown, ChevronDown, Grid, List, Activity, Shield, AlertCircle, Sliders, Calendar, Plus, Pin, MessageCircle, Mail, Handshake, KeyRound, LoaderCircle, ArrowRight, History, Monitor } from "lucide-react";
+import { Sun, Moon, Home, ShoppingBag, Newspaper, Bookmark, Instagram, Youtube, ArrowUp, Check, Info, Layers, BookOpen, Search, Trash2, ChevronRight, Send, Clock, Flame, Globe, Gamepad2, Tv, Mic, Ticket, Tag, Sparkles, BookText, BookMarked, RefreshCw, ShieldCheck, Scale, Lock, FileText, X, Copy, Video, ChevronLeft, Play, ArrowLeft, ArrowUpRight, ShieldAlert, Store, ExternalLink, Eye, Heart, Users, CheckCircle2, Clapperboard, CreditCard, Shirt, Palette, Building2, Filter, ShoppingCart, TrendingDown, TrendingUp, Star, ArrowDownAZ, ArrowUpAZ, ArrowUpDown, ChevronDown, Grid, List, Activity, Shield, AlertCircle, Sliders, Calendar, Plus, Pin, MessageCircle, Mail, Handshake, KeyRound, LoaderCircle, ArrowRight, History, Monitor } from "lucide-react";
 import { router, Head, Link, useForm, usePage, createInertiaApp } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 import createServer from "@inertiajs/react/server";
 import ReactDOMServer from "react-dom/server";
 import "class-variance-authority";
 import "sonner";
-import "cmdk";
-import "@radix-ui/react-popover";
-import "@radix-ui/react-checkbox";
-import "@radix-ui/react-select";
 import "@tiptap/react";
 import "@tiptap/starter-kit";
 import "@tiptap/core";
 import "@tiptap/pm/state";
-import "@radix-ui/react-dialog";
 import "react-day-picker";
+import "@radix-ui/react-checkbox";
+import "@radix-ui/react-select";
+import "cmdk";
+import "@radix-ui/react-dialog";
+import "@radix-ui/react-popover";
 import "@radix-ui/react-label";
 import "@radix-ui/react-slot";
 import "clsx";
@@ -3391,7 +3391,7 @@ function mapBooksToComics(books) {
   });
   const comics = [];
   groups.forEach((groupBooks, key) => {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f;
     groupBooks.sort((a, b) => {
       const aOrder = a.sort_order ?? 0;
       const bOrder = b.sort_order ?? 0;
@@ -3428,9 +3428,11 @@ function mapBooksToComics(books) {
     const authorStory = storyAuthors.join(", ") || (mainBook.authors && mainBook.authors.length > 0 ? mainBook.authors.map((a) => a.name).join(", ") : "Unknown Author");
     const authorArt = artAuthors.join(", ") || authorStory;
     const category = mapBookTypeToCategory(mainBook.book_type);
-    const statusName = (((_b = mainBook.storyStatus) == null ? void 0 : _b.name) || "").toLowerCase();
+    const rawStatusName = ((_b = mainBook.story_status) == null ? void 0 : _b.name) || ((_c = mainBook.storyStatus) == null ? void 0 : _c.name);
+    const statusName = (rawStatusName || "").toLowerCase();
     const status = statusName.includes("tamat") || statusName.includes("complete") || statusName.includes("completed") ? "completed" : "ongoing";
-    const statusId = mainBook.story_status_id ? String(mainBook.story_status_id) : ((_c = mainBook.storyStatus) == null ? void 0 : _c.id) ? String(mainBook.storyStatus.id) : void 0;
+    const rawStatusId = mainBook.story_status_id ?? ((_d = mainBook.story_status) == null ? void 0 : _d.id) ?? ((_e = mainBook.storyStatus) == null ? void 0 : _e.id);
+    const statusId = rawStatusId ? String(rawStatusId) : void 0;
     let demographic = "Shonen";
     if (mainBook.age_rating === "Anak & Bimbingan Orang Tua") {
       demographic = "General";
@@ -3459,7 +3461,7 @@ function mapBooksToComics(books) {
       const rawAffiliateLinks = b.affiliateLinks || b.affiliate_links || [];
       const affiliateLinksList = [];
       rawAffiliateLinks.forEach((link) => {
-        var _a3, _b3, _c3, _d2, _e2, _f;
+        var _a3, _b3, _c3, _d2, _e2, _f2;
         const brand = ((_a3 = link.affiliate_store) == null ? void 0 : _a3.name) || ((_b3 = link.affiliate_store) == null ? void 0 : _b3.slug) || "";
         const brandSlug = ((_c3 = link.affiliate_store) == null ? void 0 : _c3.slug) || brand.toLowerCase().replace(/\s+/g, "-");
         const brandLower = brand.toLowerCase();
@@ -3475,12 +3477,37 @@ function mapBooksToComics(books) {
           storeSlug,
           brand: brand || storeName,
           brandSlug: brandSlug || storeSlug,
-          logoUrl: (_f = link.affiliate_store) == null ? void 0 : _f.logo_url,
+          logoUrl: (_f2 = link.affiliate_store) == null ? void 0 : _f2.logo_url,
           location: link.location || void 0
         });
       });
       const bookImages = b.images && b.images.length > 0 ? b.images.map((img) => img.image_url) : volCover ? [volCover] : [];
       const rawEmbeds = b.tiktokEmbeds || b.tiktok_embeds || [];
+      const rawInstagramEmbeds = b.instagramEmbeds || b.instagram_embeds || [];
+      const instagramEmbeds = rawInstagramEmbeds.slice().sort((a, b2) => (a.sort_order ?? 0) - (b2.sort_order ?? 0)).map((i) => ({
+        id: String(i.id),
+        name: (i.name || "").trim(),
+        url: (i.url || "").trim(),
+        thumbnail_url: (i.thumbnail_url || "").trim(),
+        title: (i.title || i.name || "Review Instagram").trim(),
+        description: (i.description || "").trim(),
+        sort_order: i.sort_order
+      })).filter((i) => i.url !== "");
+      const rawNewsLinks = b.newsLinks || b.news_links || [];
+      const newsLinks = rawNewsLinks.slice().sort((a, b2) => (a.sort_order ?? 0) - (b2.sort_order ?? 0)).map((n) => ({
+        id: String(n.id),
+        title: (n.title || "").trim(),
+        url: (n.url || "").trim(),
+        sort_order: n.sort_order
+      })).filter((n) => n.url !== "");
+      const rawVideoLinks = b.videoLinks || b.video_links || [];
+      const videoLinks = rawVideoLinks.slice().sort((a, b2) => (a.sort_order ?? 0) - (b2.sort_order ?? 0)).map((v) => ({
+        id: String(v.id),
+        platform_name: (v.platform_name || "").trim(),
+        title: (v.title || "").trim(),
+        access_type: v.access_type || "free",
+        url: (v.url || "").trim()
+      })).filter((v) => v.url !== "");
       const volStoryAuthors = [];
       const volArtAuthors = [];
       (_a2 = b.authors) == null ? void 0 : _a2.forEach((a) => {
@@ -3516,10 +3543,12 @@ function mapBooksToComics(books) {
         editionName: ((_c2 = b.edition) == null ? void 0 : _c2.name) || void 0,
         authorStory: volAuthorStory,
         authorArt: volAuthorArt,
+        slug: b.slug,
         price: typeof b.msrp === "string" ? parseFloat(b.msrp) : b.msrp || 0,
         isUpcoming: Boolean(b.is_upcoming),
         affiliateLinks: affiliateLinksObj,
         affiliateLinksList,
+        videoLinks,
         tiktokEmbeds: rawEmbeds.map((t) => ({
           id: String(t.id),
           title: t.name || t.title || `Review TikTok`,
@@ -3527,7 +3556,9 @@ function mapBooksToComics(books) {
           embed_url: t.url_video || t.embed_url || "",
           url_video: t.url_video || t.embed_url || "",
           sort_order: t.sort_order
-        }))
+        })),
+        instagramEmbeds,
+        newsLinks
       };
     });
     let readingRating = "Remaja";
@@ -3535,6 +3566,8 @@ function mapBooksToComics(books) {
       readingRating = mainBook.age_rating;
     }
     const comicTikTokEmbeds = volumes.flatMap((v) => v.tiktokEmbeds || []);
+    const comicInstagramEmbeds = volumes.flatMap((v) => v.instagramEmbeds || []);
+    const comicNewsLinks = volumes.flatMap((v) => v.newsLinks || []);
     comics.push({
       id: key,
       bookId: mainBook.id,
@@ -3542,7 +3575,7 @@ function mapBooksToComics(books) {
       title,
       slug,
       altSlugs,
-      synopsis: mainBook.synopsis || mainBook.short_description || "",
+      synopsis: mainBook.synopsis || "",
       news_link: mainBook.news_link || void 0,
       newsLink: mainBook.news_link || void 0,
       category,
@@ -3550,11 +3583,11 @@ function mapBooksToComics(books) {
       rating: 9,
       status,
       statusId,
-      statusName: (_d = mainBook.storyStatus) == null ? void 0 : _d.name,
+      statusName: rawStatusName,
       demographic,
       genres,
       publisherId: String(mainBook.publisher_id || "p1"),
-      publisherName: ((_e = mainBook.publisher) == null ? void 0 : _e.name) || "Penerbit Indonesia",
+      publisherName: ((_f = mainBook.publisher) == null ? void 0 : _f.name) || "Penerbit Indonesia",
       totalVolumesKnown: status === "completed" ? `${groupBooks.length} Volume (Tamat)` : `Ongoing (${groupBooks.length} Volume)`,
       firstPublishedInId: "2026",
       isFeatured: true,
@@ -3566,7 +3599,9 @@ function mapBooksToComics(books) {
       adaptation: mainBook.adaptation || void 0,
       paperType: mainBook.paper_type || void 0,
       dimensions: mainBook.dimensions || void 0,
-      tiktokEmbeds: comicTikTokEmbeds
+      tiktokEmbeds: comicTikTokEmbeds,
+      instagramEmbeds: comicInstagramEmbeds,
+      newsLinks: comicNewsLinks
     });
   });
   return comics;
@@ -3603,6 +3638,33 @@ function getBookTypeLabel(category) {
   if (!category) return "Buku";
   const key = category.toLowerCase().replace(/[\s-]+/g, "_");
   return BOOK_TYPE_LABELS[key] || BOOK_TYPE_LABELS[category.toLowerCase().replace(/\s+/g, "_")] || category.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+function normalizeSlug(value) {
+  return typeof value === "string" ? value.trim() : "";
+}
+function bookPath(comic, volume) {
+  const volumeSlug = normalizeSlug(volume == null ? void 0 : volume.slug);
+  if (volumeSlug) {
+    return `/buku/${encodeURIComponent(volumeSlug)}`;
+  }
+  const comicSlug = normalizeSlug(comic == null ? void 0 : comic.slug);
+  if (!comicSlug) {
+    return null;
+  }
+  const base = `/buku/${encodeURIComponent(comicSlug)}`;
+  const rawVolume = volume == null ? void 0 : volume.volNumber;
+  const volumeNumber = rawVolume === void 0 || rawVolume === null ? "" : String(rawVolume).trim();
+  return volumeNumber === "" ? base : `${base}?vol=${encodeURIComponent(volumeNumber)}`;
+}
+function bookUrl(comic, volume) {
+  const path = bookPath(comic, volume);
+  if (!path || typeof window === "undefined") {
+    return null;
+  }
+  return `${window.location.origin}${path}`;
+}
+function isPlainLeftClick(event) {
+  return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
 }
 const logoDarkUrl = "/build/assets/dark-CG2M03zv.svg";
 const logoLightUrl = "/build/assets/white-Ddgyc6oW.svg";
@@ -3774,7 +3836,7 @@ function Navbar({
     ] })
   ] });
 }
-const __vite_glob_0_59 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_79 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Navbar
 }, Symbol.toStringTag, { value: "Module" }));
@@ -3918,7 +3980,7 @@ function Footer({ onNavigateHome, onNavigateAbout, darkMode }) {
     /* @__PURE__ */ jsx("div", { className: "max-w-7xl mx-auto border-t border-neutral-200 dark:border-neutral-800 mt-10 pt-6 text-center text-xs font-mono text-neutral-500 dark:text-neutral-400 flex flex-col items-center justify-center leading-[18px]", children: /* @__PURE__ */ jsx("span", { children: "©2026 norinoya" }) })
   ] });
 }
-const __vite_glob_0_54 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_73 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Footer
 }, Symbol.toStringTag, { value: "Module" }));
@@ -3952,7 +4014,7 @@ function BackToTopButton({ threshold = 250 }) {
     }
   ) });
 }
-const __vite_glob_0_48 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_66 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BackToTopButton
 }, Symbol.toStringTag, { value: "Module" }));
@@ -4163,6 +4225,7 @@ function SavedBookmarks({
           list.push({
             id: savedId,
             comicId: comic2.id,
+            href: bookPath(comic2, vol ?? null),
             title: `${comic2.title} Vol.${volNum}`,
             seriesTitle: comic2.title,
             publisherName: comic2.publisherName,
@@ -4185,6 +4248,7 @@ function SavedBookmarks({
         list.push({
           id: savedId,
           comicId: comic.id,
+          href: bookPath(comic, null),
           title: comic.title,
           seriesTitle: comic.title,
           publisherName: comic.publisherName,
@@ -4404,7 +4468,7 @@ function SavedBookmarks({
       }, 3500);
     }
   };
-  return /* @__PURE__ */ jsxs("div", { className: "space-y-6 max-w-6xl mx-auto", children: [
+  return /* @__PURE__ */ jsxs("div", { className: "space-y-6 max-w-7xl mx-auto", children: [
     /* @__PURE__ */ jsx(AnimatePresence, { children: toastMessage && /* @__PURE__ */ jsxs(
       motion.div,
       {
@@ -4448,7 +4512,7 @@ function SavedBookmarks({
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ jsxs("div", { className: "mb-4 p-3 sm:p-3.5 bg-neutral-50/80 dark:bg-neutral-900/50 border border-neutral-200/80 dark:border-neutral-800 rounded-xl sm:rounded-2xl flex items-start sm:items-center gap-2.5 shadow-2xs", children: [
+    /* @__PURE__ */ jsxs("div", { className: "mb-4 p-3 sm:p-3.5 bg-white dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 rounded-xl sm:rounded-2xl flex items-start sm:items-center gap-2.5 shadow-xs", children: [
       /* @__PURE__ */ jsx(Info, { className: "w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5 sm:mt-0" }),
       /* @__PURE__ */ jsxs("div", { className: "text-[11.5px] sm:text-xs leading-relaxed text-neutral-600 dark:text-neutral-300 flex-1", children: [
         /* @__PURE__ */ jsx("span", { className: "inline-flex items-center gap-1 mr-1.5 align-middle", children: /* @__PURE__ */ jsx("span", { className: "px-1.5 py-0.2 bg-amber-100 dark:bg-amber-950/60 border border-amber-300/80 dark:border-amber-700/60 text-amber-800 dark:text-amber-300 text-[10px] font-mono font-extrabold uppercase rounded", children: "Mode Beta" }) }),
@@ -4584,7 +4648,7 @@ function SavedBookmarks({
     ] }),
     counts.total === 0 ? (
       /* Empty State Overall */
-      /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/70 dark:border-neutral-800 p-8 sm:p-12 text-center flex flex-col items-center justify-center space-y-4", children: [
+      /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/60 dark:border-neutral-800 shadow-xs p-8 sm:p-12 text-center flex flex-col items-center justify-center space-y-4", children: [
         /* @__PURE__ */ jsx("div", { className: "w-16 h-16 rounded-full bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400", children: /* @__PURE__ */ jsx(Bookmark, { className: "w-8 h-8 stroke-[1.5]" }) }),
         /* @__PURE__ */ jsxs("div", { className: "space-y-1 max-w-md", children: [
           /* @__PURE__ */ jsx("h3", { className: "text-base sm:text-lg font-sans font-bold text-neutral-900 dark:text-neutral-100", children: "Belum Ada Item Tersimpan" }),
@@ -4631,7 +4695,7 @@ function SavedBookmarks({
       ] })
     ) : totalFilteredCount === 0 ? (
       /* Empty State on Search */
-      /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/70 dark:border-neutral-800 p-8 text-center flex flex-col items-center justify-center space-y-3", children: [
+      /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/60 dark:border-neutral-800 shadow-xs p-8 text-center flex flex-col items-center justify-center space-y-3", children: [
         /* @__PURE__ */ jsx(Search, { className: "w-8 h-8 text-neutral-400" }),
         /* @__PURE__ */ jsxs("h4", { className: "text-sm font-bold text-neutral-800 dark:text-neutral-200", children: [
           'Tidak ada hasil untuk "',
@@ -4678,7 +4742,6 @@ function SavedBookmarks({
           return /* @__PURE__ */ jsxs(
             "div",
             {
-              onClick: () => onNavigateToComic(comic.comicId),
               className: "bg-white dark:bg-neutral-900 rounded-2xl border border-[#183619] ring-2 ring-[#183619] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer relative select-none",
               children: [
                 /* @__PURE__ */ jsxs("div", { className: "relative aspect-[3/4] w-full bg-neutral-950 flex flex-col justify-between select-none overflow-hidden isolate", children: [
@@ -4727,7 +4790,21 @@ function SavedBookmarks({
                     "Rp ",
                     (_a = comic.price) == null ? void 0 : _a.toLocaleString("id-ID")
                   ] }) })
-                ] })
+                ] }),
+                /* @__PURE__ */ jsx(
+                  "a",
+                  {
+                    href: comic.href ?? void 0,
+                    "aria-label": `Buka ${comic.seriesTitle}${comic.volNumber ? ` Vol. ${comic.volNumber}` : ""}`,
+                    onClick: (e) => {
+                      if (!comic.href || !isPlainLeftClick(e)) return;
+                      e.preventDefault();
+                      onNavigateToComic(comic.href);
+                    },
+                    className: "absolute inset-0 z-10 rounded-2xl",
+                    children: /* @__PURE__ */ jsx("span", { className: "sr-only", children: comic.seriesTitle })
+                  }
+                )
               ]
             },
             comic.id
@@ -4875,11 +4952,12 @@ function SavedBookmarks({
                           type: "button",
                           onClick: (e) => {
                             e.stopPropagation();
+                            const articleUrl = `${window.location.origin}/news/${news.slug || news.id}`;
                             if (navigator.share) {
-                              navigator.share({ title: news.title, url: window.location.href }).catch(() => {
+                              navigator.share({ title: news.title, url: articleUrl }).catch(() => {
                               });
                             } else if (navigator.clipboard) {
-                              navigator.clipboard.writeText(window.location.href);
+                              navigator.clipboard.writeText(articleUrl);
                               showToast("🔗 Tautan berita disalin ke clipboard");
                             }
                           },
@@ -4911,15 +4989,33 @@ function SavedBookmarks({
   ] });
 }
 function BookmarkPage({
-  books = [],
   newsList = [],
   kiosItems = []
 }) {
+  const [books, setBooks] = useState([]);
+  useEffect(() => {
+    var _a;
+    const ids = bookmarkStorage.get().comics.slice(0, 100);
+    if (ids.length === 0) return;
+    const csrfToken = ((_a = document.querySelector('meta[name="csrf-token"]')) == null ? void 0 : _a.getAttribute("content")) || "";
+    fetch("/books/lookup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-CSRF-TOKEN": csrfToken
+      },
+      body: JSON.stringify({ ids })
+    }).then((response) => response.ok ? response.json() : null).then((payload) => {
+      if (payload == null ? void 0 : payload.books) setBooks(payload.books);
+    }).catch(() => {
+    });
+  }, []);
   const comicsData = React__default.useMemo(() => {
-    if (books && books.length > 0) {
-      return mapBooksToComics(books);
-    }
-    return COMICS_DATA;
+    const fromDb = mapBooksToComics(books);
+    if (fromDb.length === 0) return COMICS_DATA;
+    const seen = new Set(fromDb.map((comic) => comic.id));
+    return [...fromDb, ...COMICS_DATA.filter((comic) => !seen.has(comic.id))];
   }, [books]);
   const newsData = React__default.useMemo(() => {
     return newsList.map((dbItem) => ({
@@ -4972,8 +5068,8 @@ function BookmarkPage({
   const handleNavAbout = () => {
     router.visit("/?scroll=about");
   };
-  const handleNavigateToComic = (comicId) => {
-    router.visit(`/buku/${comicId}`);
+  const handleNavigateToComic = (path) => {
+    router.visit(path);
   };
   const handleNavigateToNews = (newsId) => {
     const target = newsData.find((n) => n.id === newsId);
@@ -4983,7 +5079,7 @@ function BookmarkPage({
     const target = kiosId ? kiosItems.find((k) => String(k.id) === kiosId) : null;
     router.visit((target == null ? void 0 : target.slug) ? `/kios/${target.slug}` : "/kios");
   };
-  return /* @__PURE__ */ jsxs("div", { className: "min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans flex flex-col transition-colors duration-200", children: [
+  return /* @__PURE__ */ jsxs("div", { className: "bg-[#FEFFFE] dark:bg-[#202120] min-h-screen text-neutral-950 dark:text-neutral-50 selection:bg-neutral-900 dark:selection:bg-neutral-100 selection:text-white dark:selection:text-neutral-900 flex flex-col justify-between font-sans", children: [
     /* @__PURE__ */ jsxs(Head, { children: [
       /* @__PURE__ */ jsx("title", { children: "Bookmark & Favorit - Norinoya" }),
       /* @__PURE__ */ jsx("meta", { name: "description", content: "Kumpulan katalog buku, komik, berita, dan item kios yang Anda simpan di Norinoya." }),
@@ -5018,7 +5114,7 @@ function BookmarkPage({
     /* @__PURE__ */ jsx(BackToTopButton, {})
   ] });
 }
-const __vite_glob_0_46 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_64 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   SavedBookmarks,
   default: BookmarkPage
@@ -5116,7 +5212,7 @@ function AboutSection$1() {
     }
   );
 }
-const __vite_glob_0_47 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_65 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AboutSection$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5148,7 +5244,7 @@ function BookmarkToast({ message }) {
     }
   ) });
 }
-const __vite_glob_0_49 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_67 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   BookmarkToast,
   useBookmarkToast
@@ -5322,7 +5418,7 @@ const ShareModal = ({
     )
   ] }) });
 };
-const __vite_glob_0_64 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_84 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   ShareModal
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5367,9 +5463,8 @@ function TikTokCard({ item, coverImage }) {
   );
 }
 const HighlightReview = ({ activeVolObj, selectedComic }) => {
-  var _a;
   const scrollRef = useRef(null);
-  const embedsSource = (activeVolObj == null ? void 0 : activeVolObj.tiktokEmbeds) && activeVolObj.tiktokEmbeds.length > 0 ? activeVolObj.tiktokEmbeds : (selectedComic == null ? void 0 : selectedComic.tiktokEmbeds) && selectedComic.tiktokEmbeds.length > 0 ? selectedComic.tiktokEmbeds : ((_a = selectedComic == null ? void 0 : selectedComic.volumes) == null ? void 0 : _a.flatMap((v) => v.tiktokEmbeds || [])) ?? [];
+  const embedsSource = activeVolObj ? activeVolObj.tiktokEmbeds ?? [] : (selectedComic == null ? void 0 : selectedComic.tiktokEmbeds) ?? [];
   const coverImage = (activeVolObj == null ? void 0 : activeVolObj.coverImage) || (selectedComic == null ? void 0 : selectedComic.coverImage) || void 0;
   const tiktokList = embedsSource.map((embed, index) => ({
     id: embed.id || String(index),
@@ -5391,8 +5486,8 @@ const HighlightReview = ({ activeVolObj, selectedComic }) => {
           {
             type: "button",
             onClick: () => {
-              var _a2;
-              return (_a2 = scrollRef.current) == null ? void 0 : _a2.scrollBy({ left: -200, behavior: "smooth" });
+              var _a;
+              return (_a = scrollRef.current) == null ? void 0 : _a.scrollBy({ left: -200, behavior: "smooth" });
             },
             className: "w-7 h-7 sm:w-8 sm:h-8 rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-neutral-50 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-750 transition-colors cursor-pointer",
             title: "Sebelumnya",
@@ -5405,8 +5500,8 @@ const HighlightReview = ({ activeVolObj, selectedComic }) => {
           {
             type: "button",
             onClick: () => {
-              var _a2;
-              return (_a2 = scrollRef.current) == null ? void 0 : _a2.scrollBy({ left: 200, behavior: "smooth" });
+              var _a;
+              return (_a = scrollRef.current) == null ? void 0 : _a.scrollBy({ left: 200, behavior: "smooth" });
             },
             className: "w-7 h-7 sm:w-8 sm:h-8 rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-neutral-50 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-750 transition-colors cursor-pointer",
             title: "Berikutnya",
@@ -5437,9 +5532,88 @@ const HighlightReview = ({ activeVolObj, selectedComic }) => {
     )
   ] });
 };
-const __vite_glob_0_55 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_74 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   HighlightReview
+}, Symbol.toStringTag, { value: "Module" }));
+function InstagramCard({ item }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const showThumbnail = Boolean(item.thumbnail) && !imageFailed;
+  const open = () => window.open(item.url, "_blank", "noopener,noreferrer");
+  return /* @__PURE__ */ jsxs(
+    "div",
+    {
+      onClick: open,
+      role: "button",
+      tabIndex: 0,
+      onKeyDown: (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open();
+        }
+      },
+      className: "flex gap-3 rounded-2xl border border-neutral-200/60 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-2.5 sm:p-3 shadow-2xs group cursor-pointer transition-all hover:scale-[1.01] hover:shadow-md overflow-hidden",
+      children: [
+        showThumbnail && /* @__PURE__ */ jsx("div", { className: "relative w-[92px] sm:w-[104px] aspect-[4/5] shrink-0 rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center", children: /* @__PURE__ */ jsx(
+          "img",
+          {
+            src: item.thumbnail,
+            alt: item.title,
+            loading: "lazy",
+            decoding: "async",
+            referrerPolicy: "no-referrer",
+            onError: () => setImageFailed(true),
+            className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          }
+        ) }),
+        /* @__PURE__ */ jsxs("div", { className: "flex-1 min-w-0 flex flex-col justify-center gap-1", children: [
+          /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsx(Instagram, { className: "w-3.5 h-3.5 text-[#E1306C] shrink-0" }),
+            /* @__PURE__ */ jsx("span", { className: "text-[10px] font-sans font-black tracking-wider uppercase text-neutral-500 dark:text-neutral-400 leading-none", children: "INSTAGRAM" })
+          ] }),
+          /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm font-sans font-extrabold text-neutral-900 dark:text-neutral-100 leading-tight line-clamp-2 group-hover:text-[#112A12] dark:group-hover:text-[#457347] transition-colors", children: item.title }),
+          item.description && /* @__PURE__ */ jsx("p", { className: "text-[11px] sm:text-xs font-sans text-neutral-500 dark:text-neutral-400 leading-snug line-clamp-2", children: item.description })
+        ] })
+      ]
+    }
+  );
+}
+const HighlightReviewInstagram = ({ activeVolObj, selectedComic }) => {
+  const embedsSource = activeVolObj ? activeVolObj.instagramEmbeds ?? [] : (selectedComic == null ? void 0 : selectedComic.instagramEmbeds) ?? [];
+  const items = embedsSource.map((embed, index) => ({
+    id: embed.id || String(index),
+    url: (embed.url || "").trim(),
+    thumbnail: embed.thumbnail_url || void 0,
+    title: embed.title || embed.name || `Review Instagram ${index + 1}`,
+    description: embed.description || void 0
+  })).filter((item) => item.url !== "");
+  if (!items || items.length === 0) {
+    return null;
+  }
+  return /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 p-4 sm:p-5 shadow-xs my-2 transition-all duration-200", children: [
+    /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between pb-3", children: [
+      /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
+        /* @__PURE__ */ jsx(Instagram, { className: "w-5 h-5 text-[#112A12] dark:text-[#457347] shrink-0" }),
+        /* @__PURE__ */ jsx("h3", { className: "text-xs sm:text-sm font-sans font-black tracking-wider text-[#112A12] dark:text-[#457347] uppercase leading-none", children: "HIGHLIGHT REVIEW INSTAGRAM" })
+      ] }),
+      /* @__PURE__ */ jsx(
+        "a",
+        {
+          href: "https://instagram.com/norinoya.official",
+          target: "_blank",
+          rel: "noopener noreferrer",
+          className: "w-7 h-7 sm:w-8 sm:h-8 rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-neutral-50 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-750 transition-colors cursor-pointer",
+          title: "Instagram Official",
+          children: /* @__PURE__ */ jsx(Instagram, { className: "w-3.5 h-3.5 sm:w-4 sm:h-4" })
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 pb-1 select-none", children: items.map((item) => /* @__PURE__ */ jsx(InstagramCard, { item }, item.id)) })
+  ] });
+};
+const __vite_glob_0_75 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  HighlightReviewInstagram
 }, Symbol.toStringTag, { value: "Module" }));
 const getBrandColor = (brand, brandSlug) => {
   const name = (brand || brandSlug || "").toLowerCase();
@@ -5572,7 +5746,7 @@ const ModalAffiliateStore = ({ isOpen, onClose, group, comicTitle, volNumber, pr
     }
   ) });
 };
-const __vite_glob_0_57 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_77 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   ModalAffiliateStore
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5582,11 +5756,13 @@ function DetailBuku$1({
   setActiveVolumeNum,
   handleCloseModal,
   setSelectedGenres,
-  setSelectedComic,
+  setSelectedCategories,
+  setSelectedReadingRatings,
+  setSelectedStatuses,
+  onOpenComic,
   allComics,
   newsList = []
 }) {
-  var _a;
   const { isSaved, toggle } = useBookmarks();
   const { message: bookmarkToast, show: showBookmarkToast } = useBookmarkToast();
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -5610,7 +5786,7 @@ function DetailBuku$1({
   const orderedVolumes = selectedComic ? selectedComic.volumes : [];
   const activeVolObj = selectedComic ? orderedVolumes.find((v) => String(v.volNumber) === String(activeVolumeNum)) || orderedVolumes[0] : null;
   useEffect(() => {
-    var _a2;
+    var _a;
     const targetBookId = (activeVolObj == null ? void 0 : activeVolObj.bookId) || (activeVolObj == null ? void 0 : activeVolObj.id) || (selectedComic == null ? void 0 : selectedComic.bookId) || (selectedComic == null ? void 0 : selectedComic.id);
     if (!targetBookId) return;
     const isDirectBookPath = typeof window !== "undefined" && window.location.pathname.startsWith("/buku/");
@@ -5619,7 +5795,7 @@ function DetailBuku$1({
     const nowTs = Date.now();
     if (isDirectBookPath && nowTs - lastTs < 6e4) return;
     sessionStorage.setItem(dedupeKey, String(nowTs));
-    const csrfToken = ((_a2 = document.querySelector('meta[name="csrf-token"]')) == null ? void 0 : _a2.getAttribute("content")) || "";
+    const csrfToken = ((_a = document.querySelector('meta[name="csrf-token"]')) == null ? void 0 : _a.getAttribute("content")) || "";
     fetch(`/books/${encodeURIComponent(String(targetBookId))}/view`, {
       method: "POST",
       headers: {
@@ -5738,6 +5914,50 @@ function DetailBuku$1({
       brand: "custom"
     };
   };
+  const getVideoPlatformStyle = (platform) => {
+    const name = (platform || "").toLowerCase();
+    if (name.includes("youtube") || name.includes("youtu.be")) {
+      return { className: "bg-[#FF0000] hover:bg-[#CC0000] text-white", label: "YouTube", isKnown: true };
+    }
+    if (name.includes("iqiyi")) {
+      return { className: "bg-[#00CC33] hover:bg-[#00A82A] text-white", label: "iQiyi", isKnown: true };
+    }
+    if (name.includes("crunchyroll")) {
+      return { className: "bg-[#F47521] hover:bg-[#D2611A] text-white", label: "Crunchyroll", isKnown: true };
+    }
+    if (name.includes("bilibili") || name.includes("bstation")) {
+      return { className: "bg-[#00A1D6] hover:bg-[#0089B8] text-white", label: "Bilibili", isKnown: true };
+    }
+    if (name.includes("netflix")) {
+      return { className: "bg-[#E50914] hover:bg-[#C00812] text-white", label: "Netflix", isKnown: true };
+    }
+    if (name.includes("wetv") || name.includes("we tv")) {
+      return { className: "bg-[#00A650] hover:bg-[#008C43] text-white", label: "WeTV", isKnown: true };
+    }
+    if (name.includes("vidio")) {
+      return { className: "bg-[#F5362B] hover:bg-[#D42A20] text-white", label: "Vidio", isKnown: true };
+    }
+    if (name.includes("viu")) {
+      return { className: "bg-[#FFC000] hover:bg-[#E0A800] text-black", label: "Viu", isKnown: true };
+    }
+    if (name.includes("prime") || name.includes("amazon")) {
+      return { className: "bg-[#00A8E1] hover:bg-[#0090C2] text-white", label: "Prime Video", isKnown: true };
+    }
+    if (name.includes("disney")) {
+      return { className: "bg-[#113CCF] hover:bg-[#0E32AF] text-white", label: "Disney+", isKnown: true };
+    }
+    if (name.includes("dailymotion")) {
+      return { className: "bg-[#0066DC] hover:bg-[#0057BC] text-white", label: "Dailymotion", isKnown: true };
+    }
+    if (name.includes("vimeo")) {
+      return { className: "bg-[#1AB7EA] hover:bg-[#159CC7] text-white", label: "Vimeo", isKnown: true };
+    }
+    return {
+      className: "bg-neutral-800 hover:bg-neutral-900 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white",
+      label: "Video",
+      isKnown: false
+    };
+  };
   const catalogComics = allComics && allComics.length > 0 ? allComics : COMICS_DATA;
   const relevantComics = React__default.useMemo(() => {
     if (!selectedComic) return [];
@@ -5785,7 +6005,7 @@ function DetailBuku$1({
     }, 5e3);
     return () => clearInterval(interval);
   }, [selectedComic, carouselImages.length]);
-  const getReadingRatingStyle = (rating) => {
+  const getReadingRatingStyle2 = (rating) => {
     switch (rating) {
       case "Anak & Bimbingan Orang Tua":
       case "Anak & Bimbingan":
@@ -5831,12 +6051,12 @@ function DetailBuku$1({
     }
   };
   const getPaperType = (comic, vol) => {
-    var _a2, _b;
+    var _a, _b;
     if (vol == null ? void 0 : vol.paperType) return vol.paperType;
     if (comic.paperType) return comic.paperType;
     if (comic.id === "naruto-bindup") return "Bookpaper 55g (Premium)";
     if (comic.category === "light_novel" || comic.category === "novel") return "Bookpaper Premium";
-    if ((_a2 = vol == null ? void 0 : vol.cetakanInfo) == null ? void 0 : _a2.toLowerCase().includes("bookpaper")) return "Bookpaper";
+    if ((_a = vol == null ? void 0 : vol.cetakanInfo) == null ? void 0 : _a.toLowerCase().includes("bookpaper")) return "Bookpaper";
     if ((_b = vol == null ? void 0 : vol.cetakanInfo) == null ? void 0 : _b.toLowerCase().includes("koran")) return "Kertas Koran";
     return "Bookpaper 55g";
   };
@@ -5849,51 +6069,8 @@ function DetailBuku$1({
     return "12 x 18 cm";
   };
   const metaTitle = `${selectedComic.title}${activeVolObj ? ` Vol. ${activeVolObj.volNumber}` : ""} - Norinoya`;
-  const metaDesc = ((activeVolObj == null ? void 0 : activeVolObj.synopsis) || selectedComic.synopsis || "Lihat detail buku di Norinoya").replace(/<[^>]*>/g, "").slice(0, 160);
-  const metaImage = (activeVolObj == null ? void 0 : activeVolObj.coverImage) || selectedComic.coverImage || "";
-  const canonicalUrl = typeof window !== "undefined" ? `${window.location.origin}/buku/${selectedComic.slug || selectedComic.id}` : `/buku/${selectedComic.slug || selectedComic.id}`;
-  return /* @__PURE__ */ jsxs("div", { className: "w-full bg-white dark:bg-neutral-950 flex flex-col min-h-screen", ref: scrollableContainerRef, children: [
-    selectedComic ? /* @__PURE__ */ jsxs(Head, { children: [
-      /* @__PURE__ */ jsx("title", { children: metaTitle }),
-      /* @__PURE__ */ jsx("meta", { name: "description", content: metaDesc }),
-      /* @__PURE__ */ jsx("meta", { property: "og:site_name", content: "Norinoya" }),
-      /* @__PURE__ */ jsx("meta", { property: "og:title", content: metaTitle }),
-      /* @__PURE__ */ jsx("meta", { property: "og:description", content: metaDesc }),
-      /* @__PURE__ */ jsx("meta", { property: "og:type", content: "book" }),
-      metaImage && /* @__PURE__ */ jsx("meta", { property: "og:image", content: metaImage }),
-      /* @__PURE__ */ jsx("meta", { name: "twitter:card", content: "summary_large_image" }),
-      /* @__PURE__ */ jsx("meta", { name: "twitter:title", content: metaTitle }),
-      /* @__PURE__ */ jsx("meta", { name: "twitter:description", content: metaDesc }),
-      metaImage && /* @__PURE__ */ jsx("meta", { name: "twitter:image", content: metaImage }),
-      /* @__PURE__ */ jsx("meta", { name: "theme-color", content: "#E53935" }),
-      /* @__PURE__ */ jsx("link", { rel: "canonical", href: canonicalUrl }),
-      /* @__PURE__ */ jsx("script", { type: "application/ld+json", children: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Book",
-        name: (activeVolObj == null ? void 0 : activeVolObj.title) || selectedComic.title,
-        alternateName: selectedComic.title,
-        url: canonicalUrl,
-        ...metaImage ? { image: metaImage } : {},
-        ...(activeVolObj == null ? void 0 : activeVolObj.isbn) ? { isbn: activeVolObj.isbn } : {},
-        ...selectedComic.publisherName ? { publisher: { "@type": "Organization", name: selectedComic.publisherName } } : {},
-        ...(activeVolObj == null ? void 0 : activeVolObj.authorStory) ? { author: { "@type": "Person", name: activeVolObj.authorStory } } : {},
-        ...(activeVolObj == null ? void 0 : activeVolObj.volNumber) != null ? { bookEdition: `Volume ${activeVolObj.volNumber}` } : {},
-        ...((_a = selectedComic.genres) == null ? void 0 : _a.length) ? { genre: selectedComic.genres.join(", ") } : {},
-        ...(activeVolObj == null ? void 0 : activeVolObj.synopsis) ? { description: activeVolObj.synopsis.replace(/<[^>]*>/g, "").trim() } : {}
-      }) }),
-      /* @__PURE__ */ jsx("script", { type: "application/ld+json", children: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Beranda", item: typeof window !== "undefined" ? `${window.location.origin}/` : "/" },
-          { "@type": "ListItem", position: 2, name: "Katalog Buku", item: typeof window !== "undefined" ? `${window.location.origin}/` : "/" },
-          { "@type": "ListItem", position: 3, name: (activeVolObj == null ? void 0 : activeVolObj.title) || selectedComic.title, item: canonicalUrl }
-        ]
-      }) })
-    ] }) : /* @__PURE__ */ jsxs(Head, { children: [
-      /* @__PURE__ */ jsx("title", { children: "Norinoya - Database Manga, Komik, & Light Novel Indonesia" }),
-      /* @__PURE__ */ jsx("meta", { name: "description", content: "Norinoya - Database Manga, Komik, & Light Novel Indonesia" })
-    ] }),
+  return /* @__PURE__ */ jsxs("div", { className: "w-full bg-white flex flex-col min-h-screen", ref: scrollableContainerRef, children: [
+    selectedComic ? /* @__PURE__ */ jsx(Head, { children: /* @__PURE__ */ jsx("title", { children: metaTitle }) }) : /* @__PURE__ */ jsx(Head, { children: /* @__PURE__ */ jsx("title", { children: "Norinoya - Database Manga, Komik, & Light Novel Indonesia" }) }),
     /* @__PURE__ */ jsxs(
       motion.div,
       {
@@ -5901,11 +6078,11 @@ function DetailBuku$1({
         animate: { opacity: 1, y: 0 },
         exit: { opacity: 0, y: 15 },
         transition: { duration: 0.2 },
-        className: "h-full w-full bg-white dark:bg-[#202120] text-neutral-950 dark:text-neutral-50 flex flex-col transition-colors duration-200 relative",
+        className: "h-full w-full bg-white text-neutral-950 dark:text-neutral-50 flex flex-col transition-colors duration-200 relative",
         children: [
           /* @__PURE__ */ jsx("div", { id: "comic-detail-top", className: "absolute top-0 left-0 w-0 h-0 pointer-events-none" }),
           /* @__PURE__ */ jsxs("div", { className: "w-full", children: [
-            /* @__PURE__ */ jsx("div", { className: "fixed top-[58px] sm:top-[64px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800 transition-colors", children: /* @__PURE__ */ jsxs("div", { className: "max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3", children: [
+            /* @__PURE__ */ jsx("div", { className: "fixed top-[58px] sm:top-[64px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800 transition-colors", children: /* @__PURE__ */ jsxs("div", { className: "max-w-7xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3", children: [
               /* @__PURE__ */ jsxs(
                 "button",
                 {
@@ -5940,12 +6117,10 @@ function DetailBuku$1({
                   {
                     onClick: () => {
                       if (selectedComic) {
-                        const bookSlug = selectedComic.slug || selectedComic.id;
-                        const shareUrl = `${window.location.origin}/buku/${bookSlug}?vol=${activeVolumeNum}`;
                         setShareModalData({
                           isOpen: true,
                           title: selectedComic.title,
-                          shareUrl,
+                          shareUrl: bookUrl(selectedComic, activeVolObj) ?? window.location.href,
                           category: "Katalog"
                         });
                       }
@@ -5957,10 +6132,10 @@ function DetailBuku$1({
                 )
               ] })
             ] }) }),
-            /* @__PURE__ */ jsxs("div", { className: "w-full h-fit lg:max-w-[92%] xl:max-w-7xl mx-auto px-3 sm:px-6 lg:px-24 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-neutral-950", children: [
-              /* @__PURE__ */ jsxs("div", { id: "comic-detail-card", className: " dark:bg-[#0F0F0F] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs", children: [
+            /* @__PURE__ */ jsxs("div", { className: "w-full h-fit max-w-7xl mx-auto px-3 sm:px-0 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-[#202120]", children: [
+              /* @__PURE__ */ jsxs("div", { id: "comic-detail-card", className: " dark:bg-[#171717] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs", children: [
                 /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-3 shrink-0 w-full md:w-80", children: [
-                  /* @__PURE__ */ jsx("div", { className: "relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-2xl overflow-hidden bg-neutral-950 flex flex-col justify-between p-3 border border-neutral-150 dark:border-neutral-800 shadow-md group", children: carouselImages && carouselImages.length > 0 ? /* @__PURE__ */ jsx(
+                  /* @__PURE__ */ jsx("div", { className: "relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-2xl overflow-hidden flex flex-col justify-between p-3 border border-neutral-150 dark:border-neutral-800 shadow-md group", children: carouselImages && carouselImages.length > 0 ? /* @__PURE__ */ jsx(
                     "img",
                     {
                       src: carouselImages[activeSlideIndex],
@@ -5986,7 +6161,7 @@ function DetailBuku$1({
                     selectedComic.volumes.length > 1 && ` (Volume ${activeVolumeNum})`
                   ] }) }),
                   /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm text-neutral-705 dark:text-neutral-300 leading-relaxed font-sans whitespace-pre-line select-text", children: (activeVolObj == null ? void 0 : activeVolObj.synopsis) || selectedComic.synopsis }),
-                  /* @__PURE__ */ jsx("div", { className: "p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900/60 shadow-xs max-w-xl space-y-4", children: /* @__PURE__ */ jsxs("div", { className: "flex items-start gap-2.5", children: [
+                  /* @__PURE__ */ jsx("div", { className: "p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900/60 shadow-xs  space-y-4", children: /* @__PURE__ */ jsxs("div", { className: "flex items-start gap-2.5", children: [
                     /* @__PURE__ */ jsx(Info, { className: "w-4.5 h-4.5 text-neutral-500 dark:text-neutral-400 mt-0.5 shrink-0" }),
                     /* @__PURE__ */ jsxs("div", { className: "space-y-3.5 flex-1", children: [
                       /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-2.5", children: [
@@ -6009,9 +6184,51 @@ function DetailBuku$1({
                   /* @__PURE__ */ jsx("div", { className: "h-px bg-neutral-200 my-4" }),
                   /* @__PURE__ */ jsxs("div", { className: "space-y-3 pt-0.5", children: [
                     /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-1.5", children: [
-                      /* @__PURE__ */ jsx("span", { className: "text-xs px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 border dark:border-neutral-800 rounded-md capitalize font-bold leading-normal", children: getBookTypeLabel(selectedComic.category) }),
-                      selectedComic.readingRating && /* @__PURE__ */ jsx("span", { className: `text-xs px-2.5 py-0.5 rounded-md font-bold border leading-normal ${getReadingRatingStyle(selectedComic.readingRating).bg}`, children: getReadingRatingStyle(selectedComic.readingRating).text }),
-                      /* @__PURE__ */ jsx("span", { className: "text-xs px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 border dark:border-neutral-800 rounded-md capitalize font-bold leading-normal", children: selectedComic.status })
+                      /* @__PURE__ */ jsx(
+                        "button",
+                        {
+                          type: "button",
+                          onClick: () => {
+                            if (!setSelectedCategories) return;
+                            setSelectedCategories([selectedComic.category]);
+                            handleCloseModal();
+                          },
+                          disabled: !setSelectedCategories,
+                          title: `Lihat buku kategori ${getBookTypeLabel(selectedComic.category)}`,
+                          className: "text-xs px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 border dark:border-neutral-800 rounded-md capitalize font-bold leading-normal transition-all enabled:cursor-pointer enabled:hover:bg-neutral-200 dark:enabled:hover:bg-neutral-800 enabled:hover:border-neutral-400 dark:enabled:hover:border-neutral-600 enabled:active:scale-[0.97] disabled:cursor-default",
+                          children: getBookTypeLabel(selectedComic.category)
+                        }
+                      ),
+                      selectedComic.readingRating && /* @__PURE__ */ jsx(
+                        "button",
+                        {
+                          type: "button",
+                          onClick: () => {
+                            if (!setSelectedReadingRatings) return;
+                            setSelectedReadingRatings([selectedComic.readingRating]);
+                            handleCloseModal();
+                          },
+                          disabled: !setSelectedReadingRatings,
+                          title: `Lihat buku dengan rating ${getReadingRatingStyle2(selectedComic.readingRating).text}`,
+                          className: `text-xs px-2.5 py-0.5 rounded-md font-bold border leading-normal transition-all enabled:cursor-pointer enabled:hover:opacity-90 enabled:active:scale-[0.97] disabled:cursor-default ${getReadingRatingStyle2(selectedComic.readingRating).bg}`,
+                          children: getReadingRatingStyle2(selectedComic.readingRating).text
+                        }
+                      ),
+                      /* @__PURE__ */ jsx(
+                        "button",
+                        {
+                          type: "button",
+                          onClick: () => {
+                            if (!setSelectedStatuses) return;
+                            setSelectedStatuses([selectedComic.statusId ?? selectedComic.status]);
+                            handleCloseModal();
+                          },
+                          disabled: !setSelectedStatuses,
+                          title: `Lihat buku dengan status ${selectedComic.statusName || selectedComic.status}`,
+                          className: "text-xs px-2.5 py-0.5 bg-neutral-150 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 border dark:border-neutral-800 rounded-md capitalize font-bold leading-normal transition-all enabled:cursor-pointer enabled:hover:bg-neutral-200 dark:enabled:hover:bg-neutral-800 enabled:hover:border-neutral-400 dark:enabled:hover:border-neutral-600 enabled:active:scale-[0.97] disabled:cursor-default",
+                          children: selectedComic.statusName || selectedComic.status
+                        }
+                      )
                     ] }),
                     /* @__PURE__ */ jsx("div", { className: "text-xs text-neutral-550 space-y-1.5 mt-1 leading-normal", children: /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap gap-x-4 gap-y-1  ml-2", children: [
                       /* @__PURE__ */ jsxs("p", { children: [
@@ -6042,67 +6259,59 @@ function DetailBuku$1({
               /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 md:grid-cols-12 gap-6 w-full max-w-full overflow-hidden", children: [
                 /* @__PURE__ */ jsxs("div", { className: "col-span-1 md:col-span-8 space-y-6 w-full max-w-full overflow-hidden", children: [
                   /* @__PURE__ */ jsx("div", { className: "space-y-3", children: (() => {
-                    const targetNewsUrl = (activeVolObj == null ? void 0 : activeVolObj.news_link) || (activeVolObj == null ? void 0 : activeVolObj.newsLink) || selectedComic.news_link || selectedComic.newsLink;
-                    if (!targetNewsUrl) {
-                      return /* @__PURE__ */ jsx("div", { className: "space-y-3", children: /* @__PURE__ */ jsx("p", { className: "text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans whitespace-pre-line select-text", children: (activeVolObj == null ? void 0 : activeVolObj.synopsis) || selectedComic.synopsis }) });
+                    const legacyNewsUrl = (activeVolObj == null ? void 0 : activeVolObj.news_link) || (activeVolObj == null ? void 0 : activeVolObj.newsLink) || selectedComic.news_link || selectedComic.newsLink;
+                    const volumeNewsLinks = ((activeVolObj == null ? void 0 : activeVolObj.newsLinks) ?? []).map((l) => ({ url: (l.url || "").trim(), title: (l.title || "").trim() })).filter((l) => l.url !== "");
+                    const newsLinkItems = volumeNewsLinks.length > 0 ? volumeNewsLinks : legacyNewsUrl ? [{ url: String(legacyNewsUrl), title: "" }] : [];
+                    if (newsLinkItems.length === 0) {
+                      return null;
                     }
-                    const isInternalNews = targetNewsUrl.startsWith("/news");
-                    let matchedTitle = "";
-                    const cleanPath = targetNewsUrl.split(/[?#]/)[0];
-                    const rawLastSegment = cleanPath.split("/").filter(Boolean).pop() || "";
-                    const lastSegment = rawLastSegment === "news" ? "" : decodeURIComponent(rawLastSegment).trim();
-                    const queryKeyMatch = targetNewsUrl.match(/[?&](?:slug|news|news_id|post|post_id|id)=([^&#]+)/i);
-                    const queryKey = queryKeyMatch ? decodeURIComponent(queryKeyMatch[1]).trim() : "";
-                    const lookupKeys = Array.from(new Set([lastSegment, queryKey].filter(Boolean)));
-                    const urlLower = targetNewsUrl.toLowerCase();
-                    const matchNewsTitle = (n) => {
-                      if (lookupKeys.some((k) => (n.slug ? k === n.slug : false) || k === String(n.id))) return n.title || "";
-                      if (n.slug && n.slug.length > 3 && urlLower.includes(`/${n.slug.toLowerCase()}`)) return n.title || "";
-                      return "";
-                    };
-                    for (const n of newsList) {
-                      matchedTitle = matchNewsTitle(n);
-                      if (matchedTitle) break;
-                    }
-                    if (!matchedTitle) {
+                    const resolveNewsTitle = (rawUrl, manualTitle) => {
+                      if (manualTitle) return manualTitle;
+                      const cleanPath = rawUrl.split(/[?#]/)[0];
+                      const rawLastSegment = cleanPath.split("/").filter(Boolean).pop() || "";
+                      const lastSegment = rawLastSegment === "news" ? "" : decodeURIComponent(rawLastSegment).trim();
+                      const queryKeyMatch = rawUrl.match(/[?&](?:slug|news|news_id|post|post_id|id)=([^&#]+)/i);
+                      const queryKey = queryKeyMatch ? decodeURIComponent(queryKeyMatch[1]).trim() : "";
+                      const lookupKeys = Array.from(new Set([lastSegment, queryKey].filter(Boolean)));
+                      const urlLower = rawUrl.toLowerCase();
+                      const matchNewsTitle = (n) => {
+                        if (lookupKeys.some((k) => (n.slug ? k === n.slug : false) || k === String(n.id))) return n.title || "";
+                        if (n.slug && n.slug.length > 3 && urlLower.includes(`/${n.slug.toLowerCase()}`)) return n.title || "";
+                        return "";
+                      };
+                      for (const n of newsList) {
+                        const t = matchNewsTitle(n);
+                        if (t) return t;
+                      }
                       for (const n of NEWS_UPDATES) {
-                        matchedTitle = matchNewsTitle(n);
-                        if (matchedTitle) break;
+                        const t = matchNewsTitle(n);
+                        if (t) return t;
                       }
-                    }
-                    const humanizedSlug = isInternalNews && lastSegment && !/^\d+$/.test(lastSegment) ? lastSegment.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) : "";
-                    const displayTitle = matchedTitle || humanizedSlug || `Berita & Informasi Terkait: ${(activeVolObj == null ? void 0 : activeVolObj.title) || selectedComic.title}`;
-                    return /* @__PURE__ */ jsx("div", { className: "space-y-3", children: isInternalNews ? /* @__PURE__ */ jsxs(
-                      "a",
-                      {
-                        href: targetNewsUrl,
-                        className: "w-full text-left p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-[#262626] hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group flex items-start gap-3.5 cursor-pointer shadow-xs",
-                        children: [
-                          /* @__PURE__ */ jsx("div", { className: "p-2.5 bg-neutral-100 dark:bg-neutral-800 rounded-full group-hover:scale-105 transition-transform shrink-0 flex items-center justify-center", children: /* @__PURE__ */ jsx(Info, { className: "w-5 h-5 text-neutral-600 dark:text-neutral-400" }) }),
-                          /* @__PURE__ */ jsxs("div", { className: "space-y-1 flex-1 min-w-0", children: [
-                            /* @__PURE__ */ jsx("div", { className: "text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100", children: "Baca Berita Terkait:" }),
-                            /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm text-neutral-700 dark:text-neutral-200 font-sans font-medium leading-relaxed group-hover:text-neutral-950 dark:group-hover:text-white transition-colors line-clamp-2", children: displayTitle })
-                          ] }),
-                          /* @__PURE__ */ jsx("div", { className: "p-1 rounded-lg text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-200 transition-all self-center shrink-0", children: /* @__PURE__ */ jsx(ArrowUpRight, { className: "w-4 h-4" }) })
-                        ]
-                      }
-                    ) : /* @__PURE__ */ jsxs(
-                      "a",
-                      {
-                        href: targetNewsUrl,
-                        target: "_blank",
-                        rel: "noopener noreferrer",
-                        className: "w-full text-left p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-[#262626] hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group flex items-start gap-3.5 cursor-pointer shadow-xs",
-                        children: [
-                          /* @__PURE__ */ jsx("div", { className: "p-2.5 bg-neutral-100 dark:bg-neutral-800 rounded-full group-hover:scale-105 transition-transform shrink-0 flex items-center justify-center", children: /* @__PURE__ */ jsx(Info, { className: "w-5 h-5 text-neutral-600 dark:text-neutral-400" }) }),
-                          /* @__PURE__ */ jsxs("div", { className: "space-y-1 flex-1 min-w-0", children: [
-                            /* @__PURE__ */ jsx("div", { className: "text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100", children: "Baca Berita Terkait:" }),
-                            /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm text-neutral-700 dark:text-neutral-200 font-sans font-medium leading-relaxed group-hover:text-neutral-950 dark:group-hover:text-white transition-colors line-clamp-2", children: displayTitle })
-                          ] }),
-                          /* @__PURE__ */ jsx("div", { className: "p-1 rounded-lg text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-200 transition-all self-center shrink-0", children: /* @__PURE__ */ jsx(ArrowUpRight, { className: "w-4 h-4" }) })
-                        ]
-                      }
-                    ) });
+                      const isInternal = rawUrl.startsWith("/news");
+                      const humanizedSlug = isInternal && lastSegment && !/^\d+$/.test(lastSegment) ? lastSegment.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) : "";
+                      return humanizedSlug || `Berita & Informasi Terkait: ${(activeVolObj == null ? void 0 : activeVolObj.title) || selectedComic.title}`;
+                    };
+                    return /* @__PURE__ */ jsx("div", { className: "space-y-3", children: newsLinkItems.map((item, idx) => {
+                      const isInternalNews = item.url.startsWith("/news");
+                      const displayTitle = resolveNewsTitle(item.url, item.title);
+                      return /* @__PURE__ */ jsxs(
+                        "a",
+                        {
+                          href: item.url,
+                          ...isInternalNews ? {} : { target: "_blank", rel: "noopener noreferrer" },
+                          className: "w-full text-left p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-[#262626] hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group flex items-start gap-3.5 cursor-pointer shadow-xs",
+                          children: [
+                            /* @__PURE__ */ jsx("div", { className: "p-2.5 bg-neutral-100 dark:bg-neutral-800 rounded-full group-hover:scale-105 transition-transform shrink-0 flex items-center justify-center", children: /* @__PURE__ */ jsx(Info, { className: "w-5 h-5 text-neutral-600 dark:text-neutral-400" }) }),
+                            /* @__PURE__ */ jsxs("div", { className: "space-y-1 flex-1 min-w-0", children: [
+                              /* @__PURE__ */ jsx("div", { className: "text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100", children: "Baca Berita Terkait:" }),
+                              /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm text-neutral-700 dark:text-neutral-200 font-sans font-medium leading-relaxed group-hover:text-neutral-950 dark:group-hover:text-white transition-colors line-clamp-2", children: displayTitle })
+                            ] }),
+                            /* @__PURE__ */ jsx("div", { className: "p-1 rounded-lg text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-200 transition-all self-center shrink-0", children: /* @__PURE__ */ jsx(ArrowUpRight, { className: "w-4 h-4" }) })
+                          ]
+                        },
+                        `${item.url}-${idx}`
+                      );
+                    }) });
                   })() }),
                   /* @__PURE__ */ jsxs("div", { className: "space-y-3.5", children: [
                     /* @__PURE__ */ jsx("h4", { className: "text-xs font-bold uppercase tracking-wider text-neutral-400 leading-normal", children: "PILIH VOLUME" }),
@@ -6144,81 +6353,97 @@ function DetailBuku$1({
                         const hasAnime = !!(activeVolObj.animeAdaptation && activeVolObj.animeAdaptation.length > 0);
                         const hasLiveAction = !!(activeVolObj.liveActionAdaptation && activeVolObj.liveActionAdaptation.length > 0);
                         const hasOtt = hasAnime || hasLiveAction;
-                        const linksContent = /* @__PURE__ */ jsx("div", { className: "space-y-4", children: (() => {
-                          var _a2, _b, _c;
-                          const dynamicLinks = activeVolObj.affiliateLinksList && activeVolObj.affiliateLinksList.length > 0 ? activeVolObj.affiliateLinksList : [
-                            ((_a2 = activeVolObj.affiliateLinks) == null ? void 0 : _a2.gramedia) && { id: "g", url: activeVolObj.affiliateLinks.gramedia, storeName: "Official Store", storeSlug: "gramedia", brand: "Gramedia", brandSlug: "gramedia" },
-                            ((_b = activeVolObj.affiliateLinks) == null ? void 0 : _b.shopee) && { id: "s", url: activeVolObj.affiliateLinks.shopee, storeName: "Official Store", storeSlug: "shopee", brand: "Shopee", brandSlug: "shopee" },
-                            ((_c = activeVolObj.affiliateLinks) == null ? void 0 : _c.tokopedia) && { id: "t", url: activeVolObj.affiliateLinks.tokopedia, storeName: "Official Store", storeSlug: "tokopedia", brand: "Tokopedia", brandSlug: "tokopedia" }
-                          ].filter(Boolean);
-                          if (!dynamicLinks || dynamicLinks.length === 0) return null;
-                          return /* @__PURE__ */ jsxs("div", { className: "space-y-3", children: [
-                            /* @__PURE__ */ jsxs("h6", { className: "text-xs font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5 leading-normal", children: [
-                              /* @__PURE__ */ jsx(ShoppingBag, { className: "w-3.5 h-3.5 text-neutral-400" }),
-                              "Link affiliate toko resmi (Dukungan bagi kreator)"
-                            ] }),
-                            /* @__PURE__ */ jsx("div", { className: "space-y-1.5", children: (() => {
-                              const grouped = /* @__PURE__ */ new Map();
-                              dynamicLinks.forEach((link) => {
-                                const storeStyle = getAffiliateStoreStyle(link.brand || link.storeName);
-                                const brandKey = storeStyle.brand === "custom" ? `custom:${(link.brand || link.storeName || "").toLowerCase()}` : storeStyle.brand;
-                                const bucket = grouped.get(brandKey);
-                                if (bucket) {
-                                  bucket.push(link);
-                                } else {
-                                  grouped.set(brandKey, [link]);
-                                }
-                              });
-                              return Array.from(grouped.values());
-                            })().map((group) => {
-                              const link = group[0];
-                              const style = getAffiliateStoreStyle(link.brand || link.storeName);
-                              const hasMultiple = group.length > 1;
-                              const storeName = link.storeName;
-                              const brandName = link.brand || link.storeName;
-                              return /* @__PURE__ */ jsxs(
-                                "a",
-                                {
-                                  href: hasMultiple ? void 0 : link.url,
-                                  role: hasMultiple ? "button" : void 0,
-                                  target: hasMultiple ? void 0 : "_blank",
-                                  rel: hasMultiple ? void 0 : "no-referrer",
-                                  onClick: hasMultiple ? (e) => {
-                                    e.preventDefault();
-                                    openStoreGroupModal(storeName, link.brand || link.storeName, link.brandSlug || link.storeSlug, group);
-                                  } : void 0,
-                                  className: `w-full h-8.5 rounded-xl flex items-center justify-center transition-all shadow-3xs px-3 gap-2 ${style.className} ${hasMultiple ? "cursor-pointer" : ""}`,
-                                  title: hasMultiple ? `Pilih dari ${group.length} link ${brandName}` : `Beli di ${brandName} Resmi`,
-                                  children: [
-                                    style.brand === "gramedia" && /* @__PURE__ */ jsxs("svg", { className: "h-4.5 text-white fill-current filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]", viewBox: "0 0 100 24", xmlns: "http://www.w3.org/2000/svg", children: [
-                                      /* @__PURE__ */ jsx("circle", { cx: "12", cy: "12", r: "7.5", fill: "none", stroke: "currentColor", strokeWidth: "2" }),
-                                      /* @__PURE__ */ jsx("path", { d: "M12 8.5C10 8.5 9 10 9 12s1 3.5 3 3.5c1.2 0 2-.6 2.3-1.2h-2v-1.5h3.5v4H14c-1.5 1.5-3.5 1.5-4.5 1.5C6.5 17.8 5 15.5 5 12c0-3.5 1.5-5.8 4.5-5.8 1.5 0 3 .8 3.8 2l-1.3 1.1c-.5-.7-1.1-.8-1.5-.8z" }),
-                                      /* @__PURE__ */ jsx("text", { x: "25", y: "16.5", fill: "currentColor", className: "font-sans tracking-widest text-[12px] font-extrabold", children: "GRAMEDIA" })
-                                    ] }),
-                                    style.brand === "shopee" && /* @__PURE__ */ jsxs("svg", { className: "h-4.5 text-white fill-current filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]", viewBox: "0 0 100 24", xmlns: "http://www.w3.org/2000/svg", children: [
-                                      /* @__PURE__ */ jsx("path", { d: "M10 5h-2c-.2 0-.3.1-.4.2L6 8h6l-1.6-2.8c-.1-.1-.2-.2-.4-.2zM15.5 8h-2.1L11.8 5c-.1-.2-.3-.3-.5-.3h-2.6c-.2 0-.4.1-.5.3L6.6 8H4.5C3.7 8 3 8.7 3 9.5v10c0 .8.7 1.5 1.5 1.5h11c.8 0 1.5-.7 1.5-1.5v-10c0-.8-.7-1.5-1.5-1.5zm-5.5-5.5c.8 0 1.5.7 1.5 1.5H8.5c0-.8.7-1.5 1.5-1.5z" }),
-                                      /* @__PURE__ */ jsx("text", { x: "24", y: "16.5", fill: "currentColor", className: "font-sans tracking-widest text-[13px] font-extrabold", children: "Shopee" })
-                                    ] }),
-                                    style.brand === "tokopedia" && /* @__PURE__ */ jsxs("svg", { className: "h-4.5 text-white fill-current filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]", viewBox: "0 0 100 24", xmlns: "http://www.w3.org/2000/svg", children: [
-                                      /* @__PURE__ */ jsx("path", { d: "M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm1 14H11v-2H9v-2h2v-2h2v2h2v2h-2v2z" }),
-                                      /* @__PURE__ */ jsx("text", { x: "25", y: "16.5", fill: "currentColor", className: "font-sans tracking-tight text-[12px] font-extrabold", children: "Tokopedia" })
-                                    ] }),
-                                    style.brand === "custom" && /* @__PURE__ */ jsxs("span", { className: "font-sans text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5", children: [
-                                      /* @__PURE__ */ jsx(ShoppingBag, { className: "w-4 h-4" }),
-                                      link.storeName
-                                    ] }),
-                                    style.brand !== "gramedia" && style.brand !== "shopee" && style.brand !== "tokopedia" && style.brand !== "custom" && /* @__PURE__ */ jsx("span", { className: "font-sans text-xs font-extrabold uppercase tracking-wider", children: link.storeName }),
-                                    hasMultiple && /* @__PURE__ */ jsxs("span", { className: "text-[10px] font-mono font-black px-1.5 py-0.5 rounded-md bg-white/25 border border-white/30 shrink-0 leading-none", children: [
-                                      group.length,
-                                      " Link"
-                                    ] })
-                                  ]
-                                },
-                                link.id || link.storeName
-                              );
-                            }) })
-                          ] });
-                        })() });
+                        const linksContent = /* @__PURE__ */ jsxs("div", { className: "space-y-4", children: [
+                          (() => {
+                            var _a, _b, _c;
+                            const dynamicLinks = activeVolObj.affiliateLinksList && activeVolObj.affiliateLinksList.length > 0 ? activeVolObj.affiliateLinksList : [
+                              ((_a = activeVolObj.affiliateLinks) == null ? void 0 : _a.gramedia) && { id: "g", url: activeVolObj.affiliateLinks.gramedia, storeName: "Official Store", storeSlug: "gramedia", brand: "Gramedia", brandSlug: "gramedia" },
+                              ((_b = activeVolObj.affiliateLinks) == null ? void 0 : _b.shopee) && { id: "s", url: activeVolObj.affiliateLinks.shopee, storeName: "Official Store", storeSlug: "shopee", brand: "Shopee", brandSlug: "shopee" },
+                              ((_c = activeVolObj.affiliateLinks) == null ? void 0 : _c.tokopedia) && { id: "t", url: activeVolObj.affiliateLinks.tokopedia, storeName: "Official Store", storeSlug: "tokopedia", brand: "Tokopedia", brandSlug: "tokopedia" }
+                            ].filter(Boolean);
+                            if (!dynamicLinks || dynamicLinks.length === 0) return null;
+                            return /* @__PURE__ */ jsxs("div", { className: "space-y-3", children: [
+                              /* @__PURE__ */ jsxs("h6", { className: "text-xs font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5 leading-normal", children: [
+                                /* @__PURE__ */ jsx(ShoppingBag, { className: "w-3.5 h-3.5 text-neutral-400" }),
+                                "Link affiliate toko resmi (Dukungan bagi kreator)"
+                              ] }),
+                              /* @__PURE__ */ jsx("div", { className: "space-y-1.5", children: (() => {
+                                const grouped = /* @__PURE__ */ new Map();
+                                dynamicLinks.forEach((link) => {
+                                  const storeStyle = getAffiliateStoreStyle(link.brand || link.storeName);
+                                  const brandKey = storeStyle.brand === "custom" ? `custom:${(link.brand || link.storeName || "").toLowerCase()}` : storeStyle.brand;
+                                  const bucket = grouped.get(brandKey);
+                                  if (bucket) {
+                                    bucket.push(link);
+                                  } else {
+                                    grouped.set(brandKey, [link]);
+                                  }
+                                });
+                                return Array.from(grouped.values());
+                              })().map((group) => {
+                                const link = group[0];
+                                const style = getAffiliateStoreStyle(link.brand || link.storeName);
+                                const hasMultiple = group.length > 1;
+                                const storeName = link.storeName;
+                                const brandName = link.brand || link.storeName;
+                                return /* @__PURE__ */ jsxs(
+                                  "a",
+                                  {
+                                    href: hasMultiple ? void 0 : link.url,
+                                    role: hasMultiple ? "button" : void 0,
+                                    target: hasMultiple ? void 0 : "_blank",
+                                    rel: hasMultiple ? void 0 : "no-referrer",
+                                    onClick: hasMultiple ? (e) => {
+                                      e.preventDefault();
+                                      openStoreGroupModal(storeName, link.brand || link.storeName, link.brandSlug || link.storeSlug, group);
+                                    } : void 0,
+                                    className: `w-full h-8.5 rounded-xl flex items-center justify-center transition-all shadow-3xs px-3 gap-2 ${style.className} ${hasMultiple ? "cursor-pointer" : ""}`,
+                                    title: hasMultiple ? `Pilih dari ${group.length} link ${brandName}` : `Beli di ${brandName} Resmi`,
+                                    children: [
+                                      /* @__PURE__ */ jsx("span", { className: "font-sans text-sm font-extrabold uppercase tracking-wider", children: style.brand === "custom" ? link.storeName : style.label }),
+                                      hasMultiple && /* @__PURE__ */ jsxs("span", { className: "text-sm font-mono font-black px-1.5 py-0.5 rounded-md bg-white/25 border border-white/30 shrink-0 leading-none", children: [
+                                        group.length,
+                                        " Link"
+                                      ] })
+                                    ]
+                                  },
+                                  link.id || link.storeName
+                                );
+                              }) })
+                            ] });
+                          })(),
+                          (() => {
+                            const videoLinks = activeVolObj.videoLinks || [];
+                            if (videoLinks.length === 0) return null;
+                            return /* @__PURE__ */ jsxs("div", { className: "space-y-3", children: [
+                              /* @__PURE__ */ jsxs("h6", { className: "text-xs font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5 leading-normal", children: [
+                                /* @__PURE__ */ jsx(Play, { className: "w-3.5 h-3.5 text-neutral-400" }),
+                                "Tonton di platform video resmi"
+                              ] }),
+                              /* @__PURE__ */ jsx("div", { className: "space-y-2", children: videoLinks.map((video) => {
+                                const style = getVideoPlatformStyle(video.platform_name);
+                                const platformLabel = style.isKnown ? style.label : video.platform_name || "Video";
+                                const accessLabel = video.access_type === "subscription" ? "Berlangganan" : "Gratis";
+                                return /* @__PURE__ */ jsxs(
+                                  "a",
+                                  {
+                                    href: video.url,
+                                    target: "_blank",
+                                    rel: "no-referrer",
+                                    title: `Tonton di ${platformLabel} (${accessLabel})`,
+                                    className: `w-full rounded-xl flex items-center gap-3 px-3.5 py-3 transition-all shadow-3xs ${style.className}`,
+                                    children: [
+                                      /* @__PURE__ */ jsx("span", { className: "shrink-0 w-11 h-11 rounded-lg bg-white/20 border border-white/25 flex items-center justify-center", children: /* @__PURE__ */ jsx(Play, { className: "w-5 h-5" }) }),
+                                      /* @__PURE__ */ jsx("span", { className: "flex-1 min-w-0 text-left font-sans text-sm sm:text-[15px] font-extrabold truncate leading-snug", children: video.title || platformLabel }),
+                                      /* @__PURE__ */ jsx(ArrowUpRight, { className: "w-5 h-5 shrink-0 opacity-85" })
+                                    ]
+                                  },
+                                  video.id
+                                );
+                              }) })
+                            ] });
+                          })()
+                        ] });
                         if (isAdult && !isUnlocked) {
                           return /* @__PURE__ */ jsxs("div", { className: "border border-red-200/60 rounded-2xl p-4 bg-red-50/5 relative overflow-hidden transition-all duration-300 shadow-inner min-h-[240px] flex flex-col justify-center", children: [
                             /* @__PURE__ */ jsx("div", { className: "blur-md opacity-25 select-none pointer-events-none transition-all duration-300", children: linksContent }),
@@ -6243,7 +6468,8 @@ function DetailBuku$1({
                         }
                         return linksContent;
                       })(),
-                      /* @__PURE__ */ jsx(HighlightReview, { activeVolObj, selectedComic })
+                      /* @__PURE__ */ jsx(HighlightReview, { activeVolObj, selectedComic }),
+                      /* @__PURE__ */ jsx(HighlightReviewInstagram, { activeVolObj, selectedComic })
                     ] });
                   })()
                 ] }),
@@ -6280,20 +6506,21 @@ function DetailBuku$1({
                         " Buku"
                       ] })
                     ] }),
-                    /* @__PURE__ */ jsx("p", { className: "text-[11px] text-neutral-500 dark:text-neutral-400 font-sans leading-relaxed", children: "Manga & volume terbitan resmi yang berhubungan dengan berita/buku ini:" }),
                     /* @__PURE__ */ jsxs("div", { className: "space-y-2", children: [
                       relevantComics.map((relComic) => {
-                        var _a2;
+                        var _a;
                         const firstVol = relComic.volumes && relComic.volumes.length > 0 ? relComic.volumes[0] : null;
                         const relCover = relComic.coverImage || (firstVol == null ? void 0 : firstVol.coverImage);
                         const displayPrice = (firstVol == null ? void 0 : firstVol.price) ? `Rp ${firstVol.price.toLocaleString("id-ID")}` : "Rp 45.000";
-                        const genresText = ((_a2 = relComic.genres) == null ? void 0 : _a2.slice(0, 2).join(", ")) || "Komik & Novel";
+                        const genresText = ((_a = relComic.genres) == null ? void 0 : _a.slice(0, 2).join(", ")) || "Komik & Novel";
                         return /* @__PURE__ */ jsxs(
-                          "div",
+                          "a",
                           {
-                            onClick: () => {
-                              setSelectedComic(relComic);
-                              setActiveVolumeNum((firstVol == null ? void 0 : firstVol.volNumber) || 1);
+                            href: bookPath(relComic, firstVol) ?? void 0,
+                            onClick: (e) => {
+                              if (!isPlainLeftClick(e)) return;
+                              e.preventDefault();
+                              onOpenComic(relComic, (firstVol == null ? void 0 : firstVol.volNumber) || 1);
                             },
                             className: "p-2.5 bg-neutral-50/80 dark:bg-neutral-800/40 border border-neutral-200/80 dark:border-neutral-800 rounded-xl flex gap-3 items-center hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group cursor-pointer",
                             children: [
@@ -6310,10 +6537,10 @@ function DetailBuku$1({
                               ) : /* @__PURE__ */ jsx("div", { className: "w-11 h-15 bg-neutral-200 dark:bg-neutral-700 rounded-md shrink-0 flex items-center justify-center text-neutral-400", children: /* @__PURE__ */ jsx(BookOpen, { className: "w-5 h-5" }) }),
                               /* @__PURE__ */ jsxs("div", { className: "flex-1 min-w-0 text-left space-y-0.5", children: [
                                 /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5 flex-wrap", children: [
-                                  /* @__PURE__ */ jsx("span", { className: "text-[8.5px] font-extrabold bg-neutral-200/80 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 px-1.5 py-0.2 rounded uppercase leading-none", children: relComic.category ? getBookTypeLabel(relComic.category) : "Buku" }),
+                                  /* @__PURE__ */ jsx("span", { className: "text-[8.5px] bg-white dark:bg-neutral-900 text-neutral-850 dark:text-neutral-200 px-1.5 py-0.5 rounded-md border border-neutral-200 dark:border-neutral-800 font-medium leading-normal shadow-2xs", children: relComic.category ? getBookTypeLabel(relComic.category) : "Buku" }),
                                   /* @__PURE__ */ jsx("span", { className: "text-[9.5px] text-neutral-400 truncate", children: relComic.publisherName || "Penerbit" })
                                 ] }),
-                                /* @__PURE__ */ jsx("h6", { className: `text-xs font-sans font-bold text-neutral-900 dark:text-neutral-100 line-clamp-1 ${getReadingRatingStyle(relComic.readingRating).hoverClass} transition-colors leading-snug`, children: relComic.title }),
+                                /* @__PURE__ */ jsx("h6", { className: `text-xs font-sans font-bold text-neutral-900 dark:text-neutral-100 line-clamp-1 ${getReadingRatingStyle2(relComic.readingRating).hoverClass} transition-colors leading-snug`, children: relComic.title }),
                                 /* @__PURE__ */ jsx("p", { className: "text-[10px] font-sans text-neutral-500 dark:text-neutral-400 line-clamp-1", children: genresText }),
                                 /* @__PURE__ */ jsx("div", { className: "flex items-center justify-between pt-0.5", children: /* @__PURE__ */ jsx("span", { className: "text-xs font-extrabold text-neutral-900 dark:text-neutral-100", children: displayPrice }) })
                               ] })
@@ -6329,7 +6556,7 @@ function DetailBuku$1({
                     /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between pb-2 border-b border-neutral-150 dark:border-neutral-800", children: [
                       /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
                         /* @__PURE__ */ jsx("div", { className: "p-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-lg shrink-0", children: /* @__PURE__ */ jsx(Store, { className: "w-4 h-4 text-emerald-600 dark:text-emerald-400" }) }),
-                        /* @__PURE__ */ jsx("h5", { className: "font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs tracking-wider", children: "KIOS" })
+                        /* @__PURE__ */ jsx("h5", { className: "font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs tracking-wider", children: "Produk Terkait" })
                       ] }),
                       /* @__PURE__ */ jsxs("span", { className: "text-[10px] font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2 py-0.5 rounded-md", children: [
                         relevantKiosItems.length,
@@ -6337,8 +6564,8 @@ function DetailBuku$1({
                       ] })
                     ] }),
                     /* @__PURE__ */ jsx("div", { className: "space-y-2.5", children: relevantKiosItems.map((item) => {
-                      var _a2;
-                      const itemCover = item.cover_image || ((_a2 = item.carousel_images) == null ? void 0 : _a2[0]) || null;
+                      var _a;
+                      const itemCover = item.cover_image || ((_a = item.carousel_images) == null ? void 0 : _a[0]) || null;
                       const itemTitle = item.comic_title || item.title || "Produk Kios";
                       const itemNotes = item.deskripsi_produk || item.notes || item.synopsis || "";
                       const itemPrice = Number(item.price) || 0;
@@ -6364,13 +6591,10 @@ function DetailBuku$1({
                               }
                             ) : /* @__PURE__ */ jsx("span", { className: "text-neutral-500 dark:text-neutral-400 text-xs font-mono", children: "No Image" }) }),
                             /* @__PURE__ */ jsxs("div", { className: "flex-1 min-w-0 text-left space-y-0.5", children: [
-                              /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between gap-1", children: [
-                                /* @__PURE__ */ jsxs("h6", { className: "text-xs font-sans font-bold text-neutral-900 dark:text-neutral-100 line-clamp-1 group-hover/kios:text-emerald-600 dark:group-hover/kios:text-emerald-400 transition-colors", children: [
-                                  itemTitle,
-                                  item.vol_number ? ` Vol ${item.vol_number}` : ""
-                                ] }),
-                                /* @__PURE__ */ jsx(ArrowUpRight, { className: "w-3.5 h-3.5 text-neutral-400 group-hover/kios:text-emerald-600 dark:group-hover/kios:text-emerald-400 transition-colors shrink-0" })
-                              ] }),
+                              /* @__PURE__ */ jsx("div", { className: "flex items-center justify-between gap-1", children: /* @__PURE__ */ jsxs("h6", { className: "text-xs font-sans font-bold text-neutral-900 dark:text-neutral-100 line-clamp-1 group-hover/kios:text-emerald-600 dark:group-hover/kios:text-emerald-400 transition-colors", children: [
+                                itemTitle,
+                                item.vol_number ? ` Vol ${item.vol_number}` : ""
+                              ] }) }),
                               itemNotes && /* @__PURE__ */ jsx("p", { className: "text-[10px] font-sans text-neutral-600 dark:text-neutral-400 line-clamp-2 leading-snug", children: itemNotes }),
                               /* @__PURE__ */ jsxs("div", { className: "flex items-baseline gap-2 pt-1", children: [
                                 /* @__PURE__ */ jsxs("span", { className: "text-xs font-sans font-black text-emerald-600 dark:text-emerald-400", children: [
@@ -6389,7 +6613,7 @@ function DetailBuku$1({
                       );
                     }) })
                   ] }),
-                  /* @__PURE__ */ jsxs("div", { className: "bg-neutral-50 dark:bg-[#262626] border border-dashed border-neutral-250 dark:border-neutral-700 rounded-2xl p-4 text-center space-y-1.5 transition-colors", children: [
+                  /* @__PURE__ */ jsxs("div", { className: "bg-neutral-50 dark:bg-[#202120] border border-dashed border-neutral-250 dark:border-neutral-700 rounded-2xl p-4 text-center space-y-1.5 transition-colors", children: [
                     /* @__PURE__ */ jsx("span", { className: "text-xs font-extrabold tracking-wider text-neutral-400 dark:text-neutral-400 uppercase block leading-normal", children: "PROMOTED AD" }),
                     /* @__PURE__ */ jsx("div", { className: "bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-800 py-4.5 rounded-xl text-xs text-neutral-500 dark:text-neutral-300 shadow-xs leading-normal", children: "Affiliate Promo Slot" })
                   ] })
@@ -6475,7 +6699,7 @@ function DetailBuku$1({
     )
   ] });
 }
-const __vite_glob_0_50 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_68 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: DetailBuku$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -6544,7 +6768,6 @@ function DetailKios$1({
   onClose,
   onSelectItem,
   onOpenShareModal,
-  onAddToCart,
   onFilterCategory
 }) {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -6746,9 +6969,9 @@ function DetailKios$1({
         animate: { opacity: 1, y: 0 },
         exit: { opacity: 0, y: 15 },
         transition: { duration: 0.2 },
-        className: "h-full w-full bg-white dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 flex flex-col transition-colors duration-200 relative",
+        className: "h-full w-full bg-white dark:bg-[#202120] text-neutral-950 dark:text-neutral-50 flex flex-col transition-colors duration-200 relative",
         children: [
-          /* @__PURE__ */ jsx("div", { className: "fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800", children: /* @__PURE__ */ jsxs("div", { className: "max-w-6xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3", children: [
+          /* @__PURE__ */ jsx("div", { className: "fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800", children: /* @__PURE__ */ jsxs("div", { className: "max-w-7xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3", children: [
             /* @__PURE__ */ jsxs(
               "button",
               {
@@ -6787,10 +7010,10 @@ function DetailKios$1({
               )
             ] })
           ] }) }),
-          /* @__PURE__ */ jsxs("div", { className: "max-w-4xl w-full mx-auto px-3 sm:px-6 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28", children: [
+          /* @__PURE__ */ jsxs("div", { className: "max-w-7xl w-full mx-auto px-3 sm:px-0 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28", children: [
             /* @__PURE__ */ jsxs("div", { className: "bg-neutral-50/80 dark:bg-neutral-900/40 p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs", children: [
               /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-3 shrink-0 w-full md:w-80", children: [
-                /* @__PURE__ */ jsxs("div", { className: "relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-xl overflow-hidden bg-neutral-950 flex flex-col justify-between p-3 border border-neutral-150 dark:border-neutral-800 shadow-md group", children: [
+                /* @__PURE__ */ jsxs("div", { className: "relative aspect-[3/4] w-full max-w-[260px] mx-auto md:max-w-none rounded-3xl overflow-hidden bg-neutral-950 flex flex-col justify-between p-3 border border-neutral-150 dark:border-neutral-800 shadow-md group", children: [
                   selectedItem.isPreloved && selectedItem.carouselImages && selectedItem.carouselImages.length > 0 ? /* @__PURE__ */ jsx(
                     "img",
                     {
@@ -7019,7 +7242,7 @@ function DetailKios$1({
               ] })
             ] }),
             /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 md:grid-cols-12 gap-6 w-full max-w-full overflow-hidden", children: [
-              /* @__PURE__ */ jsx("div", { className: "col-span-1 md:col-span-8 space-y-6 w-full max-w-full overflow-hidden text-left", children: /* @__PURE__ */ jsxs("div", { className: "space-y-3", children: [
+              /* @__PURE__ */ jsx("div", { className: "col-span-1 md:col-span-8 space-y-6 w-full max-w-full overflow-hidden text-left", children: /* @__PURE__ */ jsxs("div", { className: "space-y-3 px-6", children: [
                 /* @__PURE__ */ jsx("h4", { className: "text-xs font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-150 dark:border-neutral-850 pb-1 leading-normal", children: "Deskripsi Produk" }),
                 selectedItem.isPreloved ? /* @__PURE__ */ jsxs("div", { className: "space-y-4", children: [
                   selectedItem.deskripsi_produk || selectedItem.synopsis ? /* @__PURE__ */ jsx("p", { className: "text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans whitespace-pre-line select-text", children: selectedItem.deskripsi_produk || selectedItem.synopsis }) : /* @__PURE__ */ jsxs("p", { className: "text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans select-text", children: [
@@ -7111,7 +7334,7 @@ function DetailKios$1({
     /* @__PURE__ */ jsx(BookmarkToast, { message: bookmarkToast })
   ] });
 }
-const __vite_glob_0_51 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_69 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: DetailKios$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -7167,7 +7390,13 @@ const getReadingRatingHoverClass = (rating, groupPrefix = "group-hover") => {
 };
 const stripLazyIframes = (html) => html.replace(/(<iframe\b[^>]*?)\s+loading=("lazy"|'lazy'|lazy)/gi, "$1");
 const NewsBody = React__default.memo(function NewsBody2({ html, className }) {
-  return /* @__PURE__ */ jsx("div", { className, dangerouslySetInnerHTML: { __html: html } });
+  const containerRef = React__default.useRef(null);
+  React__default.useEffect(() => {
+    const container = containerRef.current;
+    prepareEmbedFrames(container);
+    return syncEmbedHeights(container);
+  }, [html]);
+  return /* @__PURE__ */ jsx("div", { ref: containerRef, className, dangerouslySetInnerHTML: { __html: html } });
 });
 function DetailNews$1({
   activePost,
@@ -7226,7 +7455,7 @@ function DetailNews$1({
   const metaImage = (activePost == null ? void 0 : activePost.attachedImage) || "";
   const contentHtml = React__default.useMemo(() => stripLazyIframes((activePost == null ? void 0 : activePost.content) || ""), [activePost == null ? void 0 : activePost.content]);
   if (!activePost) return null;
-  return /* @__PURE__ */ jsxs("div", { className: "w-full max-w-6xl mx-auto relative -mt-4 sm:-mt-6", children: [
+  return /* @__PURE__ */ jsxs("div", { className: "w-full max-w-7xl mx-auto relative -mt-4 sm:-mt-6", children: [
     /* @__PURE__ */ jsxs(Head, { children: [
       /* @__PURE__ */ jsx("title", { children: metaTitle }),
       /* @__PURE__ */ jsx("meta", { name: "description", content: metaDesc }),
@@ -7262,7 +7491,7 @@ function DetailNews$1({
         ]
       }) })
     ] }),
-    /* @__PURE__ */ jsx("div", { className: "fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800", children: /* @__PURE__ */ jsxs("div", { className: "max-w-6xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3", children: [
+    /* @__PURE__ */ jsx("div", { className: "fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800", children: /* @__PURE__ */ jsxs("div", { className: "max-w-7xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3", children: [
       /* @__PURE__ */ jsxs(
         "button",
         {
@@ -7322,8 +7551,8 @@ function DetailNews$1({
               },
               f.id
             )) }),
-            /* @__PURE__ */ jsx("div", { className: "flex flex-col", children: /* @__PURE__ */ jsxs("div", { className: "p-5 sm:p-7 flex flex-col gap-5", children: [
-              /* @__PURE__ */ jsxs("div", { className: "space-y-2.5", children: [
+            /* @__PURE__ */ jsx("div", { className: "flex flex-col", children: /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-5", children: [
+              /* @__PURE__ */ jsxs("div", { className: "space-y-2.5 px-5", children: [
                 /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono font-semibold text-neutral-500 dark:text-neutral-400 leading-normal", children: [
                   /* @__PURE__ */ jsxs("span", { className: "font-extrabold text-[#112A12] dark:text-white shrink-0", children: [
                     "@",
@@ -7417,7 +7646,7 @@ function DetailNews$1({
                     /* @__PURE__ */ jsx("div", { className: "w-8 h-8 rounded-xl bg-[#DA6B1C] text-white flex items-center justify-center font-bold shadow-xs shrink-0", children: /* @__PURE__ */ jsx(Sparkles, { className: "w-4 h-4" }) }),
                     /* @__PURE__ */ jsxs("div", { children: [
                       /* @__PURE__ */ jsx("h4", { className: "text-xs sm:text-sm font-extrabold text-neutral-900 dark:text-neutral-50 tracking-tight flex items-center gap-1.5", children: /* @__PURE__ */ jsx("span", { children: "INSERT KATALOG & REVIEW SHORT" }) }),
-                      /* @__PURE__ */ jsx("p", { className: "text-[10px] sm:text-[11px] font-mono text-neutral-500 dark:text-neutral-400", children: "Katalog (Kiri) • Review Short Konotasi (Kanan)" })
+                      /* @__PURE__ */ jsx("p", { className: "text-[10px] sm:text-[11px] font-mono text-neutral-500 dark:text-neutral-400", children: "Katalog (Kiri) • Review Short Konotasi & Card Instagram (Kanan)" })
                     ] })
                   ] }),
                   /* @__PURE__ */ jsxs("span", { className: "px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-[#DA6B1C] text-white shrink-0", children: [
@@ -7437,14 +7666,19 @@ function DetailNews$1({
                   const publisherObj = matchedDbBook == null ? void 0 : matchedDbBook.publisher;
                   const publisherName = (publisherObj == null ? void 0 : publisherObj.name) || (matchedMockComic == null ? void 0 : matchedMockComic.publisherName) || "Penerbit Resmi";
                   const bookPrice = (matchedDbBook == null ? void 0 : matchedDbBook.msrp) ? Number(matchedDbBook.msrp) : ((_b = (_a = matchedMockComic == null ? void 0 : matchedMockComic.volumes) == null ? void 0 : _a[0]) == null ? void 0 : _b.price) || 45e3;
-                  const targetComicId = matchedDbBook ? matchedDbBook.series_id ? `series-${matchedDbBook.series_id}-vol-${matchedDbBook.volume}` : `book-${matchedDbBook.id}` : rec.comicId || (matchedMockComic == null ? void 0 : matchedMockComic.id);
+                  const dbSlug = typeof (matchedDbBook == null ? void 0 : matchedDbBook.slug) === "string" ? matchedDbBook.slug.trim() : "";
+                  const targetSlug = dbSlug || (matchedMockComic == null ? void 0 : matchedMockComic.slug) || "";
+                  const targetHref = targetSlug ? `/buku/${targetSlug}` : bookPath(matchedMockComic);
                   const imagesArr = matchedDbBook == null ? void 0 : matchedDbBook.images;
                   const coverImg = imagesArr && imagesArr.length > 0 ? imagesArr[0].image_url || imagesArr[0].file_path : (matchedMockComic == null ? void 0 : matchedMockComic.coverImage) || ((_c = rec.shortReview) == null ? void 0 : _c.thumbnail) || null;
                   const tiktokEmbedsArr = matchedDbBook == null ? void 0 : matchedDbBook.tiktok_embeds;
-                  const matchedTiktokEmbed = (tiktokEmbedsArr == null ? void 0 : tiktokEmbedsArr.find((t) => String(t.id) === String(rec.tiktok_embed_id))) || (tiktokEmbedsArr && tiktokEmbedsArr.length > 0 ? tiktokEmbedsArr[0] : null);
+                  const matchedTiktokEmbed = rec.tiktok_embed_id ? (tiktokEmbedsArr == null ? void 0 : tiktokEmbedsArr.find((t) => String(t.id) === String(rec.tiktok_embed_id))) ?? null : null;
                   const shortThumbnail = "/assets/images/thumbnail-tiktok.jpeg";
                   const shortTitle = ((_d = rec.shortReview) == null ? void 0 : _d.title) || (matchedTiktokEmbed == null ? void 0 : matchedTiktokEmbed.name) || `Review Short: ${rec.title}`;
                   const videoUrl = ((_e = rec.shortReview) == null ? void 0 : _e.url_video) || (matchedTiktokEmbed == null ? void 0 : matchedTiktokEmbed.url_video);
+                  const hasShortVideo = Boolean(videoUrl);
+                  const instagramEmbedsArr = matchedDbBook == null ? void 0 : matchedDbBook.instagram_embeds;
+                  const matchedInstagramEmbed = rec.instagram_embed_id ? instagramEmbedsArr == null ? void 0 : instagramEmbedsArr.find((i) => String(i.id) === String(rec.instagram_embed_id)) : null;
                   return /* @__PURE__ */ jsxs(
                     "div",
                     {
@@ -7463,16 +7697,41 @@ function DetailNews$1({
                             {
                               onClick: (e) => {
                                 e.stopPropagation();
-                                if (targetComicId && onNavigateToComic) {
-                                  onNavigateToComic(String(targetComicId));
-                                } else if (onNavigateToCatalog) {
-                                  onNavigateToCatalog();
+                                if (!targetHref) {
+                                  onNavigateToCatalog == null ? void 0 : onNavigateToCatalog();
+                                  return;
+                                }
+                                if (!isPlainLeftClick(e)) return;
+                                if (targetSlug && onNavigateToComic) {
+                                  onNavigateToComic(targetSlug);
+                                } else {
+                                  router.visit(targetHref);
                                 }
                               },
                               className: "group/kat relative w-full sm:w-[260px] shrink-0 bg-white dark:bg-[#181912] hover:bg-neutral-50 dark:hover:bg-[#222319] border border-neutral-200/90 dark:border-neutral-700/60 rounded-2xl overflow-hidden transition-all shadow-2xs hover:shadow-md cursor-pointer flex flex-col justify-between",
                               children: [
                                 /* @__PURE__ */ jsxs("div", { children: [
                                   /* @__PURE__ */ jsxs("div", { className: "relative w-full h-48 sm:h-52 bg-neutral-900 overflow-hidden shrink-0", children: [
+                                    /* @__PURE__ */ jsx(
+                                      "a",
+                                      {
+                                        href: targetHref ?? void 0,
+                                        "aria-label": `Buka ${bookTitle}`,
+                                        onClick: (e) => {
+                                          e.stopPropagation();
+                                          if (!targetHref) return;
+                                          if (!isPlainLeftClick(e)) return;
+                                          e.preventDefault();
+                                          if (targetSlug && onNavigateToComic) {
+                                            onNavigateToComic(targetSlug);
+                                          } else {
+                                            router.visit(targetHref);
+                                          }
+                                        },
+                                        className: "absolute inset-0 z-20",
+                                        children: /* @__PURE__ */ jsx("span", { className: "sr-only", children: bookTitle })
+                                      }
+                                    ),
                                     coverImg ? /* @__PURE__ */ jsx(
                                       "img",
                                       {
@@ -7492,7 +7751,7 @@ function DetailNews$1({
                                   /* @__PURE__ */ jsxs("div", { className: "p-3.5 space-y-1", children: [
                                     /* @__PURE__ */ jsx("p", { className: "text-[11px] font-sans font-medium text-neutral-400 dark:text-neutral-500 truncate", children: publisherName }),
                                     /* @__PURE__ */ jsx("h5", { className: `text-sm font-extrabold text-neutral-900 dark:text-neutral-50 ${getReadingRatingHoverClass(typeof bookRating === "string" ? bookRating : "Dewasa Ringan", "group-hover/kat")} transition-colors line-clamp-2 leading-snug`, children: bookTitle }),
-                                    /* @__PURE__ */ jsx("p", { className: "text-xs font-sans text-neutral-500 dark:text-neutral-400 line-clamp-1", children: typeof (matchedDbBook == null ? void 0 : matchedDbBook.short_description) === "string" ? matchedDbBook.short_description : ((_f = matchedMockComic == null ? void 0 : matchedMockComic.genres) == null ? void 0 : _f.join(", ")) || "Koleksi Resmi Norinoya" })
+                                    /* @__PURE__ */ jsx("p", { className: "text-xs font-sans text-neutral-500 dark:text-neutral-400 line-clamp-1", children: typeof (matchedDbBook == null ? void 0 : matchedDbBook.synopsis) === "string" && matchedDbBook.synopsis.trim() !== "" ? String(matchedDbBook.synopsis).replace(/<[^>]*>/g, "") : ((_f = matchedMockComic == null ? void 0 : matchedMockComic.genres) == null ? void 0 : _f.join(", ")) || "Koleksi Resmi Norinoya" })
                                   ] })
                                 ] }),
                                 /* @__PURE__ */ jsxs("div", { className: "px-3.5 pb-3.5 pt-2 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between", children: [
@@ -7508,7 +7767,7 @@ function DetailNews$1({
                               ]
                             }
                           ),
-                          /* @__PURE__ */ jsxs(
+                          hasShortVideo && /* @__PURE__ */ jsxs(
                             "div",
                             {
                               onClick: (e) => {
@@ -7566,6 +7825,52 @@ function DetailNews$1({
                                     ] })
                                   ] })
                                 ] })
+                              ]
+                            }
+                          ),
+                          (matchedInstagramEmbed == null ? void 0 : matchedInstagramEmbed.url) && /* @__PURE__ */ jsxs(
+                            "div",
+                            {
+                              onClick: (e) => {
+                                e.stopPropagation();
+                                window.open(String(matchedInstagramEmbed.url), "_blank", "noopener,noreferrer");
+                              },
+                              className: "group/ig relative w-full sm:w-[260px] shrink-0 bg-white dark:bg-[#181912] hover:bg-neutral-50 dark:hover:bg-[#222319] border border-neutral-200/90 dark:border-neutral-700/60 rounded-2xl overflow-hidden transition-all shadow-2xs hover:shadow-md cursor-pointer flex flex-col justify-between",
+                              children: [
+                                /* @__PURE__ */ jsxs("div", { children: [
+                                  matchedInstagramEmbed.thumbnail_url ? /* @__PURE__ */ jsxs("div", { className: "relative w-full h-40 sm:h-44 bg-gradient-to-r from-[#F58529] via-[#DD2A7B] to-[#8134AF] overflow-hidden shrink-0", children: [
+                                    /* @__PURE__ */ jsx(
+                                      "img",
+                                      {
+                                        src: matchedInstagramEmbed.thumbnail_url,
+                                        alt: matchedInstagramEmbed.title || "Instagram",
+                                        loading: "lazy",
+                                        decoding: "async",
+                                        referrerPolicy: "no-referrer",
+                                        onError: (e) => {
+                                          e.currentTarget.style.display = "none";
+                                        },
+                                        className: "absolute inset-0 w-full h-full object-cover object-top group-hover/ig:scale-105 transition-transform duration-300"
+                                      }
+                                    ),
+                                    /* @__PURE__ */ jsx("div", { className: "absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" }),
+                                    /* @__PURE__ */ jsx("div", { className: "absolute top-2.5 left-2.5 z-10", children: /* @__PURE__ */ jsxs("span", { className: "px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold bg-white/90 text-neutral-900 shadow-xs border border-white/40 flex items-center gap-1", children: [
+                                      /* @__PURE__ */ jsx(Instagram, { className: "w-3 h-3 text-[#E1306C]" }),
+                                      "INSTAGRAM"
+                                    ] }) })
+                                  ] }) : /* @__PURE__ */ jsxs("div", { className: "w-full h-11 bg-gradient-to-r from-[#F58529] via-[#DD2A7B] to-[#8134AF] flex items-center px-3.5 gap-2", children: [
+                                    /* @__PURE__ */ jsx(Instagram, { className: "w-4 h-4 text-white" }),
+                                    /* @__PURE__ */ jsx("span", { className: "text-[10px] font-mono font-black tracking-wider text-white uppercase", children: "Instagram" })
+                                  ] }),
+                                  /* @__PURE__ */ jsxs("div", { className: "p-3.5 space-y-1", children: [
+                                    /* @__PURE__ */ jsx("h5", { className: "text-sm font-extrabold text-neutral-900 dark:text-neutral-50 line-clamp-2 leading-snug", children: matchedInstagramEmbed.title || matchedInstagramEmbed.name || "Review Instagram" }),
+                                    matchedInstagramEmbed.description && /* @__PURE__ */ jsx("p", { className: "text-xs font-sans text-neutral-500 dark:text-neutral-400 line-clamp-3", children: matchedInstagramEmbed.description })
+                                  ] })
+                                ] }),
+                                /* @__PURE__ */ jsx("div", { className: "px-3.5 pb-3.5 pt-2 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between", children: /* @__PURE__ */ jsxs("span", { className: "text-[10.5px] font-sans font-bold text-neutral-700 dark:text-neutral-300 flex items-center gap-1", children: [
+                                  "Lihat Postingan ",
+                                  /* @__PURE__ */ jsx(ArrowUpRight, { className: "w-3 h-3 text-[#112A12] dark:text-[#457347]" })
+                                ] }) })
                               ]
                             }
                           )
@@ -7639,7 +7944,7 @@ function DetailNews$1({
                   { id: "party", emoji: "🎉", label: "Keren", count: 35 }
                 ]);
                 if (!postReactions || postReactions.length === 0) return null;
-                return /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-2", children: [
+                return /* @__PURE__ */ jsxs("div", { className: " flex-col gap-2 hidden", children: [
                   /* @__PURE__ */ jsx("h4", { className: "text-xs font-mono font-extrabold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase", children: "Beri Reaksi Instan" }),
                   /* @__PURE__ */ jsx("div", { className: "flex items-center gap-2.5 flex-wrap", children: postReactions.map((react, idx) => {
                     var _a;
@@ -7740,70 +8045,71 @@ function DetailNews$1({
             ] }) })
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "lg:col-span-4 flex flex-col gap-5", children: [
-            relevantCatalogItems && relevantCatalogItems.length > 0 && /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-[#202120] rounded-2xl p-4 sm:p-5 border border-neutral-200/85 dark:border-neutral-800 shadow-xs flex flex-col gap-3.5", children: [
-              /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between gap-2 pb-2.5 border-b border-neutral-200/80 dark:border-neutral-800", children: [
+            /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 space-y-3 shadow-xs text-left", children: [
+              /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between pb-2 border-b border-neutral-150 dark:border-neutral-800", children: [
                 /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
-                  /* @__PURE__ */ jsx(ShoppingBag, { className: "w-4 h-4 text-neutral-100 dark:text-neutral-100 shrink-0" }),
-                  /* @__PURE__ */ jsx("h3", { className: "text-xs font-mono font-extrabold text-neutral-900 dark:text-neutral-100 uppercase tracking-wider", children: "Katalog Relevan" })
+                  /* @__PURE__ */ jsx("div", { className: "p-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-lg shrink-0", children: /* @__PURE__ */ jsx(BookOpen, { className: "w-4 h-4 text-neutral-700 dark:text-neutral-300" }) }),
+                  /* @__PURE__ */ jsx("h5", { className: "font-extrabold text-neutral-900 dark:text-neutral-50 uppercase text-xs tracking-wider", children: "Katalog Relevan" })
                 ] }),
-                /* @__PURE__ */ jsxs("span", { className: "px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-[#112A12]/15 text-[#112A12]", children: [
-                  relevantCatalogItems.length,
-                  " Jilid"
+                /* @__PURE__ */ jsxs("span", { className: "text-[10px] font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2 py-0.5 rounded-md", children: [
+                  (relevantCatalogItems ?? []).length,
+                  " Buku"
                 ] })
               ] }),
-              /* @__PURE__ */ jsx("p", { className: "text-[11px] text-neutral-500 dark:text-neutral-400 font-sans leading-tight", children: "Manga & volume terbitan resmi yang berhubungan dengan berita ini:" }),
-              /* @__PURE__ */ jsx("div", { className: "flex flex-col gap-2.5", children: relevantCatalogItems.map(({ comic, vol }, idx) => {
-                var _a;
-                return /* @__PURE__ */ jsxs(
-                  "div",
-                  {
-                    onClick: () => {
-                      if (comic.slug) {
-                        router.visit(`/buku/${comic.slug}`);
-                      } else if (onNavigateToComic && comic.id) {
-                        onNavigateToComic(comic.id);
-                      } else if (comic.id) {
-                        router.visit(`/buku/${comic.id}`);
-                      } else if (onNavigateToCatalog) {
-                        onNavigateToCatalog();
-                      } else {
-                        triggerToast(`📚 Membuka Katalog: ${comic.title} Vol ${vol.volNumber}`);
-                      }
-                    },
-                    className: "flex gap-3 p-2.5 rounded-xl bg-neutral-50 dark:bg-[#1A2321] hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200/60 dark:border-emerald-500/20 transition-all cursor-pointer group/kat hover:shadow-xs active:scale-[0.99]",
-                    children: [
-                      /* @__PURE__ */ jsx(
-                        "img",
-                        {
-                          src: vol.coverImage || comic.coverImage,
-                          alt: `${comic.title} Vol ${vol.volNumber}`,
-                          loading: "lazy",
-                          decoding: "async",
-                          className: "w-13 h-18 object-cover rounded-lg border border-neutral-200 dark:border-neutral-700 shrink-0 shadow-2xs group-hover/kat:scale-103 transition-transform"
+              /* @__PURE__ */ jsxs("div", { className: "space-y-2", children: [
+                (relevantCatalogItems ?? []).map(({ comic, vol }, idx) => {
+                  var _a;
+                  return /* @__PURE__ */ jsxs(
+                    "a",
+                    {
+                      href: bookPath(comic, vol) ?? void 0,
+                      onClick: (e) => {
+                        const href = bookPath(comic, vol);
+                        if (!href) {
+                          onNavigateToCatalog == null ? void 0 : onNavigateToCatalog();
+                          return;
                         }
-                      ),
-                      /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-between flex-1 min-w-0 py-0.5", children: [
-                        /* @__PURE__ */ jsxs("div", { children: [
-                          /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5 mb-1", children: [
-                            /* @__PURE__ */ jsxs("span", { className: "text-[9px] font-mono font-extrabold uppercase px-1.5 py-0.2 rounded bg-neutral-200/80 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200", children: [
-                              "Vol ",
-                              vol.volNumber
-                            ] }),
-                            /* @__PURE__ */ jsx("span", { className: "text-[9px] font-mono text-neutral-400 font-medium truncate", children: comic.originalPublisher || "Official" })
+                        if (!isPlainLeftClick(e)) return;
+                        e.preventDefault();
+                        const slug = vol.slug || comic.slug;
+                        if (slug && onNavigateToComic) {
+                          onNavigateToComic(slug);
+                        } else {
+                          router.visit(href);
+                        }
+                      },
+                      className: "p-2.5 bg-neutral-50/80 dark:bg-neutral-800/40 border border-neutral-200/80 dark:border-neutral-800 rounded-xl flex gap-3 items-center hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group cursor-pointer",
+                      children: [
+                        vol.coverImage || comic.coverImage ? /* @__PURE__ */ jsx(
+                          "img",
+                          {
+                            src: vol.coverImage || comic.coverImage,
+                            alt: `${comic.title} Vol ${vol.volNumber}`,
+                            loading: "lazy",
+                            decoding: "async",
+                            referrerPolicy: "no-referrer",
+                            className: "w-11 h-15 object-cover rounded-md bg-neutral-900 shrink-0 shadow-2xs group-hover:scale-102 transition-transform"
+                          }
+                        ) : /* @__PURE__ */ jsx("div", { className: "w-11 h-15 bg-neutral-200 dark:bg-neutral-700 rounded-md shrink-0 flex items-center justify-center text-neutral-400", children: /* @__PURE__ */ jsx(BookOpen, { className: "w-5 h-5" }) }),
+                        /* @__PURE__ */ jsxs("div", { className: "flex-1 min-w-0 text-left space-y-0.5", children: [
+                          /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5 flex-wrap", children: [
+                            /* @__PURE__ */ jsx("span", { className: "text-[8.5px] bg-white dark:bg-neutral-900 text-neutral-850 dark:text-neutral-200 px-1.5 py-0.5 rounded-md border border-neutral-200 dark:border-neutral-800 font-medium leading-normal shadow-2xs", children: comic.category ? getBookTypeLabel(comic.category) : "Buku" }),
+                            /* @__PURE__ */ jsx("span", { className: "text-[9.5px] text-neutral-400 truncate", children: comic.publisherName || "Penerbit" })
                           ] }),
-                          /* @__PURE__ */ jsx("h4", { className: `text-xs font-extrabold text-neutral-900 dark:text-neutral-100 line-clamp-1 ${getReadingRatingHoverClass(comic.readingRating, "group-hover/kat")} transition-colors`, children: comic.title }),
-                          /* @__PURE__ */ jsx("p", { className: "text-[10px] text-neutral-500 dark:text-neutral-400 line-clamp-1 font-sans", children: ((_a = comic.genres) == null ? void 0 : _a.slice(0, 2).join(", ")) || comic.demographic })
-                        ] }),
-                        /* @__PURE__ */ jsx("div", { className: "flex items-center justify-between gap-1 pt-1.5 border-t border-neutral-200/50 dark:border-neutral-800/80 mt-1", children: /* @__PURE__ */ jsxs("span", { className: "text-xs font-mono font-black text-[#112A12]", children: [
-                          "Rp ",
-                          vol.price ? vol.price.toLocaleString("id-ID") : "45.000"
-                        ] }) })
-                      ] })
-                    ]
-                  },
-                  `${comic.id}-${vol.volNumber}-${idx}`
-                );
-              }) })
+                          /* @__PURE__ */ jsx("h6", { className: `text-xs font-sans font-bold text-neutral-900 dark:text-neutral-100 line-clamp-1 ${getReadingRatingHoverClass(comic.readingRating, "group-hover")} transition-colors leading-snug`, children: comic.title }),
+                          /* @__PURE__ */ jsx("p", { className: "text-[10px] font-sans text-neutral-500 dark:text-neutral-400 line-clamp-1", children: ((_a = comic.genres) == null ? void 0 : _a.slice(0, 2).join(", ")) || "Komik & Novel" }),
+                          /* @__PURE__ */ jsx("div", { className: "flex items-center justify-between pt-0.5", children: /* @__PURE__ */ jsxs("span", { className: "text-xs font-extrabold text-neutral-900 dark:text-neutral-100", children: [
+                            "Rp ",
+                            vol.price ? vol.price.toLocaleString("id-ID") : "45.000"
+                          ] }) })
+                        ] })
+                      ]
+                    },
+                    `${comic.id}-${vol.volNumber}-${idx}`
+                  );
+                }),
+                (relevantCatalogItems ?? []).length === 0 && /* @__PURE__ */ jsx("p", { className: "text-xs text-neutral-400 font-sans italic py-3 text-center", children: "Belum ada katalog relevan lainnya." })
+              ] })
             ] }),
             relevantKiosItems && relevantKiosItems.length > 0 && /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-[#202120] rounded-2xl p-4 sm:p-5 border border-neutral-200/85 dark:border-neutral-800 shadow-xs flex flex-col gap-3.5", children: [
               /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between gap-2 pb-2.5 border-b border-neutral-200/80 dark:border-neutral-800", children: [
@@ -7885,11 +8191,432 @@ function DetailNews$1({
     /* @__PURE__ */ jsx(BookmarkToast, { message: bookmarkToast })
   ] });
 }
-const __vite_glob_0_52 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_70 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: DetailNews$1
 }, Symbol.toStringTag, { value: "Module" }));
-const DetailKios = lazy(() => Promise.resolve().then(() => __vite_glob_0_51));
+const STATUS_STYLES = {
+  Subscription: {
+    pill: "border-red-200 bg-red-50 text-red-600 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-400",
+    dot: "bg-red-600"
+  },
+  Gratis: {
+    pill: "border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-400",
+    dot: "bg-emerald-600"
+  },
+  Digital: {
+    pill: "border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-400",
+    dot: "bg-emerald-600"
+  },
+  Fisik: {
+    pill: "border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-400",
+    dot: "bg-emerald-600"
+  },
+  Penerbit: {
+    pill: "border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-400",
+    dot: "bg-emerald-600"
+  }
+};
+const ACCENT_STYLES = {
+  amber: {
+    chip: "bg-amber-50 border-amber-300 text-amber-600 dark:bg-amber-950/40 dark:border-amber-900/50 dark:text-amber-400",
+    badge: "border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-400",
+    dot: "bg-amber-600"
+  },
+  emerald: {
+    chip: "bg-emerald-50 border-emerald-200 text-emerald-600 dark:bg-emerald-950/40 dark:border-emerald-900/50 dark:text-emerald-400",
+    badge: "border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-400",
+    dot: "bg-emerald-600"
+  }
+};
+const GROUP_ICON = {
+  subtitle: CheckCircle2,
+  dub: Mic,
+  book: BookOpen
+};
+const getReadingRatingStyle = (rating) => {
+  switch (rating) {
+    case "Anak & Bimbingan Orang Tua":
+    case "Anak & Bimbingan":
+      return {
+        bg: "bg-[#22c55e] dark:bg-[#16a34a] border-emerald-600/30 text-white",
+        text: "Anak & Bimbingan",
+        hoverClass: "group-hover:text-[#41a34c] dark:group-hover:text-emerald-400"
+      };
+    case "Remaja":
+      return {
+        bg: "bg-[#f59e0b] dark:bg-[#d97706] border-amber-600/30 text-white",
+        text: "Remaja",
+        hoverClass: "group-hover:text-[#d97706] dark:group-hover:text-amber-400"
+      };
+    case "Dewasa Ringan":
+      return {
+        bg: "bg-[#ff6628] dark:bg-[#ea580c] border-orange-600/30 text-white",
+        text: "Dewasa Ringan",
+        hoverClass: "group-hover:text-[#ff6628] dark:group-hover:text-orange-400"
+      };
+    case "Dewasa Berat":
+      return {
+        bg: "bg-[#ef4444] dark:bg-[#dc2626] border-red-600/30 text-white",
+        text: "Dewasa Berat",
+        hoverClass: "group-hover:text-[#c1271f] dark:group-hover:text-red-400"
+      };
+    default:
+      return {
+        bg: "bg-[#f97316] dark:bg-[#ea580c] border-orange-600/30 text-white",
+        text: "Remaja",
+        hoverClass: "group-hover:text-[#d97706] dark:group-hover:text-amber-400"
+      };
+  }
+};
+function StatusPill({ status }) {
+  const style = STATUS_STYLES[status] ?? STATUS_STYLES.Gratis;
+  return /* @__PURE__ */ jsxs(
+    "span",
+    {
+      className: `inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-[11px] font-mono font-semibold ${style.pill}`,
+      children: [
+        /* @__PURE__ */ jsx("span", { className: `w-1.5 h-1.5 rounded-full ${style.dot}` }),
+        status
+      ]
+    }
+  );
+}
+function WatchLinkItem({ link }) {
+  return /* @__PURE__ */ jsxs(
+    "a",
+    {
+      href: link.href,
+      target: "_blank",
+      rel: "noopener noreferrer",
+      className: "flex items-center justify-between p-3 rounded-xl border border-neutral-200/80 dark:border-neutral-800/60 hover:bg-neutral-50 dark:hover:bg-neutral-800/60 transition-colors",
+      children: [
+        /* @__PURE__ */ jsxs("div", { className: "min-w-0 pr-3", children: [
+          /* @__PURE__ */ jsx("div", { className: "font-semibold text-sm text-neutral-950 dark:text-neutral-50", children: link.platform }),
+          link.subLabel && /* @__PURE__ */ jsx("div", { className: "text-[11px] font-mono text-neutral-400 dark:text-neutral-500", children: link.subLabel })
+        ] }),
+        /* @__PURE__ */ jsx(StatusPill, { status: link.status })
+      ]
+    }
+  );
+}
+function WatchLinksGroup({ group }) {
+  const accent = ACCENT_STYLES[group.accent];
+  const Icon = GROUP_ICON[group.icon];
+  return /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800/60 rounded-2xl p-4 md:p-5 shadow-sm space-y-3", children: [
+    /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between pb-1", children: [
+      /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
+        /* @__PURE__ */ jsx("div", { className: `w-6 h-6 rounded-full border flex items-center justify-center flex-shrink-0 ${accent.chip}`, children: /* @__PURE__ */ jsx(Icon, { className: "w-4 h-4" }) }),
+        /* @__PURE__ */ jsx("h4", { className: "text-[15px] sm:text-base font-bold text-neutral-950 dark:text-neutral-50", children: group.title })
+      ] }),
+      /* @__PURE__ */ jsxs(
+        "span",
+        {
+          className: `inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-[11px] font-mono font-medium ${accent.badge}`,
+          children: [
+            /* @__PURE__ */ jsx("span", { className: `w-1.5 h-1.5 rounded-full ${accent.dot}` }),
+            group.badgeLabel
+          ]
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsx("div", { className: "space-y-2", children: group.links.map((link) => /* @__PURE__ */ jsx(WatchLinkItem, { link }, `${group.id}-${link.platform}`)) })
+  ] });
+}
+function AdaptationBox({ adaptation }) {
+  return /* @__PURE__ */ jsxs("div", { className: "border border-neutral-200 dark:border-neutral-800 rounded-xl p-5 bg-white dark:bg-neutral-900 shadow-sm mb-4", children: [
+    /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3 mb-3", children: [
+      /* @__PURE__ */ jsx(Info, { className: "w-5 h-5 text-neutral-400 dark:text-neutral-500 flex-shrink-0" }),
+      /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-950 dark:text-neutral-50 text-[11px] font-mono font-semibold", children: [
+        /* @__PURE__ */ jsx(BookMarked, { className: "w-3.5 h-3.5" }),
+        /* @__PURE__ */ jsx("span", { children: adaptation.label })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsx("div", { className: "space-y-1", children: /* @__PURE__ */ jsxs("p", { className: "text-sm text-neutral-950 dark:text-neutral-50 font-semibold", children: [
+      adaptation.range,
+      " ",
+      /* @__PURE__ */ jsx("span", { className: "font-normal text-neutral-500 dark:text-neutral-400", children: adaptation.chapters })
+    ] }) })
+  ] });
+}
+function BookPostCard({ manga }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  if (!manga) {
+    return /* @__PURE__ */ jsx("div", { className: "w-full max-w-[200px]", children: /* @__PURE__ */ jsxs("div", { className: "h-full bg-white dark:bg-neutral-900 border-2 border-[#EFEFEF] dark:border-neutral-800 rounded-xl overflow-hidden flex flex-col justify-between select-none", children: [
+      /* @__PURE__ */ jsx("div", { className: "relative aspect-[3/4] w-full bg-neutral-950 flex flex-col justify-between p-2.5 select-none overflow-hidden", children: /* @__PURE__ */ jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-950 flex flex-col justify-between p-2.5 border border-neutral-700", children: /* @__PURE__ */ jsxs("div", { className: "my-auto text-center px-1", children: [
+        /* @__PURE__ */ jsx(BookOpen, { className: "w-7 h-7 text-neutral-500 stroke-[1.2] mx-auto mb-1 opacity-60" }),
+        /* @__PURE__ */ jsx("span", { className: "text-[8px] font-mono tracking-wider text-neutral-400 block", children: "buku" }),
+        /* @__PURE__ */ jsx("h4", { className: "text-[10px] font-sans font-extrabold text-neutral-200 mt-1 line-clamp-3 leading-normal", children: "Segera Hadir" })
+      ] }) }) }),
+      /* @__PURE__ */ jsxs("div", { className: "space-y-1 p-2.5 flex-1 flex flex-col justify-between text-left", children: [
+        /* @__PURE__ */ jsxs("div", { className: "space-y-0.5", children: [
+          /* @__PURE__ */ jsx("span", { className: "text-[9px] sm:text-[9.5px] font-sans text-neutral-400 dark:text-neutral-500 leading-tight block truncate", children: "Norinoya" }),
+          /* @__PURE__ */ jsx("h4", { className: "text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100 line-clamp-1 leading-snug", children: "Segera Hadir" }),
+          /* @__PURE__ */ jsx("p", { className: "text-[9.5px] sm:text-[10px] font-sans text-neutral-600 dark:text-neutral-400 leading-tight truncate pt-0.5", children: "Postingan buku belum tersedia" })
+        ] }),
+        /* @__PURE__ */ jsx("div", { className: "border-t border-neutral-100 dark:border-neutral-800 my-1.5" }),
+        /* @__PURE__ */ jsx("div", { className: "flex items-center justify-start font-mono w-full", children: /* @__PURE__ */ jsx("span", { className: "font-extrabold text-neutral-400 dark:text-neutral-500 font-sans text-xs shrink-0 leading-none", children: "—" }) })
+      ] })
+    ] }) });
+  }
+  const ratingStyle = getReadingRatingStyle(manga.readingRating);
+  const hasCover = Boolean(manga.coverUrl) && !imageFailed;
+  return /* @__PURE__ */ jsx("div", { className: "w-full max-w-[200px]", children: /* @__PURE__ */ jsx(
+    Link,
+    {
+      href: `/buku/${manga.slug}?vol=${manga.volumeNumber}`,
+      className: "block group cursor-pointer",
+      children: /* @__PURE__ */ jsxs("div", { className: "h-full bg-white dark:bg-neutral-900 border-2 rounded-xl overflow-hidden flex flex-col justify-between cursor-pointer transition-all duration-300 border-[#EFEFEF] dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_10px_24px_rgba(0,0,0,0.05)] hover:translate-y-[-2px] select-none", children: [
+        /* @__PURE__ */ jsxs("div", { className: "relative aspect-[3/4] w-full bg-neutral-950 flex flex-col justify-between p-2.5 select-none overflow-hidden", children: [
+          hasCover ? /* @__PURE__ */ jsx(
+            "img",
+            {
+              src: manga.coverUrl,
+              alt: `${manga.title} Vol ${manga.volumeNumber}`,
+              loading: "lazy",
+              decoding: "async",
+              onError: () => setImageFailed(true),
+              className: "absolute inset-0 w-full h-full object-cover transition-transform duration-500 scale-100 group-hover:scale-105",
+              referrerPolicy: "no-referrer"
+            }
+          ) : /* @__PURE__ */ jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-950 flex flex-col justify-between p-2.5 border border-neutral-700", children: /* @__PURE__ */ jsxs("div", { className: "my-auto text-center px-1", children: [
+            /* @__PURE__ */ jsx(BookOpen, { className: "w-7 h-7 text-neutral-500 stroke-[1.2] mx-auto mb-1 opacity-60" }),
+            /* @__PURE__ */ jsx("span", { className: "text-[8px] font-mono tracking-wider text-neutral-400 capitalize", children: getBookTypeLabel(manga.category) }),
+            /* @__PURE__ */ jsx("h4", { className: "text-[10px] font-sans font-extrabold text-neutral-200 mt-1 line-clamp-3 leading-normal", children: manga.title })
+          ] }) }),
+          /* @__PURE__ */ jsxs("div", { className: "absolute bottom-2 left-2 z-20 flex items-center gap-1 pointer-events-none", children: [
+            /* @__PURE__ */ jsx("span", { className: "bg-neutral-100/95 dark:bg-neutral-800/95 text-neutral-900 dark:text-neutral-100 font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8.5px] capitalize leading-none shadow-xs border border-neutral-200/50 dark:border-neutral-700/50", children: getBookTypeLabel(manga.category) }),
+            manga.readingRating && /* @__PURE__ */ jsx(
+              "span",
+              {
+                className: `font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8.5px] leading-none shadow-xs border ${ratingStyle.bg}`,
+                children: ratingStyle.text
+              }
+            )
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxs("div", { className: "space-y-1 p-2.5 flex-1 flex flex-col justify-between text-left", children: [
+          /* @__PURE__ */ jsxs("div", { className: "space-y-0.5", children: [
+            /* @__PURE__ */ jsx("span", { className: "text-[9px] sm:text-[9.5px] font-sans text-neutral-400 dark:text-neutral-500 leading-tight block truncate", children: manga.publisherName }),
+            /* @__PURE__ */ jsx(
+              "h4",
+              {
+                className: `text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100 ${ratingStyle.hoverClass} transition-colors line-clamp-1 leading-snug`,
+                children: manga.title
+              }
+            ),
+            /* @__PURE__ */ jsxs("div", { className: "text-[9.5px] sm:text-[10px] font-sans font-extrabold text-[#112A12] dark:text-[#457347] leading-tight", children: [
+              "Vol.",
+              manga.volumeNumber
+            ] }),
+            manga.authors && /* @__PURE__ */ jsx("p", { className: "text-[9.5px] sm:text-[10px] font-sans text-neutral-600 dark:text-neutral-400 leading-tight truncate pt-0.5", children: manga.authors }),
+            /* @__PURE__ */ jsx("div", { className: "flex flex-wrap gap-1 items-center pt-0.5", children: /* @__PURE__ */ jsx("span", { className: "text-[9px] sm:text-[9.5px] text-neutral-450 dark:text-neutral-550 font-sans line-clamp-1", children: manga.genres.slice(0, 2).join(", ") }) })
+          ] }),
+          /* @__PURE__ */ jsx("div", { className: "border-t border-neutral-100 dark:border-neutral-800 my-1.5" }),
+          /* @__PURE__ */ jsx("div", { className: "flex items-center justify-start font-mono w-full", children: /* @__PURE__ */ jsxs("span", { className: "font-extrabold text-neutral-950 dark:text-neutral-50 font-sans text-xs shrink-0 leading-none", children: [
+            "Rp ",
+            manga.price.toLocaleString("id-ID")
+          ] }) })
+        ] })
+      ] })
+    }
+  ) });
+}
+function TimelinePin({ index }) {
+  return /* @__PURE__ */ jsx("div", { className: "absolute -left-6 md:-left-10 top-5 w-6 h-6 md:w-8 md:h-8 rounded-full bg-neutral-950 text-white dark:bg-neutral-50 dark:text-neutral-900 flex items-center justify-center text-[11px] sm:text-xs font-mono font-bold z-10 shadow-sm ring-4 ring-white dark:ring-neutral-900", children: String(index).padStart(2, "0") });
+}
+function TimelineNode({ entry }) {
+  var _a;
+  if (entry.upcoming) {
+    return /* @__PURE__ */ jsxs("div", { className: "relative timeline-item", "data-category": "canon release upcoming", children: [
+      /* @__PURE__ */ jsx(TimelinePin, { index: entry.index }),
+      /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 rounded-xl p-4 sm:p-6 shadow-sm border border-dashed border-neutral-300 dark:border-neutral-700", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-2", children: [
+          /* @__PURE__ */ jsx("span", { className: "px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-950 dark:text-neutral-50 text-[11px] font-mono font-semibold", children: "Segera Hadir" }),
+          /* @__PURE__ */ jsx("span", { className: "px-2 py-0.5 rounded bg-amber-50 border border-amber-300 text-amber-700 dark:bg-amber-950/40 dark:border-amber-900/50 dark:text-amber-400 text-[11px] font-mono font-medium", children: "Belum Tayang" })
+        ] }),
+        /* @__PURE__ */ jsx("h3", { className: "text-xl sm:text-2xl font-bold tracking-tight text-neutral-950 dark:text-neutral-50 mb-2", children: entry.title }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm sm:text-[15px] leading-relaxed text-neutral-500 dark:text-neutral-400", children: entry.description })
+      ] })
+    ] });
+  }
+  return /* @__PURE__ */ jsxs("div", { className: "relative timeline-item", "data-category": "canon release", children: [
+    /* @__PURE__ */ jsx(TimelinePin, { index: entry.index }),
+    /* @__PURE__ */ jsx("div", { className: "bg-white dark:bg-neutral-900 rounded-xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow border border-neutral-200/80 dark:border-neutral-800/60", children: /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-12 gap-6", children: [
+      /* @__PURE__ */ jsx("div", { className: "lg:col-span-4 xl:col-span-3", children: /* @__PURE__ */ jsx(BookPostCard, { manga: entry.manga }) }),
+      /* @__PURE__ */ jsxs("div", { className: "lg:col-span-8 xl:col-span-9 flex flex-col justify-between", children: [
+        /* @__PURE__ */ jsxs("div", { children: [
+          /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-1.5", children: [
+            entry.studio && /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center gap-1 px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-950 dark:text-neutral-50 text-[11px] font-mono font-semibold", children: [
+              /* @__PURE__ */ jsx(Clapperboard, { className: "w-3.5 h-3.5" }),
+              /* @__PURE__ */ jsx("span", { children: entry.studio })
+            ] }),
+            (_a = entry.tags) == null ? void 0 : _a.map((tag) => /* @__PURE__ */ jsx(
+              "span",
+              {
+                className: tag.tone === "amber" ? "px-2 py-0.5 rounded bg-amber-50 border border-amber-300 text-amber-700 dark:bg-amber-950/40 dark:border-amber-900/50 dark:text-amber-400 text-[11px] font-mono font-medium" : "px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-950 dark:text-neutral-50 text-[11px] font-mono font-semibold",
+                children: tag.label
+              },
+              tag.label
+            ))
+          ] }),
+          /* @__PURE__ */ jsx("h3", { className: "text-xl sm:text-2xl font-bold tracking-tight text-neutral-950 dark:text-neutral-50 mb-1.5", children: entry.title }),
+          /* @__PURE__ */ jsx("p", { className: "text-sm sm:text-[15px] leading-relaxed text-neutral-500 dark:text-neutral-400 mb-4", children: entry.description }),
+          entry.adaptation && /* @__PURE__ */ jsx(AdaptationBox, { adaptation: entry.adaptation })
+        ] }),
+        entry.watchGroups && entry.watchGroups.length > 0 && /* @__PURE__ */ jsx("div", { className: "mt-4 pt-4 flex flex-col gap-4 w-full", children: entry.watchGroups.map((group) => /* @__PURE__ */ jsx(WatchLinksGroup, { group }, group.id)) })
+      ] })
+    ] }) })
+  ] });
+}
+function DetailPanduanAdaptasi({ panduan }) {
+  var _a, _b;
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("norinoya-dark-mode") === "true";
+    }
+    return false;
+  });
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+  React__default.useLayoutEffect(() => {
+    sessionStorage.setItem("norinoya-dark-mode", String(darkMode));
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+  const handleNavHome = () => router.visit("/");
+  const handleNavNews = () => router.visit("/news");
+  const handleNavKios = () => router.visit("/kios");
+  const handleNavAbout = () => router.visit("/?scroll=about");
+  const [shareModalData, setShareModalData] = useState({
+    isOpen: false,
+    title: "",
+    shareUrl: "",
+    category: "Panduan"
+  });
+  const handleShare = () => {
+    if (!panduan) return;
+    setShareModalData({
+      isOpen: true,
+      title: panduan.title,
+      shareUrl: `${window.location.origin}/panduan-adaptasi/${panduan.slug}`,
+      category: "Panduan"
+    });
+  };
+  const entries = (panduan == null ? void 0 : panduan.entries) ?? [];
+  const pageTitle = panduan ? `${panduan.title} - Panduan Adaptasi Norinoya` : "Panduan Adaptasi - Norinoya";
+  const pageDesc = ((panduan == null ? void 0 : panduan.description) || "Panduan nonton bertahap dan korelasi bab manga untuk adaptasi anime, lengkap dengan tautan takarir, dubbing, dan tempat baca resmi.").replace(/<[^>]*>/g, "").slice(0, 160);
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const canonicalUrl = `${origin}/panduan-adaptasi/${(panduan == null ? void 0 : panduan.slug) ?? ""}`;
+  const rawCover = ((_b = (_a = entries.find((entry) => {
+    var _a2;
+    return (_a2 = entry.manga) == null ? void 0 : _a2.coverUrl;
+  })) == null ? void 0 : _a.manga) == null ? void 0 : _b.coverUrl) ?? "";
+  const ogImage = rawCover ? rawCover.startsWith("http") ? rawCover : `${origin}${rawCover.startsWith("/") ? "" : "/"}${rawCover}` : `${origin}/assets/images/logo-dark.png`;
+  const listItems = entries.filter((entry) => {
+    var _a2;
+    return (_a2 = entry.manga) == null ? void 0 : _a2.slug;
+  });
+  return /* @__PURE__ */ jsxs("div", { className: "bg-[#FEFFFE] dark:bg-[#202120] min-h-screen text-neutral-950 dark:text-neutral-50 selection:bg-neutral-900 dark:selection:bg-neutral-100 selection:text-white dark:selection:text-neutral-900 flex flex-col justify-between font-sans", children: [
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: pageTitle }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: pageDesc }),
+      /* @__PURE__ */ jsx("meta", { property: "og:site_name", content: "Norinoya" }),
+      /* @__PURE__ */ jsx("meta", { property: "og:title", content: pageTitle }),
+      /* @__PURE__ */ jsx("meta", { property: "og:description", content: pageDesc }),
+      /* @__PURE__ */ jsx("meta", { property: "og:type", content: "article" }),
+      /* @__PURE__ */ jsx("meta", { property: "og:url", content: canonicalUrl }),
+      /* @__PURE__ */ jsx("meta", { property: "og:image", content: ogImage }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:card", content: "summary_large_image" }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:title", content: pageTitle }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:description", content: pageDesc }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:image", content: ogImage }),
+      /* @__PURE__ */ jsx("meta", { name: "theme-color", content: "#E53935" }),
+      /* @__PURE__ */ jsx("link", { rel: "canonical", href: canonicalUrl }),
+      /* @__PURE__ */ jsx("script", { type: "application/ld+json", children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: pageTitle,
+        itemListOrder: "https://schema.org/ItemListOrderAscending",
+        numberOfItems: listItems.length,
+        itemListElement: listItems.map((entry) => ({
+          "@type": "ListItem",
+          position: entry.index,
+          name: `${entry.manga.title}${entry.manga.volumeNumber ? ` Vol. ${entry.manga.volumeNumber}` : ""}`,
+          url: `${origin}/buku/${entry.manga.slug}`
+        }))
+      }) }),
+      /* @__PURE__ */ jsx("script", { type: "application/ld+json", children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Beranda", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Panduan Adaptasi", item: `${origin}/panduan-adaptasi` },
+          { "@type": "ListItem", position: 3, name: (panduan == null ? void 0 : panduan.title) ?? "Panduan Adaptasi", item: canonicalUrl }
+        ]
+      }) })
+    ] }),
+    /* @__PURE__ */ jsx(
+      Navbar,
+      {
+        activeTab: "about",
+        darkMode,
+        toggleDarkMode,
+        onNavigateHome: handleNavHome,
+        onNavigateNews: handleNavNews,
+        onNavigateKios: handleNavKios
+      }
+    ),
+    /* @__PURE__ */ jsx("div", { className: "fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800", children: /* @__PURE__ */ jsxs("div", { className: "max-w-7xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3", children: [
+      /* @__PURE__ */ jsxs(
+        "button",
+        {
+          onClick: () => router.visit("/panduan-adaptasi"),
+          className: "inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-mono font-bold rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0",
+          children: [
+            /* @__PURE__ */ jsx(ArrowLeft, { className: "w-4 h-4" }),
+            /* @__PURE__ */ jsx("span", { children: "Kembali" })
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsx("div", { className: "flex items-center gap-2 shrink-0", children: panduan && /* @__PURE__ */ jsx(
+        "button",
+        {
+          onClick: handleShare,
+          className: "w-9 h-9 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-lg cursor-pointer transition-all active:scale-95 border border-neutral-200/50 dark:border-neutral-700 outline-none shrink-0",
+          title: "Bagikan Panduan Adaptasi",
+          children: /* @__PURE__ */ jsx(Send, { className: "w-4 h-4 text-neutral-600 dark:text-neutral-300" })
+        }
+      ) })
+    ] }) }),
+    /* @__PURE__ */ jsx("main", { className: "flex-1 w-full max-w-7xl mx-auto p-4 sm:p-6 pt-20 sm:pt-24 pb-20 md:pb-6 bg-transparent", children: /* @__PURE__ */ jsxs("section", { className: "w-full py-6 sm:py-8", children: [
+      /* @__PURE__ */ jsx("div", { className: "flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 mb-8 sm:mb-10 border-b border-neutral-200 dark:border-neutral-800", children: /* @__PURE__ */ jsxs("div", { className: "space-y-1.5", children: [
+        /* @__PURE__ */ jsx("h1", { className: "text-2xl sm:text-3xl font-bold tracking-tight text-neutral-950 dark:text-neutral-50 mt-1", children: (panduan == null ? void 0 : panduan.title) ?? "Panduan Adaptasi" }),
+        (panduan == null ? void 0 : panduan.description) && /* @__PURE__ */ jsx("p", { className: "text-sm sm:text-[15px] leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-3xl", children: panduan.description }),
+        /* @__PURE__ */ jsxs("p", { className: "text-xs font-mono text-neutral-400 dark:text-neutral-500 pt-1", children: [
+          "Panduan Nonton Bertahap & Korelasi Bab · ",
+          entries.length,
+          " node"
+        ] })
+      ] }) }),
+      entries.length === 0 ? /* @__PURE__ */ jsx("div", { className: "py-16 text-center rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700", children: /* @__PURE__ */ jsx("p", { className: "text-sm text-neutral-500 dark:text-neutral-400", children: "Belum ada node timeline untuk panduan ini." }) }) : /* @__PURE__ */ jsx("div", { className: "relative pl-6 md:pl-10 space-y-8 sm:space-y-10 before:content-[''] before:absolute before:left-[17px] md:before:left-[21px] before:top-4 before:bottom-6 before:w-[2px] before:bg-neutral-200 dark:before:bg-neutral-800", children: entries.map((entry) => /* @__PURE__ */ jsx(TimelineNode, { entry }, entry.id)) })
+    ] }) }),
+    /* @__PURE__ */ jsx(Footer, { onNavigateHome: handleNavHome, onNavigateAbout: handleNavAbout, darkMode }),
+    /* @__PURE__ */ jsx(
+      ShareModal,
+      {
+        isOpen: shareModalData.isOpen,
+        onClose: () => setShareModalData((prev) => ({ ...prev, isOpen: false })),
+        title: shareModalData.title,
+        shareUrl: shareModalData.shareUrl,
+        category: shareModalData.category
+      }
+    )
+  ] });
+}
+const __vite_glob_0_71 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: DetailPanduanAdaptasi
+}, Symbol.toStringTag, { value: "Module" }));
+const DetailKios = lazy(() => Promise.resolve().then(() => __vite_glob_0_69));
 function CustomSelect$1({ label, value, options, onChange, isOpen, onToggle }) {
   var _a, _b;
   const selectedOptions = options.filter((opt) => value.includes(opt.value) && opt.value !== "all");
@@ -8046,7 +8773,7 @@ function EtalaseCatalog$1({
   const [pricePresets, setPricePresets] = useState(["all"]);
   const [sortBy, setSortBy] = useState("default");
   const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 24;
+  const ITEMS_PER_PAGE2 = 24;
   const handlePerformSearch = (keywordToSearch) => {
     var _a;
     const raw = searchInput.trim();
@@ -8266,12 +8993,12 @@ function EtalaseCatalog$1({
     return result;
   }, [catalogItems, activeSearchTerm, selectedCategories, selectedPublishers, selectedGenres, pricePresets, sortBy]);
   const totalPages = useMemo(() => {
-    return Math.max(1, Math.ceil(filteredAndSortedItems.length / ITEMS_PER_PAGE));
-  }, [filteredAndSortedItems, ITEMS_PER_PAGE]);
+    return Math.max(1, Math.ceil(filteredAndSortedItems.length / ITEMS_PER_PAGE2));
+  }, [filteredAndSortedItems, ITEMS_PER_PAGE2]);
   const paginatedItems = useMemo(() => {
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    return filteredAndSortedItems.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [filteredAndSortedItems, currentPage, ITEMS_PER_PAGE]);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE2;
+    return filteredAndSortedItems.slice(startIndex, startIndex + ITEMS_PER_PAGE2);
+  }, [filteredAndSortedItems, currentPage, ITEMS_PER_PAGE2]);
   const getReadingRatingBadgeStyle2 = (rating) => {
     switch (rating) {
       case "Anak & Bimbingan Orang Tua":
@@ -8543,9 +9270,9 @@ function EtalaseCatalog$1({
             /* @__PURE__ */ jsxs("p", { className: "text-xs sm:text-sm text-neutral-700 dark:text-neutral-300", children: [
               "Menampilkan ",
               /* @__PURE__ */ jsxs("strong", { className: "text-neutral-950 dark:text-white font-bold", children: [
-                Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, filteredAndSortedItems.length),
+                Math.min((currentPage - 1) * ITEMS_PER_PAGE2 + 1, filteredAndSortedItems.length),
                 " - ",
-                Math.min(currentPage * ITEMS_PER_PAGE, filteredAndSortedItems.length)
+                Math.min(currentPage * ITEMS_PER_PAGE2, filteredAndSortedItems.length)
               ] }),
               " dari ",
               /* @__PURE__ */ jsx("strong", { className: "text-neutral-950 dark:text-white font-bold", children: filteredAndSortedItems.length }),
@@ -8782,9 +9509,9 @@ function EtalaseCatalog$1({
           /* @__PURE__ */ jsxs("div", { className: "text-xs font-mono text-neutral-500 dark:text-neutral-400", children: [
             "Menampilkan ",
             /* @__PURE__ */ jsxs("span", { className: "font-bold text-neutral-900 dark:text-neutral-100", children: [
-              Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, filteredAndSortedItems.length),
+              Math.min((currentPage - 1) * ITEMS_PER_PAGE2 + 1, filteredAndSortedItems.length),
               " - ",
-              Math.min(currentPage * ITEMS_PER_PAGE, filteredAndSortedItems.length)
+              Math.min(currentPage * ITEMS_PER_PAGE2, filteredAndSortedItems.length)
             ] }),
             " dari ",
             /* @__PURE__ */ jsx("span", { className: "font-bold text-neutral-900 dark:text-neutral-100", children: filteredAndSortedItems.length }),
@@ -9090,17 +9817,28 @@ Dibuat via *Norinoya Kios Affiliate*. Stop buku bajakan, dukung kreator orisinal
     )
   ] });
 }
-const __vite_glob_0_53 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_72 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: EtalaseCatalog$1
 }, Symbol.toStringTag, { value: "Module" }));
-function LoadingDetailBuku() {
+function LoadingDetailBuku({ onClose }) {
   return /* @__PURE__ */ jsx("div", { className: "w-full bg-white dark:bg-neutral-950 flex flex-col min-h-screen animate-pulse select-none pointer-events-none", children: /* @__PURE__ */ jsxs("div", { className: "h-full w-full bg-white dark:bg-[#202120] text-neutral-950 dark:text-neutral-50 flex flex-col relative", children: [
-    /* @__PURE__ */ jsx("div", { className: "fixed top-[58px] sm:top-[64px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800", children: /* @__PURE__ */ jsxs("div", { className: "max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3", children: [
-      /* @__PURE__ */ jsx("div", { className: "h-9 w-24 bg-neutral-200 dark:bg-neutral-800 rounded-lg" }),
+    /* @__PURE__ */ jsx("div", { className: "fixed top-[58px] sm:top-[64px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800", children: /* @__PURE__ */ jsxs("div", { className: "max-w-7xl w-full mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3", children: [
+      onClose ? /* @__PURE__ */ jsxs(
+        "button",
+        {
+          type: "button",
+          onClick: onClose,
+          className: "h-9 inline-flex items-center gap-2 px-3.5 bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-xs font-bold rounded-lg cursor-pointer border border-neutral-200/50 dark:border-neutral-700 pointer-events-auto animate-none",
+          children: [
+            /* @__PURE__ */ jsx(ArrowLeft, { className: "w-4 h-4" }),
+            /* @__PURE__ */ jsx("span", { children: "Kembali" })
+          ]
+        }
+      ) : /* @__PURE__ */ jsx("div", { className: "h-9 w-24 bg-neutral-200 dark:bg-neutral-800 rounded-lg" }),
       /* @__PURE__ */ jsx("div", { className: "w-9 h-9 bg-neutral-200 dark:bg-neutral-800 rounded-lg" })
     ] }) }),
-    /* @__PURE__ */ jsxs("div", { className: "w-full h-fit lg:max-w-[92%] xl:max-w-7xl mx-auto px-3 sm:px-6 lg:px-24 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-neutral-950", children: [
+    /* @__PURE__ */ jsxs("div", { className: "w-full h-fit max-w-7xl mx-auto px-3 sm:px-0 pt-16 sm:pt-20 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-28 dark:bg-neutral-950", children: [
       /* @__PURE__ */ jsxs("div", { className: "bg-neutral-50/80 dark:bg-[#0F0F0F] p-3 sm:p-5 md:p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col md:flex-row gap-4 md:gap-6 items-start relative overflow-hidden shadow-xs", children: [
         /* @__PURE__ */ jsx("div", { className: "absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 dark:via-white/5 to-transparent pointer-events-none" }),
         /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-3 shrink-0 w-full md:w-80", children: [
@@ -9194,11 +9932,11 @@ function LoadingDetailBuku() {
     ] })
   ] }) });
 }
-const __vite_glob_0_65 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_85 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingDetailBuku
 }, Symbol.toStringTag, { value: "Module" }));
-const DetailBuku = lazy(() => Promise.resolve().then(() => __vite_glob_0_50));
+const DetailBuku = lazy(() => Promise.resolve().then(() => __vite_glob_0_68));
 function CustomSelect({ label, value, options, onChange, isOpen, onToggle }) {
   var _a, _b;
   const selectedOptions = options.filter((opt) => value.includes(opt.value) && opt.value !== "all");
@@ -9277,6 +10015,7 @@ function resolveVolumeFor(comic, parsedVol) {
   if (comic.volumes.some((v) => String(v.volNumber) === String(parsedVol))) return parsedVol;
   return ((_a = comic.volumes[0]) == null ? void 0 : _a.volNumber) || 1;
 }
+const ITEMS_PER_PAGE = 24;
 const MONTH_ID_MAP = {
   jan: 0,
   feb: 1,
@@ -9315,6 +10054,13 @@ function volumeTimestamp(volume) {
 }
 function MarketplaceDb$1({
   customComics,
+  serverCatalog = false,
+  catalogPage = 1,
+  catalogLastPage = 1,
+  catalogTotal = 0,
+  filters,
+  upcomingComics,
+  detailComics = [],
   dynamicPublishers = [],
   dynamicStoryStatuses = [],
   dynamicGenres = [],
@@ -9325,7 +10071,8 @@ function MarketplaceDb$1({
   initialSelectedComicId,
   initialVolume,
   onClearSelectedComicId,
-  onNavigateToNews
+  onNavigateToNews,
+  onNavigateToPanduan
 } = {}) {
   const { isSaved } = useBookmarks();
   const activeComics = useMemo(() => {
@@ -9335,11 +10082,14 @@ function MarketplaceDb$1({
     return COMICS_DATA;
   }, [customComics]);
   const linkComics = useMemo(() => {
+    if (serverCatalog) {
+      return detailComics.length > 0 ? detailComics : activeComics;
+    }
     if (!customComics || customComics.length === 0) return COMICS_DATA;
     const seen = new Set(customComics.map((c) => c.id));
     const mockExtras = COMICS_DATA.filter((c) => !seen.has(c.id));
     return mockExtras.length > 0 ? [...customComics, ...mockExtras] : customComics;
-  }, [customComics]);
+  }, [serverCatalog, detailComics, activeComics, customComics]);
   const findComicByRef = useMemo(() => {
     return (ref) => {
       if (!ref) return null;
@@ -9408,20 +10158,21 @@ function MarketplaceDb$1({
         }
         return found ?? null;
       };
-      return searchIn(activeComics) || searchIn(linkComics) || null;
+      return searchIn(detailComics) || searchIn(activeComics) || searchIn(linkComics) || null;
     };
-  }, [activeComics, linkComics]);
-  const [searchInput, setSearchInput] = useState("");
-  const [activeSearchTerm, setActiveSearchTerm] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState(["all"]);
-  const [selectedPublishers, setSelectedPublishers] = useState(["all"]);
-  const [selectedStatuses, setSelectedStatuses] = useState(["all"]);
-  const [selectedGenres, setSelectedGenres] = useState(["all"]);
-  const [selectedAdaptations, setSelectedAdaptations] = useState(["all"]);
-  const [selectedReadingRatings, setSelectedReadingRatings] = useState(["all"]);
+  }, [detailComics, activeComics, linkComics]);
+  const filled = (values) => values && values.length > 0 ? values : ["all"];
+  const [searchInput, setSearchInput] = useState((filters == null ? void 0 : filters.q) ?? "");
+  const [activeSearchTerm, setActiveSearchTerm] = useState((filters == null ? void 0 : filters.q) ?? "");
+  const [selectedCategories, setSelectedCategories] = useState(filled(filters == null ? void 0 : filters.format));
+  const [selectedPublishers, setSelectedPublishers] = useState(filled(filters == null ? void 0 : filters.publisher));
+  const [selectedStatuses, setSelectedStatuses] = useState(filled(filters == null ? void 0 : filters.status));
+  const [selectedGenres, setSelectedGenres] = useState(filled(filters == null ? void 0 : filters.genre));
+  const [selectedAdaptations, setSelectedAdaptations] = useState(filled(filters == null ? void 0 : filters.adaptation));
+  const [selectedReadingRatings, setSelectedReadingRatings] = useState(filled(filters == null ? void 0 : filters.rating));
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [sortBy, setSortBy] = useState("relevan");
+  const [sortBy, setSortBy] = useState((filters == null ? void 0 : filters.sort) || "relevan");
   const sortOptions = [
     { value: "relevan", label: "Paling Relevan", icon: Sparkles },
     { value: "terbaru", label: "Terbaru", icon: Clock },
@@ -9466,6 +10217,8 @@ function MarketplaceDb$1({
     if (!initialSelectedComicId) return null;
     return findComicByRef(initialSelectedComicId);
   });
+  const [isDetailLoading, setIsDetailLoading] = useState(false);
+  const detailRequestRef = useRef(0);
   const [activeVolumeNum, setActiveVolumeNum] = useState(() => {
     if (!initialSelectedComicId) return 1;
     const found = findComicByRef(initialSelectedComicId);
@@ -9476,24 +10229,27 @@ function MarketplaceDb$1({
     return resolveVolumeFor(found, parsedVol);
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 24;
   const [imageErrors, setImageErrors] = useState({});
   const upcomingReleases = useMemo(() => {
     const list = [];
-    activeComics.forEach((comic) => {
+    const source = serverCatalog ? upcomingComics ?? [] : activeComics;
+    source.forEach((comic) => {
       comic.volumes.forEach((vol) => {
         if (vol.isUpcoming || comic.isUpcoming) {
           list.push({
             comic,
-            volume: vol,
-            dateStr: vol.releaseDate || "Segera Rilis"
+            volume: vol
           });
         }
       });
     });
     return list.slice(0, 6);
-  }, [activeComics]);
-  const getReadingRatingStyle = (rating) => {
+  }, [serverCatalog, upcomingComics, activeComics]);
+  const upcomingPostKeys = useMemo(
+    () => new Set(upcomingReleases.map(({ comic, volume }) => `${comic.id}-vol-${volume.volNumber}`)),
+    [upcomingReleases]
+  );
+  const getReadingRatingStyle2 = (rating) => {
     switch (rating) {
       case "Anak & Bimbingan Orang Tua":
       case "Anak & Bimbingan":
@@ -9539,12 +10295,10 @@ function MarketplaceDb$1({
     }
   };
   const getAuthorNameOnly = (c) => {
-    const story = c.authorStory;
-    const art = c.authorArt;
-    if (!story && !art) return "";
-    if (story === art) return story || "";
-    return [story, art].filter(Boolean).join(", ");
+    const names = `${c.authorStory || ""}, ${c.authorArt || ""}`.split(",").map((n) => n.trim()).filter(Boolean);
+    return Array.from(new Set(names)).join(", ");
   };
+  const getVolumeAuthorName = (c, v) => getAuthorNameOnly(v) || getAuthorNameOnly(c);
   const hadInitialSelectionRef = useRef(Boolean(initialSelectedComicId));
   useEffect(() => {
     if (initialSelectedComicId) {
@@ -9565,23 +10319,52 @@ function MarketplaceDb$1({
   const catalogScrollRef = useRef(0);
   const syncVolumeToUrl = (comic, volNumber) => {
     if (typeof window === "undefined" || !comic) return;
-    const targetSlug = comic.slug || comic.id;
-    if (!targetSlug) return;
-    const url = new URL(window.location.href);
-    if (!url.pathname.startsWith("/buku/")) return;
-    url.searchParams.set("vol", String(volNumber));
-    window.history.replaceState(window.history.state, "", url.toString());
+    if (!window.location.pathname.startsWith("/buku/")) return;
+    const volume = comic.volumes.find((v) => String(v.volNumber) === String(volNumber)) ?? null;
+    const nextPath = bookPath(comic, volume ?? { volNumber });
+    if (!nextPath) return;
+    window.history.replaceState(window.history.state, "", nextPath);
   };
   const handleSetActiveVolumeNum = (volNumber) => {
     setActiveVolumeNum(volNumber);
     syncVolumeToUrl(selectedComic, volNumber);
   };
+  const cancelDetailRequest = () => {
+    detailRequestRef.current += 1;
+    setIsDetailLoading(false);
+  };
   const openVolumeModal = (comic, volNumber) => {
-    catalogScrollRef.current = window.scrollY;
+    if (!selectedComic) {
+      catalogScrollRef.current = window.scrollY;
+    }
+    window.scrollTo({ top: 0, behavior: "auto" });
     setSelectedComic(comic);
     setActiveVolumeNum(volNumber);
-    const targetSlug = comic.slug || comic.id;
-    window.history.pushState({ comicId: comic.id, volNumber }, "", `/buku/${targetSlug}?vol=${volNumber}`);
+    const volume = comic.volumes.find((v) => String(v.volNumber) === String(volNumber)) ?? null;
+    const nextPath = bookPath(comic, volume ?? { volNumber });
+    if (nextPath) {
+      window.history.pushState({ comicId: comic.id, volNumber }, "", nextPath);
+    }
+    const requestId = ++detailRequestRef.current;
+    if (!serverCatalog || !(volume == null ? void 0 : volume.slug)) {
+      setIsDetailLoading(false);
+      return;
+    }
+    setIsDetailLoading(true);
+    fetch(`/buku/${encodeURIComponent(volume.slug)}/data`, {
+      headers: { Accept: "application/json" }
+    }).then((response) => response.ok ? response.json() : null).then((payload) => {
+      if (detailRequestRef.current !== requestId) return;
+      const mapped = mapBooksToComics((payload == null ? void 0 : payload.books) ?? []);
+      if (mapped[0]) {
+        setSelectedComic(mapped[0]);
+      }
+    }).catch(() => {
+    }).finally(() => {
+      if (detailRequestRef.current === requestId) {
+        setIsDetailLoading(false);
+      }
+    });
   };
   const restoreCatalogScroll = useCallback(() => {
     const returnY = catalogScrollRef.current;
@@ -9597,6 +10380,7 @@ function MarketplaceDb$1({
     }
   }, []);
   const handleCloseModal = () => {
+    cancelDetailRequest();
     setSelectedComic(null);
     if (onClearSelectedComicId) {
       onClearSelectedComicId();
@@ -9612,6 +10396,7 @@ function MarketplaceDb$1({
     if (!selectedComic) return;
     const onPopState = () => {
       if (!window.location.pathname.startsWith("/buku/")) {
+        cancelDetailRequest();
         setSelectedComic(null);
         if (onClearSelectedComicId) onClearSelectedComicId();
         requestAnimationFrame(restoreCatalogScroll);
@@ -9682,16 +10467,19 @@ function MarketplaceDb$1({
     const posts = [];
     activeComics.forEach((comic) => {
       comic.volumes.forEach((volume) => {
+        const id = `${comic.id}-vol-${volume.volNumber}`;
+        if (!serverCatalog && upcomingPostKeys.has(id)) return;
         posts.push({
-          id: `${comic.id}-vol-${volume.volNumber}`,
+          id,
           comic,
           volume
         });
       });
     });
     return posts;
-  }, [activeComics]);
+  }, [activeComics, serverCatalog, upcomingPostKeys]);
   const filteredVolumePosts = useMemo(() => {
+    if (serverCatalog) return allVolumePosts;
     return allVolumePosts.filter((post) => {
       const { comic, volume } = post;
       const term = activeSearchTerm.trim().toLowerCase();
@@ -9774,8 +10562,9 @@ function MarketplaceDb$1({
       });
       return matchesSearch && matchesCat && matchesPublisher && matchesStatus && matchesGenre && matchesAdaptation && matchesReadingRating;
     });
-  }, [allVolumePosts, activeSearchTerm, selectedCategories, selectedPublishers, selectedStatuses, selectedGenres, selectedAdaptations, selectedReadingRatings, publisherOptions, statusOptions]);
+  }, [serverCatalog, allVolumePosts, activeSearchTerm, selectedCategories, selectedPublishers, selectedStatuses, selectedGenres, selectedAdaptations, selectedReadingRatings, publisherOptions, statusOptions]);
   const sortedVolumePosts = useMemo(() => {
+    if (serverCatalog && sortBy === "relevan") return filteredVolumePosts;
     const list = [...filteredVolumePosts];
     const searchTerm = activeSearchTerm.trim().toLowerCase();
     const getSearchRelevanceScore = (post) => {
@@ -9832,18 +10621,71 @@ function MarketplaceDb$1({
           return (a.comic.title || "").localeCompare(b.comic.title || "");
         });
     }
-  }, [filteredVolumePosts, sortBy, activeSearchTerm]);
+  }, [serverCatalog, filteredVolumePosts, sortBy, activeSearchTerm]);
+  const skipCatalogVisit = useRef(true);
+  const catalogParams = useCallback((page) => {
+    const params = {};
+    const q = activeSearchTerm.trim();
+    if (q) params.q = q;
+    if (sortBy && sortBy !== "relevan") params.sort = sortBy;
+    if (page > 1) params.page = String(page);
+    const assign = (key, values) => {
+      const cleaned = values.filter((value) => value !== "all");
+      if (cleaned.length > 0) params[key] = cleaned;
+    };
+    assign("format", selectedCategories);
+    assign("publisher", selectedPublishers);
+    assign("status", selectedStatuses);
+    assign("genre", selectedGenres);
+    assign("adaptation", selectedAdaptations);
+    assign("rating", selectedReadingRatings);
+    return params;
+  }, [activeSearchTerm, sortBy, selectedCategories, selectedPublishers, selectedStatuses, selectedGenres, selectedAdaptations, selectedReadingRatings]);
+  const visitCatalog = useCallback((page) => {
+    router.get("/", catalogParams(page), {
+      only: ["catalog", "upcoming", "filters"],
+      preserveState: true,
+      preserveScroll: true
+    });
+  }, [catalogParams]);
   useEffect(() => {
-    setCurrentPage(1);
-  }, [activeSearchTerm, selectedCategories, selectedPublishers, selectedStatuses, selectedGenres, selectedAdaptations, selectedReadingRatings, sortBy]);
-  const totalPages = useMemo(() => {
-    return Math.max(1, Math.ceil(sortedVolumePosts.length / ITEMS_PER_PAGE));
-  }, [sortedVolumePosts.length, ITEMS_PER_PAGE]);
-  const effectivePage = Math.min(Math.max(1, currentPage), totalPages);
+    if (!serverCatalog) {
+      setCurrentPage(1);
+      return;
+    }
+    if (skipCatalogVisit.current) {
+      skipCatalogVisit.current = false;
+      return;
+    }
+    visitCatalog(1);
+  }, [serverCatalog, activeSearchTerm, selectedCategories, selectedPublishers, selectedStatuses, selectedGenres, selectedAdaptations, selectedReadingRatings, sortBy, visitCatalog]);
+  useEffect(() => {
+    if (!serverCatalog) return;
+    const handle = window.setTimeout(() => {
+      const next = searchInput.trim();
+      setActiveSearchTerm((prev) => prev === next ? prev : next);
+    }, 400);
+    return () => window.clearTimeout(handle);
+  }, [searchInput, serverCatalog]);
+  const totalPages = serverCatalog ? Math.max(1, catalogLastPage) : Math.max(1, Math.ceil(sortedVolumePosts.length / ITEMS_PER_PAGE));
+  const effectivePage = serverCatalog ? Math.min(Math.max(1, catalogPage), totalPages) : Math.min(Math.max(1, currentPage), totalPages);
   const paginatedVolumePosts = useMemo(() => {
+    if (serverCatalog) return sortedVolumePosts;
     const startIndex = (effectivePage - 1) * ITEMS_PER_PAGE;
     return sortedVolumePosts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [sortedVolumePosts, effectivePage, ITEMS_PER_PAGE]);
+  }, [serverCatalog, sortedVolumePosts, effectivePage]);
+  const listedCount = serverCatalog ? catalogTotal : sortedVolumePosts.length;
+  const rangeStart = listedCount > 0 ? (effectivePage - 1) * ITEMS_PER_PAGE + 1 : 0;
+  const rangeEnd = listedCount > 0 ? Math.min(effectivePage * ITEMS_PER_PAGE, listedCount) : 0;
+  const goToCatalogPage = (page) => {
+    var _a;
+    if (serverCatalog) {
+      visitCatalog(page);
+    } else {
+      setCurrentPage(page);
+    }
+    (_a = document.getElementById("catalog-sort-wrapper")) == null ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
+  };
   const comicCount = useMemo(() => {
     if (typeof totalBooksCount === "number") return totalBooksCount;
     return allVolumePosts.length;
@@ -9870,7 +10712,7 @@ function MarketplaceDb$1({
           /* @__PURE__ */ jsx("span", { children: "Database & Discovery" })
         ] }),
         /* @__PURE__ */ jsx("h2", { className: "text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-black tracking-tight uppercase leading-tight max-w-4xl text-neutral-950 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-neutral-100 dark:to-neutral-300", children: "NORINOYA" }),
-        /* @__PURE__ */ jsx("div", { className: "flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap", children: ["Manga", "Novel", "Light Novel"].map((label) => /* @__PURE__ */ jsx(
+        /* @__PURE__ */ jsx("div", { className: "flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap", children: ["Manga", "Novel", "Light Novel", "J-Lit"].map((label) => /* @__PURE__ */ jsx(
           "div",
           {
             className: "px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-white/90 dark:bg-neutral-800/90 text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs font-sans font-semibold select-none shadow-3xs",
@@ -9879,19 +10721,32 @@ function MarketplaceDb$1({
           label
         )) }),
         /* @__PURE__ */ jsx("p", { className: "text-[11px] sm:text-xs md:text-sm text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed", children: "Rilisan terbaru, detail cetakan, rekomendasi, serta akses pembelian dalam satu tempat." }),
-        /* @__PURE__ */ jsx("div", { className: "pt-1 relative z-10 flex items-center justify-center gap-2.5 flex-wrap", children: /* @__PURE__ */ jsxs(
-          "a",
-          {
-            href: "https://discord.gg/tbZJA8XAE",
-            target: "_blank",
-            rel: "noopener noreferrer",
-            className: "px-4.5 py-2 bg-[#5865F2] hover:bg-[#4752C4] text-white active:scale-95 duration-100 text-xs font-mono font-bold tracking-tight rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-[#4752C4]/20",
-            children: [
-              /* @__PURE__ */ jsx("svg", { className: "w-4 h-4 fill-white text-white shrink-0", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx("path", { d: "M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.094 13.094 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z" }) }),
-              /* @__PURE__ */ jsx("span", { className: "text-white font-bold", children: "konotasi.sukasuka" })
-            ]
-          }
-        ) }),
+        /* @__PURE__ */ jsxs("div", { className: "pt-1 relative z-10 flex items-center justify-center gap-2.5 flex-wrap", children: [
+          /* @__PURE__ */ jsxs(
+            "a",
+            {
+              href: "https://discord.gg/tbZJA8XAE",
+              target: "_blank",
+              rel: "noopener noreferrer",
+              className: "px-4.5 py-2 bg-[#5865F2] hover:bg-[#4752C4] text-white active:scale-95 duration-100 text-xs font-mono font-bold tracking-tight rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-[#4752C4]/20",
+              children: [
+                /* @__PURE__ */ jsx("svg", { className: "w-4 h-4 fill-white text-white shrink-0", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx("path", { d: "M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.094 13.094 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z" }) }),
+                /* @__PURE__ */ jsx("span", { className: "text-white font-bold", children: "konotasi.sukasuka" })
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxs(
+            "button",
+            {
+              onClick: onNavigateToPanduan,
+              className: "px-4.5 py-2 bg-white dark:bg-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-100 active:scale-95 duration-100 text-xs font-mono font-bold tracking-tight rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-neutral-200 dark:border-neutral-700",
+              children: [
+                /* @__PURE__ */ jsx(BookMarked, { className: "w-3.5 h-3.5" }),
+                /* @__PURE__ */ jsx("span", { children: "Panduan Adaptasi" })
+              ]
+            }
+          )
+        ] }),
         /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-6 pt-3 font-mono text-xs", children: [
           /* @__PURE__ */ jsxs("div", { className: "flex flex-col items-center", children: [
             /* @__PURE__ */ jsx("span", { className: "text-neutral-950 dark:text-white font-extrabold text-lg leading-none", children: comicCount }),
@@ -9922,10 +10777,15 @@ function MarketplaceDb$1({
           /* @__PURE__ */ jsx("div", { className: "p-1.5 bg-[#DA6B1C]/10 dark:bg-[#DA6B1C]/10 rounded-lg", children: /* @__PURE__ */ jsx(Flame, { className: "w-4 h-4 text-[#DA6B1C] fill-[#DA6B1C]/20 animate-pulse" }) }),
           /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx("h3", { className: "text-xs sm:text-sm font-bold   tracking-wider text-neutral-900 dark:text-neutral-100 leading-none", children: "Segera Rilis" }) })
         ] }) }),
-        /* @__PURE__ */ jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 relative z-10", children: upcomingReleases.map(({ comic, volume, dateStr }, idx) => /* @__PURE__ */ jsxs(
-          "div",
+        /* @__PURE__ */ jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 relative z-10", children: upcomingReleases.map(({ comic, volume }, idx) => /* @__PURE__ */ jsxs(
+          "a",
           {
-            onClick: () => openVolumeModal(comic, volume.volNumber),
+            href: bookPath(comic, volume) ?? void 0,
+            onClick: (e) => {
+              if (!isPlainLeftClick(e)) return;
+              e.preventDefault();
+              openVolumeModal(comic, volume.volNumber);
+            },
             className: "bg-neutral-50/80 dark:bg-neutral-900/80 hover:bg-white dark:hover:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 hover:border-[#DA6B1C] dark:hover:border-[#DA6B1C] rounded-xl p-2 sm:p-2.5 flex flex-col justify-between cursor-pointer transition-all duration-200 shadow-3xs hover:shadow-md hover:-translate-y-0.5 group",
             children: [
               /* @__PURE__ */ jsxs("div", { className: "space-y-1.5", children: [
@@ -9947,21 +10807,21 @@ function MarketplaceDb$1({
                   ] }),
                   /* @__PURE__ */ jsx("div", { className: "absolute top-1.5 left-1.5 right-1.5 z-10 flex justify-start", children: /* @__PURE__ */ jsxs("span", { className: "bg-[#DA6B1C] text-white font-mono font-black text-[8px] px-1.5 py-0.5 rounded-md shadow-xs tracking-tight flex items-center gap-1 border border-orange-600/30", children: [
                     /* @__PURE__ */ jsx(Clock, { className: "w-2.5 h-2.5 text-white shrink-0" }),
-                    /* @__PURE__ */ jsx("span", { className: "text-white font-extrabold", children: dateStr })
+                    /* @__PURE__ */ jsx("span", { className: "text-white font-extrabold", children: "TBA" })
                   ] }) }),
                   /* @__PURE__ */ jsxs("div", { className: "absolute bottom-1.5 left-1.5 z-10 flex items-center gap-1 flex-wrap", children: [
                     /* @__PURE__ */ jsx("span", { className: "bg-white/95 dark:bg-neutral-900/95 text-neutral-900 dark:text-neutral-100 font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8px] capitalize shadow-xs backdrop-blur-xs border border-neutral-200/60 dark:border-neutral-800", children: getBookTypeLabel(comic.category) }),
-                    comic.readingRating && /* @__PURE__ */ jsx("span", { className: `font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8px] shadow-xs ${getReadingRatingStyle(comic.readingRating).bg}`, children: getReadingRatingStyle(comic.readingRating).text })
+                    comic.readingRating && /* @__PURE__ */ jsx("span", { className: `font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8px] shadow-xs ${getReadingRatingStyle2(comic.readingRating).bg}`, children: getReadingRatingStyle2(comic.readingRating).text })
                   ] })
                 ] }),
                 /* @__PURE__ */ jsxs("div", { className: "space-y-0.5 text-left pt-1", children: [
                   /* @__PURE__ */ jsx("span", { className: "text-[8.5px] font-sans text-neutral-400 dark:text-neutral-500 block truncate leading-tight", children: comic.publisherName }),
-                  /* @__PURE__ */ jsx("h4", { className: `text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100 ${getReadingRatingStyle(comic.readingRating).hoverClass} transition-colors line-clamp-1 leading-snug`, children: volume.title || comic.title }),
+                  /* @__PURE__ */ jsx("h4", { className: `text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100 ${getReadingRatingStyle2(comic.readingRating).hoverClass} transition-colors line-clamp-1 leading-snug`, children: volume.title || comic.title }),
                   /* @__PURE__ */ jsxs("div", { className: "text-[9.5px] font-mono font-extrabold text-[#112A12] dark:text-[#457347] leading-tight", children: [
                     "Vol.",
                     volume.volNumber
                   ] }),
-                  (comic.authorStory || comic.authorArt) && /* @__PURE__ */ jsx("p", { className: "text-[9px] font-sans text-neutral-500 dark:text-neutral-400 truncate leading-tight", children: getAuthorNameOnly(comic) }),
+                  getVolumeAuthorName(comic, volume) && /* @__PURE__ */ jsx("p", { className: "text-[9px] font-sans text-neutral-500 dark:text-neutral-400 truncate leading-tight", children: getVolumeAuthorName(comic, volume) }),
                   comic.genres && comic.genres.length > 0 && /* @__PURE__ */ jsx("p", { className: "text-[8.5px] font-sans text-neutral-400 dark:text-white truncate leading-tight", children: comic.genres.slice(0, 2).join(", ") })
                 ] })
               ] }),
@@ -10185,7 +11045,7 @@ function MarketplaceDb$1({
         (activeSearchTerm || !selectedCategories.includes("all") || !selectedPublishers.includes("all") || !selectedStatuses.includes("all") || !selectedGenres.includes("all") || !selectedAdaptations.includes("all") || !selectedReadingRatings.includes("all")) && /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-2 pt-3 border-t border-neutral-100 dark:border-neutral-800", children: [
           /* @__PURE__ */ jsx("span", { className: "text-[10px] sm:text-xs font-mono font-black tracking-widest text-neutral-400 dark:text-neutral-500 mr-2 shrink-0", children: "FILTER AKTIF:" }),
           !selectedCategories.includes("all") && selectedCategories.map((cat) => {
-            const label = cat === "manga" ? "Komik (Manga)" : cat === "light_novel" ? "Light Novel" : "Novel";
+            const label = getBookTypeLabel(cat);
             return /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-[#EFEFEF] dark:bg-neutral-800/80 border border-neutral-200/50 dark:border-neutral-700/50 text-neutral-850 dark:text-neutral-200 text-[11px] sm:text-xs font-sans font-extrabold tracking-wide rounded-md transition-all select-none", children: [
               label,
               /* @__PURE__ */ jsx(
@@ -10341,13 +11201,13 @@ function MarketplaceDb$1({
           /* @__PURE__ */ jsxs("p", { className: "text-xs sm:text-sm text-neutral-700 dark:text-neutral-300", children: [
             "Menampilkan ",
             /* @__PURE__ */ jsxs("strong", { className: "text-neutral-950 dark:text-white font-bold", children: [
-              sortedVolumePosts.length > 0 ? (effectivePage - 1) * ITEMS_PER_PAGE + 1 : 0,
+              rangeStart,
               " - ",
-              Math.min(effectivePage * ITEMS_PER_PAGE, sortedVolumePosts.length)
+              rangeEnd
             ] }),
             " dari ",
-            /* @__PURE__ */ jsx("strong", { className: "text-neutral-950 dark:text-white font-bold", children: sortedVolumePosts.length }),
-            " Jilid Komik / Novel"
+            /* @__PURE__ */ jsx("strong", { className: "text-neutral-950 dark:text-white font-bold", children: listedCount }),
+            "Buku"
           ] })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "relative select-none", onClick: (e) => e.stopPropagation(), children: [
@@ -10413,14 +11273,19 @@ function MarketplaceDb$1({
         const bookmarkId = `${comic.id}-vol-${volume.volNumber}`;
         const isBookmarked = isSaved("comics", bookmarkId);
         return /* @__PURE__ */ jsx(
-          "div",
+          "a",
           {
-            onClick: () => openVolumeModal(comic, volume.volNumber),
+            href: bookPath(comic, volume) ?? void 0,
+            onClick: (e) => {
+              if (!isPlainLeftClick(e)) return;
+              e.preventDefault();
+              openVolumeModal(comic, volume.volNumber);
+            },
             className: "block group cursor-pointer",
             children: /* @__PURE__ */ jsxs(
               "div",
               {
-                className: `h-full bg-white dark:bg-neutral-900 border-2 rounded-xl overflow-hidden flex flex-col justify-between cursor-pointer transition-all duration-300 ${isBookmarked ? "border-[#183619] dark:border-[#183619]" : "border-[#EFEFEF] dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_10px_24px_rgba(0,0,0,0.05)] hover:translate-y-[-2px]"} select-none`,
+                className: `h-full bg-white dark:bg-neutral-900 border-2 rounded-xl overflow-hidden flex flex-col justify-between cursor-pointer transition-all duration-300 ${isBookmarked ? "border-emerald-400" : "border-[#EFEFEF] dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_10px_24px_rgba(0,0,0,0.05)] hover:translate-y-[-2px]"} select-none`,
                 children: [
                   /* @__PURE__ */ jsxs("div", { className: "relative aspect-[3/4] w-full bg-neutral-950 flex flex-col justify-between p-2.5 select-none overflow-hidden", children: [
                     (volume.coverImage || comic.coverImage) && !imageErrors[post.id] ? /* @__PURE__ */ jsx(
@@ -10442,18 +11307,18 @@ function MarketplaceDb$1({
                     ] }) }),
                     /* @__PURE__ */ jsxs("div", { className: "absolute bottom-2 left-2 z-20 flex items-center gap-1 pointer-events-none", children: [
                       /* @__PURE__ */ jsx("span", { className: "bg-neutral-100/95 dark:bg-neutral-800/95 text-neutral-900 dark:text-neutral-100 font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8.5px] capitalize leading-none shadow-xs border border-neutral-200/50 dark:border-neutral-700/50", children: getBookTypeLabel(comic.category) }),
-                      comic.readingRating && /* @__PURE__ */ jsx("span", { className: `font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8.5px] leading-none shadow-xs border ${getReadingRatingStyle(comic.readingRating).bg}`, children: getReadingRatingStyle(comic.readingRating).text })
+                      comic.readingRating && /* @__PURE__ */ jsx("span", { className: `font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8.5px] leading-none shadow-xs border ${getReadingRatingStyle2(comic.readingRating).bg}`, children: getReadingRatingStyle2(comic.readingRating).text })
                     ] })
                   ] }),
                   /* @__PURE__ */ jsxs("div", { className: "space-y-1 p-2.5 flex-1 flex flex-col justify-between text-left", children: [
                     /* @__PURE__ */ jsxs("div", { className: "space-y-0.5", children: [
                       /* @__PURE__ */ jsx("span", { className: "text-[9px] sm:text-[9.5px] font-sans text-neutral-400 dark:text-neutral-500 leading-tight block truncate", children: comic.publisherName }),
-                      /* @__PURE__ */ jsx("h4", { className: `text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100 ${getReadingRatingStyle(comic.readingRating).hoverClass} transition-colors line-clamp-1 leading-snug`, children: volume.title || comic.title }),
+                      /* @__PURE__ */ jsx("h4", { className: `text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100 ${getReadingRatingStyle2(comic.readingRating).hoverClass} transition-colors line-clamp-1 leading-snug`, children: volume.title || comic.title }),
                       /* @__PURE__ */ jsxs("div", { className: "text-[9.5px] sm:text-[10px] font-sans font-extrabold text-[#112A12] dark:text-[#457347] leading-tight", children: [
                         "Vol.",
                         volume.volNumber
                       ] }),
-                      (comic.authorStory || comic.authorArt) && /* @__PURE__ */ jsx("p", { className: "text-[9.5px] sm:text-[10px] font-sans text-neutral-600 dark:text-neutral-400 leading-tight truncate pt-0.5", children: getAuthorNameOnly(comic) }),
+                      getVolumeAuthorName(comic, volume) && /* @__PURE__ */ jsx("p", { className: "text-[9.5px] sm:text-[10px] font-sans text-neutral-600 dark:text-neutral-400 leading-tight truncate pt-0.5", children: getVolumeAuthorName(comic, volume) }),
                       /* @__PURE__ */ jsx("div", { className: "flex flex-wrap gap-1 items-center pt-0.5", children: /* @__PURE__ */ jsx("span", { className: "text-[9px] sm:text-[9.5px] text-neutral-450 dark:text-neutral-550 font-sans line-clamp-1", children: comic.genres.slice(0, 2).join(", ") }) })
                     ] }),
                     /* @__PURE__ */ jsx("div", { className: "border-t border-neutral-100 dark:border-neutral-800 my-1.5" }),
@@ -10498,7 +11363,7 @@ function MarketplaceDb$1({
           " dari ",
           /* @__PURE__ */ jsx("span", { className: "font-bold text-neutral-900 dark:text-neutral-100", children: totalPages }),
           " (",
-          sortedVolumePosts.length,
+          listedCount,
           " Volume)"
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5", children: [
@@ -10507,11 +11372,7 @@ function MarketplaceDb$1({
             {
               type: "button",
               onClick: () => {
-                var _a;
-                if (effectivePage > 1) {
-                  setCurrentPage(effectivePage - 1);
-                  (_a = document.getElementById("catalog-sort-wrapper")) == null ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
-                }
+                if (effectivePage > 1) goToCatalogPage(effectivePage - 1);
               },
               disabled: effectivePage === 1,
               className: "px-2.5 sm:px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-mono font-bold text-neutral-700 dark:text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all flex items-center gap-1 cursor-pointer",
@@ -10541,11 +11402,7 @@ function MarketplaceDb$1({
                 "button",
                 {
                   type: "button",
-                  onClick: () => {
-                    var _a;
-                    setCurrentPage(p);
-                    (_a = document.getElementById("catalog-sort-wrapper")) == null ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
-                  },
+                  onClick: () => goToCatalogPage(p),
                   className: `w-8 h-8 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${effectivePage === p ? "bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 shadow-xs" : "bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800"}`,
                   children: p
                 },
@@ -10558,11 +11415,7 @@ function MarketplaceDb$1({
             {
               type: "button",
               onClick: () => {
-                var _a;
-                if (effectivePage < totalPages) {
-                  setCurrentPage(effectivePage + 1);
-                  (_a = document.getElementById("catalog-sort-wrapper")) == null ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
-                }
+                if (effectivePage < totalPages) goToCatalogPage(effectivePage + 1);
               },
               disabled: effectivePage === totalPages,
               className: "px-2.5 sm:px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-mono font-bold text-neutral-700 dark:text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all flex items-center gap-1 cursor-pointer",
@@ -10583,7 +11436,7 @@ function MarketplaceDb$1({
         /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 font-sans max-w-2xl mx-auto leading-relaxed", children: "Iklan Google Adsense membantu kelangsungan server database buku Norinoya. Hubungi kami untuk penempatan banner premium." })
       ] })
     ] }),
-    /* @__PURE__ */ jsx(AnimatePresence, { onExitComplete: restoreCatalogScroll, children: selectedComic && /* @__PURE__ */ jsx(Suspense, { fallback: /* @__PURE__ */ jsx(LoadingDetailBuku, {}), children: /* @__PURE__ */ jsx(
+    /* @__PURE__ */ jsx(AnimatePresence, { onExitComplete: restoreCatalogScroll, children: selectedComic && (isDetailLoading ? /* @__PURE__ */ jsx(LoadingDetailBuku, { onClose: handleCloseModal }) : /* @__PURE__ */ jsx(Suspense, { fallback: /* @__PURE__ */ jsx(LoadingDetailBuku, {}), children: /* @__PURE__ */ jsx(
       DetailBuku,
       {
         selectedComic,
@@ -10592,14 +11445,26 @@ function MarketplaceDb$1({
         handleCloseModal,
         onNavigateToNews,
         setSelectedGenres,
-        setSelectedComic,
+        setSelectedCategories: (cats) => {
+          setSelectedCategories(cats);
+          setIsFiltersExpanded(true);
+        },
+        setSelectedReadingRatings: (ratings) => {
+          setSelectedReadingRatings(ratings);
+          setIsFiltersExpanded(true);
+        },
+        setSelectedStatuses: (statuses) => {
+          setSelectedStatuses(statuses);
+          setIsFiltersExpanded(true);
+        },
+        onOpenComic: openVolumeModal,
         allComics: activeComics,
         newsList
       }
-    ) }) })
+    ) })) })
   ] });
 }
-const __vite_glob_0_56 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_76 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: MarketplaceDb$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -10766,7 +11631,7 @@ function ModalKolaborasi({ isOpen, onClose }) {
     }
   ) });
 }
-const __vite_glob_0_58 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_78 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ModalKolaborasi
 }, Symbol.toStringTag, { value: "Module" }));
@@ -11043,7 +11908,7 @@ function NewsCategorySidebar({
     }
   );
 }
-const __vite_glob_0_60 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_80 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsCategorySidebar
 }, Symbol.toStringTag, { value: "Module" }));
@@ -11222,7 +12087,7 @@ function NewsRightSidebar({
     ] })
   ] });
 }
-const __vite_glob_0_63 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_83 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsRightSidebar
 }, Symbol.toStringTag, { value: "Module" }));
@@ -11359,11 +12224,11 @@ function NewsPostCard({
     ] })
   ] }, post.id);
 }
-const __vite_glob_0_62 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_82 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsPostCard
 }, Symbol.toStringTag, { value: "Module" }));
-const DetailNews = lazy(() => Promise.resolve().then(() => __vite_glob_0_52));
+const DetailNews = lazy(() => Promise.resolve().then(() => __vite_glob_0_70));
 const ToriiGate = ({ className = "w-4 h-4" }) => /* @__PURE__ */ jsxs(
   "svg",
   {
@@ -11477,6 +12342,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
         timestamp: dbItem.created_at ? new Date(dbItem.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }) : "Baru saja",
         createdAt: dbItem.created_at ? String(dbItem.created_at) : void 0,
         title: dbItem.title,
+        slug: dbItem.slug || void 0,
         content: dbItem.content || "",
         category: dbItem.category || "rilisan",
         hashTags: dbItem.hash_tags || [],
@@ -11759,6 +12625,24 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
       if (document.body) document.body.scrollTop = 0;
     }
   }, [activePost]);
+  useEffect(() => {
+    const applyLocation = () => {
+      const match = window.location.pathname.match(/^\/news\/([^/?#]+)\/?$/);
+      const reference = match ? decodeURIComponent(match[1]) : null;
+      if (!reference) {
+        setLocalSelectedPost(null);
+        setSelectedNewsId == null ? void 0 : setSelectedNewsId(null);
+        return;
+      }
+      const post = newsFeedData.find(
+        (item) => item.slug === reference || String(item.id) === reference
+      ) || null;
+      setLocalSelectedPost(post);
+      setSelectedNewsId == null ? void 0 : setSelectedNewsId(post ? post.id : null);
+    };
+    window.addEventListener("popstate", applyLocation);
+    return () => window.removeEventListener("popstate", applyLocation);
+  }, [newsFeedData, setSelectedNewsId]);
   const relevantCatalogItems = useMemo(() => {
     if (!activePost) return [];
     const typedBooksList = dbBooksList || [];
@@ -11910,6 +12794,15 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
     }
     return [];
   }, [activePost, dbKiosList]);
+  const buildNewsUrl = (post) => {
+    const query = new URLSearchParams(window.location.search).toString();
+    const search = query ? `?${query}` : "";
+    if (post) {
+      const targetSlug = post.slug || post.id;
+      return `/news/${encodeURIComponent(targetSlug)}${search}`;
+    }
+    return `/news${search}`;
+  };
   const selectPost = (post) => {
     if (post) {
       window.scrollTo(0, 0);
@@ -11921,13 +12814,9 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
     } else {
       setLocalSelectedPost(post);
     }
-    if (post) {
-      const targetSlug = post.slug || post.id;
-      window.history.pushState({ newsId: post.id }, "", `/news/${targetSlug}`);
-    } else {
-      if (window.location.pathname.startsWith("/news/")) {
-        window.history.pushState({}, "", "/news");
-      }
+    const nextUrl = buildNewsUrl(post);
+    if (window.location.pathname + window.location.search !== nextUrl) {
+      window.history.pushState({ newsId: post ? post.id : null }, "", nextUrl);
     }
   };
   const handleSharePost = (post, e) => {
@@ -12051,7 +12940,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
         animate: { opacity: 1, y: 0 },
         exit: { opacity: 0, y: -15 },
         transition: { duration: 0.25 },
-        className: "grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 max-w-7xl mx-auto px-1",
+        className: "grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 max-w-7xl mx-auto px-1 sm:px-0",
         children: [
           /* @__PURE__ */ jsx(
             NewsCategorySidebar,
@@ -12071,7 +12960,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
               NEWS_UPDATES: newsFeedData
             }
           ),
-          /* @__PURE__ */ jsxs("div", { className: "lg:col-span-5 flex flex-col gap-6", children: [
+          /* @__PURE__ */ jsxs("div", { className: "lg:col-span-6 flex flex-col gap-6", children: [
             /* @__PURE__ */ jsxs("div", { className: "lg:hidden flex flex-col gap-3", children: [
               /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 p-4 rounded-xl border border-neutral-200/60 dark:border-neutral-800 shadow-xs flex flex-col items-center", children: [
                 /* @__PURE__ */ jsx("h3", { className: "text-xs font-mono font-extrabold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase mb-2.5 text-center", children: "Cari Berita & Review" }),
@@ -12465,7 +13354,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
     )
   ] });
 }
-const __vite_glob_0_61 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_81 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsFeed$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12580,7 +13469,7 @@ function LoadingHome() {
     )) })
   ] });
 }
-const __vite_glob_0_66 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_86 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingHome
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12668,7 +13557,7 @@ function LoadingKios() {
     )) })
   ] });
 }
-const __vite_glob_0_67 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_87 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingKios
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12685,7 +13574,7 @@ function LoadingNews() {
         /* @__PURE__ */ jsx("div", { className: "h-3 w-20 bg-neutral-200/70 dark:bg-neutral-800/70 rounded-md" })
       ] }) })
     ] }),
-    /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 max-w-7xl mx-auto px-1", children: [
+    /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 max-w-7xl mx-auto px-1 sm:px-0", children: [
       /* @__PURE__ */ jsx("div", { className: "hidden lg:flex lg:col-span-4 flex-col gap-4 self-start", children: /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200/60 dark:border-neutral-800 p-4 space-y-4 shadow-xs", children: [
         /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between pb-2 border-b border-neutral-100 dark:border-neutral-800", children: [
           /* @__PURE__ */ jsx("div", { className: "h-4 w-32 bg-neutral-200 dark:bg-neutral-800 rounded-md" }),
@@ -12773,7 +13662,7 @@ function LoadingNews() {
     ] })
   ] });
 }
-const __vite_glob_0_68 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_88 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingNews
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12804,34 +13693,45 @@ function usePageLoading() {
   }, []);
   return isLoading;
 }
-const NewsFeed = lazy(() => Promise.resolve().then(() => __vite_glob_0_61));
-const MarketplaceDb = lazy(() => Promise.resolve().then(() => __vite_glob_0_56));
-const AboutSection = lazy(() => Promise.resolve().then(() => __vite_glob_0_47));
-const EtalaseCatalog = lazy(() => Promise.resolve().then(() => __vite_glob_0_53));
+const NewsFeed = lazy(() => Promise.resolve().then(() => __vite_glob_0_81));
+const MarketplaceDb = lazy(() => Promise.resolve().then(() => __vite_glob_0_76));
+const AboutSection = lazy(() => Promise.resolve().then(() => __vite_glob_0_65));
+const EtalaseCatalog = lazy(() => Promise.resolve().then(() => __vite_glob_0_72));
 function App({
-  books = [],
+  catalog,
+  upcoming = [],
+  filters,
   publishers = [],
   storyStatuses = [],
   genres = [],
   newsList = [],
+  relevantBooks = [],
   totalBooksCount,
   totalSeriesCount,
   totalPublishersCount,
+  detailBooks = [],
   initialBook,
   initialSlug,
   initialVolume
 }) {
+  var _a;
+  const useDatabase = (totalBooksCount ?? 0) > 0 || (((_a = catalog == null ? void 0 : catalog.data) == null ? void 0 : _a.length) ?? 0) > 0;
   const comicsData = React__default.useMemo(() => {
-    if (books && books.length > 0) {
-      return mapBooksToComics(books);
+    if (useDatabase) {
+      return mapBooksToComics((catalog == null ? void 0 : catalog.data) ?? []);
     }
     return COMICS_DATA;
-  }, [books]);
+  }, [useDatabase, catalog]);
+  const detailComics = React__default.useMemo(() => mapBooksToComics(detailBooks), [detailBooks]);
+  const upcomingComics = React__default.useMemo(() => mapBooksToComics(upcoming), [upcoming]);
   const deepLinkCatalog = React__default.useMemo(() => {
+    if (useDatabase) {
+      return detailComics.length > 0 ? detailComics : comicsData;
+    }
     const seen = new Set(comicsData.map((c) => c.id));
     const mockExtras = COMICS_DATA.filter((c) => !seen.has(c.id));
     return mockExtras.length > 0 ? [...comicsData, ...mockExtras] : comicsData;
-  }, [comicsData]);
+  }, [useDatabase, comicsData, detailComics]);
   const initialComicId = React__default.useMemo(() => {
     if (!deepLinkCatalog || deepLinkCatalog.length === 0) return null;
     const findComicBySlugOrId = (ref) => {
@@ -12907,6 +13807,9 @@ function App({
   };
   const handleNavEtalase = () => {
     router.visit("/kios");
+  };
+  const handleNavPanduan = () => {
+    router.visit("/panduan-adaptasi");
   };
   const handleNavCalendar = () => {
     setActiveTab("calendar");
@@ -12989,21 +13892,12 @@ function App({
   }, [activeTab, selectedNewsId, selectedComicId]);
   const activeComicObj = selectedComicId ? comicsData.find((c) => c.id === selectedComicId) : null;
   const pageTitle = activeComicObj ? `${activeComicObj.title} - Sinopsis & Ulasan Komik | Norinoya` : "Norinoya - Pusat Katalog & Ulasan Komik Indonesia";
-  const pageDesc = activeComicObj ? (activeComicObj.synopsis || `Informasi detail, sinopsis, penerbit, dan link pembelian buku ${activeComicObj.title}`).slice(0, 160) : "Katalog komik terlengkap, jadwal terbit m&c! Akasha dan Elex Media, serta ulasan fisik komik dari Konotasi Store.";
-  const pageImage = (activeComicObj == null ? void 0 : activeComicObj.coverImage) || "/favicon.png";
   return /* @__PURE__ */ jsxs(
     "div",
     {
       className: "bg-[#FEFFFE] dark:bg-[#202120] min-h-screen text-neutral-950 dark:text-neutral-50 selection:bg-neutral-900 dark:selection:bg-neutral-100 selection:text-white dark:selection:text-neutral-900 flex flex-col justify-between font-sans",
       children: [
-        /* @__PURE__ */ jsxs(Head, { children: [
-          /* @__PURE__ */ jsx("title", { children: pageTitle }),
-          /* @__PURE__ */ jsx("meta", { name: "description", content: pageDesc }),
-          /* @__PURE__ */ jsx("meta", { property: "og:title", content: pageTitle }),
-          /* @__PURE__ */ jsx("meta", { property: "og:description", content: pageDesc }),
-          /* @__PURE__ */ jsx("meta", { property: "og:image", content: pageImage }),
-          /* @__PURE__ */ jsx("meta", { property: "og:type", content: "website" })
-        ] }),
+        /* @__PURE__ */ jsx(Head, { children: /* @__PURE__ */ jsx("title", { children: pageTitle }) }),
         /* @__PURE__ */ jsx(
           Navbar,
           {
@@ -13027,6 +13921,13 @@ function App({
                 MarketplaceDb,
                 {
                   customComics: comicsData,
+                  serverCatalog: useDatabase,
+                  catalogPage: (catalog == null ? void 0 : catalog.current_page) ?? 1,
+                  catalogLastPage: (catalog == null ? void 0 : catalog.last_page) ?? 1,
+                  catalogTotal: (catalog == null ? void 0 : catalog.total) ?? 0,
+                  filters,
+                  upcomingComics,
+                  detailComics,
                   dynamicPublishers: publishers,
                   dynamicStoryStatuses: storyStatuses,
                   dynamicGenres: genres,
@@ -13042,7 +13943,8 @@ function App({
                     setSelectedNewsId(newsId);
                     window.location.hash = `#news`;
                   },
-                  onNavigateToCalendar: handleNavCalendar
+                  onNavigateToCalendar: handleNavCalendar,
+                  onNavigateToPanduan: handleNavPanduan
                 }
               ) })
             },
@@ -13070,7 +13972,7 @@ function App({
                       "button",
                       {
                         onClick: handleNavHome,
-                        className: "px-4.5 py-2 bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 hover:bg-neutral-900 dark:hover:bg-neutral-100 active:scale-95 duration-100 text-xs font-mono font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-transparent",
+                        className: "px-4.5 py-2 bg-neutral-950 text-red-500 dark:bg-white dark:text-neutral-950 hover:bg-neutral-900 dark:hover:bg-neutral-100 active:scale-95 duration-100 text-xs font-mono font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-transparent",
                         children: [
                           /* @__PURE__ */ jsx(BookOpen, { className: "w-3.5 h-3.5" }),
                           /* @__PURE__ */ jsx("span", { children: "norinoya" })
@@ -13087,6 +13989,17 @@ function App({
                         children: [
                           /* @__PURE__ */ jsx("svg", { className: "w-4 h-4 fill-white text-white shrink-0", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx("path", { d: "M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.094 13.094 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z" }) }),
                           /* @__PURE__ */ jsx("span", { className: "text-white font-bold", children: "konotasi.sukasuka" })
+                        ]
+                      }
+                    ),
+                    /* @__PURE__ */ jsxs(
+                      "button",
+                      {
+                        onClick: handleNavPanduan,
+                        className: "px-4.5 py-2 bg-white dark:bg-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-100 active:scale-95 duration-100 text-xs font-mono font-bold tracking-tight rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-neutral-200 dark:border-neutral-700",
+                        children: [
+                          /* @__PURE__ */ jsx(BookMarked, { className: "w-3.5 h-3.5" }),
+                          /* @__PURE__ */ jsx("span", { children: "Panduan Adaptasi" })
                         ]
                       }
                     )
@@ -13107,7 +14020,7 @@ function App({
                   NewsFeed,
                   {
                     dbNewsList: newsList,
-                    dbBooksList: books,
+                    dbBooksList: relevantBooks,
                     selectedNewsId,
                     setSelectedNewsId,
                     onNavigateToCatalog: handleNavHome,
@@ -13297,8 +14210,8 @@ function App({
                     onClick: () => {
                       handleNavAbout();
                       setTimeout(() => {
-                        var _a;
-                        (_a = document.getElementById("privacy-policy")) == null ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
+                        var _a2;
+                        (_a2 = document.getElementById("privacy-policy")) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth" });
                       }, 150);
                     },
                     className: "px-3 py-1.5 hover:underline text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer text-left mr-auto sm:mr-0 font-bold",
@@ -13559,7 +14472,7 @@ function App({
     }
   );
 }
-const __vite_glob_0_69 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_89 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: App
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13720,7 +14633,7 @@ function KiosPage({
     /* @__PURE__ */ jsx(BackToTopButton, {})
   ] });
 }
-const __vite_glob_0_70 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_90 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: KiosPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13936,9 +14849,192 @@ function NewsPage({
     /* @__PURE__ */ jsx(BackToTopButton, {})
   ] });
 }
-const __vite_glob_0_71 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_91 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsPage
+}, Symbol.toStringTag, { value: "Module" }));
+function PanduanAdaptasiPage({
+  panduanAdaptasiList,
+  filters
+}) {
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("norinoya-dark-mode") === "true";
+    }
+    return false;
+  });
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+  React__default.useLayoutEffect(() => {
+    sessionStorage.setItem("norinoya-dark-mode", String(darkMode));
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+  const handleNavHome = () => router.visit("/");
+  const handleNavNews = () => router.visit("/news");
+  const handleNavKios = () => router.visit("/kios");
+  const handleNavAbout = () => router.visit("/?scroll=about");
+  const [searchQuery, setSearchQuery] = useState((filters == null ? void 0 : filters.q) ?? "");
+  const debounceRef = useRef(null);
+  useEffect(() => {
+    const term = searchQuery.trim();
+    const currentTerm = ((filters == null ? void 0 : filters.q) ?? "").trim();
+    if (term === currentTerm) {
+      return;
+    }
+    if (debounceRef.current) {
+      window.clearTimeout(debounceRef.current);
+    }
+    debounceRef.current = window.setTimeout(() => {
+      router.get(
+        route("panduan-adaptasi.index"),
+        term === "" ? {} : { q: term },
+        { preserveState: true, preserveScroll: true, replace: true }
+      );
+    }, 350);
+    return () => {
+      if (debounceRef.current) {
+        window.clearTimeout(debounceRef.current);
+      }
+    };
+  }, [searchQuery, filters == null ? void 0 : filters.q]);
+  const items = panduanAdaptasiList.data;
+  const total = panduanAdaptasiList.total;
+  const from = panduanAdaptasiList.from ?? 0;
+  const to = panduanAdaptasiList.to ?? 0;
+  const isSearching = ((filters == null ? void 0 : filters.q) ?? "").trim() !== "";
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const canonicalUrl = `${origin}/panduan-adaptasi`;
+  const pageTitle = "Panduan Adaptasi - Norinoya";
+  const pageDesc = "Direktori titik lanjut adaptasi anime ke manga: daftar judul, sumber, dan panduan urutan nonton bertahap.";
+  const ogImage = `${origin}/assets/images/logo-dark.png`;
+  return /* @__PURE__ */ jsxs("div", { className: "bg-[#FEFFFE] dark:bg-[#202120] min-h-screen text-neutral-950 dark:text-neutral-50 selection:bg-neutral-900 dark:selection:bg-neutral-100 selection:text-white dark:selection:text-neutral-900 flex flex-col justify-between font-sans", children: [
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: pageTitle }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: pageDesc }),
+      /* @__PURE__ */ jsx("meta", { property: "og:site_name", content: "Norinoya" }),
+      /* @__PURE__ */ jsx("meta", { property: "og:title", content: pageTitle }),
+      /* @__PURE__ */ jsx("meta", { property: "og:description", content: pageDesc }),
+      /* @__PURE__ */ jsx("meta", { property: "og:type", content: "website" }),
+      /* @__PURE__ */ jsx("meta", { property: "og:url", content: canonicalUrl }),
+      /* @__PURE__ */ jsx("meta", { property: "og:image", content: ogImage }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:card", content: "summary_large_image" }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:title", content: pageTitle }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:description", content: pageDesc }),
+      /* @__PURE__ */ jsx("meta", { name: "twitter:image", content: ogImage }),
+      /* @__PURE__ */ jsx("meta", { name: "theme-color", content: "#E53935" }),
+      /* @__PURE__ */ jsx("link", { rel: "canonical", href: canonicalUrl })
+    ] }),
+    /* @__PURE__ */ jsx(
+      Navbar,
+      {
+        activeTab: "about",
+        darkMode,
+        toggleDarkMode,
+        onNavigateHome: handleNavHome,
+        onNavigateNews: handleNavNews,
+        onNavigateKios: handleNavKios
+      }
+    ),
+    /* @__PURE__ */ jsx("main", { className: "flex-1 w-full max-w-7xl mx-auto px-3 sm:px-6 py-8 sm:py-12 flex items-start justify-center", children: /* @__PURE__ */ jsxs("section", { className: "w-full max-w-7xl bg-white dark:bg-neutral-900 rounded-2xl sm:rounded-3xl border border-neutral-200/80 dark:border-neutral-800/60 shadow-[0_8px_30px_rgba(19,42,30,0.04)] dark:shadow-none p-6 sm:p-10 md:p-12 transition-all", children: [
+      /* @__PURE__ */ jsxs("header", { className: "flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-8 border-b border-neutral-200/60 dark:border-neutral-800/60", children: [
+        /* @__PURE__ */ jsxs("div", { children: [
+          /* @__PURE__ */ jsx("h1", { className: "text-2xl sm:text-3xl font-bold tracking-tight text-neutral-950 dark:text-neutral-50", children: "Panduan Adaptasi" }),
+          /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-1.5 tracking-normal", children: "Daftar adaptasi yang bisa kalian lihat" })
+        ] }),
+        /* @__PURE__ */ jsx("div", { className: "self-start sm:self-auto", children: /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-semibold tracking-wider text-neutral-950 dark:text-neutral-50 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700", children: [
+          "Total ",
+          total,
+          " Indeks"
+        ] }) })
+      ] }),
+      /* @__PURE__ */ jsx("div", { className: "py-6", children: /* @__PURE__ */ jsxs("div", { className: "relative", children: [
+        /* @__PURE__ */ jsx(Search, { className: "w-4 h-4 text-neutral-400 dark:text-neutral-500 absolute left-4 top-1/2 -translate-y-1/2" }),
+        /* @__PURE__ */ jsx(
+          "input",
+          {
+            type: "text",
+            value: searchQuery,
+            onChange: (event) => setSearchQuery(event.target.value),
+            "aria-label": "Cari panduan adaptasi",
+            placeholder: "Ketik judul anime, studio, atau komikus...",
+            className: "w-full h-12 pl-12 pr-4 rounded-full border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-xs sm:text-sm text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 outline-none focus:border-neutral-900 dark:focus:border-white focus:ring-2 focus:ring-[#DA6B1C]/10 transition-all shadow-xs"
+          }
+        ),
+        searchQuery !== "" && /* @__PURE__ */ jsx(
+          "button",
+          {
+            type: "button",
+            onClick: () => setSearchQuery(""),
+            "aria-label": "Bersihkan pencarian",
+            className: "absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-sm font-mono cursor-pointer",
+            children: "✕"
+          }
+        )
+      ] }) }),
+      /* @__PURE__ */ jsxs("div", { className: "w-full overflow-hidden", children: [
+        /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-12 gap-4 px-4 py-3 text-[11px] font-mono font-semibold uppercase tracking-[0.12em] text-neutral-500 dark:text-neutral-400 border-b border-neutral-200/60 dark:border-neutral-800/60", children: [
+          /* @__PURE__ */ jsx("div", { className: "col-span-8 sm:col-span-6", children: "JUDUL" }),
+          /* @__PURE__ */ jsx("div", { className: "col-span-2 sm:col-span-3", children: "SUMBER" }),
+          /* @__PURE__ */ jsx("div", { className: "col-span-2 sm:col-span-3 text-right" })
+        ] }),
+        /* @__PURE__ */ jsx("div", { className: "divide-y divide-neutral-200/60 dark:divide-neutral-800/60", children: items.length === 0 ? /* @__PURE__ */ jsx("div", { className: "py-14 text-center", children: /* @__PURE__ */ jsx("p", { className: "text-sm text-neutral-500 dark:text-neutral-400", children: isSearching ? `Tidak ada panduan yang cocok dengan "${filters == null ? void 0 : filters.q}".` : "Belum ada panduan adaptasi." }) }) : items.map((entry, i) => /* @__PURE__ */ jsxs(
+          Link,
+          {
+            href: `/panduan-adaptasi/${entry.slug}`,
+            className: `group grid grid-cols-12 gap-4 items-center px-4 py-3.5 sm:py-4 rounded-xl transition-colors duration-150 hover:bg-neutral-100/70 dark:hover:bg-neutral-800/50 ${i % 2 === 1 ? "bg-neutral-50/70 dark:bg-neutral-800/25" : ""}`,
+            children: [
+              /* @__PURE__ */ jsx("div", { className: "col-span-8 sm:col-span-6 flex flex-col justify-center min-w-0 pr-2", children: /* @__PURE__ */ jsx("span", { className: "font-medium text-xs sm:text-sm text-neutral-950 dark:text-neutral-50 truncate", children: entry.title }) }),
+              /* @__PURE__ */ jsx("div", { className: "col-span-2 sm:col-span-3", children: /* @__PURE__ */ jsx("span", { className: "inline-block px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border border-neutral-200/70 dark:border-neutral-700/70", children: entry.source }) }),
+              /* @__PURE__ */ jsx("div", { className: "col-span-2 sm:col-span-3 flex justify-end", children: /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center gap-1 text-xs font-semibold text-neutral-950 dark:text-neutral-50 group-hover:text-[#DA6B1C] dark:group-hover:text-[#F08A3C] transition-colors", children: [
+                /* @__PURE__ */ jsx("span", { className: "hidden sm:inline", children: "Buka" }),
+                /* @__PURE__ */ jsx(ChevronRight, { className: "w-3.5 h-3.5 transition-transform group-hover:translate-x-[3px]" })
+              ] }) })
+            ]
+          },
+          entry.id
+        )) }),
+        /* @__PURE__ */ jsxs("footer", { className: "mt-8 pt-6 border-t border-neutral-200/60 dark:border-neutral-800/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 dark:text-neutral-400", children: [
+          /* @__PURE__ */ jsxs("div", { children: [
+            "Menampilkan ",
+            /* @__PURE__ */ jsx("span", { className: "font-bold text-neutral-950 dark:text-neutral-50", children: from }),
+            "–",
+            /* @__PURE__ */ jsx("span", { className: "font-bold text-neutral-950 dark:text-neutral-50", children: to }),
+            " dari",
+            " ",
+            /* @__PURE__ */ jsx("span", { className: "font-bold text-neutral-950 dark:text-neutral-50", children: total }),
+            " judul seri terindeks"
+          ] }),
+          panduanAdaptasiList.last_page > 1 && /* @__PURE__ */ jsx("div", { className: "flex items-center gap-1.5 font-medium", children: panduanAdaptasiList.links.map((link, index) => {
+            const isPrev = index === 0;
+            const isNext = index === panduanAdaptasiList.links.length - 1;
+            const label = link.label.replace("&laquo;", "Prev").replace("&raquo;", "Next").replace("Previous", "Prev").replace("Next", "Next");
+            const baseClass = link.active ? "bg-neutral-950 text-white dark:bg-neutral-50 dark:text-neutral-900 font-semibold shadow-xs" : "border border-neutral-200 dark:border-neutral-700 text-neutral-950 dark:text-neutral-50 hover:bg-neutral-50 dark:hover:bg-neutral-800";
+            const sizeClass = isPrev || isNext ? "px-3 py-1.5 rounded-lg" : "w-8 h-8 rounded-lg";
+            return /* @__PURE__ */ jsx(
+              "button",
+              {
+                type: "button",
+                disabled: !link.url,
+                "aria-current": link.active ? "page" : void 0,
+                onClick: () => {
+                  if (link.url) {
+                    router.get(link.url, {}, { preserveState: true, preserveScroll: true });
+                  }
+                },
+                className: `${sizeClass} flex items-center justify-center transition-colors ${link.url ? "cursor-pointer" : "cursor-not-allowed opacity-40"} ${baseClass}`,
+                children: /^\d+$/.test(label) ? label : isPrev ? "Prev" : isNext ? "Next" : label
+              },
+              `${link.label}-${index}`
+            );
+          }) })
+        ] })
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsx(Footer, { onNavigateHome: handleNavHome, onNavigateAbout: handleNavAbout, darkMode })
+  ] });
+}
+const __vite_glob_0_92 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: PanduanAdaptasiPage
 }, Symbol.toStringTag, { value: "Module" }));
 function InputError({ message, className = "", ...props }) {
   return message ? /* @__PURE__ */ jsx("p", { ...props, className: cn("text-sm text-red-600 dark:text-red-400", className), children: message }) : null;
@@ -14008,7 +15104,7 @@ function ConfirmPassword() {
     }
   );
 }
-const __vite_glob_0_72 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_93 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ConfirmPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14067,7 +15163,7 @@ function ForgotPassword({ status }) {
     ] })
   ] });
 }
-const __vite_glob_0_73 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_94 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ForgotPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14365,7 +15461,7 @@ function LoginPage({
     )
   ] });
 }
-const __vite_glob_0_74 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_95 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoginPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14602,7 +15698,7 @@ function RegisterPage() {
     )
   ] });
 }
-const __vite_glob_0_75 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_96 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: RegisterPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14681,7 +15777,7 @@ function ResetPassword({ token, email }) {
     ] }) })
   ] });
 }
-const __vite_glob_0_76 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_97 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ResetPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14703,7 +15799,7 @@ function VerifyEmail({ status }) {
     ] })
   ] });
 }
-const __vite_glob_0_77 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_98 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: VerifyEmail
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14918,11 +16014,11 @@ function Dashboard({
     ] })
   ] });
 }
-const __vite_glob_0_78 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_99 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Dashboard
 }, Symbol.toStringTag, { value: "Module" }));
-const __vite_glob_0_79 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_100 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoginPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15016,7 +16112,7 @@ function Appearance() {
     ] }) })
   ] });
 }
-const __vite_glob_0_80 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_101 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Appearance
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15125,7 +16221,7 @@ function Password() {
     ] }) })
   ] });
 }
-const __vite_glob_0_81 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_102 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Password
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15279,7 +16375,7 @@ function Profile({ mustVerifyEmail, status }) {
     ] })
   ] });
 }
-const __vite_glob_0_82 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_103 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Profile
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16435,7 +17531,7 @@ function Welcome() {
     ] })
   ] });
 }
-const __vite_glob_0_83 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_104 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Welcome
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16462,73 +17558,94 @@ createServer(
         "./pages/Admin/Books/Logs.tsx": __vite_glob_0_14,
         "./pages/Admin/Books/SearchLogs.tsx": __vite_glob_0_15,
         "./pages/Admin/Books/VolumeOrder.tsx": __vite_glob_0_16,
-        "./pages/Admin/Books/components/BookForm.tsx": __vite_glob_0_17,
-        "./pages/Admin/Editions/Create.tsx": __vite_glob_0_18,
-        "./pages/Admin/Editions/Edit.tsx": __vite_glob_0_19,
-        "./pages/Admin/Editions/Index.tsx": __vite_glob_0_20,
-        "./pages/Admin/Editions/components/EditionForm.tsx": __vite_glob_0_21,
-        "./pages/Admin/Genres/Create.tsx": __vite_glob_0_22,
-        "./pages/Admin/Genres/Edit.tsx": __vite_glob_0_23,
-        "./pages/Admin/Genres/Index.tsx": __vite_glob_0_24,
-        "./pages/Admin/Genres/components/GenreForm.tsx": __vite_glob_0_25,
-        "./pages/Admin/Kios/Create.tsx": __vite_glob_0_26,
-        "./pages/Admin/Kios/Edit.tsx": __vite_glob_0_27,
-        "./pages/Admin/Kios/Index.tsx": __vite_glob_0_28,
-        "./pages/Admin/Kios/Logs.tsx": __vite_glob_0_29,
-        "./pages/Admin/Kios/SearchLogs.tsx": __vite_glob_0_30,
-        "./pages/Admin/KiosPartners/Create.tsx": __vite_glob_0_31,
-        "./pages/Admin/KiosPartners/Edit.tsx": __vite_glob_0_32,
-        "./pages/Admin/KiosPartners/Index.tsx": __vite_glob_0_33,
-        "./pages/Admin/News/Create.tsx": __vite_glob_0_34,
-        "./pages/Admin/News/Edit.tsx": __vite_glob_0_35,
-        "./pages/Admin/News/Index.tsx": __vite_glob_0_36,
-        "./pages/Admin/News/Logs.tsx": __vite_glob_0_37,
-        "./pages/Admin/News/SearchLogs.tsx": __vite_glob_0_38,
-        "./pages/Admin/Publishers/Create.tsx": __vite_glob_0_39,
-        "./pages/Admin/Publishers/Edit.tsx": __vite_glob_0_40,
-        "./pages/Admin/Publishers/Index.tsx": __vite_glob_0_41,
-        "./pages/Admin/Publishers/components/PublisherForm.tsx": __vite_glob_0_42,
-        "./pages/Admin/StoryStatuses/Create.tsx": __vite_glob_0_43,
-        "./pages/Admin/StoryStatuses/Edit.tsx": __vite_glob_0_44,
-        "./pages/Admin/StoryStatuses/Index.tsx": __vite_glob_0_45,
-        "./pages/User/bookmark.tsx": __vite_glob_0_46,
-        "./pages/User/components/AboutSection.tsx": __vite_glob_0_47,
-        "./pages/User/components/BackToTopButton.tsx": __vite_glob_0_48,
-        "./pages/User/components/BookmarkToast.tsx": __vite_glob_0_49,
-        "./pages/User/components/DetailBuku.tsx": __vite_glob_0_50,
-        "./pages/User/components/DetailKios.tsx": __vite_glob_0_51,
-        "./pages/User/components/DetailNews.tsx": __vite_glob_0_52,
-        "./pages/User/components/EtalaseCatalog.tsx": __vite_glob_0_53,
-        "./pages/User/components/Footer.tsx": __vite_glob_0_54,
-        "./pages/User/components/HighlightReview.tsx": __vite_glob_0_55,
-        "./pages/User/components/MarketplaceDB.tsx": __vite_glob_0_56,
-        "./pages/User/components/ModalAffiliateStore.tsx": __vite_glob_0_57,
-        "./pages/User/components/ModalKolaborasi.tsx": __vite_glob_0_58,
-        "./pages/User/components/Navbar.tsx": __vite_glob_0_59,
-        "./pages/User/components/NewsCategorySidebar.tsx": __vite_glob_0_60,
-        "./pages/User/components/NewsFeed.tsx": __vite_glob_0_61,
-        "./pages/User/components/NewsPostCard.tsx": __vite_glob_0_62,
-        "./pages/User/components/NewsRightSidebar.tsx": __vite_glob_0_63,
-        "./pages/User/components/ShareModal.tsx": __vite_glob_0_64,
-        "./pages/User/components/SkeletonLoading/LoadingDetailBuku.tsx": __vite_glob_0_65,
-        "./pages/User/components/SkeletonLoading/LoadingHome.tsx": __vite_glob_0_66,
-        "./pages/User/components/SkeletonLoading/LoadingKios.tsx": __vite_glob_0_67,
-        "./pages/User/components/SkeletonLoading/LoadingNews.tsx": __vite_glob_0_68,
-        "./pages/User/home.tsx": __vite_glob_0_69,
-        "./pages/User/kios.tsx": __vite_glob_0_70,
-        "./pages/User/news.tsx": __vite_glob_0_71,
-        "./pages/auth/confirm-password.tsx": __vite_glob_0_72,
-        "./pages/auth/forgot-password.tsx": __vite_glob_0_73,
-        "./pages/auth/login.tsx": __vite_glob_0_74,
-        "./pages/auth/register.tsx": __vite_glob_0_75,
-        "./pages/auth/reset-password.tsx": __vite_glob_0_76,
-        "./pages/auth/verify-email.tsx": __vite_glob_0_77,
-        "./pages/dashboard.tsx": __vite_glob_0_78,
-        "./pages/login.tsx": __vite_glob_0_79,
-        "./pages/settings/appearance.tsx": __vite_glob_0_80,
-        "./pages/settings/password.tsx": __vite_glob_0_81,
-        "./pages/settings/profile.tsx": __vite_glob_0_82,
-        "./pages/welcome.tsx": __vite_glob_0_83
+        "./pages/Admin/Books/components/AffiliateLinksSection.tsx": __vite_glob_0_17,
+        "./pages/Admin/Books/components/BookAuthorsGenresSection.tsx": __vite_glob_0_18,
+        "./pages/Admin/Books/components/BookBasicInfo.tsx": __vite_glob_0_19,
+        "./pages/Admin/Books/components/BookDescriptionMediaSection.tsx": __vite_glob_0_20,
+        "./pages/Admin/Books/components/BookForm.tsx": __vite_glob_0_21,
+        "./pages/Admin/Books/components/BookImagesSection.tsx": __vite_glob_0_22,
+        "./pages/Admin/Books/components/BookMetadataForm.tsx": __vite_glob_0_23,
+        "./pages/Admin/Books/components/FieldError.tsx": __vite_glob_0_24,
+        "./pages/Admin/Books/components/SeriesCombobox.tsx": __vite_glob_0_25,
+        "./pages/Admin/Books/components/VideoLinksSection.tsx": __vite_glob_0_26,
+        "./pages/Admin/Editions/Create.tsx": __vite_glob_0_27,
+        "./pages/Admin/Editions/Edit.tsx": __vite_glob_0_28,
+        "./pages/Admin/Editions/Index.tsx": __vite_glob_0_29,
+        "./pages/Admin/Editions/components/EditionForm.tsx": __vite_glob_0_30,
+        "./pages/Admin/Genres/Create.tsx": __vite_glob_0_31,
+        "./pages/Admin/Genres/Edit.tsx": __vite_glob_0_32,
+        "./pages/Admin/Genres/Index.tsx": __vite_glob_0_33,
+        "./pages/Admin/Genres/components/GenreForm.tsx": __vite_glob_0_34,
+        "./pages/Admin/Kios/Create.tsx": __vite_glob_0_35,
+        "./pages/Admin/Kios/Edit.tsx": __vite_glob_0_36,
+        "./pages/Admin/Kios/Index.tsx": __vite_glob_0_37,
+        "./pages/Admin/Kios/Logs.tsx": __vite_glob_0_38,
+        "./pages/Admin/Kios/SearchLogs.tsx": __vite_glob_0_39,
+        "./pages/Admin/KiosPartners/Create.tsx": __vite_glob_0_40,
+        "./pages/Admin/KiosPartners/Edit.tsx": __vite_glob_0_41,
+        "./pages/Admin/KiosPartners/Index.tsx": __vite_glob_0_42,
+        "./pages/Admin/News/Create.tsx": __vite_glob_0_43,
+        "./pages/Admin/News/Edit.tsx": __vite_glob_0_44,
+        "./pages/Admin/News/Index.tsx": __vite_glob_0_45,
+        "./pages/Admin/News/Logs.tsx": __vite_glob_0_46,
+        "./pages/Admin/News/SearchLogs.tsx": __vite_glob_0_47,
+        "./pages/Admin/PanduanAdaptasi/Create.tsx": __vite_glob_0_48,
+        "./pages/Admin/PanduanAdaptasi/Edit.tsx": __vite_glob_0_49,
+        "./pages/Admin/PanduanAdaptasi/Index.tsx": __vite_glob_0_50,
+        "./pages/Admin/PanduanAdaptasi/components/BookPicker.tsx": __vite_glob_0_51,
+        "./pages/Admin/PanduanAdaptasi/components/FieldError.tsx": __vite_glob_0_52,
+        "./pages/Admin/PanduanAdaptasi/components/FilterOptionsCombobox.tsx": __vite_glob_0_53,
+        "./pages/Admin/PanduanAdaptasi/components/NodeLinksSection.tsx": __vite_glob_0_54,
+        "./pages/Admin/PanduanAdaptasi/components/PanduanForm.tsx": __vite_glob_0_55,
+        "./pages/Admin/PanduanAdaptasi/components/PanduanNodesSection.tsx": __vite_glob_0_56,
+        "./pages/Admin/Publishers/Create.tsx": __vite_glob_0_57,
+        "./pages/Admin/Publishers/Edit.tsx": __vite_glob_0_58,
+        "./pages/Admin/Publishers/Index.tsx": __vite_glob_0_59,
+        "./pages/Admin/Publishers/components/PublisherForm.tsx": __vite_glob_0_60,
+        "./pages/Admin/StoryStatuses/Create.tsx": __vite_glob_0_61,
+        "./pages/Admin/StoryStatuses/Edit.tsx": __vite_glob_0_62,
+        "./pages/Admin/StoryStatuses/Index.tsx": __vite_glob_0_63,
+        "./pages/User/bookmark.tsx": __vite_glob_0_64,
+        "./pages/User/components/AboutSection.tsx": __vite_glob_0_65,
+        "./pages/User/components/BackToTopButton.tsx": __vite_glob_0_66,
+        "./pages/User/components/BookmarkToast.tsx": __vite_glob_0_67,
+        "./pages/User/components/DetailBuku.tsx": __vite_glob_0_68,
+        "./pages/User/components/DetailKios.tsx": __vite_glob_0_69,
+        "./pages/User/components/DetailNews.tsx": __vite_glob_0_70,
+        "./pages/User/components/DetailPanduanAdaptasi.tsx": __vite_glob_0_71,
+        "./pages/User/components/EtalaseCatalog.tsx": __vite_glob_0_72,
+        "./pages/User/components/Footer.tsx": __vite_glob_0_73,
+        "./pages/User/components/HighlightReview.tsx": __vite_glob_0_74,
+        "./pages/User/components/HighlightReviewInstagram.tsx": __vite_glob_0_75,
+        "./pages/User/components/MarketplaceDB.tsx": __vite_glob_0_76,
+        "./pages/User/components/ModalAffiliateStore.tsx": __vite_glob_0_77,
+        "./pages/User/components/ModalKolaborasi.tsx": __vite_glob_0_78,
+        "./pages/User/components/Navbar.tsx": __vite_glob_0_79,
+        "./pages/User/components/NewsCategorySidebar.tsx": __vite_glob_0_80,
+        "./pages/User/components/NewsFeed.tsx": __vite_glob_0_81,
+        "./pages/User/components/NewsPostCard.tsx": __vite_glob_0_82,
+        "./pages/User/components/NewsRightSidebar.tsx": __vite_glob_0_83,
+        "./pages/User/components/ShareModal.tsx": __vite_glob_0_84,
+        "./pages/User/components/SkeletonLoading/LoadingDetailBuku.tsx": __vite_glob_0_85,
+        "./pages/User/components/SkeletonLoading/LoadingHome.tsx": __vite_glob_0_86,
+        "./pages/User/components/SkeletonLoading/LoadingKios.tsx": __vite_glob_0_87,
+        "./pages/User/components/SkeletonLoading/LoadingNews.tsx": __vite_glob_0_88,
+        "./pages/User/home.tsx": __vite_glob_0_89,
+        "./pages/User/kios.tsx": __vite_glob_0_90,
+        "./pages/User/news.tsx": __vite_glob_0_91,
+        "./pages/User/panduanAdaptasi.tsx": __vite_glob_0_92,
+        "./pages/auth/confirm-password.tsx": __vite_glob_0_93,
+        "./pages/auth/forgot-password.tsx": __vite_glob_0_94,
+        "./pages/auth/login.tsx": __vite_glob_0_95,
+        "./pages/auth/register.tsx": __vite_glob_0_96,
+        "./pages/auth/reset-password.tsx": __vite_glob_0_97,
+        "./pages/auth/verify-email.tsx": __vite_glob_0_98,
+        "./pages/dashboard.tsx": __vite_glob_0_99,
+        "./pages/login.tsx": __vite_glob_0_100,
+        "./pages/settings/appearance.tsx": __vite_glob_0_101,
+        "./pages/settings/password.tsx": __vite_glob_0_102,
+        "./pages/settings/profile.tsx": __vite_glob_0_103,
+        "./pages/welcome.tsx": __vite_glob_0_104
       });
       return pages[`./pages/${name}.tsx`];
     },

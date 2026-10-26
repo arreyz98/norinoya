@@ -4,12 +4,12 @@
     "/build/assets/white-Ddgyc6oW.svg"
   ],
   "public/assets/images/logo-dark.png": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "public/assets/images/logo-light.png": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
@@ -18,32 +18,47 @@
     "/build/assets/white-Ddgyc6oW.svg"
   ],
   "resources/js/components/EmbedNode.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/RichTextEditor.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/components/admin/log-utils.ts": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/components/admin/logs-page.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/components/admin/search-logs-page.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/app-content.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/app-shell.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/app-sidebar-header.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/app-sidebar.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
@@ -52,7 +67,7 @@
     "/build/assets/white-Ddgyc6oW.svg"
   ],
   "resources/js/components/breadcrumbs.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
@@ -61,7 +76,7 @@
     "/build/assets/white-Ddgyc6oW.svg"
   ],
   "resources/js/components/filter-combobox.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
@@ -74,7 +89,7 @@
     "/build/assets/white-Ddgyc6oW.svg"
   ],
   "resources/js/components/icon.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
@@ -83,17 +98,17 @@
     "/build/assets/white-Ddgyc6oW.svg"
   ],
   "resources/js/components/nav-footer.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/nav-main.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/nav-user.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
@@ -102,162 +117,167 @@
     "/build/assets/white-Ddgyc6oW.svg"
   ],
   "resources/js/components/ui/alert-dialog.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/alert.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/avatar.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/badge.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/breadcrumb.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/button.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/calendar.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/card.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/checkbox.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/collapsible.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/components/ui/combobox.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/command.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/dialog.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/dropdown-menu.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/input.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/label.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/multi-select.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/popover.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/select.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/separator.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/sheet.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/sidebar.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/skeleton.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/sonner.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/table.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/textarea.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/ui/tooltip.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/user-info.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/components/user-menu-content.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/hooks/use-appearance.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/hooks/use-initials.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/hooks/use-mobile-navigation.ts": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/hooks/use-mobile.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
@@ -266,12 +286,12 @@
     "/build/assets/white-Ddgyc6oW.svg"
   ],
   "resources/js/layouts/app-layout.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/layouts/app/app-sidebar-layout.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
@@ -288,237 +308,347 @@
     "/build/assets/white-Ddgyc6oW.svg"
   ],
   "resources/js/lib/utils.ts": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/AffiliateStores/Create.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/AffiliateStores/Edit.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/AffiliateStores/Index.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Authors/Create.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Authors/Edit.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Authors/Index.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Authors/components/AuthorForm.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/BookSeries/Create.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/BookSeries/Edit.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/BookSeries/Index.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/BookSeries/components/BookSeriesForm.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Books/Create.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Books/Edit.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Books/Index.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Books/Logs.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Books/SearchLogs.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Books/VolumeOrder.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/Books/components/AffiliateLinksSection.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/Books/components/BookAuthorsGenresSection.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/Books/components/BookBasicInfo.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/Books/components/BookDescriptionMediaSection.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Books/components/BookForm.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/Books/components/BookImagesSection.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/Books/components/BookMetadataForm.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/Books/components/FieldError.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/Books/components/SeriesCombobox.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/Books/components/VideoLinksSection.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/Books/components/book-form-types.ts": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/Books/components/book-form-utils.ts": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Editions/Create.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Editions/Edit.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Editions/Index.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Editions/components/EditionForm.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Genres/Create.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Genres/Edit.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Genres/Index.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Genres/components/GenreForm.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Kios/Create.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Kios/Edit.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Kios/Index.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Kios/Logs.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Kios/SearchLogs.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/KiosPartners/Create.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/KiosPartners/Edit.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/KiosPartners/Index.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/News/Create.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/News/Edit.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/News/Index.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/News/Logs.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/News/SearchLogs.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/PanduanAdaptasi/Create.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/PanduanAdaptasi/Edit.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/PanduanAdaptasi/Index.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/PanduanAdaptasi/components/BookPicker.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/PanduanAdaptasi/components/FieldError.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/PanduanAdaptasi/components/FilterOptionsCombobox.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/PanduanAdaptasi/components/NodeLinksSection.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/PanduanAdaptasi/components/PanduanForm.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/PanduanAdaptasi/components/PanduanNodesSection.tsx": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/PanduanAdaptasi/components/panduan-form-types.ts": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/pages/Admin/PanduanAdaptasi/components/panduan-form-utils.ts": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Publishers/Create.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Publishers/Edit.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Publishers/Index.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/Publishers/components/PublisherForm.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/StoryStatuses/Create.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/StoryStatuses/Edit.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/pages/Admin/StoryStatuses/Index.tsx": [
-    "/build/assets/admin-pages-DaABfFwt.js",
+    "/build/assets/admin-pages-CKA1DdGt.js",
     "/build/assets/logo-dark-C-flLQry.png",
     "/build/assets/logo-light-L1vTUok6.png"
   ],
@@ -550,6 +680,10 @@
     "/build/assets/dark-CG2M03zv.svg",
     "/build/assets/white-Ddgyc6oW.svg"
   ],
+  "resources/js/pages/User/components/DetailPanduanAdaptasi.tsx": [
+    "/build/assets/dark-CG2M03zv.svg",
+    "/build/assets/white-Ddgyc6oW.svg"
+  ],
   "resources/js/pages/User/components/EtalaseCatalog.tsx": [
     "/build/assets/dark-CG2M03zv.svg",
     "/build/assets/white-Ddgyc6oW.svg"
@@ -559,6 +693,10 @@
     "/build/assets/white-Ddgyc6oW.svg"
   ],
   "resources/js/pages/User/components/HighlightReview.tsx": [
+    "/build/assets/dark-CG2M03zv.svg",
+    "/build/assets/white-Ddgyc6oW.svg"
+  ],
+  "resources/js/pages/User/components/HighlightReviewInstagram.tsx": [
     "/build/assets/dark-CG2M03zv.svg",
     "/build/assets/white-Ddgyc6oW.svg"
   ],
@@ -626,6 +764,10 @@
     "/build/assets/dark-CG2M03zv.svg",
     "/build/assets/white-Ddgyc6oW.svg"
   ],
+  "resources/js/pages/User/panduanAdaptasi.tsx": [
+    "/build/assets/dark-CG2M03zv.svg",
+    "/build/assets/white-Ddgyc6oW.svg"
+  ],
   "resources/js/pages/auth/confirm-password.tsx": [
     "/build/assets/dark-CG2M03zv.svg",
     "/build/assets/white-Ddgyc6oW.svg"
@@ -686,9 +828,23 @@
     "/build/assets/dark-CG2M03zv.svg",
     "/build/assets/white-Ddgyc6oW.svg"
   ],
+  "resources/js/utils/bookUrl.ts": [
+    "/build/assets/dark-CG2M03zv.svg",
+    "/build/assets/white-Ddgyc6oW.svg"
+  ],
   "resources/js/utils/bookmarkStorage.ts": [
     "/build/assets/dark-CG2M03zv.svg",
     "/build/assets/white-Ddgyc6oW.svg"
+  ],
+  "resources/js/utils/embedFrame.ts": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
+  ],
+  "resources/js/utils/imageUrl.ts": [
+    "/build/assets/admin-pages-CKA1DdGt.js",
+    "/build/assets/logo-dark-C-flLQry.png",
+    "/build/assets/logo-light-L1vTUok6.png"
   ],
   "resources/js/utils/mapBookToComic.ts": [
     "/build/assets/dark-CG2M03zv.svg",
