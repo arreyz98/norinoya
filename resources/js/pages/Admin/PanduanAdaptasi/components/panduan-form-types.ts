@@ -13,6 +13,10 @@ export interface PanduanFormNode {
     id?: number;
     book_id: string;
     book_label?: string | null;
+    /** Data bantu picker Series → Volume (tampilan saja, tidak dikirim balik). */
+    book_series_id: string;
+    book_series_label?: string | null;
+    book_volume: string | null;
     title: string;
     description: string;
     studio: string;
@@ -54,6 +58,9 @@ export const EMPTY_LINK: PanduanFormLink = {
 export const EMPTY_NODE: PanduanFormNode = {
     book_id: '',
     book_label: null,
+    book_series_id: '',
+    book_series_label: null,
+    book_volume: null,
     title: '',
     description: '',
     studio: '',

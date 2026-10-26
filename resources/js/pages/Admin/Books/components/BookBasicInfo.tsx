@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { FieldError } from './FieldError';
+import SeriesCombobox from './SeriesCombobox';
 import { type BookFormData, type BookFormSectionProps, type EnumOption, type Option } from './book-form-types';
 
 interface BookBasicInfoProps extends BookFormSectionProps {
@@ -13,6 +14,8 @@ interface BookBasicInfoProps extends BookFormSectionProps {
         slug?: string;
     };
     series: Option[];
+    seriesMode: 'inline' | 'async';
+    selectedSeries?: { id: number; title: string } | null;
     editions: Option[];
     storyStatuses: Option[];
     publishers: Option[];
@@ -29,6 +32,8 @@ export default function BookBasicInfo({
     mode,
     book,
     series,
+    seriesMode,
+    selectedSeries,
     editions,
     storyStatuses,
     publishers,
@@ -73,29 +78,21 @@ export default function BookBasicInfo({
                 <div className="grid gap-5 md:grid-cols-2">
                     {/* Series */}
                     <div className="space-y-2">
-                        <Label>Series</Label>
+                        <Label htmlFor="series_id">Series</Label>
 
-                        <Select
-                            value={form.series_id || 'none'}
-                            onValueChange={(value) => {
-                                updateField('series_id', value === 'none' ? '' : value);
+                        <SeriesCombobox
+                            id="series_id"
+                            value={form.series_id}
+                            onChange={(value) => {
+                                updateField('series_id', value);
                                 clearFieldError('volume');
                             }}
-                        >
-                            <SelectTrigger {...getFieldProps('series_id')}>
-                                <SelectValue placeholder="Pilih series" />
-                            </SelectTrigger>
-
-                            <SelectContent>
-                                <SelectItem value="none">Tidak ada</SelectItem>
-
-                                {series.map((item) => (
-                                    <SelectItem key={item.id} value={String(item.id)}>
-                                        {item.title || item.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                            options={series}
+                            mode={seriesMode}
+                            selectedSeries={selectedSeries}
+                            placeholder="Cari atau pilih series"
+                            {...getFieldProps('series_id')}
+                        />
 
                         <FieldError field="series_id" errors={activeErrors} />
                     </div>

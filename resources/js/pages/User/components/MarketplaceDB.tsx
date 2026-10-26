@@ -14,6 +14,7 @@ import { Comic, Volume } from '../../../types/demo';
 import { RawNewsItem } from '../news';
 import { useBookmarks } from '../../../utils/bookmarkStorage';
 import { getBookTypeLabel, mapBooksToComics, CatalogFilters, BookModel } from '../../../utils/mapBookToComic';
+import { bookPath, isPlainLeftClick } from '../../../utils/bookUrl';
 
 interface CustomSelectProps {
   label: string;
@@ -413,7 +414,7 @@ export default function MarketplaceDb({
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   const upcomingReleases = useMemo(() => {
-    const list: Array<{ comic: Comic; volume: Volume; dateStr: string }> = [];
+    const list: Array<{ comic: Comic; volume: Volume }> = [];
     const source = serverCatalog ? (upcomingComics ?? []) : activeComics;
 
     // Bagian segera rilis berdiri sendiri dan tidak terpengaruh oleh filter atau input pencarian
@@ -423,7 +424,6 @@ export default function MarketplaceDb({
           list.push({
             comic,
             volume: vol,
-            dateStr: vol.releaseDate || 'Segera Rilis'
           });
         }
       });
@@ -431,6 +431,14 @@ export default function MarketplaceDb({
 
     return list.slice(0, 6);
   }, [serverCatalog, upcomingComics, activeComics]);
+
+  // Kunci kartu yang sudah tampil di section "Segera Rilis". Dipakai sebagai
+  // pengaman di mode data lokal/mock; di mode server penyaringan sudah dikerjakan
+  // QueryCatalog supaya total & paginasi tetap akurat.
+  const upcomingPostKeys = useMemo(
+    () => new Set(upcomingReleases.map(({ comic, volume }) => `${comic.id}-vol-${volume.volNumber}`)),
+    [upcomingReleases],
+  );
 
 const getReadingRatingStyle = (rating?: string) => {
     switch (rating) {
@@ -528,16 +536,15 @@ const getReadingRatingStyle = (rating?: string) => {
   // mengembalikan viewport ke MarketplaceDB saat detail ditutup.
   const catalogScrollRef = useRef(0);
 
-  // Sinkronkan query ?vol= dengan volume yang sedang dibuka tanpa menumpuk
-  // entri history, supaya refresh mengembalikan volume yang sama.
+  // Sinkronkan URL dengan volume yang sedang dibuka tanpa menumpuk entri history,
+  // supaya refresh mengembalikan volume yang sama dan canonical tetap cocok.
   const syncVolumeToUrl = (comic: Comic | null, volNumber: number | string) => {
     if (typeof window === 'undefined' || !comic) return;
-    const targetSlug = comic.slug || comic.id;
-    if (!targetSlug) return;
-    const url = new URL(window.location.href);
-    if (!url.pathname.startsWith('/buku/')) return;
-    url.searchParams.set('vol', String(volNumber));
-    window.history.replaceState(window.history.state, '', url.toString());
+    if (!window.location.pathname.startsWith('/buku/')) return;
+    const volume = comic.volumes.find(v => String(v.volNumber) === String(volNumber)) ?? null;
+    const nextPath = bookPath(comic, volume ?? { volNumber });
+    if (!nextPath) return;
+    window.history.replaceState(window.history.state, '', nextPath);
   };
 
   const handleSetActiveVolumeNum = (volNumber: number | string) => {
@@ -559,9 +566,11 @@ const getReadingRatingStyle = (rating?: string) => {
     window.scrollTo({ top: 0, behavior: 'auto' });
     setSelectedComic(comic);
     setActiveVolumeNum(volNumber);
-    const volume = comic.volumes.find(v => String(v.volNumber) === String(volNumber));
-    const targetSlug = volume?.slug || comic.slug || comic.id;
-    window.history.pushState({ comicId: comic.id, volNumber }, '', `/buku/${targetSlug}?vol=${volNumber}`);
+    const volume = comic.volumes.find(v => String(v.volNumber) === String(volNumber)) ?? null;
+    const nextPath = bookPath(comic, volume ?? { volNumber });
+    if (nextPath) {
+      window.history.pushState({ comicId: comic.id, volNumber }, '', nextPath);
+    }
 
     const requestId = ++detailRequestRef.current;
 
@@ -704,15 +713,22 @@ const getReadingRatingStyle = (rating?: string) => {
     const posts: VolumePost[] = [];
     activeComics.forEach(comic => {
       comic.volumes.forEach(volume => {
+        const id = `${comic.id}-vol-${volume.volNumber}`;
+
+        // Mode server: QueryCatalog sudah menyaring buku "Segera Rilis", jadi
+        // jangan disaring lagi di sini agar jumlah kartu tetap sama dengan
+        // hitungan paginasi server. Mode lokal/mock: guard ini yang menangani.
+        if (!serverCatalog && upcomingPostKeys.has(id)) return;
+
         posts.push({
-          id: `${comic.id}-vol-${volume.volNumber}`,
+          id,
           comic,
           volume,
         });
       });
     });
     return posts;
-  }, [activeComics]);
+  }, [activeComics, serverCatalog, upcomingPostKeys]);
 
   // Filter logic on volume posts
   const filteredVolumePosts = useMemo(() => {
@@ -828,7 +844,12 @@ const getReadingRatingStyle = (rating?: string) => {
   }, [serverCatalog, allVolumePosts, activeSearchTerm, selectedCategories, selectedPublishers, selectedStatuses, selectedGenres, selectedAdaptations, selectedReadingRatings, publisherOptions, statusOptions]);
 
   const sortedVolumePosts = useMemo(() => {
-    if (serverCatalog) return filteredVolumePosts;
+    // Mode server: urutan 'relevan' sudah ditentukan backend (exact match, prefix, lalu
+    // judul), jadi jangan diacak ulang di klien. Sort lain diurutkan ulang per halaman
+    // karena pengelompokan per series di mapBooksToComics merusak urutan dari server —
+    // tanpa ini kartu pertama selalu volume terkecil dari series pertama.
+    if (serverCatalog && sortBy === 'relevan') return filteredVolumePosts;
+
     const list = [...filteredVolumePosts];
     const searchTerm = activeSearchTerm.trim().toLowerCase();
 
@@ -1105,10 +1126,15 @@ const getReadingRatingStyle = (rating?: string) => {
 
               {/* Grid of 6 Upcoming Items */}
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 relative z-10">
-                {upcomingReleases.map(({ comic, volume, dateStr }, idx) => (
-                  <div
+                {upcomingReleases.map(({ comic, volume }, idx) => (
+                  <a
                     key={`upcoming-${comic.id}-${volume.volNumber}`}
-                    onClick={() => openVolumeModal(comic, volume.volNumber)}
+                    href={bookPath(comic, volume) ?? undefined}
+                    onClick={(e) => {
+                      if (!isPlainLeftClick(e)) return;
+                      e.preventDefault();
+                      openVolumeModal(comic, volume.volNumber);
+                    }}
                     className="bg-neutral-50/80 dark:bg-neutral-900/80 hover:bg-white dark:hover:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 hover:border-[#DA6B1C] dark:hover:border-[#DA6B1C] rounded-xl p-2 sm:p-2.5 flex flex-col justify-between cursor-pointer transition-all duration-200 shadow-3xs hover:shadow-md hover:-translate-y-0.5 group"
                   >
                     <div className="space-y-1.5">
@@ -1131,11 +1157,11 @@ const getReadingRatingStyle = (rating?: string) => {
                           </div>
                         )}
 
-                        {/* Release Date Badge */}
+                        {/* Release Date Badge — tanggal belum pasti, selalu TBA */}
                         <div className="absolute top-1.5 left-1.5 right-1.5 z-10 flex justify-start">
                           <span className="bg-[#DA6B1C] text-white font-mono font-black text-[8px] px-1.5 py-0.5 rounded-md shadow-xs tracking-tight flex items-center gap-1 border border-orange-600/30">
                             <Clock className="w-2.5 h-2.5 text-white shrink-0" />
-                            <span className="text-white font-extrabold">{dateStr}</span>
+                            <span className="text-white font-extrabold">TBA</span>
                           </span>
                         </div>
 
@@ -1181,7 +1207,7 @@ const getReadingRatingStyle = (rating?: string) => {
                         {volume.price && volume.price > 0 ? `Rp ${volume.price.toLocaleString('id-ID')}` : '-'}
                       </span>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
@@ -1579,7 +1605,7 @@ const getReadingRatingStyle = (rating?: string) => {
             DATA TERBITAN RESMI
           </span>
           <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300">
-            Menampilkan <strong className="text-neutral-950 dark:text-white font-bold">{rangeStart} - {rangeEnd}</strong> dari <strong className="text-neutral-950 dark:text-white font-bold">{listedCount}</strong> Jilid Buku
+            Menampilkan <strong className="text-neutral-950 dark:text-white font-bold">{rangeStart} - {rangeEnd}</strong> dari <strong className="text-neutral-950 dark:text-white font-bold">{listedCount}</strong>Buku
           </p>
         </div>
 
@@ -1654,9 +1680,14 @@ const getReadingRatingStyle = (rating?: string) => {
             const bookmarkId = `${comic.id}-vol-${volume.volNumber}`;
             const isBookmarked = isSaved('comics', bookmarkId);
             return (
-              <div
+              <a
                 key={postKey}
-                onClick={() => openVolumeModal(comic, volume.volNumber)}
+                href={bookPath(comic, volume) ?? undefined}
+                onClick={(e) => {
+                  if (!isPlainLeftClick(e)) return;
+                  e.preventDefault();
+                  openVolumeModal(comic, volume.volNumber);
+                }}
                 className="block group cursor-pointer"
               >
                 <div
@@ -1753,7 +1784,7 @@ const getReadingRatingStyle = (rating?: string) => {
 
                     </div>
                   </div>
-                </div>
+                </a>
               );
             })
           ) : (

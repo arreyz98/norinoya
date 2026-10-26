@@ -314,20 +314,15 @@ export default function App({
 
     const activeComicObj = selectedComicId ? comicsData.find(c => c.id === selectedComicId) : null;
     const pageTitle = activeComicObj ? `${activeComicObj.title} - Sinopsis & Ulasan Komik | Norinoya` : 'Norinoya - Pusat Katalog & Ulasan Komik Indonesia';
-    const pageDesc = activeComicObj ? (activeComicObj.synopsis || `Informasi detail, sinopsis, penerbit, dan link pembelian buku ${activeComicObj.title}`).slice(0, 160) : 'Katalog komik terlengkap, jadwal terbit m&c! Akasha dan Elex Media, serta ulasan fisik komik dari Konotasi Store.';
-    const pageImage = activeComicObj?.coverImage || '/favicon.png';
 
     return (
     <div
       className="bg-[#FEFFFE] dark:bg-[#202120] min-h-screen text-neutral-950 dark:text-neutral-50 selection:bg-neutral-900 dark:selection:bg-neutral-100 selection:text-white dark:selection:text-neutral-900 flex flex-col justify-between font-sans"
     >
+      {/* Description, OG, dan canonical dikirim server lewat app.blade.php.
+          Di sini cukup <title> agar judul ikut berubah saat navigasi SPA. */}
       <Head>
         <title>{pageTitle}</title>
-        <meta name="description" content={pageDesc} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDesc} />
-        <meta property="og:image" content={pageImage} />
-        <meta property="og:type" content="website" />
       </Head>
 
         {/* Dynamic Minimal Navbar */}

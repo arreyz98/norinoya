@@ -49,6 +49,12 @@
 
          @endif
 
+        {{-- Structured data (Book / BreadcrumbList) — dirender server-side agar
+             tetap terbaca meski konten halaman di-render di klien. --}}
+        @if (!empty($metaData['schema']))
+            <script type="application/ld+json">{!! json_encode($metaData['schema'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
+        @endif
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">

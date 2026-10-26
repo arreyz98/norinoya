@@ -15,6 +15,7 @@ import { Comic, Volume} from '../../../types/demo';
 import { RawNewsItem } from '../news';
 import type { RawKiosItem } from './EtalaseCatalog';
 import { getBookTypeLabel } from '../../../utils/mapBookToComic';
+import { bookPath, bookUrl, isPlainLeftClick } from '../../../utils/bookUrl';
 interface DetailBukuProps {
   selectedComic: Comic;
   activeVolumeNum: number | string;
@@ -451,62 +452,20 @@ export default function DetailBuku({
     return '12 x 18 cm';
   };
 
+  // Canonical, description, OG, dan JSON-LD sengaja TIDAK dirender di sini.
+  // Semuanya sudah dikirim server lewat app.blade.php untuk URL yang diminta,
+  // sehingga tidak ada dua canonical yang saling bertentangan.
   const metaTitle = `${selectedComic.title}${activeVolObj ? ` Vol. ${activeVolObj.volNumber}` : ''} - Norinoya`;
-  const metaDesc = (activeVolObj?.synopsis || selectedComic.synopsis || 'Lihat detail buku di Norinoya').replace(/<[^>]*>/g, '').slice(0, 160);
-  const metaImage = activeVolObj?.coverImage || selectedComic.coverImage || '';
-  const canonicalUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/buku/${selectedComic.slug || selectedComic.id}`
-    : `/buku/${selectedComic.slug || selectedComic.id}`;
 
    return (
     <div className="w-full bg-white flex flex-col min-h-screen" ref={scrollableContainerRef}>
       {selectedComic ? (
         <Head>
           <title>{metaTitle}</title>
-          <meta name="description" content={metaDesc} />
-          <meta property="og:site_name" content="Norinoya" />
-          <meta property="og:title" content={metaTitle} />
-          <meta property="og:description" content={metaDesc} />
-          <meta property="og:type" content="book" />
-          {metaImage && <meta property="og:image" content={metaImage} />}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={metaTitle} />
-          <meta name="twitter:description" content={metaDesc} />
-          {metaImage && <meta name="twitter:image" content={metaImage} />}
-          <meta name="theme-color" content="#E53935" />
-          <link rel="canonical" href={canonicalUrl} />
-              <script type="application/ld+json">
-            {JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Book',
-              name: activeVolObj?.title || selectedComic.title,
-              alternateName: selectedComic.title,
-              url: canonicalUrl,
-              ...(metaImage ? { image: metaImage } : {}),
-              ...(activeVolObj?.isbn ? { isbn: activeVolObj.isbn } : {}),
-              ...(selectedComic.publisherName ? { publisher: { '@type': 'Organization', name: selectedComic.publisherName } } : {}),
-              ...(activeVolObj?.authorStory ? { author: { '@type': 'Person', name: activeVolObj.authorStory } } : {}),
-              ...(activeVolObj?.volNumber != null ? { bookEdition: `Volume ${activeVolObj.volNumber}` } : {}),
-              ...(selectedComic.genres?.length ? { genre: selectedComic.genres.join(', ') } : {}),
-              ...(activeVolObj?.synopsis ? { description: activeVolObj.synopsis.replace(/<[^>]*>/g, '').trim() } : {}),
-            })}
-          </script>
-          <script type="application/ld+json">
-            {JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'BreadcrumbList',
-              itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Beranda', item: typeof window !== 'undefined' ? `${window.location.origin}/` : '/' },
-                { '@type': 'ListItem', position: 2, name: 'Katalog Buku', item: typeof window !== 'undefined' ? `${window.location.origin}/` : '/' },
-                { '@type': 'ListItem', position: 3, name: (activeVolObj?.title || selectedComic.title), item: canonicalUrl },
-              ],
-            })}
-          </script>
         </Head>
       ) : (
         <Head>
           <title>Norinoya - Database Manga, Komik, & Light Novel Indonesia</title>
-          <meta name="description" content="Norinoya - Database Manga, Komik, & Light Novel Indonesia" />
         </Head>
       )}
       <motion.div
@@ -559,12 +518,10 @@ export default function DetailBuku({
                         <button
                           onClick={() => {
                             if (selectedComic) {
-                              const bookSlug = selectedComic.slug || selectedComic.id;
-                              const shareUrl = `${window.location.origin}/buku/${bookSlug}?vol=${activeVolumeNum}`;
                               setShareModalData({
                                 isOpen: true,
                                 title: selectedComic.title,
-                                shareUrl,
+                                shareUrl: bookUrl(selectedComic, activeVolObj) ?? window.location.href,
                                 category: 'Katalog'
                               });
                             }
@@ -1147,9 +1104,14 @@ export default function DetailBuku({
                     const genresText = relComic.genres?.slice(0, 2).join(', ') || 'Komik & Novel';
 
                     return (
-                      <div
+                      <a
                         key={relComic.id}
-                        onClick={() => onOpenComic(relComic, firstVol?.volNumber || 1)}
+                        href={bookPath(relComic, firstVol) ?? undefined}
+                        onClick={(e) => {
+                          if (!isPlainLeftClick(e)) return;
+                          e.preventDefault();
+                          onOpenComic(relComic, firstVol?.volNumber || 1);
+                        }}
                         className="p-2.5 bg-neutral-50/80 dark:bg-neutral-800/40 border border-neutral-200/80 dark:border-neutral-800 rounded-xl flex gap-3 items-center hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group cursor-pointer"
                       >
                         {relCover ? (
@@ -1191,7 +1153,7 @@ export default function DetailBuku({
                             </span>
                           </div>
                         </div>
-                      </div>
+                      </a>
                     );
                   })}
 

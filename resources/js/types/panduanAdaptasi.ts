@@ -16,6 +16,10 @@ export interface PanduanNode {
     id?: number;
     book_id?: number | string | null;
     book_label?: string | null;
+    /** Data bantu picker Series → Volume (tampilan saja, tidak dikirim balik). */
+    book_series_id?: number | string | null;
+    book_series_label?: string | null;
+    book_volume?: string | null;
     title: string;
     description?: string | null;
     studio?: string | null;

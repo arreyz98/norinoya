@@ -76,6 +76,9 @@ function buildInitialData(initialPanduan?: PanduanFormProps['initialPanduan']): 
             id: node.id,
             book_id: node.book_id != null ? String(node.book_id) : '',
             book_label: node.book_label ?? null,
+            book_series_id: node.book_series_id != null ? String(node.book_series_id) : '',
+            book_series_label: node.book_series_label ?? null,
+            book_volume: node.book_volume ?? null,
             title: node.title,
             description: node.description ?? '',
             studio: node.studio ?? '',
@@ -177,6 +180,43 @@ export default function PanduanForm({
                 index === nodeIndex ? { ...node, [field]: value } : node,
             ),
         }));
+    };
+
+    /**
+     * Ganti series pada satu node.
+     *
+     * `book_id` wajib dikosongkan bersamaan supaya payload tidak pernah
+     * mengirim buku dari series lain. Semua perubahan dilakukan dalam satu
+     * `setForm` agar tidak ada render antara yang masih menampilkan buku lama.
+     */
+    const changeNodeSeries = (nodeIndex: number, value: string) => {
+        clearFieldError(`nodes.${nodeIndex}.book_series_id`);
+        clearFieldError(`nodes.${nodeIndex}.book_id`);
+
+        setForm((previous) => {
+            const current = previous.nodes[nodeIndex];
+
+            // Memilih series yang sama tidak boleh menghapus buku yang sudah dipilih.
+            if (!current || current.book_series_id === value) {
+                return previous;
+            }
+
+            return {
+                ...previous,
+                nodes: previous.nodes.map((node, index) =>
+                    index === nodeIndex
+                        ? {
+                              ...node,
+                              book_series_id: value,
+                              book_series_label: null,
+                              book_id: '',
+                              book_label: null,
+                              book_volume: null,
+                          }
+                        : node,
+                ),
+            };
+        });
     };
 
     /* ---------------------------------------------------------------- */
@@ -511,6 +551,7 @@ export default function PanduanForm({
                 addNode={addNode}
                 removeNode={removeNode}
                 updateNode={updateNode}
+                changeNodeSeries={changeNodeSeries}
                 addLink={addLink}
                 removeLink={removeLink}
                 updateLink={updateLink}

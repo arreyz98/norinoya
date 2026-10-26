@@ -11,6 +11,7 @@ import { bookmarkStorage, useBookmarks } from '../../utils/bookmarkStorage';
 import { COMICS_DATA, PRE_OWNED_ITEMS } from '../../types/mockData';
 import { Comic, NewsUpdate } from '../../types/demo';
 import { mapBooksToComics, BookModel, getBookTypeLabel } from '../../utils/mapBookToComic';
+import { bookPath, isPlainLeftClick } from '../../utils/bookUrl';
 import { RawNewsItem } from './news';
 import { RawKiosItem } from './components/EtalaseCatalog';
 import Navbar from './components/Navbar';
@@ -216,7 +217,7 @@ interface SavedBookmarksProps {
   comics: Comic[];
   news: BookmarkNewsItem[];
   kiosItems: RawKiosItem[];
-  onNavigateToComic: (comicId: string) => void;
+  onNavigateToComic: (path: string) => void;
   onNavigateToNews: (newsId: string) => void;
   onNavigateToKios: (kiosId?: string) => void;
   onNavigateToHome: () => void;
@@ -248,6 +249,7 @@ export function SavedBookmarks({
     const list: Array<{
       id: string;
       comicId: string;
+      href: string | null;
       title: string;
       seriesTitle: string;
       publisherName: string;
@@ -276,6 +278,7 @@ export function SavedBookmarks({
           list.push({
             id: savedId,
             comicId: comic.id,
+            href: bookPath(comic, vol ?? null),
             title: `${comic.title} Vol.${volNum}`,
             seriesTitle: comic.title,
             publisherName: comic.publisherName,
@@ -299,6 +302,7 @@ export function SavedBookmarks({
         list.push({
           id: savedId,
           comicId: comic.id,
+          href: bookPath(comic, null),
           title: comic.title,
           seriesTitle: comic.title,
           publisherName: comic.publisherName,
@@ -852,7 +856,6 @@ export function SavedBookmarks({
                 {filteredComics.map((comic) => (
                   <div
                     key={comic.id}
-                    onClick={() => onNavigateToComic(comic.comicId)}
                     className="bg-white dark:bg-neutral-900 rounded-2xl border border-[#183619] ring-2 ring-[#183619] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer relative select-none"
                   >
                     {/* Top Cover Section */}
@@ -931,6 +934,21 @@ export function SavedBookmarks({
                         </span>
                       </div>
                     </div>
+
+                    {/* Stretched link: satu-satunya <a> di kartu agar bisa dirayapi crawler.
+                        Tombol hapus tetap di atasnya (z-20) sehingga tetap bisa diklik. */}
+                    <a
+                      href={comic.href ?? undefined}
+                      aria-label={`Buka ${comic.seriesTitle}${comic.volNumber ? ` Vol. ${comic.volNumber}` : ''}`}
+                      onClick={(e) => {
+                        if (!comic.href || !isPlainLeftClick(e)) return;
+                        e.preventDefault();
+                        onNavigateToComic(comic.href);
+                      }}
+                      className="absolute inset-0 z-10 rounded-2xl"
+                    >
+                      <span className="sr-only">{comic.seriesTitle}</span>
+                    </a>
                   </div>
                 ))}
               </div>
@@ -1274,8 +1292,8 @@ export default function BookmarkPage({
     router.visit('/?scroll=about');
   };
 
-  const handleNavigateToComic = (comicId: string) => {
-    router.visit(`/buku/${comicId}`);
+  const handleNavigateToComic = (path: string) => {
+    router.visit(path);
   };
 
   const handleNavigateToNews = (newsId: string) => {

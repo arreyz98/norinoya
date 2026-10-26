@@ -129,6 +129,8 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('books/filter-options', [BookController::class, 'filterOptions'])->name('books.filter-options');
 
+            Route::get('books/series-volumes', [BookController::class, 'seriesVolumes'])->name('books.series-volumes');
+
             Route::delete('books/bulk', [BookController::class, 'bulkDestroy'])->name('books.bulk-destroy');
 
             Route::resource(

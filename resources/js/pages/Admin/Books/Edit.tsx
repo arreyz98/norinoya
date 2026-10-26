@@ -90,13 +90,15 @@ interface Props {
     book: Book;
 
     series: Option[];
+    seriesMode: 'inline' | 'async';
+    selectedSeries?: { id: number; title: string } | null;
+    selectedSeriesVolumes?: string[];
     editions: Option[];
     storyStatuses: Option[];
     publishers: Option[];
     authors: Option[];
     genres: Option[];
     affiliateStores: Option[];
-    volumesBySeries: Record<string, string[]>;
     existingSlugs: string[];
     bookTypes: EnumOption[];
     ageRatings: EnumOption[];
@@ -121,13 +123,15 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Edit({
     book,
     series,
+    seriesMode,
+    selectedSeries,
+    selectedSeriesVolumes,
     editions,
     storyStatuses,
     publishers,
     authors,
     genres,
     affiliateStores,
-    volumesBySeries,
     existingSlugs,
     bookTypes,
     ageRatings,
@@ -159,13 +163,15 @@ export default function Edit({
                     mode="edit"
                     book={book}
                     series={series}
+                    seriesMode={seriesMode}
+                    selectedSeries={selectedSeries}
+                    selectedSeriesVolumes={selectedSeriesVolumes}
                     editions={editions}
                     storyStatuses={storyStatuses}
                     publishers={publishers}
                     authors={authors}
                     genres={genres}
                     affiliateStores={affiliateStores}
-                    volumesBySeries={volumesBySeries}
                     existingSlugs={existingSlugs}
                     bookTypes={bookTypes}
                     ageRatings={ageRatings}

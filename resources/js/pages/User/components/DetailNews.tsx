@@ -10,6 +10,7 @@ import {
 import { useBookmarks } from '../../../utils/bookmarkStorage';
 import { prepareEmbedFrames, syncEmbedHeights } from '../../../utils/embedFrame';
 import { getBookTypeLabel } from '../../../utils/mapBookToComic';
+import { bookPath, isPlainLeftClick } from '../../../utils/bookUrl';
 import { BookmarkToast, useBookmarkToast } from './BookmarkToast';
 import { COMICS_DATA } from '../../../types/mockData';
 import { NewsUpdate, Comic, Volume } from '../../../types/demo';
@@ -311,7 +312,7 @@ export default function DetailNews({
             <div className="flex flex-col gap-5">
 
               {/* Headline & Meta */}
-              <div className="space-y-2.5">
+              <div className="space-y-2.5 px-5">
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono font-semibold text-neutral-500 dark:text-neutral-400 leading-normal">
                   <span className="font-extrabold text-[#112A12] dark:text-white shrink-0">@{activePost.username}</span>
                   <span className="shrink-0 text-neutral-300 dark:text-neutral-600">•</span>
@@ -450,10 +451,11 @@ export default function DetailNews({
                       const publisherName = publisherObj?.name || matchedMockComic?.publisherName || 'Penerbit Resmi';
                       const bookPrice = matchedDbBook?.msrp ? Number(matchedDbBook.msrp) : (matchedMockComic?.volumes?.[0]?.price || 45000);
 
-                      // Generate exact identifier to open in DetailBuku
-                      const targetComicId = matchedDbBook
-                        ? (matchedDbBook.series_id ? `series-${matchedDbBook.series_id}-vol-${matchedDbBook.volume}` : `book-${matchedDbBook.id}`)
-                        : (rec.comicId || matchedMockComic?.id);
+                      // Slug publik untuk /buku/{slug}. Jangan pakai id internal
+                      // (series-x / book-x) karena server tidak mengenalinya.
+                      const dbSlug = typeof matchedDbBook?.slug === 'string' ? matchedDbBook.slug.trim() : '';
+                      const targetSlug = dbSlug || matchedMockComic?.slug || '';
+                      const targetHref = targetSlug ? `/buku/${targetSlug}` : bookPath(matchedMockComic);
 
                       // Cover Image utama milik buku
                       const imagesArr = matchedDbBook?.images as Array<{ image_url?: string; file_path?: string }> | undefined;
@@ -518,10 +520,15 @@ export default function DetailNews({
                             <div
                               onClick={(e) => {
                                 e.stopPropagation();
-                                if (targetComicId && onNavigateToComic) {
-                                  onNavigateToComic(String(targetComicId));
-                                } else if (onNavigateToCatalog) {
-                                  onNavigateToCatalog();
+                                if (!targetHref) {
+                                  onNavigateToCatalog?.();
+                                  return;
+                                }
+                                if (!isPlainLeftClick(e)) return;
+                                if (targetSlug && onNavigateToComic) {
+                                  onNavigateToComic(targetSlug);
+                                } else {
+                                  router.visit(targetHref);
                                 }
                               }}
                               className="group/kat relative w-full sm:w-[260px] shrink-0 bg-white dark:bg-[#181912] hover:bg-neutral-50 dark:hover:bg-[#222319] border border-neutral-200/90 dark:border-neutral-700/60 rounded-2xl overflow-hidden transition-all shadow-2xs hover:shadow-md cursor-pointer flex flex-col justify-between"
@@ -529,6 +536,26 @@ export default function DetailNews({
                               <div>
                                 {/* Top Cover Image with Badges */}
                                 <div className="relative w-full h-48 sm:h-52 bg-neutral-900 overflow-hidden shrink-0">
+                                  {/* Link crawlable: overlay transparan di atas sampul,
+                                      supaya URL buku tetap bisa ditemukan Googlebot. */}
+                                  <a
+                                    href={targetHref ?? undefined}
+                                    aria-label={`Buka ${bookTitle}`}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (!targetHref) return;
+                                      if (!isPlainLeftClick(e)) return;
+                                      e.preventDefault();
+                                      if (targetSlug && onNavigateToComic) {
+                                        onNavigateToComic(targetSlug);
+                                      } else {
+                                        router.visit(targetHref);
+                                      }
+                                    }}
+                                    className="absolute inset-0 z-20"
+                                  >
+                                    <span className="sr-only">{bookTitle}</span>
+                                  </a>
                                   {coverImg ? (
                                     <img
                                       src={coverImg}
@@ -964,19 +991,26 @@ export default function DetailNews({
 
                <div className="space-y-2">
                  {(relevantCatalogItems ?? []).map(({ comic, vol }, idx) => (
-                   <div
+                   <a
                      key={`${comic.id}-${vol.volNumber}-${idx}`}
-                      onClick={() => {
-                        if (comic.slug) {
-                          router.visit(`/buku/${comic.slug}`);
-                        } else if (onNavigateToComic && comic.id) {
-                          onNavigateToComic(comic.id);
-                        } else if (comic.id) {
-                          router.visit(`/buku/${comic.id}`);
-                        } else if (onNavigateToCatalog) {
-                          onNavigateToCatalog();
+                      href={bookPath(comic, vol) ?? undefined}
+                      onClick={(e) => {
+                        const href = bookPath(comic, vol);
+
+                        if (!href) {
+                          onNavigateToCatalog?.();
+                          return;
+                        }
+
+                        if (!isPlainLeftClick(e)) return;
+                        e.preventDefault();
+
+                        const slug = vol.slug || comic.slug;
+
+                        if (slug && onNavigateToComic) {
+                          onNavigateToComic(slug);
                         } else {
-                          triggerToast(`📚 Membuka Katalog: ${comic.title} Vol ${vol.volNumber}`);
+                          router.visit(href);
                         }
                       }}
                      className="p-2.5 bg-neutral-50/80 dark:bg-neutral-800/40 border border-neutral-200/80 dark:border-neutral-800 rounded-xl flex gap-3 items-center hover:border-neutral-300 dark:hover:border-neutral-700 transition-all group cursor-pointer"
@@ -1019,7 +1053,7 @@ export default function DetailNews({
                          </span>
                        </div>
                      </div>
-                   </div>
+                   </a>
                  ))}
 
                  {(relevantCatalogItems ?? []).length === 0 && (

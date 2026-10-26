@@ -61,7 +61,8 @@ class PanduanAdaptasiController extends Controller
     {
         $panduan_adaptasi->load([
             'nodes' => fn ($query) => $query->orderBy('sort_order'),
-            'nodes.book:id,title,volume',
+            'nodes.book:id,title,volume,series_id',
+            'nodes.book.series:id,title',
             'nodes.links' => fn ($query) => $query->orderBy('sort_order'),
         ]);
 
@@ -77,6 +78,11 @@ class PanduanAdaptasiController extends Controller
                     'book_label' => $node->book
                         ? $node->book->title.($node->book->volume ? ' — Vol.'.$node->book->volume : '')
                         : null,
+                    // Data bantu picker Series → Volume. Hanya untuk tampilan,
+                    // tidak ikut dikirim balik saat submit.
+                    'book_series_id' => $node->book?->series_id,
+                    'book_series_label' => $node->book?->series?->title,
+                    'book_volume' => $node->book?->volume,
                     'title' => $node->title,
                     'description' => $node->description,
                     'studio' => $node->studio,

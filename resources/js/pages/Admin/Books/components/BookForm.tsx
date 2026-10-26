@@ -34,7 +34,10 @@ export type { AffiliateLink, BookFormData, EnumOption, ImageItem, InstagramEmbed
 
 interface BookFormProps {
     mode: 'create' | 'edit';
-    volumesBySeries: Record<string, string[]>;
+    /** `async` berarti server tidak mengirim daftar series (jumlahnya terlalu banyak). */
+    seriesMode: 'inline' | 'async';
+    selectedSeries?: { id: number; title: string } | null;
+    selectedSeriesVolumes?: string[];
     existingSlugs?: string[];
 
     book?: {
@@ -120,7 +123,9 @@ export default function BookForm({
     videoAccessTypes,
     bookTypes,
     ageRatings,
-    volumesBySeries,
+    seriesMode,
+    selectedSeries,
+    selectedSeriesVolumes = [],
     existingSlugs = [],
     processing,
     errors,
@@ -136,6 +141,12 @@ export default function BookForm({
         affiliate_links: [],
         video_links: [],
     });
+
+    // Cache volume per series. Hanya series yang dipilih yang dimuat, supaya
+    // payload halaman tidak perlu mengirim seluruh volume dari semua series.
+    const [volumesBySeries, setVolumesBySeries] = useState<Record<string, string[]>>(() =>
+        book?.series_id ? { [String(book.series_id)]: selectedSeriesVolumes } : {},
+    );
 
     const formRef = useRef<HTMLFormElement>(null);
     const errorSummaryRef = useRef<HTMLDivElement>(null);
@@ -344,6 +355,42 @@ export default function BookForm({
 
     const hasSlugInput = form.title.trim() !== '' || form.volume.trim() !== '';
     const displayedSlug = mode === 'edit' && book?.slug && titleVolumeUnchanged ? book.slug : slugPreview;
+
+    // Muat volume milik series yang sedang dipilih agar validasi "volume sudah
+    // ada" tetap jalan tanpa mengirim semua volume di props awal.
+    useEffect(() => {
+        const seriesId = form.series_id;
+
+        if (!seriesId || volumesBySeries[seriesId] !== undefined) {
+            return;
+        }
+
+        const controller = new AbortController();
+        const url = new URL(route('admin.books.series-volumes'), window.location.origin);
+        url.searchParams.set('series_id', seriesId);
+
+        // Saat edit, volume buku ini sendiri tidak dihitung sebagai duplikat.
+        if (mode === 'edit' && book?.id) {
+            url.searchParams.set('ignore', String(book.id));
+        }
+
+        fetch(url.toString(), {
+            headers: {
+                Accept: 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            signal: controller.signal,
+        })
+            .then((response) => (response.ok ? response.json() : { volumes: [] }))
+            .then((payload: { volumes?: string[] }) => {
+                const volumes = Array.isArray(payload.volumes) ? payload.volumes : [];
+
+                setVolumesBySeries((previous) => ({ ...previous, [seriesId]: volumes }));
+            })
+            .catch(() => undefined);
+
+        return () => controller.abort();
+    }, [book?.id, form.series_id, mode, volumesBySeries]);
 
     useEffect(() => {
         if (form.images.length === 0) {
@@ -943,6 +990,8 @@ export default function BookForm({
                 mode={mode}
                 book={book}
                 series={series}
+                seriesMode={seriesMode}
+                selectedSeries={selectedSeries}
                 editions={editions}
                 storyStatuses={storyStatuses}
                 publishers={publishers}

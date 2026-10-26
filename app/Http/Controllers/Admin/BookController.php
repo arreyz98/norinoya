@@ -37,6 +37,12 @@ use Inertia\Response;
 class BookController extends Controller
 {
     /**
+     * Jumlah maksimal series yang masih dikirim utuh ke form buku.
+     * Di atas angka ini, form memakai pencarian async.
+     */
+    private const SERIES_INLINE_LIMIT = 500;
+
+    /**
      * Display a listing of books.
      */
     public function index(Request $request): Response
@@ -136,41 +142,99 @@ class BookController extends Controller
     }
 
     /**
-     * Return filter options for the async series/publisher comboboxes.
+     * Return filter options for the async series/publisher/book comboboxes.
+     *
+     * Pencarian buku kini dua tahap: pilih series lebih dulu (`series_id`),
+     * lalu cari volume di dalam series tersebut. Bila `series_id` tidak
+     * dikirim, perilaku lama (cari berdasarkan judul) tetap dipakai supaya
+     * endpoint ini tetap generik.
      */
     public function filterOptions(Request $request): JsonResponse
     {
         $validated = $request->validate([
             'type' => ['required', 'in:series,publisher,book'],
             'q' => ['nullable', 'string', 'max:100'],
+            'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'offset' => ['nullable', 'integer', 'min:0', 'max:100000'],
+            'series_id' => ['nullable', 'integer', 'exists:book_series,id'],
         ]);
 
         $term = trim((string) ($validated['q'] ?? ''));
+        $limit = (int) ($validated['limit'] ?? 25);
+        $offset = (int) ($validated['offset'] ?? 0);
+        $seriesId = isset($validated['series_id']) ? (int) $validated['series_id'] : null;
+        $hasMore = false;
 
         if ($validated['type'] === 'series') {
-            $options = BookSeries::query()
+            // Ambil satu baris ekstra untuk mengetahui masih ada halaman berikutnya
+            // tanpa perlu query COUNT terpisah. `id` sebagai tie-breaker supaya
+            // offset paging deterministik saat ada judul series yang sama.
+            $rows = BookSeries::query()
                 ->when($term !== '', function ($q) use ($term) {
                     $q->where('title', 'like', "%{$term}%");
                 })
                 ->orderBy('title')
-                ->limit(25)
-                ->get(['id', 'title'])
+                ->orderBy('id')
+                ->offset($offset)
+                ->limit($limit + 1)
+                ->get(['id', 'title']);
+
+            $hasMore = $rows->count() > $limit;
+
+            $options = $rows
+                ->take($limit)
                 ->map(fn (BookSeries $series) => [
                     'value' => (string) $series->id,
                     'label' => $series->title,
                 ]);
         } elseif ($validated['type'] === 'book') {
-            $options = Book::query()
-                ->when($term !== '', function ($q) use ($term) {
+            $books = Book::query()
+                ->when($seriesId !== null, fn ($q) => $q->where('series_id', $seriesId))
+                ->when($term !== '', function ($q) use ($term, $seriesId) {
+                    // Di dalam satu series judulnya identik, jadi yang dicari
+                    // adalah nomor volume. Di luar series, tetap cari judul.
+                    if ($seriesId !== null) {
+                        $q->where('volume', 'like', "%{$term}%");
+
+                        return;
+                    }
+
                     $q->where('title', 'like', "%{$term}%");
-                })
-                ->orderBy('title')
-                ->limit(25)
-                ->get(['id', 'title', 'volume'])
-                ->map(fn (Book $book) => [
-                    'value' => (string) $book->id,
-                    'label' => $book->title.($book->volume ? ' — Vol.'.$book->volume : ''),
-                ]);
+                });
+
+            if ($seriesId !== null) {
+                // Urutan volume mengikuti sort_order yang diatur admin lewat
+                // halaman /admin/books/volume-order.
+                $books->orderBy('sort_order');
+            } else {
+                $books->orderBy('title')->orderBy('sort_order');
+            }
+
+            $rows = $books
+                ->orderBy('id')
+                ->offset($offset)
+                ->limit($limit + 1)
+                ->get(['id', 'title', 'volume']);
+
+            $hasMore = $rows->count() > $limit;
+
+            $options = $rows
+                ->take($limit)
+                ->map(function (Book $book) use ($seriesId) {
+                    if ($seriesId !== null) {
+                        $volume = trim((string) $book->volume);
+
+                        return [
+                            'value' => (string) $book->id,
+                            'label' => $volume !== '' ? 'Vol. '.$volume : $book->title,
+                        ];
+                    }
+
+                    return [
+                        'value' => (string) $book->id,
+                        'label' => $book->title.($book->volume ? ' — Vol.'.$book->volume : ''),
+                    ];
+                });
         } else {
             $options = Publisher::query()
                 ->when($term !== '', function ($q) use ($term) {
@@ -185,7 +249,31 @@ class BookController extends Controller
                 ]);
         }
 
-        return response()->json(['data' => $options->values()]);
+        return response()->json([
+            'data' => $options->values(),
+            'has_more' => $hasMore,
+        ]);
+    }
+
+    /**
+     * Return the volumes that already exist inside one series.
+     *
+     * Dipakai form buku untuk memvalidasi volume duplikat tanpa harus mengirim
+     * seluruh volume dari semua series ke browser.
+     */
+    public function seriesVolumes(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'series_id' => ['required', 'integer', 'exists:book_series,id'],
+            'ignore' => ['nullable', 'integer', 'exists:books,id'],
+        ]);
+
+        return response()->json([
+            'volumes' => $this->volumesForSeries(
+                (int) $validated['series_id'],
+                isset($validated['ignore']) ? (int) $validated['ignore'] : null,
+            ),
+        ]);
     }
 
     /**
@@ -607,7 +695,8 @@ class BookController extends Controller
     {
         return Inertia::render('Admin/Books/Create', array_merge($this->formOptions(), [
             'existingSlugs' => $this->existingSlugs(),
-            'volumesBySeries' => $this->volumesBySeries(),
+            'selectedSeries' => null,
+            'selectedSeriesVolumes' => [],
         ]));
     }
 
@@ -737,7 +826,10 @@ class BookController extends Controller
                     ->values(),
             ],
             'existingSlugs' => $this->existingSlugs($book->id),
-            'volumesBySeries' => $this->volumesBySeries($book->id),
+            'selectedSeries' => $book->series
+                ? ['id' => $book->series->id, 'title' => $book->series->title]
+                : null,
+            'selectedSeriesVolumes' => $this->volumesForSeries($book->series_id, $book->id),
         ]));
     }
 
@@ -896,7 +988,12 @@ class BookController extends Controller
             ],
             'duplicatedVolume' => $duplicatedVolume,
             'existingSlugs' => $this->existingSlugs(),
-            'volumesBySeries' => $this->volumesBySeries(),
+            'selectedSeries' => $book->series
+                ? ['id' => $book->series->id, 'title' => $book->series->title]
+                : null,
+            // Tanpa ignore: volume buku asal harus tetap terhitung supaya saran
+            // sufiks volume pada mode duplikat tetap benar.
+            'selectedSeriesVolumes' => $existingVolumes,
         ]));
     }
 
@@ -1086,17 +1183,27 @@ class BookController extends Controller
 
     /**
      * Form options.
+     *
+     * Daftar series hanya dikirim utuh selama jumlahnya masih kecil. Di atas
+     * batas ini frontend otomatis memakai pencarian async, sehingga payload
+     * halaman tidak tumbuh tanpa batas saat series bertambah banyak.
      */
     private function formOptions(): array
     {
+        $seriesRows = BookSeries::query()
+            ->orderBy('title')
+            ->limit(self::SERIES_INLINE_LIMIT + 1)
+            ->get([
+                'id',
+                'title',
+                'title as name',
+            ]);
+
+        $seriesInline = $seriesRows->count() <= self::SERIES_INLINE_LIMIT;
+
         return [
-            'series' => BookSeries::query()
-                ->orderBy('title')
-                ->get([
-                    'id',
-                    'title',
-                    'title as name',
-                ]),
+            'series' => $seriesInline ? $seriesRows : [],
+            'seriesMode' => $seriesInline ? 'inline' : 'async',
 
             'editions' => Edition::query()
                 ->orderBy('name')
@@ -1225,24 +1332,28 @@ class BookController extends Controller
     }
 
     /**
-     * Volume yang sudah dipakai per series (key "none" untuk buku tanpa series)
-     * agar validasi form mengikuti series yang sedang dipilih, bukan series asal
-     * saat menduplikat buku.
+     * Volume yang sudah dipakai di dalam satu series.
      *
-     * @return array<string, array<int, string>>
+     * Hanya series yang diminta yang di-query, sehingga payload form buku tidak
+     * ikut membengkak seiring bertambahnya jumlah buku.
+     *
+     * @return array<int, string>
      */
-    private function volumesBySeries(?int $ignoreId = null): array
+    private function volumesForSeries(?int $seriesId, ?int $ignoreId = null): array
     {
+        if (! $seriesId) {
+            return [];
+        }
+
         return Book::query()
+            ->where('series_id', $seriesId)
             ->when($ignoreId, fn ($query) => $query->whereKeyNot($ignoreId))
-            ->get(['series_id', 'volume'])
-            ->groupBy(fn (Book $book) => $book->series_id ? (string) $book->series_id : 'none')
-            ->map(fn ($books) => $books
-                ->pluck('volume')
-                ->filter()
-                ->map(fn ($volume) => (string) $volume)
-                ->values()
-                ->all())
+            ->whereNotNull('volume')
+            ->where('volume', '!=', '')
+            ->orderBy('id')
+            ->pluck('volume')
+            ->map(fn ($volume) => (string) $volume)
+            ->values()
             ->all();
     }
 

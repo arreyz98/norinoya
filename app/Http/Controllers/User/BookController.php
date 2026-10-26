@@ -74,34 +74,52 @@ class BookController extends Controller
             })
             ->first();
 
-        if ($book && $book->publication_status !== PublicationStatus::Published) {
+        if (! $book) {
+            // Referensi lama berbasis id internal (/buku/series-12, /buku/book-7)
+            // dialihkan permanen ke slug publik supaya tidak jadi soft 404.
+            if ($legacy = $this->resolveLegacyRef($slug)) {
+                return redirect()->to(url("/buku/{$legacy->slug}"), 301);
+            }
+
+            abort(404);
+        }
+
+        if ($book->publication_status !== PublicationStatus::Published) {
             abort(404);
         }
 
         $requestedVolume = $request->query('vol', null);
         $initialVolume = $requestedVolume
             ? $requestedVolume
-            : ($book?->volume ?? null);
+            : $book->volume;
 
-        if ($book) {
-            $ip = $request->ip();
-            $ua = $request->userAgent();
-            $oneMinuteAgo = now()->subMinute();
+        // Volume lain dalam seri yang sama — dipakai pemilih volume sekaligus sumber SEO.
+        $detailBooks = $this->seriesBooks($book);
 
-            $alreadyLogged = BookViewLog::where('book_id', $book->id)
-                ->where('ip_address', $ip)
-                ->where('created_at', '>=', $oneMinuteAgo)
-                ->exists();
+        // Bila URL memakai slug volume lain + ?vol=N, konten & canonical harus ikut volume itu.
+        $seoBook = $book;
+        if ($requestedVolume !== null) {
+            $seoBook = $detailBooks->first(fn (Book $item) => (string) $item->volume === (string) $requestedVolume)
+                ?? $book;
+        }
 
-            if (! $alreadyLogged) {
-                $book->increment('views_count');
+        $ip = $request->ip();
+        $ua = $request->userAgent();
+        $oneMinuteAgo = now()->subMinute();
 
-                BookViewLog::create([
-                    'book_id' => $book->id,
-                    'ip_address' => $ip,
-                    'user_agent' => $ua,
-                ]);
-            }
+        $alreadyLogged = BookViewLog::where('book_id', $book->id)
+            ->where('ip_address', $ip)
+            ->where('created_at', '>=', $oneMinuteAgo)
+            ->exists();
+
+        if (! $alreadyLogged) {
+            $book->increment('views_count');
+
+            BookViewLog::create([
+                'book_id' => $book->id,
+                'ip_address' => $ip,
+                'user_agent' => $ua,
+            ]);
         }
 
         $publishers = Cache::remember('home:publishers', 600, fn () => Publisher::orderBy('name')->get(['id', 'name', 'slug']));
@@ -132,18 +150,17 @@ class BookController extends Controller
             'totalBooksCount' => $totalBooksCount,
             'totalSeriesCount' => $totalSeriesCount,
             'totalPublishersCount' => $totalPublishersCount,
-            'detailBooks' => $book ? $this->seriesBooks($book)->values() : [],
+            'detailBooks' => $detailBooks->values(),
             'initialBook' => $book,
             'initialSlug' => $slug,
             'initialVolume' => $initialVolume,
             'meta' => [
-                'title' => $book ? $book->title.' - Norinoya' : 'Katalog Buku - Norinoya',
-                'description' => $book
-                    ? Str::limit(strip_tags($book->synopsis ?? 'Lihat informasi lengkap dan detail buku komik di Norinoya.'), 160)
-                    : 'Katalog manga, komik, novel, dan light novel lengkap di Norinoya.',
-                'image' => ($book && ($img = $book->images->first()?->image_url)) ? (Str::startsWith($img, ['http://', 'https://']) ? $img : url($img)) : url('/favicon.png'),
-                'url' => $book ? url("/buku/{$book->slug}") : url("/buku/{$slug}"),
+                'title' => $this->seoTitle($seoBook),
+                'description' => $this->seoDescription($seoBook),
+                'image' => $this->seoImage($seoBook) ?? url('/favicon.png'),
+                'url' => url("/buku/{$seoBook->slug}"),
                 'type' => 'book',
+                'schema' => $this->seoSchema($seoBook),
             ],
         ]);
     }
@@ -276,6 +293,152 @@ class BookController extends Controller
         }
 
         return $book;
+    }
+
+    /**
+     * Referensi lama berbasis id internal: /buku/book-12 atau /buku/series-3(-vol-2).
+     * Dipakai untuk redirect 301 ke slug publik, bukan untuk merender halaman.
+     */
+    private function resolveLegacyRef(string $slug): ?Book
+    {
+        if (preg_match('/^book-(\d+)$/', $slug, $matches)) {
+            return Book::published()->whereKey((int) $matches[1])->first();
+        }
+
+        if (preg_match('/^series-(\d+)(?:-vol-(.+))?$/', $slug, $matches)) {
+            $base = Book::published()->where('series_id', (int) $matches[1]);
+            $volume = trim((string) ($matches[2] ?? ''));
+
+            if ($volume !== '') {
+                $exact = (clone $base)->where('volume', $volume)->first();
+
+                if ($exact) {
+                    return $exact;
+                }
+            }
+
+            return $base->orderBy('sort_order')->orderBy('id')->first();
+        }
+
+        return null;
+    }
+
+    /**
+     * Nama buku lengkap dengan volume, dipakai untuk title & structured data.
+     * Volume tidak disisipkan lagi kalau judulnya sudah memuatnya.
+     */
+    private function seoBookName(Book $book): string
+    {
+        $title = trim((string) $book->title);
+        $volume = trim((string) $book->volume);
+
+        if ($volume === '') {
+            return $title;
+        }
+
+        $alreadyMentioned = preg_match(
+            '/\bvol(?:ume)?\.?\s*'.preg_quote($volume, '/').'\b/iu',
+            $title
+        ) === 1;
+
+        if ($alreadyMentioned) {
+            return $title;
+        }
+
+        return is_numeric($volume)
+            ? $title.' Vol. '.$volume
+            : $title.' ('.$volume.')';
+    }
+
+    private function seoTitle(Book $book): string
+    {
+        // 48 + 3 + 9 (" - Norinoya") = 60 karakter, batas aman tampilan SERP.
+        return Str::limit($this->seoBookName($book), 48, '…').' - Norinoya';
+    }
+
+    private function seoDescription(Book $book): string
+    {
+        $name = $this->seoBookName($book);
+        $synopsis = $this->cleanSynopsis($book);
+
+        if ($synopsis === '') {
+            $synopsis = 'Informasi lengkap, sinopsis, penerbit, dan link pembelian '.$name.' di Norinoya.';
+        }
+
+        return Str::limit($name.': '.$synopsis, 157);
+    }
+
+    private function cleanSynopsis(Book $book): string
+    {
+        $plain = html_entity_decode(
+            strip_tags((string) $book->synopsis),
+            ENT_QUOTES | ENT_HTML5,
+            'UTF-8'
+        );
+
+        return trim(preg_replace('/\s+/u', ' ', $plain) ?? '');
+    }
+
+    private function seoImage(Book $book): ?string
+    {
+        $image = $book->images->first()?->image_url;
+
+        if (! $image) {
+            return null;
+        }
+
+        return Str::startsWith($image, ['http://', 'https://']) ? $image : url($image);
+    }
+
+    /**
+     * Structured data Book + BreadcrumbList yang dirender langsung dari blade,
+     * supaya tetap terbaca meski konten halaman di-render di klien.
+     *
+     * @return array<string, mixed>
+     */
+    private function seoSchema(Book $book): array
+    {
+        $book->loadMissing(['authors', 'genres']);
+
+        $url = url("/buku/{$book->slug}");
+        $name = $this->seoBookName($book);
+        $volume = trim((string) $book->volume);
+        $author = $book->authors->first()?->name;
+        $genres = $book->genres->pluck('name')->take(3)->implode(', ');
+        $pages = (int) ($book->page_count ?? 0);
+
+        $bookNode = array_filter([
+            '@type' => 'Book',
+            '@id' => $url.'#book',
+            'name' => $name,
+            'url' => $url,
+            'inLanguage' => 'id',
+            'image' => $this->seoImage($book),
+            'isbn' => $book->isbn ?: null,
+            'numberOfPages' => $pages > 0 ? $pages : null,
+            'bookEdition' => $volume !== '' ? 'Volume '.$volume : null,
+            'author' => $author ? ['@type' => 'Person', 'name' => $author] : null,
+            'publisher' => $book->publisher?->name
+                ? ['@type' => 'Organization', 'name' => $book->publisher->name]
+                : null,
+            'genre' => $genres !== '' ? $genres : null,
+            'description' => $this->cleanSynopsis($book) ?: null,
+        ], static fn ($value) => $value !== null && $value !== '');
+
+        return [
+            '@context' => 'https://schema.org',
+            '@graph' => [
+                $bookNode,
+                [
+                    '@type' => 'BreadcrumbList',
+                    'itemListElement' => [
+                        ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
+                        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Katalog Buku', 'item' => url('/')],
+                        ['@type' => 'ListItem', 'position' => 3, 'name' => $name, 'item' => $url],
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**

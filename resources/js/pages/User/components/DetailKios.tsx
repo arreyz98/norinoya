@@ -315,7 +315,7 @@ export default function DetailKios({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 15 }}
         transition={{ duration: 0.2 }}
-        className="h-full w-full bg-white dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 flex flex-col transition-colors duration-200 relative"
+        className="h-full w-full bg-white dark:bg-[#202120] text-neutral-950 dark:text-neutral-50 flex flex-col transition-colors duration-200 relative"
       >
         {/* Top Header Navigation sticky full-width block */}
         <div className="fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">

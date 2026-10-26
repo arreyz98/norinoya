@@ -1,7 +1,6 @@
 import { GitBranch, Plus, Tag, Trash2, X } from 'lucide-react';
 import { useState } from 'react';
 
-import FilterCombobox from '@/components/filter-combobox';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -23,6 +22,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
+import BookPicker from './BookPicker';
 import { FieldError } from './FieldError';
 import NodeLinksSection from './NodeLinksSection';
 import type { EnumOption, PanduanFormLink, PanduanFormNode } from './panduan-form-types';
@@ -36,6 +36,7 @@ interface PanduanNodesSectionProps {
     addNode: () => void;
     removeNode: (nodeIndex: number) => void;
     updateNode: (nodeIndex: number, field: keyof PanduanFormNode, value: unknown) => void;
+    changeNodeSeries: (nodeIndex: number, value: string) => void;
     addLink: (nodeIndex: number) => void;
     removeLink: (nodeIndex: number, linkIndex: number) => void;
     updateLink: (nodeIndex: number, linkIndex: number, field: keyof PanduanFormLink, value: string) => void;
@@ -73,6 +74,7 @@ export default function PanduanNodesSection({
     addNode,
     removeNode,
     updateNode,
+    changeNodeSeries,
     addLink,
     removeLink,
     updateLink,
@@ -169,24 +171,19 @@ export default function PanduanNodesSection({
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-2">
-                            <div className="space-y-1.5">
-                                <label className="block text-xs font-medium text-neutral-700 dark:text-slate-300">
-                                    Postingan Buku
-                                </label>
-                                <FilterCombobox
-                                    value={node.book_id === '' ? 'all' : String(node.book_id)}
-                                    selectedLabel={node.book_label ?? undefined}
-                                    allLabel="Tanpa buku"
-                                    placeholder="Cari judul buku..."
-                                    type="book"
-                                    onChange={(value) =>
-                                        updateNode(nodeIndex, 'book_id', value === 'all' ? '' : value)
-                                    }
-                                    className="sm:w-full"
-                                />
-                                <FieldError field={`nodes.${nodeIndex}.book_id`} errors={errors} />
-                            </div>
+                        <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-3">
+                            <BookPicker
+                                className="md:col-span-2"
+                                idPrefix={`nodes.${nodeIndex}`}
+                                seriesId={node.book_series_id}
+                                seriesLabel={node.book_series_label ?? null}
+                                bookId={node.book_id}
+                                bookLabel={node.book_label ?? null}
+                                bookVolume={node.book_volume}
+                                onSeriesChange={(value) => changeNodeSeries(nodeIndex, value)}
+                                onBookChange={(value) => updateNode(nodeIndex, 'book_id', value)}
+                                errors={errors}
+                            />
 
                             <div className="md:pt-5">
                                 <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-neutral-300 bg-neutral-50 p-2.5 transition-colors dark:border-[#1f2633] dark:bg-[#090b0f]">

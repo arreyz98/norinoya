@@ -246,6 +246,8 @@ class QueryCatalog
     private function filtered(Request $request): Builder
     {
         $query = Book::catalogQuery();
+        $this->excludeUpcoming($query);
+
         $term = $this->term($request);
 
         if ($term !== '') {
@@ -357,6 +359,24 @@ class QueryCatalog
     }
 
     /**
+     * Buku yang sudah tampil di section "Segera Rilis" tidak boleh muncul lagi di
+     * grid katalog pada halaman yang sama. Daftar id diambil dari upcoming() yang
+     * sudah di-cache, jadi tidak ada query tambahan yang berarti.
+     *
+     * Dipasang sebelum paginate() supaya total dan last_page ikut tersaring.
+     *
+     * @param  Builder<Book>  $query
+     */
+    private function excludeUpcoming(Builder $query): void
+    {
+        $ids = $this->upcoming()->pluck('id')->all();
+
+        if ($ids !== []) {
+            $query->whereNotIn('books.id', $ids);
+        }
+    }
+
+    /**
      * @param  Builder<Book>  $query
      */
     private function whereTitleLike(Builder $query, string $like): void
@@ -388,7 +408,10 @@ class QueryCatalog
         }
 
         match ($sort) {
-            'terbaru' => $query->latest('updated_at')->orderByDesc('id'),
+            // 'created_at' (kapan buku dibuat admin), bukan 'updated_at': kolom itu ikut
+            // berubah saat buku diedit, status publikasi di-toggle, atau urutan volume
+            // diubah, sehingga buku lama bisa naik ke atas tanpa alasan.
+            'terbaru' => $query->latest('created_at')->orderByDesc('id'),
             'terpopuler' => $query->orderByDesc('views_count')->orderBy('title'),
             'harga_terendah' => $query->orderBy('msrp')->orderBy('title'),
             'harga_tertinggi' => $query->orderByDesc('msrp')->orderBy('title'),
