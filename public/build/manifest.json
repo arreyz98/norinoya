@@ -156,12 +156,12 @@
     "src": "public/assets/images/white.svg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-RstmlOwL.css",
+    "file": "assets/app-DBmByPVl.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-CC5rDnh5.js",
+    "file": "assets/app-Cq-BSSGp.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -281,7 +281,7 @@
       "resources/js/pages/welcome.tsx"
     ],
     "css": [
-      "assets/app-RstmlOwL.css"
+      "assets/app-DBmByPVl.css"
     ]
   },
   "resources/js/pages/User/bookmark.tsx": {
@@ -406,7 +406,7 @@
     ]
   },
   "resources/js/pages/User/components/EtalaseCatalog.tsx": {
-    "file": "assets/EtalaseCatalog-PeaTZPyO.js",
+    "file": "assets/EtalaseCatalog-Bj6HPSC6.js",
     "name": "EtalaseCatalog",
     "src": "resources/js/pages/User/components/EtalaseCatalog.tsx",
     "isDynamicEntry": true,
@@ -458,7 +458,7 @@
     ]
   },
   "resources/js/pages/User/components/MarketplaceDB.tsx": {
-    "file": "assets/MarketplaceDB-C21AfoSE.js",
+    "file": "assets/MarketplaceDB-TfaHpaHE.js",
     "name": "MarketplaceDB",
     "src": "resources/js/pages/User/components/MarketplaceDB.tsx",
     "isDynamicEntry": true,
@@ -516,7 +516,7 @@
     ]
   },
   "resources/js/pages/User/components/NewsFeed.tsx": {
-    "file": "assets/NewsFeed-By6_FGNo.js",
+    "file": "assets/NewsFeed-BtBbXf1Z.js",
     "name": "NewsFeed",
     "src": "resources/js/pages/User/components/NewsFeed.tsx",
     "isDynamicEntry": true,
@@ -610,7 +610,7 @@
     ]
   },
   "resources/js/pages/User/home.tsx": {
-    "file": "assets/home-CuSg0dTv.js",
+    "file": "assets/home-3yF25Mc-.js",
     "name": "home",
     "src": "resources/js/pages/User/home.tsx",
     "isDynamicEntry": true,
@@ -641,7 +641,7 @@
     ]
   },
   "resources/js/pages/User/kios.tsx": {
-    "file": "assets/kios-CIUHmaxD.js",
+    "file": "assets/kios-CIhUqq7x.js",
     "name": "kios",
     "src": "resources/js/pages/User/kios.tsx",
     "isDynamicEntry": true,
@@ -668,7 +668,7 @@
     ]
   },
   "resources/js/pages/User/news.tsx": {
-    "file": "assets/news-BdZm1VY9.js",
+    "file": "assets/news-CGx-tppo.js",
     "name": "news",
     "src": "resources/js/pages/User/news.tsx",
     "isDynamicEntry": true,
