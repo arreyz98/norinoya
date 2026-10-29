@@ -1,13 +1,13 @@
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import { usePage, Link, useForm, Head, router } from "@inertiajs/react";
-import { X, PanelLeft, Settings, ChevronRight, Check, Circle, LogOut, ChevronsUpDown, LayoutGrid, LayoutPanelTop, Newspaper, Store, Route, ExternalLink, Folder, BookOpen, Sun, Moon, LoaderCircle, OctagonX, TriangleAlert, Info, CircleCheck, Plus, Pencil, Trash2, Search, ArrowUpDown, ChevronDown, ChevronUp, XCircle, Loader2, SearchCode, History, Eye, Globe, FilePenLine, Copy, ArrowUp, ArrowDown, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, ArrowLeft, FileSpreadsheet, RefreshCw, Calendar as Calendar$1, Clock, Smartphone, Laptop, AlertTriangle, TrendingUp, Users, Hash, Sparkles, Save, GripVertical, Tag, Layers, Image, ShoppingBag, MousePointerClick, Youtube, Instagram, Twitter, Link as Link$1, Unlink, Video, HelpCircle, Flame, Pin, GitBranch, Network } from "lucide-react";
+import { X, PanelLeft, Settings, ChevronRight, Check, Circle, LogOut, ChevronsUpDown, LayoutGrid, LayoutPanelTop, Newspaper, Store, Route, ExternalLink, Folder, BookOpen, Sun, Moon, LoaderCircle, OctagonX, TriangleAlert, Info, CircleCheck, Plus, Pencil, Trash2, Search, ArrowUpDown, ChevronDown, ChevronUp, XCircle, Loader2, SearchCode, History, Eye, Globe, FilePenLine, Copy, ArrowUp, ArrowDown, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, ArrowLeft, FileSpreadsheet, RefreshCw, Calendar as Calendar$1, Clock, Smartphone, Laptop, AlertTriangle, TrendingUp, Users, Hash, Sparkles, Save, GripVertical, Tag, Layers, Image, ShoppingBag, MousePointerClick, Youtube, Instagram, Twitter, ImagePlus, Undo2, Redo2, Eraser, Minus, ALargeSmall, Link as Link$1, Unlink, Video, HelpCircle, Flame, Pin, GitBranch, Network } from "lucide-react";
 import * as React from "react";
 import React__default, { useState, useEffect, useCallback, Fragment as Fragment$1, useRef, useMemo } from "react";
 import { cva } from "class-variance-authority";
 import { Toaster as Toaster$1, toast } from "sonner";
-import { ReactNodeViewRenderer, NodeViewWrapper, useEditor, EditorContent } from "@tiptap/react";
+import { ReactNodeViewRenderer, NodeViewWrapper, useEditor, useEditorState, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Node, mergeAttributes } from "@tiptap/core";
+import { Node, mergeAttributes, Mark } from "@tiptap/core";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import { getDefaultClassNames, DayPicker } from "react-day-picker";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
@@ -1108,7 +1108,7 @@ const Label = React.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */
   }
 ));
 Label.displayName = LabelPrimitive.Root.displayName;
-const breadcrumbs$q = [
+const breadcrumbs$p = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -1132,7 +1132,7 @@ function CreateAffiliateStore() {
       route("admin.affiliate-stores.store")
     );
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$q, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$p, children: [
     /* @__PURE__ */ jsx(Head, { title: "Tambah Affiliate Store" }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-4 p-4", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
@@ -1411,7 +1411,7 @@ const AlertDialogCancel = React.forwardRef(({ className, ...props }, ref) => /* 
   }
 ));
 AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
-const breadcrumbs$p = [
+const breadcrumbs$o = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -1442,7 +1442,7 @@ function AffiliateStoreIndex({
       }
     );
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$p, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$o, children: [
     /* @__PURE__ */ jsx(Head, { title: "Affiliate Stores" }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-4 p-4", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
@@ -2271,7 +2271,7 @@ const __vite_glob_0_8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.def
   __proto__: null,
   default: EditBookSeries
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$o = [
+const breadcrumbs$n = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -2381,7 +2381,7 @@ function BookSeriesIndex({
       }
     );
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$o, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$n, children: [
     /* @__PURE__ */ jsx(Head, { title: "Book Series" }),
     /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between", children: [
@@ -2709,6 +2709,38 @@ const AlertDescription = React.forwardRef(({ className, ...props }, ref) => /* @
 AlertDescription.displayName = "AlertDescription";
 function normalizeImageKitUrl(value) {
   return value.trim().replace(/^https?:\/\/ik\.imagekit\.io(?=\/|$)/i, "https://ik.imgkit.net");
+}
+function isValidUrl(value) {
+  const url = value.trim();
+  if (url === "") return false;
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+const DANGEROUS_PROTOCOL$1 = /^(javascript|data|vbscript):/i;
+function isSafeImageUrl(value) {
+  const url = (value ?? "").trim();
+  if (url === "" || /\s/.test(url)) return false;
+  if (DANGEROUS_PROTOCOL$1.test(url)) return false;
+  if (url.startsWith("/") && !url.startsWith("//")) return true;
+  const candidate = url.startsWith("//") ? `https:${url}` : /^[a-z][a-z0-9+.-]*:/i.test(url) ? url : `https://${url}`;
+  try {
+    const parsed = new URL(candidate);
+    return parsed.protocol === "https:" || parsed.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+function normalizeImageUrl(value) {
+  const url = (value ?? "").trim();
+  if (url === "") return "";
+  if (url.startsWith("//")) return `https:${url}`;
+  if (url.startsWith("/")) return url;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(url)) return url;
+  return `https://${url}`;
 }
 const Card = React.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsx(
   "div",
@@ -4447,14 +4479,6 @@ const REQUIRED_FIELDS = /* @__PURE__ */ new Set([
   "synopsis",
   "msrp"
 ]);
-const isValidUrl$1 = (value) => {
-  try {
-    const url = new URL(value);
-    return url.protocol === "http:" || url.protocol === "https:";
-  } catch {
-    return false;
-  }
-};
 const transliterateForSlug = (value) => value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/ß/g, "ss").replace(/[Ææ]/g, "AE").replace(/[Œœ]/g, "OE").replace(/[Øø]/g, "O").replace(/[Þþ]/g, "TH").replace(/[ÐðĐđ]/g, "D").replace(/[Łł]/g, "L");
 const buildSlugPreview = (title, volume) => transliterateForSlug(`${title}-volume-${volume}`).replace(/_+/g, "-").replace(/@/g, "-at-").toLowerCase().replace(/[^\p{L}\p{N}\s-]+/gu, "").replace(/[-\s]+/g, "-").replace(/^-+|-+$/g, "");
 const buildUniqueSlugPreview = (baseSlug, existingSlugs) => {
@@ -4505,7 +4529,7 @@ const validateBook = (form, volumesBySeries) => {
   } else if (form.msrp.trim() && (!Number.isFinite(Number(form.msrp)) || Number(form.msrp) < 0)) {
     nextErrors.msrp = "Harga MSRP harus berupa angka minimal 0.";
   }
-  if (form.news_link.trim() && !isValidUrl$1(form.news_link.trim())) {
+  if (form.news_link.trim() && !isValidUrl(form.news_link.trim())) {
     nextErrors.news_link = "Link berita tidak valid.";
   }
   if (form.images.length > 5) {
@@ -4513,7 +4537,7 @@ const validateBook = (form, volumesBySeries) => {
   }
   form.images.forEach((image, index) => {
     const url = image.image_url.trim();
-    if (url && !isValidUrl$1(url)) {
+    if (url && !isValidUrl(url)) {
       nextErrors[`images.${index}.image_url`] = "URL gambar tidak valid.";
     }
   });
@@ -4522,7 +4546,7 @@ const validateBook = (form, volumesBySeries) => {
   }
   form.tiktok_embeds.forEach((embed, index) => {
     const url = (embed.embed_url || embed.url_video || "").trim();
-    if (url && !isValidUrl$1(url)) {
+    if (url && !isValidUrl(url)) {
       nextErrors[`tiktok_embeds.${index}.url_video`] = "URL TikTok tidak valid.";
     }
   });
@@ -4531,7 +4555,7 @@ const validateBook = (form, volumesBySeries) => {
   }
   form.instagram_embeds.forEach((embed, index) => {
     const url = (embed.url || "").trim();
-    if (url && !isValidUrl$1(url)) {
+    if (url && !isValidUrl(url)) {
       nextErrors[`instagram_embeds.${index}.url`] = "URL Instagram tidak valid.";
     }
   });
@@ -4540,7 +4564,7 @@ const validateBook = (form, volumesBySeries) => {
   }
   form.news_links.forEach((link, index) => {
     const url = (link.url || "").trim();
-    if (url && !isValidUrl$1(url)) {
+    if (url && !isValidUrl(url)) {
       nextErrors[`news_links.${index}.url`] = "URL berita tidak valid.";
     }
   });
@@ -4552,7 +4576,7 @@ const validateBook = (form, volumesBySeries) => {
     }
     if ((hasStore || url) && !url) {
       nextErrors[`affiliate_links.${index}.url`] = "URL affiliate wajib diisi.";
-    } else if (url && !isValidUrl$1(url)) {
+    } else if (url && !isValidUrl(url)) {
       nextErrors[`affiliate_links.${index}.url`] = "URL affiliate tidak valid.";
     }
   });
@@ -4568,7 +4592,7 @@ const validateBook = (form, volumesBySeries) => {
     }
     if (hasAny && !url) {
       nextErrors[`video_links.${index}.url`] = "Link video wajib diisi.";
-    } else if (url && !isValidUrl$1(url)) {
+    } else if (url && !isValidUrl(url)) {
       nextErrors[`video_links.${index}.url`] = "Link video tidak valid.";
     }
     if (hasAny && !video.access_type) {
@@ -5456,7 +5480,7 @@ const __vite_glob_0_21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: BookForm
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$n = [
+const breadcrumbs$m = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -5516,7 +5540,7 @@ function Create({
   };
   const pageTitle = book ? "Duplikat Buku" : "Tambah Buku";
   const pageDescription = book ? "Duplikat buku dengan volume yang sudah disesuaikan." : "Tambahkan buku baru ke dalam database.";
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: book ? breadcrumbsWithDuplicate : breadcrumbs$n, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: book ? breadcrumbsWithDuplicate : breadcrumbs$m, children: [
     /* @__PURE__ */ jsx(Head, { title: pageTitle }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-6 p-4", children: [
       /* @__PURE__ */ jsxs("div", { children: [
@@ -5554,7 +5578,7 @@ const __vite_glob_0_11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: Create
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$m = [
+const breadcrumbs$l = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -5594,7 +5618,7 @@ function Edit({
       onFinish: () => setProcessing(false)
     });
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$m, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$l, children: [
     /* @__PURE__ */ jsx(Head, { title: `Edit ${book.title}` }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-6 p-6", children: [
       /* @__PURE__ */ jsxs("div", { children: [
@@ -5805,7 +5829,7 @@ const Checkbox = React.forwardRef(
   )
 );
 Checkbox.displayName = CheckboxPrimitive.Root.displayName;
-const breadcrumbs$l = [
+const breadcrumbs$k = [
   {
     title: "Dashboard",
     href: "/admin/dashboard"
@@ -5933,11 +5957,6 @@ function Index({ books, selectedSeries = null, selectedPublisher = null, filters
     setSort(next);
     handleApplyFilters({ sort: next });
   };
-  const toggleViewsSort = () => {
-    const next = sort === "views_desc" ? "views_asc" : "views_desc";
-    setSort(next);
-    handleApplyFilters({ sort: next });
-  };
   const renderSortIcon = (ascValue, descValue) => {
     if (sort === ascValue) {
       return /* @__PURE__ */ jsx(ArrowUp, { className: "size-3.5" });
@@ -6000,7 +6019,7 @@ function Index({ books, selectedSeries = null, selectedPublisher = null, filters
       }
     );
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$l, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$k, children: [
     /* @__PURE__ */ jsx(Head, { title: "Books" }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-5 p-4 sm:p-6", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-between gap-4 sm:flex-row sm:items-center", children: [
@@ -6186,18 +6205,7 @@ function Index({ books, selectedSeries = null, selectedPublisher = null, filters
           /* @__PURE__ */ jsx("th", { className: "px-4 py-3 text-left text-xs font-bold text-white", children: "Volume" }),
           /* @__PURE__ */ jsx("th", { className: "px-4 py-3 text-left text-xs font-bold text-white", children: "Penerbit" }),
           /* @__PURE__ */ jsx("th", { className: "px-4 py-3 text-left text-xs font-bold text-white", children: "Status" }),
-          /* @__PURE__ */ jsx("th", { className: "px-4 py-3 text-center text-xs font-bold text-white", children: /* @__PURE__ */ jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: toggleViewsSort,
-              className: "inline-flex cursor-pointer items-center gap-1 hover:text-emerald-200",
-              children: [
-                /* @__PURE__ */ jsx("span", { children: "Views" }),
-                renderSortIcon("views_desc", "views_asc")
-              ]
-            }
-          ) }),
+          /* @__PURE__ */ jsx("th", { className: "px-4 py-3 text-center text-xs font-bold text-white", children: "Link Affiliate" }),
           /* @__PURE__ */ jsx("th", { className: "px-4 py-3 text-left text-xs font-bold text-white", children: "Publikasi" }),
           /* @__PURE__ */ jsx("th", { className: "px-4 py-3 text-right text-xs font-bold text-white", children: "Aksi" })
         ] }) }),
@@ -6241,10 +6249,10 @@ function Index({ books, selectedSeries = null, selectedPublisher = null, filters
             /* @__PURE__ */ jsx("td", { className: "px-4 py-3 text-sm", children: book.volume ? `Vol. ${book.volume}` : /* @__PURE__ */ jsx("span", { className: "text-muted-foreground", children: "-" }) }),
             /* @__PURE__ */ jsx("td", { className: "px-4 py-3 text-sm", children: book.publisher ? book.publisher.name : /* @__PURE__ */ jsx("span", { className: "text-muted-foreground", children: "-" }) }),
             /* @__PURE__ */ jsx("td", { className: "px-4 py-3", children: book.story_status ? /* @__PURE__ */ jsx("span", { className: "inline-flex rounded-full border px-2.5 py-1 text-xs font-medium", children: (_a = book.story_status) == null ? void 0 : _a.name }) : /* @__PURE__ */ jsx("span", { className: "text-muted-foreground text-sm", children: "-" }) }),
-            /* @__PURE__ */ jsx("td", { className: "px-4 py-3 text-center", children: /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center gap-1 rounded-md bg-neutral-100 px-2.5 py-1 font-mono text-xs font-bold text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300", children: [
-              /* @__PURE__ */ jsx(Eye, { className: "h-3.5 w-3.5 text-neutral-400" }),
-              /* @__PURE__ */ jsx("span", { children: (book.views_count ?? 0).toLocaleString("id-ID") })
-            ] }) }),
+            /* @__PURE__ */ jsx("td", { className: "px-4 py-3 text-center", children: book.affiliate_links_count > 0 ? /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-1 text-xs font-medium text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-200", children: [
+              book.affiliate_links_count,
+              " affiliate"
+            ] }) : /* @__PURE__ */ jsx("span", { className: "inline-flex items-center gap-1 rounded-full bg-neutral-100 border border-neutral-200 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300", children: "Tidak ada affiliate" }) }),
             /* @__PURE__ */ jsx("td", { className: "px-4 py-3", children: book.publication_status === "draft" ? /* @__PURE__ */ jsx("span", { className: "inline-flex rounded-full border border-amber-300 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200", children: "Draf" }) : /* @__PURE__ */ jsx("span", { className: "inline-flex rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200", children: "Terbit" }) }),
             /* @__PURE__ */ jsx("td", { className: "px-4 py-3", children: /* @__PURE__ */ jsxs("div", { className: "flex justify-end gap-1.5", children: [
               book.publication_status === "draft" ? /* @__PURE__ */ jsx(
@@ -7235,7 +7243,7 @@ function LogsPage({ logs, filters: rawFilters, config }) {
     ] }) })
   ] });
 }
-const breadcrumbs$k = [
+const breadcrumbs$j = [
   {
     title: "Dashboard",
     href: "/admin/dashboard"
@@ -7254,7 +7262,7 @@ function Logs$2({ logs, filters, stats }) {
     headTitle: "Book View Logs",
     pageTitle: "Log Kunjungan & Waktu Buku",
     subtitle: "Pencatatan riwayat waktu real-time saat buku dilihat oleh pengunjung (dengan anti-spam 1 view/menit per IP).",
-    breadcrumbs: breadcrumbs$k,
+    breadcrumbs: breadcrumbs$j,
     backHref: route("admin.books.index"),
     crossLink: {
       href: route("admin.books.search-logs"),
@@ -7881,7 +7889,7 @@ function SearchLogsPage({ logs, filters: rawFilters, stats, topSearches, config 
     ] }) })
   ] });
 }
-const breadcrumbs$j = [
+const breadcrumbs$i = [
   {
     title: "Dashboard",
     href: "/admin/dashboard"
@@ -7901,7 +7909,7 @@ function SearchLogs$2(props) {
     headTitle: "Keyword Logs Pencarian Buku",
     pageTitle: "Log Kata Kunci Pencarian Buku",
     subtitle: "Riwayat kata kunci yang dicari pengunjung di katalog buku. Otomatis dibersihkan dari spasi berlebih, huruf kecil, serta pencegahan spam kata berulang.",
-    breadcrumbs: breadcrumbs$j,
+    breadcrumbs: breadcrumbs$i,
     backHref: route("admin.books.index"),
     exportHref: route("admin.books.search-logs.export", {
       search: (_a = props.filters) == null ? void 0 : _a.search,
@@ -7933,7 +7941,7 @@ const __vite_glob_0_15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: SearchLogs$2
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$i = [
+const breadcrumbs$h = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -8026,7 +8034,7 @@ function VolumeOrder({ seriesList }) {
       fetchVolumes(selectedSeriesId);
     }
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$i, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$h, children: [
     /* @__PURE__ */ jsx(Head, { title: "Atur Urutan Volume" }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-6 p-4", children: [
       /* @__PURE__ */ jsxs("div", { children: [
@@ -8156,7 +8164,7 @@ const __vite_glob_0_30 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: EditionForm
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$h = [
+const breadcrumbs$g = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -8171,7 +8179,7 @@ const breadcrumbs$h = [
   }
 ];
 function CreateEdition() {
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$h, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$g, children: [
     /* @__PURE__ */ jsx(Head, { title: "Tambah Edisi" }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-4 p-4", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
@@ -8346,7 +8354,7 @@ const __vite_glob_0_28 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: EditEdition
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$g = [
+const breadcrumbs$f = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -8377,7 +8385,7 @@ function EditionIndex({
       }
     );
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$g, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$f, children: [
     /* @__PURE__ */ jsx(Head, { title: "Editions" }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-4 p-4", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
@@ -8545,7 +8553,7 @@ const __vite_glob_0_34 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: GenreForm
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$f = [
+const breadcrumbs$e = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -8560,7 +8568,7 @@ const breadcrumbs$f = [
   }
 ];
 function CreateGenre() {
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$f, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$e, children: [
     /* @__PURE__ */ jsx(Head, { title: "Tambah Genre" }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-4 p-4", children: [
       /* @__PURE__ */ jsxs("div", { children: [
@@ -8715,7 +8723,7 @@ const __vite_glob_0_32 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: EditGenre
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$e = [
+const breadcrumbs$d = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -8754,7 +8762,7 @@ function GenreIndex({
       }
     );
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$e, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$d, children: [
     /* @__PURE__ */ jsx(Head, { title: "Genres" }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-4 p-4", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
@@ -8905,7 +8913,7 @@ const CONDITION_RATINGS$1 = [
   { id: "C", label: "Grade C (Cukup / Kertas Menguning Wajar)" },
   { id: "D", label: "Grade D (Bacaan Harian / Ada Minus Fisik)" }
 ];
-const breadcrumbs$d = [
+const breadcrumbs$c = [
   { title: "Dashboard", href: "/dashboard" },
   { title: "Kios & Preloved", href: "/admin/kios" },
   { title: "Tambah Item", href: "/admin/kios/create" }
@@ -9013,7 +9021,7 @@ function KiosCreate({ partners = [], ageRatings = [] }) {
     e.preventDefault();
     post(route("admin.kios.store"));
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$d, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$c, children: [
     /* @__PURE__ */ jsx(Head, { title: "Tambah Item Kios & Preloved" }),
     /* @__PURE__ */ jsxs("div", { className: "max-w-5xl mx-auto p-4 sm:p-6 space-y-6", children: [
       /* @__PURE__ */ jsx("div", { className: "flex items-center justify-between", children: /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
@@ -10041,7 +10049,7 @@ const __vite_glob_0_36 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: KiosEdit
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$c = [
+const breadcrumbs$b = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -10106,7 +10114,7 @@ function KiosIndex({ kiosItems, filters: rawFilters }) {
       }
     });
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$c, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$b, children: [
     /* @__PURE__ */ jsx(Head, { title: "Kios & Preloved Items" }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-5 p-4 sm:p-6", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4", children: [
@@ -10471,7 +10479,7 @@ const __vite_glob_0_37 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: KiosIndex
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$b = [
+const breadcrumbs$a = [
   {
     title: "Dashboard",
     href: "/admin/dashboard"
@@ -10506,7 +10514,7 @@ function Logs$1({ logs, filters, stats }) {
     headTitle: "Kios Activity Logs",
     pageTitle: "Log Kunjungan & Klik Produk Kios",
     subtitle: "Pencatatan riwayat waktu saat produk dilihat atau link pembelian diklik oleh pembeli.",
-    breadcrumbs: breadcrumbs$b,
+    breadcrumbs: breadcrumbs$a,
     backHref: route("admin.kios.index"),
     crossLink: {
       href: route("admin.kios.search-logs"),
@@ -10590,7 +10598,7 @@ const __vite_glob_0_38 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: Logs$1
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$a = [
+const breadcrumbs$9 = [
   {
     title: "Dashboard",
     href: "/admin/dashboard"
@@ -10610,7 +10618,7 @@ function SearchLogs$1(props) {
     headTitle: "Keyword Logs Pencarian Kios",
     pageTitle: "Log Kata Kunci Pencarian Kios",
     subtitle: "Riwayat kata kunci yang dicari pengunjung pada etalase katalog produk kios (dilengkapi sanitasi dan anti-spam).",
-    breadcrumbs: breadcrumbs$a,
+    breadcrumbs: breadcrumbs$9,
     backHref: route("admin.kios.index"),
     crossLink: {
       href: route("admin.kios.logs"),
@@ -10648,7 +10656,7 @@ const __vite_glob_0_39 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: SearchLogs$1
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$9 = [
+const breadcrumbs$8 = [
   { title: "Dashboard", href: "/dashboard" },
   { title: "Toko Partner Kios", href: "/admin/kios-partners" },
   { title: "Tambah Toko Partner", href: "/admin/kios-partners/create" }
@@ -10671,7 +10679,7 @@ function KiosPartnerCreate() {
     e.preventDefault();
     post(route("admin.kios-partners.store"));
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$9, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$8, children: [
     /* @__PURE__ */ jsx(Head, { title: "Tambah Toko Partner Kios" }),
     /* @__PURE__ */ jsxs("div", { className: "max-w-2xl mx-auto p-4 sm:p-6 space-y-6", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
@@ -10876,7 +10884,7 @@ const __vite_glob_0_41 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: KiosPartnerEdit
 }, Symbol.toStringTag, { value: "Module" }));
-const breadcrumbs$8 = [
+const breadcrumbs$7 = [
   {
     title: "Dashboard",
     href: "/dashboard"
@@ -10904,7 +10912,7 @@ function KiosPartnersIndex({ partners, filters = {} }) {
       }
     });
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$8, children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$7, children: [
     /* @__PURE__ */ jsx(Head, { title: "Toko Partner Kios" }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-5 p-4 sm:p-6", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4", children: [
@@ -11423,6 +11431,224 @@ const Embed = Node.create({
     ];
   }
 });
+const asElement = (element) => element;
+const readCaptionFromElement = (element) => {
+  var _a;
+  const parent = element.parentElement;
+  if (!parent) return null;
+  const figcaption = (_a = parent.querySelector) == null ? void 0 : _a.call(parent, "figcaption");
+  const text = ((figcaption == null ? void 0 : figcaption.textContent) ?? "").trim();
+  return text !== "" ? text : null;
+};
+function ImageView({ node, selected, deleteNode, updateAttributes }) {
+  const src = String(node.attrs.src ?? "");
+  const alt = node.attrs.alt ? String(node.attrs.alt) : "";
+  const caption = node.attrs.caption ? String(node.attrs.caption) : "";
+  const [isEditing, setIsEditing] = useState(false);
+  const [draftAlt, setDraftAlt] = useState(alt);
+  const [draftCaption, setDraftCaption] = useState(caption);
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    setDraftAlt(alt);
+    setDraftCaption(caption);
+  }, [alt, caption]);
+  useEffect(() => {
+    setFailed(false);
+  }, [src]);
+  const applyDetails = () => {
+    updateAttributes({
+      alt: draftAlt.trim() || null,
+      caption: draftCaption.trim() || null
+    });
+    setIsEditing(false);
+  };
+  return /* @__PURE__ */ jsx(NodeViewWrapper, { className: "my-4", "data-embed-view": "news-image", contentEditable: false, children: /* @__PURE__ */ jsxs(
+    "div",
+    {
+      className: `overflow-hidden rounded-xl border bg-white dark:bg-neutral-900 ${selected ? "border-emerald-500 ring-2 ring-emerald-500/40" : "border-neutral-200 dark:border-neutral-700"}`,
+      children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex select-none items-center justify-between gap-2 border-b border-neutral-200 bg-neutral-50 px-2.5 py-1.5 dark:border-neutral-700 dark:bg-neutral-800", children: [
+          /* @__PURE__ */ jsxs("span", { className: "flex min-w-0 items-center gap-1.5 text-[11px] font-bold text-neutral-600 dark:text-neutral-300", children: [
+            /* @__PURE__ */ jsx(ImagePlus, { className: "h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" }),
+            "Gambar",
+            /* @__PURE__ */ jsx("span", { className: "truncate font-mono text-[10px] font-normal text-neutral-400 dark:text-neutral-500", children: src })
+          ] }),
+          /* @__PURE__ */ jsxs("span", { className: "flex shrink-0 items-center gap-1", children: [
+            /* @__PURE__ */ jsxs(
+              "button",
+              {
+                type: "button",
+                onClick: () => setIsEditing((prev) => !prev),
+                className: "flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-semibold text-neutral-600 hover:bg-neutral-200/70 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                title: "Atur alt text & caption",
+                children: [
+                  /* @__PURE__ */ jsx(Pencil, { className: "h-3 w-3" }),
+                  "Atribut"
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxs(
+              "button",
+              {
+                type: "button",
+                onClick: () => deleteNode == null ? void 0 : deleteNode(),
+                className: "flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-semibold text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40",
+                title: "Hapus gambar",
+                children: [
+                  /* @__PURE__ */ jsx(Trash2, { className: "h-3 w-3" }),
+                  "Hapus"
+                ]
+              }
+            )
+          ] })
+        ] }),
+        /* @__PURE__ */ jsx("div", { className: "flex justify-center bg-neutral-50 p-3 dark:bg-neutral-950/40", children: failed ? /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 px-3 py-6 text-xs font-semibold text-red-600 dark:text-red-400", children: [
+          /* @__PURE__ */ jsx(TriangleAlert, { className: "h-4 w-4 shrink-0" }),
+          "Gambar tidak dapat dimuat. Periksa kembali URL-nya."
+        ] }) : /* @__PURE__ */ jsx(
+          "img",
+          {
+            src,
+            alt,
+            className: "max-h-[400px] w-auto max-w-full rounded-lg object-contain",
+            onError: () => setFailed(true)
+          }
+        ) }),
+        !isEditing && caption !== "" && !failed && /* @__PURE__ */ jsx("p", { className: "border-t border-neutral-100 px-3 py-2 text-center text-xs text-neutral-500 dark:border-neutral-800 dark:text-neutral-400", children: caption }),
+        isEditing && /* @__PURE__ */ jsxs("div", { className: "space-y-2 border-t border-neutral-200 p-3 dark:border-neutral-700", children: [
+          /* @__PURE__ */ jsx(
+            "input",
+            {
+              type: "text",
+              value: draftAlt,
+              onChange: (event) => setDraftAlt(event.target.value),
+              placeholder: "Teks alternatif (untuk SEO & pembaca layar)",
+              className: "w-full rounded-lg border border-neutral-300 bg-white px-2.5 py-1.5 text-xs text-neutral-900 outline-none focus:ring-2 focus:ring-emerald-500/50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100"
+            }
+          ),
+          /* @__PURE__ */ jsx(
+            "input",
+            {
+              type: "text",
+              value: draftCaption,
+              onChange: (event) => setDraftCaption(event.target.value),
+              onKeyDown: (event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  applyDetails();
+                }
+              },
+              placeholder: "Caption / keterangan gambar (opsional)",
+              className: "w-full rounded-lg border border-neutral-300 bg-white px-2.5 py-1.5 text-xs text-neutral-900 outline-none focus:ring-2 focus:ring-emerald-500/50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100"
+            }
+          ),
+          /* @__PURE__ */ jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: applyDetails,
+              className: "flex w-full items-center justify-center gap-1 rounded-lg bg-emerald-600 px-2.5 py-1.5 text-xs font-bold text-white transition-colors hover:bg-emerald-700",
+              children: [
+                /* @__PURE__ */ jsx(Check, { className: "h-3.5 w-3.5" }),
+                "Simpan Atribut"
+              ]
+            }
+          )
+        ] })
+      ]
+    }
+  ) });
+}
+const NewsImage = Node.create({
+  name: "newsImage",
+  group: "block",
+  atom: true,
+  draggable: true,
+  selectable: true,
+  addAttributes() {
+    return {
+      src: {
+        default: null
+      },
+      alt: {
+        default: null
+      },
+      caption: {
+        default: null
+      }
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "img[src]",
+        getAttrs: (element) => {
+          const el = asElement(element);
+          const src = (el == null ? void 0 : el.getAttribute("src")) ?? "";
+          if (!isSafeImageUrl(src)) return false;
+          return {
+            src: normalizeImageUrl(src),
+            alt: (el == null ? void 0 : el.getAttribute("alt")) || null,
+            caption: el ? readCaptionFromElement(el) : null
+          };
+        }
+      }
+    ];
+  },
+  renderHTML({ node, HTMLAttributes }) {
+    const src = String(node.attrs.src ?? "");
+    if (!isSafeImageUrl(src)) {
+      return ["span", { class: "norinoya-image-invalid" }, "[Gambar tidak valid]"];
+    }
+    const alt = node.attrs.alt ? String(node.attrs.alt) : "";
+    const caption = node.attrs.caption ? String(node.attrs.caption) : "";
+    const imageAttributes = mergeAttributes(HTMLAttributes, {
+      src: normalizeImageUrl(src),
+      ...alt !== "" ? { alt } : {},
+      class: "norinoya-inline-image",
+      loading: "lazy",
+      decoding: "async",
+      referrerpolicy: "no-referrer"
+    });
+    if (caption === "") {
+      return ["img", imageAttributes];
+    }
+    return [
+      "figure",
+      { class: "norinoya-figure" },
+      ["img", imageAttributes],
+      ["figcaption", {}, caption]
+    ];
+  },
+  addNodeView() {
+    return ReactNodeViewRenderer(ImageView);
+  }
+});
+const SMALL_TEXT_CLASS = "norinoya-text-small";
+const SmallText = Mark.create({
+  name: "smallText",
+  // Teks yang diketik setelahnya ikut kecil sampai mark di-toggle ulang.
+  inclusive: true,
+  parseHTML() {
+    return [
+      { tag: "span[data-norinoya-small]" },
+      // konten baru hasil editor ini
+      { tag: `span.${SMALL_TEXT_CLASS}` },
+      // cadangan bila atribut hilang
+      { tag: "small" }
+      // konten lama / hasil tempel dari luar
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return [
+      "span",
+      mergeAttributes(HTMLAttributes, {
+        class: SMALL_TEXT_CLASS,
+        "data-norinoya-small": "true"
+      })
+    ];
+  }
+});
 const normalizeUrl = (raw) => {
   const url = raw.trim();
   if (!url) return "";
@@ -11431,14 +11657,21 @@ const normalizeUrl = (raw) => {
   if (/^[a-z][a-z0-9+.-]*:/i.test(url)) return url;
   return `https://${url}`;
 };
-function RichTextEditor({ value, onChange }) {
+function RichTextEditor({ value, onChange, placeholder }) {
   const [openDialog, setOpenDialog] = React__default.useState(null);
   const [linkUrl, setLinkUrl] = React__default.useState("");
   const [embedUrl, setEmbedUrl] = React__default.useState("");
+  const [imageUrl, setImageUrl] = React__default.useState("");
+  const [imageAlt, setImageAlt] = React__default.useState("");
+  const [imageCaption, setImageCaption] = React__default.useState("");
   const linkFormRef = React__default.useRef(null);
   const embedFormRef = React__default.useRef(null);
+  const imageFormRef = React__default.useRef(null);
   const linkInputRef = React__default.useRef(null);
   const embedInputRef = React__default.useRef(null);
+  const imageInputRef = React__default.useRef(null);
+  const [isEmpty, setIsEmpty] = React__default.useState(true);
+  const [imageError, setImageError] = React__default.useState("");
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -11458,34 +11691,63 @@ function RichTextEditor({ value, onChange }) {
         }
       }),
       // Blok embed YouTube / Instagram (iframe) ke dalam isi berita
-      Embed
+      Embed,
+      // Gambar inline via URL. Sebelum node ini ada, ProseMirror membuang
+      // setiap <img> di konten tersimpan (tidak ada node yang menanganinya).
+      NewsImage,
+      // Mark teks kecil untuk baris sumber / kredit gambar.
+      SmallText
     ],
     content: value || "",
     editorProps: {
       attributes: {
-        // [&_p]:mb-4 memberi jarak bawah tiap paragraf
-        // [&_p:empty]:min-h-[1.5rem] menjaga tinggi baris jika ada double-enter (baris kosong)
-        // [&_a]:* membuat tautan terlihat jelas saat mode edit (typography plugin tidak terpasang)
-        class: "min-h-[180px] [&_p:empty]:min-h-[1.5rem] p-3.5 focus:outline-none prose dark:prose-invert max-w-none text-sm leading-relaxed text-neutral-800 dark:text-neutral-200 focus:ring-0 [&_a]:cursor-pointer [&_a]:font-medium [&_a]:text-emerald-700 [&_a]:underline [&_a]:decoration-emerald-500/60 [&_a]:underline-offset-2 hover:[&_a]:text-emerald-800 dark:[&_a]:text-emerald-400 dark:[&_a]:decoration-emerald-400/50 dark:hover:[&_a]:text-emerald-300"
+        // Metrik sengaja disamakan dengan halaman publik (DetailNews NewsBody)
+        // supaya editor benar-benar WYSIWYG. Catatan: @tailwindcss/typography
+        // TIDAK terpasang, jadi class `prose` tidak boleh dipakai (no-op).
+        class: "min-h-[480px] p-4 [&_p:empty]:min-h-[1.5rem] [&_p]:mb-5 [&_p:last-child]:mb-0 text-sm leading-relaxed text-neutral-800 dark:text-neutral-200 focus:outline-none focus:ring-0 [&_a]:cursor-pointer [&_a]:font-medium [&_a]:text-emerald-700 [&_a]:underline [&_a]:decoration-emerald-500/60 [&_a]:underline-offset-2 hover:[&_a]:text-emerald-800 dark:[&_a]:text-emerald-400 dark:[&_a]:decoration-emerald-400/50 dark:hover:[&_a]:text-emerald-300 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:leading-snug [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:leading-snug [&_blockquote]:my-6 [&_blockquote]:border-l-4 [&_blockquote]:border-[#DA6B1C] [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-neutral-600 dark:[&_blockquote]:text-neutral-300 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_img]:my-6 [&_img]:max-w-full [&_img]:rounded-xl [&_figure]:my-6 [&_figure]:mx-auto [&_figure]:max-w-full [&_figcaption]:mt-2 [&_figcaption]:text-center [&_figcaption]:text-xs [&_figcaption]:text-neutral-500 dark:[&_figcaption]:text-neutral-400 [&_hr]:my-6 [&_hr]:border-t [&_hr]:border-neutral-300 dark:[&_hr]:border-neutral-700 [&_.norinoya-text-small]:text-xs [&_small]:text-xs [&_a]:break-words"
       }
     },
     onUpdate: ({ editor: editor2 }) => {
+      setIsEmpty(editor2.isEmpty);
       onChange(editor2.getHTML());
     }
   });
+  const editorStats = useEditorState({
+    editor,
+    selector: ({ editor: current }) => {
+      if (!current) {
+        return { words: 0, chars: 0, minutes: 0, canUndo: false, canRedo: false };
+      }
+      const text = current.state.doc.textContent ?? "";
+      const trimmed = text.trim();
+      const words = trimmed ? trimmed.split(/\s+/).length : 0;
+      return {
+        words,
+        chars: text.length,
+        // Kecepatan baca rata-rata artikel: ~200 kata per menit.
+        minutes: words > 0 ? Math.max(1, Math.ceil(words / 200)) : 0,
+        canUndo: current.can().undo(),
+        canRedo: current.can().redo()
+      };
+    }
+  });
+  React__default.useEffect(() => {
+    if (!editor) return;
+    setIsEmpty(editor.isEmpty);
+  }, [value, editor]);
   React__default.useEffect(() => {
     if (editor && value !== editor.getHTML()) {
       if (value === "" || editor.isEmpty && value !== "") {
-        editor.commands.setContent(value || "", false);
+        editor.commands.setContent(value || "", { emitUpdate: false });
       }
     }
   }, [value, editor]);
   React__default.useEffect(() => {
     if (!openDialog) return;
     const handleClickOutside = (event) => {
-      var _a, _b;
+      var _a, _b, _c;
       const target = event.target;
-      if (((_a = linkFormRef.current) == null ? void 0 : _a.contains(target)) || ((_b = embedFormRef.current) == null ? void 0 : _b.contains(target))) return;
+      if (((_a = linkFormRef.current) == null ? void 0 : _a.contains(target)) || ((_b = embedFormRef.current) == null ? void 0 : _b.contains(target)) || ((_c = imageFormRef.current) == null ? void 0 : _c.contains(target))) return;
       setOpenDialog(null);
     };
     const handleEscape = (event) => {
@@ -11505,9 +11767,11 @@ function RichTextEditor({ value, onChange }) {
   }
   const isLinkFormOpen = openDialog === "link";
   const isEmbedFormOpen = openDialog === "embed";
+  const isImageFormOpen = openDialog === "image";
   const getActiveLinkHref = () => editor.isActive("link") ? String(editor.getAttributes("link").href || "") : "";
   const activeLinkHref = getActiveLinkHref();
   const detectedEmbed = resolveEmbedUrl(embedUrl);
+  const isImageUrlValid = isSafeImageUrl(imageUrl.trim());
   const openLinkForm = () => {
     setLinkUrl(getActiveLinkHref());
     setOpenDialog("link");
@@ -11558,9 +11822,47 @@ function RichTextEditor({ value, onChange }) {
     }).run();
     closeEmbedForm();
   };
+  const openImageForm = () => {
+    setImageUrl("");
+    setImageAlt("");
+    setImageCaption("");
+    setImageError("");
+    setOpenDialog("image");
+    window.setTimeout(() => {
+      var _a;
+      return (_a = imageInputRef.current) == null ? void 0 : _a.focus();
+    }, 0);
+  };
+  const closeImageForm = () => {
+    setOpenDialog(null);
+    setImageUrl("");
+    setImageAlt("");
+    setImageCaption("");
+    setImageError("");
+  };
+  const handleInsertImage = () => {
+    const url = imageUrl.trim();
+    if (!url) {
+      setImageError("URL gambar wajib diisi.");
+      return;
+    }
+    if (!isSafeImageUrl(url)) {
+      setImageError('URL gambar tidak valid. Gunakan alamat http(s):// atau path relatif "/...".');
+      return;
+    }
+    editor.chain().focus().insertContent({
+      type: "newsImage",
+      attrs: {
+        src: url,
+        alt: imageAlt.trim() || null,
+        caption: imageCaption.trim() || null
+      }
+    }).run();
+    closeImageForm();
+  };
   const handleContainerKeyDown = (event) => {
-    var _a, _b;
-    if (((_a = linkFormRef.current) == null ? void 0 : _a.contains(event.target)) || ((_b = embedFormRef.current) == null ? void 0 : _b.contains(event.target))) return;
+    var _a, _b, _c;
+    if (((_a = linkFormRef.current) == null ? void 0 : _a.contains(event.target)) || ((_b = embedFormRef.current) == null ? void 0 : _b.contains(event.target)) || ((_c = imageFormRef.current) == null ? void 0 : _c.contains(event.target))) return;
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
       event.preventDefault();
       if (isLinkFormOpen) {
@@ -11577,6 +11879,29 @@ function RichTextEditor({ value, onChange }) {
       className: "border border-neutral-300 dark:border-neutral-700 rounded-xl shadow-xs bg-white dark:bg-neutral-900 focus-within:ring-2 focus-within:ring-emerald-500/50 dark:focus-within:ring-emerald-400/50",
       children: [
         /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5 p-2 bg-neutral-50 dark:bg-neutral-800 border-b border-neutral-200 dark:border-neutral-700 select-none flex-wrap rounded-t-xl", children: [
+          /* @__PURE__ */ jsx(
+            "button",
+            {
+              type: "button",
+              onClick: () => editor.chain().focus().undo().run(),
+              disabled: !(editorStats == null ? void 0 : editorStats.canUndo),
+              className: "px-2 py-1 text-xs rounded-lg transition-all bg-white dark:bg-neutral-700/80 border border-neutral-200 dark:border-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-600 disabled:cursor-not-allowed disabled:opacity-40",
+              title: "Undo (Ctrl+Z)",
+              children: /* @__PURE__ */ jsx(Undo2, { className: "w-3.5 h-3.5" })
+            }
+          ),
+          /* @__PURE__ */ jsx(
+            "button",
+            {
+              type: "button",
+              onClick: () => editor.chain().focus().redo().run(),
+              disabled: !(editorStats == null ? void 0 : editorStats.canRedo),
+              className: "px-2 py-1 text-xs rounded-lg transition-all bg-white dark:bg-neutral-700/80 border border-neutral-200 dark:border-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-600 disabled:cursor-not-allowed disabled:opacity-40",
+              title: "Redo (Ctrl+Shift+Z)",
+              children: /* @__PURE__ */ jsx(Redo2, { className: "w-3.5 h-3.5" })
+            }
+          ),
+          /* @__PURE__ */ jsx("span", { className: "w-px h-5 mx-0.5 bg-neutral-200 dark:bg-neutral-700" }),
           /* @__PURE__ */ jsx(
             "button",
             {
@@ -11645,6 +11970,45 @@ function RichTextEditor({ value, onChange }) {
               className: `px-2.5 py-1 text-xs rounded-lg transition-all ${editor.isActive("blockquote") ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900" : "bg-white dark:bg-neutral-700/80 border border-neutral-200 dark:border-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-600"}`,
               title: "Kutipan",
               children: "” Kutipan"
+            }
+          ),
+          /* @__PURE__ */ jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: () => editor.chain().focus().unsetAllMarks().clearNodes().run(),
+              className: "flex items-center gap-1 px-2.5 py-1 text-xs rounded-lg transition-all bg-white dark:bg-neutral-700/80 border border-neutral-200 dark:border-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-600",
+              title: "Hapus semua format (bersihkan teks hasil tempel dari Word/Google Docs)",
+              children: [
+                /* @__PURE__ */ jsx(Eraser, { className: "w-3.5 h-3.5" }),
+                "Bersihkan"
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: () => editor.chain().focus().setHorizontalRule().run(),
+              className: "flex items-center gap-1 px-2.5 py-1 text-xs rounded-lg transition-all bg-white dark:bg-neutral-700/80 border border-neutral-200 dark:border-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-600",
+              title: "Garis pemisah (Horizontal Rule)",
+              children: [
+                /* @__PURE__ */ jsx(Minus, { className: "w-3.5 h-3.5" }),
+                "Garis"
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: () => editor.chain().focus().toggleMark("smallText").run(),
+              className: `flex items-center gap-1 px-2.5 py-1 text-xs rounded-lg transition-all ${editor.isActive("smallText") ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900" : "bg-white dark:bg-neutral-700/80 border border-neutral-200 dark:border-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-600"}`,
+              title: "Teks kecil (untuk sumber / kredit gambar)",
+              children: [
+                /* @__PURE__ */ jsx(ALargeSmall, { className: "w-3.5 h-3.5" }),
+                "Teks Kecil"
+              ]
             }
           ),
           /* @__PURE__ */ jsx("span", { className: "w-px h-5 mx-0.5 bg-neutral-200 dark:bg-neutral-700" }),
@@ -11805,14 +12169,249 @@ function RichTextEditor({ value, onChange }) {
                 " YouTube/Instagram/X langsung ke isi berita — otomatis dikonversi menjadi embed."
               ] })
             ] })
+          ] }),
+          /* @__PURE__ */ jsxs("div", { className: "relative", ref: imageFormRef, children: [
+            /* @__PURE__ */ jsxs(
+              "button",
+              {
+                type: "button",
+                onClick: () => isImageFormOpen ? closeImageForm() : openImageForm(),
+                className: `flex items-center gap-1 px-2.5 py-1 text-xs rounded-lg transition-all ${isImageFormOpen || editor.isActive("newsImage") ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900" : "bg-white dark:bg-neutral-700/80 border border-neutral-200 dark:border-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-600"}`,
+                title: "Sisipkan gambar dari URL",
+                children: [
+                  /* @__PURE__ */ jsx(ImagePlus, { className: "w-3.5 h-3.5" }),
+                  "Gambar"
+                ]
+              }
+            ),
+            isImageFormOpen && /* @__PURE__ */ jsxs("div", { className: "absolute right-0 top-full z-50 mt-2 w-80 max-w-[calc(100vw-3rem)] space-y-2 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-3 text-left shadow-xl sm:left-0 sm:right-auto", children: [
+              /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5 text-[11px] font-bold text-neutral-700 dark:text-neutral-200", children: [
+                /* @__PURE__ */ jsx(ImagePlus, { className: "w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" }),
+                /* @__PURE__ */ jsx("span", { children: "Sisipkan Gambar (URL)" })
+              ] }),
+              /* @__PURE__ */ jsx(
+                "input",
+                {
+                  ref: imageInputRef,
+                  type: "text",
+                  inputMode: "url",
+                  spellCheck: false,
+                  value: imageUrl,
+                  onChange: (e) => {
+                    setImageUrl(e.target.value);
+                    setImageError("");
+                  },
+                  onKeyDown: (e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleInsertImage();
+                    }
+                  },
+                  placeholder: "https://ik.imgkit.net/gambar-berita.jpg",
+                  className: "w-full rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-2.5 py-2 text-xs text-neutral-900 dark:text-neutral-100 outline-none focus:ring-2 focus:ring-emerald-500/50"
+                }
+              ),
+              /* @__PURE__ */ jsx(
+                "input",
+                {
+                  type: "text",
+                  spellCheck: false,
+                  value: imageAlt,
+                  onChange: (e) => setImageAlt(e.target.value),
+                  placeholder: "Teks alternatif (opsional, untuk SEO & pembaca layar)",
+                  className: "w-full rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-2.5 py-2 text-xs text-neutral-900 dark:text-neutral-100 outline-none focus:ring-2 focus:ring-emerald-500/50"
+                }
+              ),
+              /* @__PURE__ */ jsx(
+                "input",
+                {
+                  type: "text",
+                  value: imageCaption,
+                  onChange: (e) => setImageCaption(e.target.value),
+                  placeholder: "Caption / keterangan gambar (opsional)",
+                  className: "w-full rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-2.5 py-2 text-xs text-neutral-900 dark:text-neutral-100 outline-none focus:ring-2 focus:ring-emerald-500/50"
+                }
+              ),
+              imageError ? /* @__PURE__ */ jsx("p", { className: "text-[11px] font-semibold text-red-600 dark:text-red-400", children: imageError }) : imageUrl.trim() !== "" ? isImageUrlValid ? /* @__PURE__ */ jsxs("p", { className: "flex items-center gap-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400", children: [
+                /* @__PURE__ */ jsx(Check, { className: "w-3 h-3 shrink-0" }),
+                "URL gambar valid"
+              ] }) : /* @__PURE__ */ jsx("p", { className: "text-[11px] font-semibold text-red-600 dark:text-red-400", children: 'URL tidak dikenali. Gunakan http(s):// atau path relatif "/...".' }) : /* @__PURE__ */ jsx("p", { className: "text-[11px] text-neutral-400 dark:text-neutral-500", children: "Tempel alamat gambar (ImageKit, Unsplash, atau CDN lain). Tidak ada unggahan berkas." }),
+              /* @__PURE__ */ jsxs(
+                "button",
+                {
+                  type: "button",
+                  onClick: handleInsertImage,
+                  disabled: !isImageUrlValid,
+                  className: `flex w-full items-center justify-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-bold transition-colors ${isImageUrlValid ? "bg-emerald-600 text-white hover:bg-emerald-700" : "cursor-not-allowed bg-neutral-200 text-neutral-400 dark:bg-neutral-700 dark:text-neutral-500"}`,
+                  children: [
+                    /* @__PURE__ */ jsx(Check, { className: "w-3.5 h-3.5" }),
+                    "Sisipkan Gambar"
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsx("p", { className: "text-[10px] leading-relaxed text-neutral-400 dark:text-neutral-500", children: "Caption opsional akan tampil sebagai keterangan kecil di bawah gambar pada halaman berita." })
+            ] })
           ] })
         ] }),
-        /* @__PURE__ */ jsx("div", { className: "bg-white dark:bg-neutral-900 cursor-text rounded-b-xl", onClick: () => editor.commands.focus(), children: /* @__PURE__ */ jsx(EditorContent, { editor }) })
+        /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 rounded-b-xl", children: [
+          /* @__PURE__ */ jsxs(
+            "div",
+            {
+              className: "relative cursor-text",
+              onClick: () => editor.commands.focus(),
+              children: [
+                isEmpty && placeholder && /* @__PURE__ */ jsx("span", { className: "pointer-events-none absolute left-4 top-4 select-none text-sm text-neutral-400 dark:text-neutral-500", children: placeholder }),
+                /* @__PURE__ */ jsx(EditorContent, { editor })
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between gap-2 border-t border-neutral-200 dark:border-neutral-700 px-3 py-1.5 text-[11px] text-neutral-500 dark:text-neutral-400", children: [
+            /* @__PURE__ */ jsxs("span", { className: "font-mono", children: [
+              ((editorStats == null ? void 0 : editorStats.words) ?? 0).toLocaleString("id-ID"),
+              " kata",
+              editorStats && editorStats.words > 0 ? ` · ${editorStats.minutes} menit baca` : ""
+            ] }),
+            /* @__PURE__ */ jsxs("span", { className: "font-mono", children: [
+              ((editorStats == null ? void 0 : editorStats.chars) ?? 0).toLocaleString("id-ID"),
+              " karakter"
+            ] })
+          ] })
+        ] })
       ]
     }
   );
 }
-const CATEGORIES$1 = [
+const readDraft = (storageKey) => {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(storageKey);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed.savedAt !== "number" || parsed.data === void 0) {
+      window.localStorage.removeItem(storageKey);
+      return null;
+    }
+    return { data: parsed.data, savedAt: parsed.savedAt };
+  } catch {
+    return null;
+  }
+};
+const removeDraft = (storageKey) => {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(storageKey);
+  } catch {
+  }
+};
+function useFormDraft({
+  storageKey,
+  data,
+  initialData,
+  serverUpdatedAt,
+  delay = 1200,
+  onRestore
+}) {
+  const [pendingDraft, setPendingDraft] = React.useState(null);
+  const initialSnapshot = JSON.stringify(initialData);
+  const currentSnapshot = JSON.stringify(data);
+  const isDirty = currentSnapshot !== initialSnapshot;
+  React.useEffect(() => {
+    const stored = readDraft(storageKey);
+    if (!stored) {
+      setPendingDraft(null);
+      return;
+    }
+    if (serverUpdatedAt && stored.savedAt <= serverUpdatedAt) {
+      removeDraft(storageKey);
+      setPendingDraft(null);
+      return;
+    }
+    setPendingDraft(stored);
+  }, [serverUpdatedAt, storageKey]);
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!isDirty || pendingDraft) return;
+    const timer = window.setTimeout(() => {
+      try {
+        window.localStorage.setItem(storageKey, JSON.stringify({ data, savedAt: Date.now() }));
+      } catch {
+      }
+    }, delay);
+    return () => window.clearTimeout(timer);
+  }, [data, delay, isDirty, pendingDraft, storageKey]);
+  const clearDraft = React.useCallback(() => {
+    setPendingDraft(null);
+    removeDraft(storageKey);
+  }, [storageKey]);
+  const restoreDraft = React.useCallback(() => {
+    if (!pendingDraft) return;
+    onRestore(pendingDraft.data);
+    clearDraft();
+  }, [clearDraft, onRestore, pendingDraft]);
+  return { pendingDraft, restoreDraft, discardDraft: clearDraft, clearDraft };
+}
+const RENDER_LIMIT = 50;
+const buildBookLabel = (book) => {
+  var _a;
+  const publisher = ((_a = book.publisher) == null ? void 0 : _a.name) ? ` (${book.publisher.name})` : "";
+  const price = book.msrp ? ` - Rp ${Number(book.msrp).toLocaleString("id-ID")}` : "";
+  return `${book.title} Vol ${book.volume}${publisher}${price}`;
+};
+function NewsBookSelect({
+  id,
+  value,
+  onChange,
+  books,
+  placeholder = "Pilih buku dari katalog",
+  emptyOptionLabel,
+  disabled = false,
+  className,
+  "aria-invalid": ariaInvalid
+}) {
+  const [query, setQuery] = React.useState("");
+  const options = React.useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return books.filter((book) => {
+      var _a;
+      if (needle === "") return true;
+      return `${book.title} ${book.volume} ${((_a = book.publisher) == null ? void 0 : _a.name) ?? ""}`.toLowerCase().includes(needle);
+    }).slice(0, RENDER_LIMIT).map((book) => ({ value: String(book.id), label: buildBookLabel(book) }));
+  }, [books, query]);
+  const selectedLabel = React.useMemo(() => {
+    if (value === "" || value === void 0 || value === null) return null;
+    const selected = books.find((book) => String(book.id) === String(value));
+    return selected ? buildBookLabel(selected) : null;
+  }, [books, value]);
+  const hint = React.useMemo(() => {
+    if (books.length <= RENDER_LIMIT || query.trim() !== "") return void 0;
+    return `Menampilkan ${RENDER_LIMIT} dari ${books.length} buku — ketik untuk menyaring.`;
+  }, [books.length, query]);
+  return /* @__PURE__ */ jsx(
+    Combobox,
+    {
+      id,
+      value: value === "" || value === void 0 || value === null ? "" : String(value),
+      onChange,
+      options,
+      query,
+      onQueryChange: setQuery,
+      selectedLabel,
+      placeholder,
+      searchPlaceholder: "Cari judul buku, volume, atau penerbit...",
+      emptyOptionLabel,
+      emptyMessage: "Buku tidak ditemukan.",
+      hint,
+      disabled,
+      "aria-invalid": ariaInvalid,
+      className
+    }
+  );
+}
+const __vite_glob_0_48 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  NewsBookSelect
+}, Symbol.toStringTag, { value: "Module" }));
+const CATEGORIES = [
   { id: "rilisan", label: "Rilisan" },
   { id: "cetakan_ulang", label: "Cetak Ulang" },
   { id: "edukasi", label: "Review / Edukasi" },
@@ -11827,18 +12426,81 @@ const CATEGORIES$1 = [
   { id: "komunitas", label: "Komunitas" },
   { id: "breaking", label: "Breaking News" }
 ];
-const DEFAULT_REACTIONS$1 = [
+const DEFAULT_REACTIONS = [
   { id: "fire", emoji: "🔥", label: "Hype!", count: 128 },
   { id: "heart", emoji: "😍", label: "Mau Banget", count: 94 },
   { id: "mind_blown", emoji: "🤯", label: "Baru Tahu", count: 65 },
   { id: "thumbs_up", emoji: "👍", label: "Sangat Setuju", count: 82 }
 ];
-const breadcrumbs$7 = [
-  { title: "Dashboard", href: "/dashboard" },
-  { title: "Berita & Feeds", href: "/admin/news" },
-  { title: "Tambah Berita", href: "/admin/news/create" }
-];
-function NewsCreate({ books = [], tiktokEmbeds = [], instagramEmbeds = [] }) {
+const buildCreateNewsInitialValues = () => ({
+  title: "",
+  content: "",
+  category: "rilisan",
+  publication_status: "published",
+  username: "norinoya_official",
+  display_name: "Norinoya Official",
+  attached_image: "",
+  gallery_images: ["", "", "", ""],
+  // Maksimal 4 link gambar
+  hash_tags: ["", "", ""],
+  // Hashtags badge
+  reading_rating: "",
+  is_pinned: false,
+  recommendations: [],
+  relevant_books: [],
+  enable_poll: false,
+  poll_question: "",
+  poll_options: [
+    { label: "", votes: 85 },
+    { label: "", votes: 62 }
+  ],
+  reactions: DEFAULT_REACTIONS
+});
+const buildEditNewsInitialValues = (newsItem) => {
+  const gallery = newsItem.gallery_images && newsItem.gallery_images.length > 0 ? [...newsItem.gallery_images, "", "", "", ""].slice(0, 4).map((img) => normalizeImageKitUrl(img)) : [normalizeImageKitUrl(newsItem.attached_image || ""), "", "", ""];
+  return {
+    title: newsItem.title || "",
+    content: newsItem.content || "",
+    category: newsItem.category || "rilisan",
+    publication_status: newsItem.publication_status === "draft" ? "draft" : "published",
+    username: newsItem.username || "norinoya_official",
+    display_name: newsItem.display_name || "Norinoya Official",
+    attached_image: normalizeImageKitUrl(newsItem.attached_image || ""),
+    gallery_images: gallery,
+    hash_tags: newsItem.hash_tags && newsItem.hash_tags.length > 0 ? newsItem.hash_tags : ["", ""],
+    reading_rating: newsItem.reading_rating || "",
+    is_pinned: !!newsItem.is_pinned,
+    recommendations: (newsItem.recommendations ?? []).map((rec) => ({
+      number: rec.number || 1,
+      title: rec.title || "",
+      description: rec.description || "",
+      book_id: rec.book_id || "",
+      tiktok_embed_id: rec.tiktok_embed_id || "",
+      instagram_embed_id: rec.instagram_embed_id || ""
+    })),
+    relevant_books: Array.isArray(newsItem.relevant_books) ? newsItem.relevant_books.map((id) => Number(id)) : [],
+    enable_poll: !!newsItem.poll_question,
+    poll_question: newsItem.poll_question || "",
+    poll_options: newsItem.poll_options && newsItem.poll_options.length > 0 ? newsItem.poll_options : [{ label: "", votes: 85 }, { label: "", votes: 62 }],
+    reactions: newsItem.reactions && newsItem.reactions.length > 0 ? newsItem.reactions : DEFAULT_REACTIONS
+  };
+};
+function NewsForm({
+  mode,
+  newsItem,
+  initialValues,
+  draftKey,
+  serverUpdatedAt,
+  books = [],
+  tiktokEmbeds = [],
+  instagramEmbeds = []
+}) {
+  const isEdit = mode === "edit";
+  const breadcrumbs2 = [
+    { title: "Dashboard", href: "/dashboard" },
+    { title: "Berita & Feeds", href: "/admin/news" },
+    isEdit && newsItem ? { title: "Edit Berita", href: `/admin/news/${newsItem.id}/edit` } : { title: "Tambah Berita", href: "/admin/news/create" }
+  ];
   const [bookSearchTerm, setBookSearchTerm] = useState("");
   const [isBookDropdownOpen, setIsBookDropdownOpen] = useState(false);
   const bookDropdownRef = React__default.useRef(null);
@@ -11851,36 +12513,39 @@ function NewsCreate({ books = [], tiktokEmbeds = [], instagramEmbeds = [] }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  const { data, setData, post, processing, errors } = useForm({
-    title: "",
-    content: "",
-    category: "rilisan",
-    username: "norinoya_official",
-    display_name: "Norinoya Official",
-    attached_image: "",
-    gallery_images: ["", "", "", ""],
-    // Maksimal 4 link gambar
-    hash_tags: ["", "", ""],
-    // Hashtags badge
-    reading_rating: "",
-    is_pinned: false,
-    // Rekomendasi Buku & Review TikTok (Insert Katalog & Review Short)
-    recommendations: [],
-    // Katalog Relevan (Array book_id)
-    relevant_books: [],
-    // Polling opsional
-    enable_poll: false,
-    poll_question: "",
-    poll_options: [
-      { label: "", votes: 85 },
-      { label: "", votes: 62 }
-    ],
-    // Reaction boost opsional
-    reactions: DEFAULT_REACTIONS$1
+  const form = useForm(initialValues);
+  const { data, setData, post, put, processing, errors } = form;
+  const submitIntent = React__default.useRef(initialValues.publication_status);
+  React__default.useEffect(() => {
+    form.transform((payload) => ({
+      ...payload,
+      publication_status: submitIntent.current,
+      gallery_images: (payload.gallery_images ?? []).map((url) => normalizeImageKitUrl(url ?? ""))
+    }));
+  }, []);
+  const initialFormData = React__default.useRef(data).current;
+  const { pendingDraft, restoreDraft, discardDraft, clearDraft } = useFormDraft({
+    storageKey: draftKey,
+    data,
+    initialData: initialFormData,
+    // Draf yang lebih tua dari versi server dibuang otomatis agar tidak
+    // menimpa perubahan yang lebih baru.
+    serverUpdatedAt,
+    onRestore: (restored) => setData(restored)
   });
   const handleGalleryChange = (index, value) => {
     const updated = [...data.gallery_images];
-    updated[index] = normalizeImageKitUrl(value);
+    updated[index] = value;
+    setData("gallery_images", updated);
+  };
+  const handleGalleryBlur = (index) => {
+    const updated = [...data.gallery_images];
+    updated[index] = normalizeImageKitUrl(updated[index] ?? "");
+    setData("gallery_images", updated);
+  };
+  const handleGalleryClear = (index) => {
+    const updated = [...data.gallery_images];
+    updated[index] = "";
     setData("gallery_images", updated);
   };
   const handleHashtagChange = (index, value) => {
@@ -11949,16 +12614,39 @@ function NewsCreate({ books = [], tiktokEmbeds = [], instagramEmbeds = [] }) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    post(route("admin.news.store"));
+    const options = {
+      // Draf lokal hanya dihapus setelah server benar-benar menerima data.
+      // Bila validasi gagal, draf tetap ada supaya kerjaan tidak hilang.
+      onSuccess: () => clearDraft()
+    };
+    if (isEdit && newsItem) {
+      put(route("admin.news.update", newsItem.id), options);
+      return;
+    }
+    post(route("admin.news.store"), options);
   };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs$7, children: [
-    /* @__PURE__ */ jsx(Head, { title: "Tambah Berita Baru" }),
-    /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-6 p-4 max-w-4xl mx-auto w-full", children: [
+  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs2, children: [
+    /* @__PURE__ */ jsx(Head, { title: isEdit && newsItem ? `Edit Berita: ${newsItem.title}` : "Tambah Berita Baru" }),
+    /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-6 p-4 max-w-5xl mx-auto w-full", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
         /* @__PURE__ */ jsx(Button, { variant: "outline", size: "icon", asChild: true, children: /* @__PURE__ */ jsx(Link, { href: route("admin.news.index"), children: /* @__PURE__ */ jsx(ArrowLeft, { className: "h-4 w-4" }) }) }),
         /* @__PURE__ */ jsxs("div", { children: [
-          /* @__PURE__ */ jsx("h1", { className: "text-2xl font-semibold", children: "Tambah Berita Baru" }),
-          /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Publikasikan artikel, galeri gambar (maks. 4), hashtag, poling interaktif, atau ulasan terbaru." })
+          /* @__PURE__ */ jsx("h1", { className: "text-2xl font-semibold", children: isEdit ? "Edit Berita & Poling" : "Tambah Berita Baru" }),
+          /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: isEdit ? "Perbarui berita, galeri gambar (maks. 4), hashtag, poling, atau jumlah reaksi." : "Publikasikan artikel, galeri gambar (maks. 4), hashtag, poling interaktif, atau ulasan terbaru." })
+        ] })
+      ] }),
+      pendingDraft && /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/30", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 text-xs text-amber-900 dark:text-amber-200", children: [
+          /* @__PURE__ */ jsx(History, { className: "w-4 h-4 shrink-0" }),
+          /* @__PURE__ */ jsxs("span", { children: [
+            "Ada draf tersimpan dari ",
+            new Date(pendingDraft.savedAt).toLocaleString("id-ID"),
+            ". Pulihkan?"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
+          /* @__PURE__ */ jsx(Button, { type: "button", size: "sm", className: "h-8 text-xs", onClick: restoreDraft, children: "Pulihkan Draf" }),
+          /* @__PURE__ */ jsx(Button, { type: "button", size: "sm", variant: "outline", className: "h-8 text-xs", onClick: discardDraft, children: "Buang" })
         ] })
       ] }),
       /* @__PURE__ */ jsxs("form", { onSubmit: handleSubmit, className: "space-y-6 bg-card border p-6 rounded-xl shadow-xs", children: [
@@ -11986,7 +12674,7 @@ function NewsCreate({ books = [], tiktokEmbeds = [], instagramEmbeds = [] }) {
                 value: data.category,
                 onChange: (e) => setData("category", e.target.value),
                 className: "w-full h-10 px-3 rounded-md border border-input bg-background text-sm ring-offset-background outline-none focus:ring-2 focus:ring-ring",
-                children: CATEGORIES$1.map((cat) => /* @__PURE__ */ jsx("option", { value: cat.id, children: cat.label }, cat.id))
+                children: CATEGORIES.map((cat) => /* @__PURE__ */ jsx("option", { value: cat.id, children: cat.label }, cat.id))
               }
             ),
             errors.category && /* @__PURE__ */ jsx("p", { className: "text-xs text-destructive", children: errors.category })
@@ -12052,16 +12740,49 @@ function NewsCreate({ books = [], tiktokEmbeds = [], instagramEmbeds = [] }) {
               " ",
               idx === 0 ? "(Gambar Utama)" : ""
             ] }),
-            /* @__PURE__ */ jsx(
-              Input,
-              {
-                value: url,
-                onChange: (e) => handleGalleryChange(idx, e.target.value),
-                placeholder: `https://domain.com/gambar-${idx + 1}.jpg`,
-                className: "text-xs"
-              }
-            )
-          ] }, idx)) })
+            /* @__PURE__ */ jsxs("div", { className: "relative", children: [
+              /* @__PURE__ */ jsx(
+                Input,
+                {
+                  value: url,
+                  onChange: (e) => handleGalleryChange(idx, e.target.value),
+                  onBlur: () => handleGalleryBlur(idx),
+                  placeholder: `https://domain.com/gambar-${idx + 1}.jpg`,
+                  className: "text-xs pr-9"
+                }
+              ),
+              url.trim() !== "" && /* @__PURE__ */ jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => handleGalleryClear(idx),
+                  title: `Kosongkan link gambar ${idx + 1}`,
+                  "aria-label": `Kosongkan link gambar ${idx + 1}`,
+                  className: "absolute right-1 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-muted-foreground hover:bg-neutral-100 hover:text-foreground dark:hover:bg-neutral-800",
+                  children: /* @__PURE__ */ jsx(X, { className: "w-3.5 h-3.5" })
+                }
+              )
+            ] }),
+            url.trim() !== "" && !isSafeImageUrl(url) && /* @__PURE__ */ jsx("p", { className: "text-[11px] text-destructive", children: "URL gambar tidak valid atau memakai protokol yang tidak diizinkan." }),
+            url.trim() !== "" && /* @__PURE__ */ jsxs("div", { className: "mt-2 flex items-center gap-3", children: [
+              /* @__PURE__ */ jsx("div", { className: "relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border bg-neutral-100 dark:bg-neutral-900", children: /* @__PURE__ */ jsx(
+                "img",
+                {
+                  src: url,
+                  alt: `Pratinjau gambar ${idx + 1}`,
+                  className: "block h-full w-full object-cover",
+                  onError: (event) => {
+                    event.target.style.display = "none";
+                  }
+                }
+              ) }),
+              /* @__PURE__ */ jsx("span", { className: "text-[11px] text-muted-foreground", children: idx === 0 ? "Pratinjau gambar utama (hero & og:image)" : "Pratinjau gambar" })
+            ] })
+          ] }, idx)) }),
+          /* @__PURE__ */ jsxs("p", { className: "text-[11px] text-muted-foreground", children: [
+            data.gallery_images.filter((url) => url.trim() !== "").length,
+            "/4 gambar terisi."
+          ] })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "border p-4 rounded-xl space-y-3 bg-muted/20", children: [
           /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
@@ -12244,24 +12965,15 @@ function NewsCreate({ books = [], tiktokEmbeds = [], instagramEmbeds = [] }) {
                         /* @__PURE__ */ jsx(BookOpen, { className: "w-3.5 h-3.5 text-emerald-600" }),
                         /* @__PURE__ */ jsx("span", { children: "Hubungkan dengan Buku Katalog (Book)" })
                       ] }),
-                      /* @__PURE__ */ jsxs(
-                        "select",
+                      /* @__PURE__ */ jsx(
+                        NewsBookSelect,
                         {
                           value: rec.book_id || "",
-                          onChange: (e) => handleRecommendationChange(idx, "book_id", e.target.value),
-                          className: "w-full h-9 px-2.5 rounded-md border border-input bg-background text-xs ring-offset-background outline-none focus:ring-1 focus:ring-ring",
-                          children: [
-                            /* @__PURE__ */ jsx("option", { value: "", children: "-- Pilih Buku Dari Katalog --" }),
-                            books.map((b) => /* @__PURE__ */ jsxs("option", { value: b.id, children: [
-                              b.title,
-                              " Vol ",
-                              b.volume,
-                              " ",
-                              b.publisher ? `(${b.publisher.name})` : "",
-                              " ",
-                              b.msrp ? `- Rp ${Number(b.msrp).toLocaleString("id-ID")}` : ""
-                            ] }, b.id))
-                          ]
+                          onChange: (nextValue) => handleRecommendationChange(idx, "book_id", nextValue),
+                          books,
+                          placeholder: "-- Pilih Buku Dari Katalog --",
+                          emptyOptionLabel: "Kosongkan pilihan buku",
+                          className: "h-9 text-xs"
                         }
                       )
                     ] }),
@@ -12503,7 +13215,7 @@ function NewsCreate({ books = [], tiktokEmbeds = [], instagramEmbeds = [] }) {
               )
             ] }),
             /* @__PURE__ */ jsxs("div", { className: "space-y-3", children: [
-              /* @__PURE__ */ jsx(Label, { className: "text-xs", children: "Pilihan Jawaban & Suara Awal (Auto Boost)" }),
+              /* @__PURE__ */ jsx(Label, { className: "text-xs", children: isEdit ? "Pilihan Jawaban & Suara saat Ini" : "Pilihan Jawaban & Suara Awal (Auto Boost)" }),
               data.poll_options.map((opt, idx) => /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
                 /* @__PURE__ */ jsx(
                   Input,
@@ -12556,801 +13268,9 @@ function NewsCreate({ books = [], tiktokEmbeds = [], instagramEmbeds = [] }) {
         /* @__PURE__ */ jsxs("div", { className: "border border-orange-200 dark:border-orange-900/60 bg-orange-50/50 dark:bg-orange-950/20 p-5 rounded-xl space-y-4", children: [
           /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
             /* @__PURE__ */ jsx(Flame, { className: "w-5 h-5 text-orange-600 dark:text-orange-400" }),
-            /* @__PURE__ */ jsx("h3", { className: "font-bold text-sm text-orange-900 dark:text-orange-200", children: "Angka Reaksi Awal (Ramai / High-Engagement Boost)" })
+            /* @__PURE__ */ jsx("h3", { className: "font-bold text-sm text-orange-900 dark:text-orange-200", children: isEdit ? "Angka Reaksi (Boost / Social Proof)" : "Angka Reaksi Awal (Ramai / High-Engagement Boost)" })
           ] }),
-          /* @__PURE__ */ jsx("p", { className: "text-xs text-muted-foreground", children: "Atur jumlah reaksi emoji awal agar postingan tidak terlihat sepi saat pertama kali tayang." }),
-          /* @__PURE__ */ jsx("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-3", children: data.reactions.map((react, idx) => /* @__PURE__ */ jsxs("div", { className: "bg-card border p-3 rounded-lg space-y-1.5", children: [
-            /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5 text-xs font-bold", children: [
-              /* @__PURE__ */ jsx("span", { children: react.emoji }),
-              /* @__PURE__ */ jsx("span", { children: react.label })
-            ] }),
-            /* @__PURE__ */ jsx(
-              Input,
-              {
-                type: "number",
-                value: react.count,
-                onChange: (e) => handleReactionChange(idx, parseInt(e.target.value) || 0),
-                className: "text-xs h-8"
-              }
-            )
-          ] }, react.id)) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 pt-2", children: [
-          /* @__PURE__ */ jsx(
-            "input",
-            {
-              type: "checkbox",
-              id: "is_pinned",
-              checked: data.is_pinned,
-              onChange: (e) => setData("is_pinned", e.target.checked),
-              className: "w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
-            }
-          ),
-          /* @__PURE__ */ jsx(Label, { htmlFor: "is_pinned", className: "cursor-pointer font-bold", children: "Sematkan di Berita Utama / Pinned Announcement" })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "flex justify-end gap-3 pt-4 border-t", children: [
-          /* @__PURE__ */ jsx(Button, { variant: "outline", asChild: true, children: /* @__PURE__ */ jsx(Link, { href: route("admin.news.index"), children: "Batal" }) }),
-          /* @__PURE__ */ jsxs(Button, { type: "submit", disabled: processing, children: [
-            /* @__PURE__ */ jsx(Save, { className: "mr-2 h-4 w-4" }),
-            "Publikasikan Berita"
-          ] })
-        ] })
-      ] })
-    ] })
-  ] });
-}
-const __vite_glob_0_43 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: NewsCreate
-}, Symbol.toStringTag, { value: "Module" }));
-const CATEGORIES = [
-  { id: "rilisan", label: "Rilisan" },
-  { id: "cetakan_ulang", label: "Cetak Ulang" },
-  { id: "edukasi", label: "Review / Edukasi" },
-  { id: "promo", label: "Promo" },
-  { id: "manga", label: "Manga" },
-  { id: "light_novel", label: "Light Novel" },
-  { id: "novel", label: "Novel" },
-  { id: "anime", label: "Anime" },
-  { id: "event", label: "Event" },
-  { id: "game", label: "Game" },
-  { id: "jepang", label: "Jepang" },
-  { id: "komunitas", label: "Komunitas" },
-  { id: "breaking", label: "Breaking News" }
-];
-const DEFAULT_REACTIONS = [
-  { id: "fire", emoji: "🔥", label: "Hype!", count: 128 },
-  { id: "heart", emoji: "😍", label: "Mau Banget", count: 94 },
-  { id: "mind_blown", emoji: "🤯", label: "Baru Tahu", count: 65 },
-  { id: "thumbs_up", emoji: "👍", label: "Sangat Setuju", count: 82 }
-];
-function NewsEdit({ newsItem, books = [], tiktokEmbeds = [], instagramEmbeds = [] }) {
-  const [bookSearchTerm, setBookSearchTerm] = useState("");
-  const [isBookDropdownOpen, setIsBookDropdownOpen] = useState(false);
-  const bookDropdownRef = React__default.useRef(null);
-  React__default.useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (bookDropdownRef.current && !bookDropdownRef.current.contains(event.target)) {
-        setIsBookDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-  const breadcrumbs2 = [
-    { title: "Dashboard", href: "/dashboard" },
-    { title: "Berita & Feeds", href: "/admin/news" },
-    { title: "Edit Berita", href: `/admin/news/${newsItem.id}/edit` }
-  ];
-  const initialGallery = newsItem.gallery_images && newsItem.gallery_images.length > 0 ? [...newsItem.gallery_images, "", "", "", ""].slice(0, 4).map((img) => normalizeImageKitUrl(img)) : [normalizeImageKitUrl(newsItem.attached_image || ""), "", "", ""];
-  const initialHashtags = newsItem.hash_tags && newsItem.hash_tags.length > 0 ? newsItem.hash_tags : ["", ""];
-  const initialPollOptions = newsItem.poll_options && newsItem.poll_options.length > 0 ? newsItem.poll_options : [{ label: "", votes: 85 }, { label: "", votes: 62 }];
-  const initialReactions = newsItem.reactions && newsItem.reactions.length > 0 ? newsItem.reactions : DEFAULT_REACTIONS;
-  const initialRecommendations = newsItem.recommendations && newsItem.recommendations.length > 0 ? newsItem.recommendations.map((r) => ({
-    number: r.number || 1,
-    title: r.title || "",
-    description: r.description || "",
-    book_id: r.book_id || "",
-    tiktok_embed_id: r.tiktok_embed_id || "",
-    instagram_embed_id: r.instagram_embed_id || ""
-  })) : [];
-  const initialRelevantBooks = newsItem.relevant_books && Array.isArray(newsItem.relevant_books) ? newsItem.relevant_books.map((id) => Number(id)) : [];
-  const { data, setData, put, processing, errors } = useForm({
-    title: newsItem.title || "",
-    content: newsItem.content || "",
-    category: newsItem.category || "rilisan",
-    username: newsItem.username || "norinoya_official",
-    display_name: newsItem.display_name || "Norinoya Official",
-    attached_image: normalizeImageKitUrl(newsItem.attached_image || ""),
-    gallery_images: initialGallery,
-    hash_tags: initialHashtags,
-    reading_rating: newsItem.reading_rating || "",
-    is_pinned: !!newsItem.is_pinned,
-    recommendations: initialRecommendations,
-    // Katalog Relevan (Array book_id)
-    relevant_books: initialRelevantBooks,
-    enable_poll: !!newsItem.poll_question,
-    poll_question: newsItem.poll_question || "",
-    poll_options: initialPollOptions,
-    reactions: initialReactions
-  });
-  const handleGalleryChange = (index, value) => {
-    const updated = [...data.gallery_images];
-    updated[index] = normalizeImageKitUrl(value);
-    setData("gallery_images", updated);
-  };
-  const handleHashtagChange = (index, value) => {
-    const updated = [...data.hash_tags];
-    updated[index] = value;
-    setData("hash_tags", updated);
-  };
-  const handleAddHashtag = () => {
-    if (data.hash_tags.length < 6) {
-      setData("hash_tags", [...data.hash_tags, ""]);
-    }
-  };
-  const handleRemoveHashtag = (index) => {
-    const updated = data.hash_tags.filter((_, i) => i !== index);
-    setData("hash_tags", updated);
-  };
-  const handleAddRecommendation = () => {
-    const nextNum = data.recommendations.length + 1;
-    setData("recommendations", [
-      ...data.recommendations,
-      {
-        number: nextNum,
-        title: "",
-        description: "",
-        book_id: "",
-        tiktok_embed_id: "",
-        instagram_embed_id: ""
-      }
-    ]);
-  };
-  const handleRemoveRecommendation = (index) => {
-    const updated = data.recommendations.filter((_, i) => i !== index);
-    setData("recommendations", updated);
-  };
-  const handleRecommendationChange = (index, field, value) => {
-    const updated = [...data.recommendations];
-    const item = { ...updated[index], [field]: value };
-    if (field === "book_id") {
-      item.tiktok_embed_id = "";
-      item.instagram_embed_id = "";
-      if (value) {
-        const selectedBook = books.find((b) => String(b.id) === String(value));
-        if (selectedBook && !item.title) {
-          item.title = `${selectedBook.title} Vol ${selectedBook.volume}`;
-        }
-      }
-    }
-    updated[index] = item;
-    setData("recommendations", updated);
-  };
-  const handleAddPollOption = () => {
-    setData("poll_options", [...data.poll_options, { id: "", label: "", votes: Math.floor(Math.random() * 50) + 20 }]);
-  };
-  const handleRemovePollOption = (index) => {
-    const updated = data.poll_options.filter((_, i) => i !== index);
-    setData("poll_options", updated);
-  };
-  const handlePollOptionChange = (index, field, value) => {
-    const updated = [...data.poll_options];
-    updated[index] = { ...updated[index], [field]: value };
-    setData("poll_options", updated);
-  };
-  const handleReactionChange = (index, countValue) => {
-    const updated = [...data.reactions];
-    updated[index] = { ...updated[index], count: countValue };
-    setData("reactions", updated);
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    put(route("admin.news.update", newsItem.id));
-  };
-  return /* @__PURE__ */ jsxs(AppLayout, { breadcrumbs: breadcrumbs2, children: [
-    /* @__PURE__ */ jsx(Head, { title: `Edit Berita: ${newsItem.title}` }),
-    /* @__PURE__ */ jsxs("div", { className: "flex flex-1 flex-col gap-6 p-4 max-w-4xl mx-auto w-full", children: [
-      /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
-        /* @__PURE__ */ jsx(Button, { variant: "outline", size: "icon", asChild: true, children: /* @__PURE__ */ jsx(Link, { href: route("admin.news.index"), children: /* @__PURE__ */ jsx(ArrowLeft, { className: "h-4 w-4" }) }) }),
-        /* @__PURE__ */ jsxs("div", { children: [
-          /* @__PURE__ */ jsx("h1", { className: "text-2xl font-semibold", children: "Edit Berita & Poling" }),
-          /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Perbarui berita, galeri gambar (maks 4), hashtag badge, poling, atau jumlah reaksi." })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxs("form", { onSubmit: handleSubmit, className: "space-y-6 bg-card border p-6 rounded-xl shadow-xs", children: [
-        /* @__PURE__ */ jsxs("div", { className: "space-y-2", children: [
-          /* @__PURE__ */ jsx(Label, { htmlFor: "title", children: "Judul Berita" }),
-          /* @__PURE__ */ jsx(
-            Input,
-            {
-              id: "title",
-              value: data.title,
-              onChange: (e) => setData("title", e.target.value),
-              required: true
-            }
-          ),
-          errors.title && /* @__PURE__ */ jsx("p", { className: "text-xs text-destructive", children: errors.title })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4", children: [
-          /* @__PURE__ */ jsxs("div", { className: "space-y-2", children: [
-            /* @__PURE__ */ jsx(Label, { htmlFor: "category", children: "Kategori Berita" }),
-            /* @__PURE__ */ jsx(
-              "select",
-              {
-                id: "category",
-                value: data.category,
-                onChange: (e) => setData("category", e.target.value),
-                className: "w-full h-10 px-3 rounded-md border border-input bg-background text-sm ring-offset-background outline-none focus:ring-2 focus:ring-ring",
-                children: CATEGORIES.map((cat) => /* @__PURE__ */ jsx("option", { value: cat.id, children: cat.label }, cat.id))
-              }
-            ),
-            errors.category && /* @__PURE__ */ jsx("p", { className: "text-xs text-destructive", children: errors.category })
-          ] }),
-          /* @__PURE__ */ jsxs("div", { className: "space-y-2", children: [
-            /* @__PURE__ */ jsx(Label, { htmlFor: "reading_rating", children: "Rating Umur (Opsional)" }),
-            /* @__PURE__ */ jsxs(
-              "select",
-              {
-                id: "reading_rating",
-                value: data.reading_rating,
-                onChange: (e) => setData("reading_rating", e.target.value),
-                className: "w-full h-10 px-3 rounded-md border border-input bg-background text-sm ring-offset-background outline-none focus:ring-2 focus:ring-ring",
-                children: [
-                  /* @__PURE__ */ jsx("option", { value: "", children: "Tanpa Rating" }),
-                  /* @__PURE__ */ jsx("option", { value: "Anak & Bimbingan Orang Tua", children: "Anak & Bimbingan Orang Tua" }),
-                  /* @__PURE__ */ jsx("option", { value: "Remaja", children: "Remaja" }),
-                  /* @__PURE__ */ jsx("option", { value: "Dewasa Ringan", children: "Dewasa Ringan" }),
-                  /* @__PURE__ */ jsx("option", { value: "Dewasa Berat", children: "Dewasa Berat" })
-                ]
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4", children: [
-          /* @__PURE__ */ jsxs("div", { className: "space-y-2", children: [
-            /* @__PURE__ */ jsx(Label, { htmlFor: "username", children: "Username Penulis" }),
-            /* @__PURE__ */ jsx(
-              Input,
-              {
-                id: "username",
-                value: data.username,
-                onChange: (e) => setData("username", e.target.value)
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxs("div", { className: "space-y-2", children: [
-            /* @__PURE__ */ jsx(Label, { htmlFor: "display_name", children: "Nama Penulis" }),
-            /* @__PURE__ */ jsx(
-              Input,
-              {
-                id: "display_name",
-                value: data.display_name,
-                onChange: (e) => setData("display_name", e.target.value)
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "border p-4 rounded-xl space-y-3 bg-muted/20", children: [
-          /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
-              /* @__PURE__ */ jsx(Image, { className: "w-4 h-4 text-emerald-600 dark:text-emerald-400" }),
-              /* @__PURE__ */ jsx(Label, { className: "font-bold text-sm", children: "URL Gambar Berita / Galeri (Maksimal 4 Link Gambar)" })
-            ] }),
-            /* @__PURE__ */ jsx("span", { className: "text-xs text-muted-foreground font-mono", children: "Input URL Gambar" })
-          ] }),
-          /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3", children: data.gallery_images.slice(0, 4).map((url, idx) => /* @__PURE__ */ jsxs("div", { className: "space-y-1", children: [
-            /* @__PURE__ */ jsxs(Label, { className: "text-[11px] text-muted-foreground", children: [
-              "Gambar ",
-              idx + 1,
-              " ",
-              idx === 0 ? "(Gambar Utama)" : ""
-            ] }),
-            /* @__PURE__ */ jsx(
-              Input,
-              {
-                value: url,
-                onChange: (e) => handleGalleryChange(idx, e.target.value),
-                placeholder: `https://domain.com/gambar-${idx + 1}.jpg`,
-                className: "text-xs"
-              }
-            )
-          ] }, idx)) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "border p-4 rounded-xl space-y-3 bg-muted/20", children: [
-          /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
-              /* @__PURE__ */ jsx(Tag, { className: "w-4 h-4 text-rose-600 dark:text-rose-400" }),
-              /* @__PURE__ */ jsx(Label, { className: "font-bold text-sm", children: "Hashtag Badges Berita (Ditampilkan di Gambar Detail)" })
-            ] }),
-            /* @__PURE__ */ jsx("span", { className: "text-xs text-muted-foreground font-mono", children: "Misal: #Frieren #ElexMedia" })
-          ] }),
-          /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-2", children: [
-            data.hash_tags.map((tag, idx) => /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1", children: [
-              /* @__PURE__ */ jsx("span", { className: "text-xs font-mono font-bold text-muted-foreground", children: "#" }),
-              /* @__PURE__ */ jsx(
-                Input,
-                {
-                  value: tag,
-                  onChange: (e) => handleHashtagChange(idx, e.target.value),
-                  placeholder: "Frieren",
-                  className: "w-32 text-xs"
-                }
-              ),
-              data.hash_tags.length > 1 && /* @__PURE__ */ jsx(
-                Button,
-                {
-                  type: "button",
-                  variant: "ghost",
-                  size: "icon",
-                  className: "h-8 w-8",
-                  onClick: () => handleRemoveHashtag(idx),
-                  children: /* @__PURE__ */ jsx(Trash2, { className: "w-3.5 h-3.5 text-destructive" })
-                }
-              )
-            ] }, idx)),
-            data.hash_tags.length < 6 && /* @__PURE__ */ jsxs(
-              Button,
-              {
-                type: "button",
-                variant: "outline",
-                size: "sm",
-                onClick: handleAddHashtag,
-                className: "text-xs h-8",
-                children: [
-                  /* @__PURE__ */ jsx(Plus, { className: "w-3 h-3 mr-1" }),
-                  "Tambah Hashtag"
-                ]
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "space-y-2", children: [
-          /* @__PURE__ */ jsx(Label, { htmlFor: "content", children: "Isi Berita" }),
-          /* @__PURE__ */ jsx(
-            RichTextEditor,
-            {
-              value: data.content,
-              onChange: (content) => setData("content", content),
-              placeholder: "Tuliskan isi berita atau pengumuman lengkap di sini..."
-            }
-          ),
-          errors.content && /* @__PURE__ */ jsx("p", { className: "text-xs text-destructive", children: errors.content })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "border border-amber-200 dark:border-amber-900/60 bg-amber-50/40 dark:bg-amber-950/20 p-5 rounded-xl space-y-4", children: [
-          /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
-              /* @__PURE__ */ jsx("div", { className: "p-1.5 rounded-lg bg-amber-500 text-white", children: /* @__PURE__ */ jsx(Sparkles, { className: "w-4 h-4" }) }),
-              /* @__PURE__ */ jsxs("div", { children: [
-                /* @__PURE__ */ jsxs("h3", { className: "font-bold text-sm text-amber-950 dark:text-amber-200 flex items-center gap-1.5", children: [
-                  /* @__PURE__ */ jsx("span", { children: "Rekomendasi Buku & Review TikTok (Insert Katalog & Shorts)" }),
-                  /* @__PURE__ */ jsxs("span", { className: "text-[11px] font-mono px-2 py-0.5 rounded-full bg-amber-200/70 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200", children: [
-                    data.recommendations.length,
-                    " Item"
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsx("p", { className: "text-xs text-muted-foreground", children: "Tambahkan daftar rekomendasi buku berseri, ulasan singkat, nomor urut, video TikTok review, dan card Instagram review." })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxs(
-              Button,
-              {
-                type: "button",
-                variant: "outline",
-                size: "sm",
-                onClick: handleAddRecommendation,
-                className: "border-amber-300 dark:border-amber-700 text-xs hover:bg-amber-100 dark:hover:bg-amber-900/40",
-                children: [
-                  /* @__PURE__ */ jsx(Plus, { className: "w-3.5 h-3.5 mr-1 text-amber-600 dark:text-amber-400" }),
-                  "Tambah Rekomendasi"
-                ]
-              }
-            )
-          ] }),
-          data.recommendations.length === 0 ? /* @__PURE__ */ jsxs("div", { className: "p-6 text-center border border-dashed border-amber-300/80 dark:border-amber-800/80 rounded-xl bg-white/50 dark:bg-neutral-900/50 space-y-2", children: [
-            /* @__PURE__ */ jsx("p", { className: "text-xs text-muted-foreground", children: "Belum ada rekomendasi buku yang ditambahkan untuk berita ini." }),
-            /* @__PURE__ */ jsxs(
-              Button,
-              {
-                type: "button",
-                variant: "secondary",
-                size: "sm",
-                onClick: handleAddRecommendation,
-                className: "text-xs font-semibold",
-                children: [
-                  /* @__PURE__ */ jsx(Plus, { className: "w-3.5 h-3.5 mr-1" }),
-                  "Mulai Tambah Rekomendasi"
-                ]
-              }
-            )
-          ] }) : /* @__PURE__ */ jsx("div", { className: "space-y-4", children: data.recommendations.map((rec, idx) => {
-            const availableTiktoks = rec.book_id ? tiktokEmbeds.filter((t) => String(t.book_id) === String(rec.book_id)) : tiktokEmbeds;
-            const availableInstagram = rec.book_id ? instagramEmbeds.filter((i) => String(i.book_id) === String(rec.book_id)) : instagramEmbeds;
-            return /* @__PURE__ */ jsxs(
-              "div",
-              {
-                className: "p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-card space-y-3 relative shadow-2xs",
-                children: [
-                  /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between pb-2 border-b", children: [
-                    /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
-                      /* @__PURE__ */ jsx("span", { className: "w-6 h-6 rounded-md bg-[#DA6B1C] text-white font-mono font-bold text-xs flex items-center justify-center", children: idx + 1 }),
-                      /* @__PURE__ */ jsxs("span", { className: "font-bold text-xs", children: [
-                        "Item Rekomendasi #",
-                        idx + 1
-                      ] })
-                    ] }),
-                    /* @__PURE__ */ jsx(
-                      Button,
-                      {
-                        type: "button",
-                        variant: "ghost",
-                        size: "icon",
-                        className: "h-7 w-7 text-destructive hover:bg-destructive/10",
-                        onClick: () => handleRemoveRecommendation(idx),
-                        title: "Hapus Rekomendasi Ini",
-                        children: /* @__PURE__ */ jsx(Trash2, { className: "w-3.5 h-3.5" })
-                      }
-                    )
-                  ] }),
-                  /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 md:grid-cols-12 gap-3", children: [
-                    /* @__PURE__ */ jsxs("div", { className: "md:col-span-2 space-y-1", children: [
-                      /* @__PURE__ */ jsx(Label, { className: "text-[11px] font-mono", children: "Nomor Urut" }),
-                      /* @__PURE__ */ jsx(
-                        Input,
-                        {
-                          type: "number",
-                          value: rec.number,
-                          onChange: (e) => handleRecommendationChange(idx, "number", e.target.value),
-                          placeholder: "Misal: 1",
-                          className: "text-xs"
-                        }
-                      )
-                    ] }),
-                    /* @__PURE__ */ jsxs("div", { className: "md:col-span-10 space-y-1", children: [
-                      /* @__PURE__ */ jsx(Label, { className: "text-[11px]", children: "Judul Rekomendasi" }),
-                      /* @__PURE__ */ jsx(
-                        Input,
-                        {
-                          value: rec.title,
-                          onChange: (e) => handleRecommendationChange(idx, "title", e.target.value),
-                          placeholder: "Contoh: Frieren: After the End (Vol 1)",
-                          className: "text-xs"
-                        }
-                      )
-                    ] })
-                  ] }),
-                  /* @__PURE__ */ jsxs("div", { className: "space-y-1", children: [
-                    /* @__PURE__ */ jsx(Label, { className: "text-[11px]", children: "Deskripsi / Ulasan Mengapa Direkomendasikan" }),
-                    /* @__PURE__ */ jsx(
-                      Textarea,
-                      {
-                        rows: 2,
-                        value: rec.description,
-                        onChange: (e) => handleRecommendationChange(idx, "description", e.target.value),
-                        placeholder: "Jelaskan alasan mengapa buku ini wajib dibaca atau kualitas cetakannya...",
-                        className: "text-xs"
-                      }
-                    )
-                  ] }),
-                  /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-3 pt-1", children: [
-                    /* @__PURE__ */ jsxs("div", { className: "space-y-1", children: [
-                      /* @__PURE__ */ jsxs(Label, { className: "text-[11px] flex items-center gap-1.5 font-semibold", children: [
-                        /* @__PURE__ */ jsx(BookOpen, { className: "w-3.5 h-3.5 text-emerald-600" }),
-                        /* @__PURE__ */ jsx("span", { children: "Hubungkan dengan Buku Katalog (Book)" })
-                      ] }),
-                      /* @__PURE__ */ jsxs(
-                        "select",
-                        {
-                          value: rec.book_id || "",
-                          onChange: (e) => handleRecommendationChange(idx, "book_id", e.target.value),
-                          className: "w-full h-9 px-2.5 rounded-md border border-input bg-background text-xs ring-offset-background outline-none focus:ring-1 focus:ring-ring",
-                          children: [
-                            /* @__PURE__ */ jsx("option", { value: "", children: "-- Pilih Buku Dari Katalog --" }),
-                            books.map((b) => /* @__PURE__ */ jsxs("option", { value: b.id, children: [
-                              b.title,
-                              " Vol ",
-                              b.volume,
-                              " ",
-                              b.publisher ? `(${b.publisher.name})` : "",
-                              " ",
-                              b.msrp ? `- Rp ${Number(b.msrp).toLocaleString("id-ID")}` : ""
-                            ] }, b.id))
-                          ]
-                        }
-                      )
-                    ] }),
-                    /* @__PURE__ */ jsxs("div", { className: "space-y-1", children: [
-                      /* @__PURE__ */ jsxs(Label, { className: "text-[11px] flex items-center gap-1.5 font-semibold", children: [
-                        /* @__PURE__ */ jsx(Video, { className: "w-3.5 h-3.5 text-rose-600" }),
-                        /* @__PURE__ */ jsx("span", { children: "Pilih Video TikTok Review (BookTiktokEmbed)" })
-                      ] }),
-                      /* @__PURE__ */ jsxs(
-                        "select",
-                        {
-                          value: rec.tiktok_embed_id || "",
-                          onChange: (e) => handleRecommendationChange(idx, "tiktok_embed_id", e.target.value),
-                          className: "w-full h-9 px-2.5 rounded-md border border-input bg-background text-xs ring-offset-background outline-none focus:ring-1 focus:ring-ring",
-                          children: [
-                            /* @__PURE__ */ jsx("option", { value: "", children: "-- Tanpa Video / Pilih Video TikTok --" }),
-                            availableTiktoks.map((t) => {
-                              const relatedBook = books.find((b) => b.id === t.book_id);
-                              return /* @__PURE__ */ jsxs("option", { value: t.id, children: [
-                                t.name,
-                                " ",
-                                relatedBook ? `[Buku: ${relatedBook.title} V${relatedBook.volume}]` : ""
-                              ] }, t.id);
-                            })
-                          ]
-                        }
-                      )
-                    ] }),
-                    /* @__PURE__ */ jsxs("div", { className: "space-y-1", children: [
-                      /* @__PURE__ */ jsxs(Label, { className: "text-[11px] flex items-center gap-1.5 font-semibold", children: [
-                        /* @__PURE__ */ jsx(Instagram, { className: "w-3.5 h-3.5 text-pink-600" }),
-                        /* @__PURE__ */ jsx("span", { children: "Pilih Card Instagram Review (BookInstagramEmbed)" })
-                      ] }),
-                      /* @__PURE__ */ jsxs(
-                        "select",
-                        {
-                          value: rec.instagram_embed_id || "",
-                          onChange: (e) => handleRecommendationChange(idx, "instagram_embed_id", e.target.value),
-                          className: "w-full h-9 px-2.5 rounded-md border border-input bg-background text-xs ring-offset-background outline-none focus:ring-1 focus:ring-ring",
-                          children: [
-                            /* @__PURE__ */ jsx("option", { value: "", children: "-- Tanpa Card / Pilih Card Instagram --" }),
-                            rec.book_id && availableInstagram.length === 0 && /* @__PURE__ */ jsx("option", { value: "", disabled: true, children: "-- Buku ini belum punya card Instagram --" }),
-                            availableInstagram.map((ig) => {
-                              const relatedBook = books.find((b) => b.id === ig.book_id);
-                              const igUrl = (ig.url || "").replace(/^https?:\/\/(www\.)?/, "");
-                              return /* @__PURE__ */ jsxs("option", { value: ig.id, children: [
-                                ig.title || ig.name || `Instagram #${ig.id}`,
-                                igUrl ? ` — ${igUrl}` : "",
-                                relatedBook ? ` [Buku: ${relatedBook.title} V${relatedBook.volume}]` : ""
-                              ] }, ig.id);
-                            })
-                          ]
-                        }
-                      )
-                    ] })
-                  ] })
-                ]
-              },
-              idx
-            );
-          }) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/40 dark:bg-emerald-950/20 p-5 rounded-xl space-y-4", children: [
-          /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
-              /* @__PURE__ */ jsx(ShoppingBag, { className: "w-5 h-5 text-emerald-700 dark:text-emerald-400" }),
-              /* @__PURE__ */ jsxs("div", { children: [
-                /* @__PURE__ */ jsx("h3", { className: "font-bold text-sm text-emerald-955 dark:text-emerald-200", children: "Katalog Relevan (Sidebar Detail Berita)" }),
-                /* @__PURE__ */ jsx("p", { className: "text-xs text-neutral-500 dark:text-neutral-400", children: 'Pilih beberapa buku dari database untuk ditampilkan pada widget "Katalog Relevan"' })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxs("span", { className: "px-2.5 py-1 text-xs font-mono font-bold rounded-full bg-emerald-600 text-white", children: [
-              data.relevant_books.length,
-              " Buku Terpilih"
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxs("div", { className: "space-y-2", children: [
-            /* @__PURE__ */ jsx(Label, { className: "text-xs font-bold text-neutral-700 dark:text-neutral-300", children: "Cari dan Tambah Buku ke Katalog Relevan" }),
-            /* @__PURE__ */ jsxs("div", { className: "relative", ref: bookDropdownRef, children: [
-              /* @__PURE__ */ jsxs("div", { className: "flex items-center border border-neutral-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 px-3 py-1.5 focus-within:ring-2 focus-within:ring-emerald-500", children: [
-                /* @__PURE__ */ jsx(Search, { className: "w-4 h-4 text-neutral-400 mr-2 shrink-0" }),
-                /* @__PURE__ */ jsx(
-                  "input",
-                  {
-                    type: "text",
-                    value: bookSearchTerm,
-                    onChange: (e) => {
-                      setBookSearchTerm(e.target.value);
-                      setIsBookDropdownOpen(true);
-                    },
-                    onFocus: () => setIsBookDropdownOpen(true),
-                    placeholder: "Ketik judul buku, volume, atau penerbit...",
-                    className: "w-full text-xs sm:text-sm bg-transparent border-none outline-none text-neutral-900 dark:text-white placeholder-neutral-400"
-                  }
-                ),
-                bookSearchTerm && /* @__PURE__ */ jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => setBookSearchTerm(""),
-                    className: "text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 p-1 mr-1",
-                    children: /* @__PURE__ */ jsx(X, { className: "w-3.5 h-3.5" })
-                  }
-                ),
-                /* @__PURE__ */ jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => setIsBookDropdownOpen((prev) => !prev),
-                    className: "text-xs px-2 py-1 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded text-neutral-700 dark:text-neutral-300 shrink-0 font-medium",
-                    children: isBookDropdownOpen ? "Tutup" : "Pilih"
-                  }
-                )
-              ] }),
-              isBookDropdownOpen && /* @__PURE__ */ jsxs("div", { className: "absolute top-full left-0 right-0 mt-1 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-xl z-50 max-h-60 overflow-y-auto divide-y divide-neutral-100 dark:divide-neutral-800", children: [
-                books.filter((b) => {
-                  var _a;
-                  const searchStr = `${b.title} ${b.volume} ${((_a = b.publisher) == null ? void 0 : _a.name) || ""}`.toLowerCase();
-                  return searchStr.includes(bookSearchTerm.toLowerCase());
-                }).map((book) => {
-                  const isSelected = data.relevant_books.includes(book.id);
-                  return /* @__PURE__ */ jsxs(
-                    "button",
-                    {
-                      type: "button",
-                      onClick: () => {
-                        if (isSelected) {
-                          setData("relevant_books", data.relevant_books.filter((id) => id !== book.id));
-                        } else {
-                          setData("relevant_books", [...data.relevant_books, book.id]);
-                        }
-                      },
-                      className: `w-full text-left px-3.5 py-2.5 text-xs flex items-center justify-between transition-colors ${isSelected ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-100 font-bold" : "hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-800 dark:text-neutral-200"}`,
-                      children: [
-                        /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 min-w-0 pr-2", children: [
-                          /* @__PURE__ */ jsx(BookOpen, { className: "w-3.5 h-3.5 text-emerald-600 shrink-0" }),
-                          /* @__PURE__ */ jsxs("span", { className: "truncate", children: [
-                            book.title,
-                            " Vol ",
-                            book.volume,
-                            " ",
-                            book.publisher ? `(${book.publisher.name})` : ""
-                          ] })
-                        ] }),
-                        /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 shrink-0", children: [
-                          /* @__PURE__ */ jsxs("span", { className: "text-[10px] font-mono text-neutral-400", children: [
-                            "Rp ",
-                            book.msrp ? Number(book.msrp).toLocaleString("id-ID") : "45.000"
-                          ] }),
-                          isSelected ? /* @__PURE__ */ jsx(Check, { className: "w-4 h-4 text-emerald-600 shrink-0" }) : /* @__PURE__ */ jsx(Plus, { className: "w-3.5 h-3.5 text-neutral-400 hover:text-neutral-700 shrink-0" })
-                        ] })
-                      ]
-                    },
-                    book.id
-                  );
-                }),
-                /* @__PURE__ */ jsx("div", { className: "p-2 bg-neutral-50 dark:bg-neutral-850 text-center", children: /* @__PURE__ */ jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => setIsBookDropdownOpen(false),
-                    className: "text-xs font-mono font-bold text-neutral-600 dark:text-neutral-300 hover:underline",
-                    children: "Selesai / Tutup Pilihan"
-                  }
-                ) })
-              ] })
-            ] })
-          ] }),
-          data.relevant_books.length > 0 ? /* @__PURE__ */ jsxs("div", { className: "space-y-2 pt-2", children: [
-            /* @__PURE__ */ jsxs(Label, { className: "text-xs font-semibold text-neutral-600 dark:text-neutral-400", children: [
-              "Daftar Buku Terpilih (",
-              data.relevant_books.length,
-              "):"
-            ] }),
-            /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-2", children: data.relevant_books.map((bookId) => {
-              const book = books.find((b) => b.id === bookId);
-              if (!book) return null;
-              return /* @__PURE__ */ jsxs(
-                "div",
-                {
-                  className: "flex items-center justify-between gap-2 p-2 bg-white dark:bg-neutral-900 border border-emerald-300 dark:border-emerald-800 rounded-lg shadow-2xs text-xs",
-                  children: [
-                    /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 min-w-0", children: [
-                      /* @__PURE__ */ jsxs("span", { className: "w-5 h-5 rounded bg-emerald-600 text-white font-mono text-[10px] flex items-center justify-center font-bold shrink-0", children: [
-                        "V",
-                        book.volume
-                      ] }),
-                      /* @__PURE__ */ jsx("span", { className: "truncate font-medium text-neutral-900 dark:text-neutral-100", children: book.title })
-                    ] }),
-                    /* @__PURE__ */ jsx(
-                      "button",
-                      {
-                        type: "button",
-                        onClick: () => setData("relevant_books", data.relevant_books.filter((id) => id !== bookId)),
-                        className: "text-red-500 hover:text-red-700 dark:hover:text-red-400 p-1 shrink-0",
-                        title: "Hapus dari Katalog Relevan",
-                        children: /* @__PURE__ */ jsx(Trash2, { className: "w-3.5 h-3.5" })
-                      }
-                    )
-                  ]
-                },
-                bookId
-              );
-            }) })
-          ] }) : /* @__PURE__ */ jsx("p", { className: "text-xs text-neutral-400 italic", children: "Belum ada buku yang dipilih. Jika dikosongkan, sistem akan otomatis memilih buku teratas dari katalog." })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "border border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/50 dark:bg-indigo-950/20 p-5 rounded-xl space-y-4", children: [
-          /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
-              /* @__PURE__ */ jsx(HelpCircle, { className: "w-5 h-5 text-indigo-600 dark:text-indigo-400" }),
-              /* @__PURE__ */ jsx("h3", { className: "font-bold text-sm text-indigo-900 dark:text-indigo-200", children: "Fitur Opsional: Poling Komunitas" })
-            ] }),
-            /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
-              /* @__PURE__ */ jsx(
-                "input",
-                {
-                  type: "checkbox",
-                  id: "enable_poll",
-                  checked: data.enable_poll,
-                  onChange: (e) => setData("enable_poll", e.target.checked),
-                  className: "w-4 h-4 rounded text-indigo-600 cursor-pointer"
-                }
-              ),
-              /* @__PURE__ */ jsx(Label, { htmlFor: "enable_poll", className: "cursor-pointer text-xs font-bold", children: "Aktifkan Poling" })
-            ] })
-          ] }),
-          data.enable_poll && /* @__PURE__ */ jsxs("div", { className: "space-y-4 pt-2", children: [
-            /* @__PURE__ */ jsxs("div", { className: "space-y-1.5", children: [
-              /* @__PURE__ */ jsx(Label, { htmlFor: "poll_question", className: "text-xs", children: "Pertanyaan Poling" }),
-              /* @__PURE__ */ jsx(
-                Input,
-                {
-                  id: "poll_question",
-                  value: data.poll_question,
-                  onChange: (e) => setData("poll_question", e.target.value),
-                  placeholder: "Contoh: Apakah Anda akan membeli edisi komik ini?",
-                  required: data.enable_poll
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxs("div", { className: "space-y-3", children: [
-              /* @__PURE__ */ jsx(Label, { className: "text-xs", children: "Pilihan Jawaban & Suara saat Ini" }),
-              data.poll_options.map((opt, idx) => /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsx(
-                  Input,
-                  {
-                    value: opt.label,
-                    onChange: (e) => handlePollOptionChange(idx, "label", e.target.value),
-                    placeholder: `Pilihan ${idx + 1}`,
-                    className: "flex-1",
-                    required: data.enable_poll
-                  }
-                ),
-                /* @__PURE__ */ jsx("div", { className: "w-28 flex items-center gap-1", children: /* @__PURE__ */ jsx(
-                  Input,
-                  {
-                    type: "number",
-                    value: opt.votes,
-                    onChange: (e) => handlePollOptionChange(idx, "votes", parseInt(e.target.value) || 0),
-                    placeholder: "Suara"
-                  }
-                ) }),
-                data.poll_options.length > 2 && /* @__PURE__ */ jsx(
-                  Button,
-                  {
-                    type: "button",
-                    variant: "ghost",
-                    size: "icon",
-                    onClick: () => handleRemovePollOption(idx),
-                    children: /* @__PURE__ */ jsx(Trash2, { className: "w-4 h-4 text-destructive" })
-                  }
-                )
-              ] }, idx)),
-              /* @__PURE__ */ jsxs(
-                Button,
-                {
-                  type: "button",
-                  variant: "outline",
-                  size: "sm",
-                  onClick: handleAddPollOption,
-                  className: "text-xs",
-                  children: [
-                    /* @__PURE__ */ jsx(Plus, { className: "w-3.5 h-3.5 mr-1" }),
-                    "Tambah Opsi Jawaban"
-                  ]
-                }
-              )
-            ] })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "border border-orange-200 dark:border-orange-900/60 bg-orange-50/50 dark:bg-orange-950/20 p-5 rounded-xl space-y-4", children: [
-          /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsx(Flame, { className: "w-5 h-5 text-orange-600 dark:text-orange-400" }),
-            /* @__PURE__ */ jsx("h3", { className: "font-bold text-sm text-orange-900 dark:text-orange-200", children: "Angka Reaksi (Boost / Social Proof)" })
-          ] }),
+          !isEdit && /* @__PURE__ */ jsx("p", { className: "text-xs text-muted-foreground", children: "Atur jumlah reaksi emoji awal agar postingan tidak terlihat sepi saat pertama kali tayang." }),
           /* @__PURE__ */ jsx("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-3", children: data.reactions.map((react, idx) => /* @__PURE__ */ jsxs("div", { className: "bg-card border p-3 rounded-lg space-y-1.5", children: [
             /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5 text-xs font-bold", children: [
               /* @__PURE__ */ jsx("span", { children: react.emoji }),
@@ -13380,16 +13300,78 @@ function NewsEdit({ newsItem, books = [], tiktokEmbeds = [], instagramEmbeds = [
           ),
           /* @__PURE__ */ jsx(Label, { htmlFor: "is_pinned", className: "cursor-pointer font-bold", children: "Sematkan di Berita Utama / Pinned Announcement" })
         ] }),
-        /* @__PURE__ */ jsxs("div", { className: "flex justify-end gap-3 pt-4 border-t", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center justify-end gap-3 pt-4 border-t", children: [
           /* @__PURE__ */ jsx(Button, { variant: "outline", asChild: true, children: /* @__PURE__ */ jsx(Link, { href: route("admin.news.index"), children: "Batal" }) }),
-          /* @__PURE__ */ jsxs(Button, { type: "submit", disabled: processing, children: [
-            /* @__PURE__ */ jsx(Save, { className: "mr-2 h-4 w-4" }),
-            "Simpan Perubahan"
-          ] })
+          /* @__PURE__ */ jsx(
+            Button,
+            {
+              type: "submit",
+              variant: "outline",
+              disabled: processing,
+              onClick: () => {
+                submitIntent.current = "draft";
+              },
+              children: processing ? "Menyimpan..." : "Simpan sebagai draf"
+            }
+          ),
+          /* @__PURE__ */ jsxs(
+            Button,
+            {
+              type: "submit",
+              disabled: processing,
+              onClick: () => {
+                submitIntent.current = "published";
+              },
+              children: [
+                /* @__PURE__ */ jsx(Save, { className: "mr-2 h-4 w-4" }),
+                processing ? "Menyimpan..." : isEdit && data.publication_status === "published" ? "Simpan & tetap terbit" : isEdit ? "Terbitkan" : "Terbitkan Berita"
+              ]
+            }
+          )
         ] })
       ] })
     ] })
   ] });
+}
+const __vite_glob_0_49 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  DEFAULT_REACTIONS,
+  buildCreateNewsInitialValues,
+  buildEditNewsInitialValues,
+  default: NewsForm
+}, Symbol.toStringTag, { value: "Module" }));
+const NEWS_DRAFT_KEY = "norinoya:news-draft:create";
+function NewsCreate({ books = [], tiktokEmbeds = [], instagramEmbeds = [] }) {
+  return /* @__PURE__ */ jsx(
+    NewsForm,
+    {
+      mode: "create",
+      initialValues: buildCreateNewsInitialValues(),
+      draftKey: NEWS_DRAFT_KEY,
+      books,
+      tiktokEmbeds,
+      instagramEmbeds
+    }
+  );
+}
+const __vite_glob_0_43 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: NewsCreate
+}, Symbol.toStringTag, { value: "Module" }));
+function NewsEdit({ newsItem, books = [], tiktokEmbeds = [], instagramEmbeds = [] }) {
+  return /* @__PURE__ */ jsx(
+    NewsForm,
+    {
+      mode: "edit",
+      newsItem,
+      initialValues: buildEditNewsInitialValues(newsItem),
+      draftKey: `norinoya:news-draft:edit:${newsItem.id}`,
+      serverUpdatedAt: newsItem.updated_at ? new Date(newsItem.updated_at).getTime() : void 0,
+      books,
+      tiktokEmbeds,
+      instagramEmbeds
+    }
+  );
 }
 const __vite_glob_0_44 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
@@ -13549,15 +13531,23 @@ function NewsIndex({ news, filters: rawFilters }) {
         /* @__PURE__ */ jsx(TableHeader, { className: "bg-[#112A12] text-white", children: /* @__PURE__ */ jsxs(TableRow, { className: "border-b border-[#112A12] hover:bg-transparent", children: [
           /* @__PURE__ */ jsx(TableHead, { className: "text-xs font-bold text-white", children: "Judul Berita" }),
           /* @__PURE__ */ jsx(TableHead, { className: "text-xs font-bold text-white", children: "Kategori" }),
+          /* @__PURE__ */ jsx(TableHead, { className: "text-xs font-bold text-white", children: "Status" }),
           /* @__PURE__ */ jsx(TableHead, { className: "text-xs font-bold text-white", children: "Penulis" }),
           /* @__PURE__ */ jsx(TableHead, { className: "text-xs font-bold text-white", children: "Status Pin" }),
           /* @__PURE__ */ jsx(TableHead, { className: "text-center text-xs font-bold text-white", children: "Views" }),
           /* @__PURE__ */ jsx(TableHead, { className: "text-xs font-bold text-white", children: "Tanggal Publikasi" }),
           /* @__PURE__ */ jsx(TableHead, { className: "w-[100px] text-right text-xs font-bold text-white", children: "Aksi" })
         ] }) }),
-        /* @__PURE__ */ jsx(TableBody, { children: news.data.length === 0 ? /* @__PURE__ */ jsx(TableRow, { children: /* @__PURE__ */ jsx(TableCell, { colSpan: 7, className: "text-center text-muted-foreground py-8", children: "Belum ada berita. Klik tombol Tambah Berita untuk memublikasikan postingan baru." }) }) : news.data.map((item) => /* @__PURE__ */ jsxs(TableRow, { children: [
+        /* @__PURE__ */ jsx(TableBody, { children: news.data.length === 0 ? /* @__PURE__ */ jsx(TableRow, { children: /* @__PURE__ */ jsx(TableCell, { colSpan: 8, className: "text-center text-muted-foreground py-8", children: "Belum ada berita. Klik tombol Tambah Berita untuk memublikasikan postingan baru." }) }) : news.data.map((item) => /* @__PURE__ */ jsxs(TableRow, { children: [
           /* @__PURE__ */ jsx(TableCell, { className: "font-medium max-w-md truncate", children: item.title }),
           /* @__PURE__ */ jsx(TableCell, { children: /* @__PURE__ */ jsx("span", { className: "px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-neutral-100 dark:bg-neutral-800 uppercase", children: item.category }) }),
+          /* @__PURE__ */ jsx(TableCell, { children: item.publication_status === "draft" ? /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800", children: [
+            /* @__PURE__ */ jsx(FilePenLine, { className: "w-3 h-3" }),
+            "Draf"
+          ] }) : /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center gap-1 text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800", children: [
+            /* @__PURE__ */ jsx(Globe, { className: "w-3 h-3" }),
+            "Terbit"
+          ] }) }),
           /* @__PURE__ */ jsxs(TableCell, { className: "text-sm text-muted-foreground", children: [
             "@",
             item.username,
@@ -13819,7 +13809,7 @@ function FieldError({ field, errors }) {
   }
   return /* @__PURE__ */ jsx("p", { id: `${field}-error`, className: "text-destructive text-sm", children: message });
 }
-const __vite_glob_0_52 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_54 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   FieldError
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13955,7 +13945,7 @@ function FilterOptionsCombobox({
     }
   );
 }
-const __vite_glob_0_53 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_55 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: FilterOptionsCombobox
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14020,7 +14010,7 @@ function BookPicker({
     ] })
   ] });
 }
-const __vite_glob_0_51 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_53 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BookPicker
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14279,7 +14269,7 @@ function NodeLinksSection({
     )
   ] });
 }
-const __vite_glob_0_54 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_56 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NodeLinksSection
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14671,7 +14661,7 @@ function PanduanNodesSection({
     )
   ] });
 }
-const __vite_glob_0_56 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_58 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: PanduanNodesSection
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14732,14 +14722,6 @@ function normalizeNestedServerErrors(errors, maps) {
     normalized[key] = message;
   }
   return normalized;
-}
-function isValidUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "http:" || url.protocol === "https:";
-  } catch {
-    return false;
-  }
 }
 const EMPTY_MAPS = { nodes: [], links: {}, tags: {} };
 function buildInitialData(initialPanduan) {
@@ -15137,7 +15119,7 @@ function PanduanForm({
     ] })
   ] });
 }
-const __vite_glob_0_55 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_57 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: PanduanForm
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15190,7 +15172,7 @@ function CreatePanduanAdaptasi({
     ] })
   ] });
 }
-const __vite_glob_0_48 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_50 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: CreatePanduanAdaptasi
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15253,7 +15235,7 @@ function EditPanduanAdaptasi({
     ] })
   ] });
 }
-const __vite_glob_0_49 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_51 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: EditPanduanAdaptasi
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15574,7 +15556,7 @@ function PanduanAdaptasiIndex({
     )
   ] });
 }
-const __vite_glob_0_50 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_52 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: PanduanAdaptasiIndex
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15657,7 +15639,7 @@ function CreatePublisher() {
     ] })
   ] });
 }
-const __vite_glob_0_57 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_59 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: CreatePublisher
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15780,7 +15762,7 @@ function EditPublisher({
     ] })
   ] });
 }
-const __vite_glob_0_58 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_60 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: EditPublisher
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15984,7 +15966,7 @@ function PublisherIndex({
     )
   ] });
 }
-const __vite_glob_0_59 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_61 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: PublisherIndex
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16035,7 +16017,7 @@ function PublisherForm({
     }
   );
 }
-const __vite_glob_0_60 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_62 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: PublisherForm
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16125,7 +16107,7 @@ function CreateStoryStatus() {
     ] })
   ] });
 }
-const __vite_glob_0_61 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_63 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: CreateStoryStatus
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16255,7 +16237,7 @@ function EditStoryStatus({
     ] })
   ] });
 }
-const __vite_glob_0_62 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_64 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: EditStoryStatus
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16464,90 +16446,92 @@ function StoryStatusIndex({
     )
   ] });
 }
-const __vite_glob_0_63 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_65 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: StoryStatusIndex
 }, Symbol.toStringTag, { value: "Module" }));
 export {
-  __vite_glob_0_27 as $,
+  __vite_glob_0_29 as $,
   AppLayout as A,
   Button as B,
-  __vite_glob_0_46 as C,
+  __vite_glob_0_48 as C,
   Dialog as D,
-  __vite_glob_0_45 as E,
-  __vite_glob_0_44 as F,
-  __vite_glob_0_43 as G,
-  __vite_glob_0_42 as H,
+  __vite_glob_0_47 as E,
+  __vite_glob_0_46 as F,
+  __vite_glob_0_45 as G,
+  __vite_glob_0_44 as H,
   Input as I,
-  __vite_glob_0_41 as J,
-  __vite_glob_0_40 as K,
+  __vite_glob_0_43 as J,
+  __vite_glob_0_42 as K,
   Label as L,
-  __vite_glob_0_39 as M,
-  __vite_glob_0_38 as N,
-  __vite_glob_0_37 as O,
-  __vite_glob_0_36 as P,
-  __vite_glob_0_35 as Q,
-  __vite_glob_0_34 as R,
+  __vite_glob_0_41 as M,
+  __vite_glob_0_40 as N,
+  __vite_glob_0_39 as O,
+  __vite_glob_0_38 as P,
+  __vite_glob_0_37 as Q,
+  __vite_glob_0_36 as R,
   Separator as S,
   Toaster as T,
-  __vite_glob_0_33 as U,
-  __vite_glob_0_32 as V,
-  __vite_glob_0_31 as W,
-  __vite_glob_0_30 as X,
-  __vite_glob_0_29 as Y,
-  __vite_glob_0_28 as Z,
-  __vite_glob_0_63 as _,
+  __vite_glob_0_35 as U,
+  __vite_glob_0_34 as V,
+  __vite_glob_0_33 as W,
+  __vite_glob_0_32 as X,
+  __vite_glob_0_31 as Y,
+  __vite_glob_0_30 as Z,
+  __vite_glob_0_65 as _,
   DialogTrigger as a,
-  __vite_glob_0_26 as a0,
-  __vite_glob_0_25 as a1,
-  __vite_glob_0_24 as a2,
-  __vite_glob_0_23 as a3,
-  __vite_glob_0_22 as a4,
-  __vite_glob_0_21 as a5,
-  __vite_glob_0_20 as a6,
-  __vite_glob_0_19 as a7,
-  __vite_glob_0_18 as a8,
-  __vite_glob_0_17 as a9,
-  __vite_glob_0_16 as aa,
-  __vite_glob_0_15 as ab,
-  __vite_glob_0_14 as ac,
-  __vite_glob_0_13 as ad,
-  __vite_glob_0_12 as ae,
-  __vite_glob_0_11 as af,
-  __vite_glob_0_10 as ag,
-  __vite_glob_0_9 as ah,
-  __vite_glob_0_8 as ai,
-  __vite_glob_0_7 as aj,
-  __vite_glob_0_6 as ak,
-  __vite_glob_0_5 as al,
-  __vite_glob_0_4 as am,
-  __vite_glob_0_3 as an,
-  __vite_glob_0_2 as ao,
-  __vite_glob_0_1 as ap,
-  __vite_glob_0_0 as aq,
+  __vite_glob_0_28 as a0,
+  __vite_glob_0_27 as a1,
+  __vite_glob_0_26 as a2,
+  __vite_glob_0_25 as a3,
+  __vite_glob_0_24 as a4,
+  __vite_glob_0_23 as a5,
+  __vite_glob_0_22 as a6,
+  __vite_glob_0_21 as a7,
+  __vite_glob_0_20 as a8,
+  __vite_glob_0_19 as a9,
+  __vite_glob_0_18 as aa,
+  __vite_glob_0_17 as ab,
+  __vite_glob_0_16 as ac,
+  __vite_glob_0_15 as ad,
+  __vite_glob_0_14 as ae,
+  __vite_glob_0_13 as af,
+  __vite_glob_0_12 as ag,
+  __vite_glob_0_11 as ah,
+  __vite_glob_0_10 as ai,
+  __vite_glob_0_9 as aj,
+  __vite_glob_0_8 as ak,
+  __vite_glob_0_7 as al,
+  __vite_glob_0_6 as am,
+  __vite_glob_0_5 as an,
+  __vite_glob_0_4 as ao,
+  __vite_glob_0_3 as ap,
+  __vite_glob_0_2 as aq,
+  __vite_glob_0_1 as ar,
+  __vite_glob_0_0 as as,
   DialogContent as b,
   cn as c,
   DialogTitle as d,
   DialogDescription as e,
   DialogFooter as f,
   DialogClose as g,
-  __vite_glob_0_62 as h,
-  __vite_glob_0_61 as i,
-  __vite_glob_0_60 as j,
-  __vite_glob_0_59 as k,
-  __vite_glob_0_58 as l,
-  __vite_glob_0_57 as m,
-  __vite_glob_0_56 as n,
-  __vite_glob_0_55 as o,
+  __vite_glob_0_64 as h,
+  __vite_glob_0_63 as i,
+  __vite_glob_0_62 as j,
+  __vite_glob_0_61 as k,
+  __vite_glob_0_60 as l,
+  __vite_glob_0_59 as m,
+  __vite_glob_0_58 as n,
+  __vite_glob_0_57 as o,
   prepareEmbedFrames as p,
-  __vite_glob_0_54 as q,
-  __vite_glob_0_53 as r,
+  __vite_glob_0_56 as q,
+  __vite_glob_0_55 as r,
   syncEmbedHeights as s,
-  __vite_glob_0_52 as t,
+  __vite_glob_0_54 as t,
   useAppearance as u,
-  __vite_glob_0_51 as v,
-  __vite_glob_0_50 as w,
-  __vite_glob_0_49 as x,
-  __vite_glob_0_48 as y,
-  __vite_glob_0_47 as z
+  __vite_glob_0_53 as v,
+  __vite_glob_0_52 as w,
+  __vite_glob_0_51 as x,
+  __vite_glob_0_50 as y,
+  __vite_glob_0_49 as z
 };

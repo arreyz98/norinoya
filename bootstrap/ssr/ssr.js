@@ -1,9 +1,9 @@
-import { p as prepareEmbedFrames, s as syncEmbedHeights, c as cn, T as Toaster, L as Label, I as Input, B as Button, A as AppLayout, u as useAppearance, S as Separator, D as Dialog, a as DialogTrigger, b as DialogContent, d as DialogTitle, e as DialogDescription, f as DialogFooter, g as DialogClose, _ as __vite_glob_0_63, h as __vite_glob_0_62, i as __vite_glob_0_61, j as __vite_glob_0_60, k as __vite_glob_0_59, l as __vite_glob_0_58, m as __vite_glob_0_57, n as __vite_glob_0_56, o as __vite_glob_0_55, q as __vite_glob_0_54, r as __vite_glob_0_53, t as __vite_glob_0_52, v as __vite_glob_0_51, w as __vite_glob_0_50, x as __vite_glob_0_49, y as __vite_glob_0_48, z as __vite_glob_0_47, C as __vite_glob_0_46, E as __vite_glob_0_45, F as __vite_glob_0_44, G as __vite_glob_0_43, H as __vite_glob_0_42, J as __vite_glob_0_41, K as __vite_glob_0_40, M as __vite_glob_0_39, N as __vite_glob_0_38, O as __vite_glob_0_37, P as __vite_glob_0_36, Q as __vite_glob_0_35, R as __vite_glob_0_34, U as __vite_glob_0_33, V as __vite_glob_0_32, W as __vite_glob_0_31, X as __vite_glob_0_30, Y as __vite_glob_0_29, Z as __vite_glob_0_28, $ as __vite_glob_0_27, a0 as __vite_glob_0_26, a1 as __vite_glob_0_25, a2 as __vite_glob_0_24, a3 as __vite_glob_0_23, a4 as __vite_glob_0_22, a5 as __vite_glob_0_21, a6 as __vite_glob_0_20, a7 as __vite_glob_0_19, a8 as __vite_glob_0_18, a9 as __vite_glob_0_17, aa as __vite_glob_0_16, ab as __vite_glob_0_15, ac as __vite_glob_0_14, ad as __vite_glob_0_13, ae as __vite_glob_0_12, af as __vite_glob_0_11, ag as __vite_glob_0_10, ah as __vite_glob_0_9, ai as __vite_glob_0_8, aj as __vite_glob_0_7, ak as __vite_glob_0_6, al as __vite_glob_0_5, am as __vite_glob_0_4, an as __vite_glob_0_3, ao as __vite_glob_0_2, ap as __vite_glob_0_1, aq as __vite_glob_0_0 } from "./assets/admin-pages-CKA1DdGt.js";
+import { p as prepareEmbedFrames, s as syncEmbedHeights, c as cn, T as Toaster, L as Label, I as Input, B as Button, A as AppLayout, u as useAppearance, S as Separator, D as Dialog, a as DialogTrigger, b as DialogContent, d as DialogTitle, e as DialogDescription, f as DialogFooter, g as DialogClose, _ as __vite_glob_0_65, h as __vite_glob_0_64, i as __vite_glob_0_63, j as __vite_glob_0_62, k as __vite_glob_0_61, l as __vite_glob_0_60, m as __vite_glob_0_59, n as __vite_glob_0_58, o as __vite_glob_0_57, q as __vite_glob_0_56, r as __vite_glob_0_55, t as __vite_glob_0_54, v as __vite_glob_0_53, w as __vite_glob_0_52, x as __vite_glob_0_51, y as __vite_glob_0_50, z as __vite_glob_0_49, C as __vite_glob_0_48, E as __vite_glob_0_47, F as __vite_glob_0_46, G as __vite_glob_0_45, H as __vite_glob_0_44, J as __vite_glob_0_43, K as __vite_glob_0_42, M as __vite_glob_0_41, N as __vite_glob_0_40, O as __vite_glob_0_39, P as __vite_glob_0_38, Q as __vite_glob_0_37, R as __vite_glob_0_36, U as __vite_glob_0_35, V as __vite_glob_0_34, W as __vite_glob_0_33, X as __vite_glob_0_32, Y as __vite_glob_0_31, Z as __vite_glob_0_30, $ as __vite_glob_0_29, a0 as __vite_glob_0_28, a1 as __vite_glob_0_27, a2 as __vite_glob_0_26, a3 as __vite_glob_0_25, a4 as __vite_glob_0_24, a5 as __vite_glob_0_23, a6 as __vite_glob_0_22, a7 as __vite_glob_0_21, a8 as __vite_glob_0_20, a9 as __vite_glob_0_19, aa as __vite_glob_0_18, ab as __vite_glob_0_17, ac as __vite_glob_0_16, ad as __vite_glob_0_15, ae as __vite_glob_0_14, af as __vite_glob_0_13, ag as __vite_glob_0_12, ah as __vite_glob_0_11, ai as __vite_glob_0_10, aj as __vite_glob_0_9, ak as __vite_glob_0_8, al as __vite_glob_0_7, am as __vite_glob_0_6, an as __vite_glob_0_5, ao as __vite_glob_0_4, ap as __vite_glob_0_3, aq as __vite_glob_0_2, ar as __vite_glob_0_1, as as __vite_glob_0_0 } from "./assets/admin-pages-CA6TsA42.js";
 import { jsxs, Fragment, jsx } from "react/jsx-runtime";
 import React__default, { useState, useEffect, useCallback, useMemo, useRef, lazy, Suspense } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Sun, Moon, Home, ShoppingBag, Newspaper, Bookmark, Instagram, Youtube, ArrowUp, Check, Info, Layers, BookOpen, Search, Trash2, ChevronRight, Send, Clock, Flame, Globe, Gamepad2, Tv, Mic, Ticket, Tag, Sparkles, BookText, BookMarked, RefreshCw, ShieldCheck, Scale, Lock, FileText, X, Copy, Video, ChevronLeft, Play, ArrowLeft, ArrowUpRight, ShieldAlert, Store, ExternalLink, Eye, Heart, Users, CheckCircle2, Clapperboard, CreditCard, Shirt, Palette, Building2, Filter, ShoppingCart, TrendingDown, TrendingUp, Star, ArrowDownAZ, ArrowUpAZ, ArrowUpDown, ChevronDown, Grid, List, Activity, Shield, AlertCircle, Sliders, Calendar, Plus, Pin, MessageCircle, Mail, Handshake, KeyRound, LoaderCircle, ArrowRight, History, Monitor } from "lucide-react";
-import { router, Head, Link, useForm, usePage, createInertiaApp } from "@inertiajs/react";
+import { Sun, Moon, Home, ShoppingBag, Newspaper, Bookmark, Instagram, Youtube, ArrowUp, Check, Info, Layers, BookOpen, Search, Trash2, ChevronRight, Send, Clock, Flame, Globe, Gamepad2, Tv, Mic, Ticket, Tag, Sparkles, BookText, BookMarked, RefreshCw, ShieldCheck, Scale, Lock, FileText, X, Copy, Video, ChevronLeft, Play, ArrowLeft, ArrowUpRight, ShieldAlert, Store, ExternalLink, Eye, Users, CheckCircle2, Clapperboard, CreditCard, Shirt, Palette, Building2, Filter, ShoppingCart, TrendingDown, TrendingUp, Star, ArrowDownAZ, ArrowUpAZ, ArrowUpDown, ChevronDown, Grid, List, Activity, Shield, AlertCircle, Sliders, Calendar, Plus, Pin, MessageCircle, Mail, Handshake, KeyRound, LoaderCircle, ArrowRight, History, Monitor } from "lucide-react";
+import { router, Head, Link, usePage, useForm, createInertiaApp } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 import createServer from "@inertiajs/react/server";
 import ReactDOMServer from "react-dom/server";
@@ -3836,11 +3836,11 @@ function Navbar({
     ] })
   ] });
 }
-const __vite_glob_0_79 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_81 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Navbar
 }, Symbol.toStringTag, { value: "Module" }));
-function Footer({ onNavigateHome, onNavigateAbout, darkMode }) {
+function Footer({ onNavigateHome, darkMode }) {
   const handleNavNews = () => {
     router.visit("/news");
   };
@@ -3874,20 +3874,10 @@ function Footer({ onNavigateHome, onNavigateAbout, darkMode }) {
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "space-y-2", children: [
           /* @__PURE__ */ jsx("h6", { className: "text-xs font-mono tracking-wider font-extrabold text-neutral-400 uppercase leading-[16px]", children: "Kebijakan Hukum" }),
-          /* @__PURE__ */ jsx("ul", { className: "text-sm space-y-2 leading-[20px] dark:text-neutral-400", children: /* @__PURE__ */ jsx("li", { children: /* @__PURE__ */ jsx(
-            "button",
-            {
-              onClick: () => {
-                onNavigateAbout();
-                setTimeout(() => {
-                  var _a;
-                  (_a = document.getElementById("privacy-policy")) == null ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
-                }, 150);
-              },
-              className: "hover:text-black dark:hover:text-white font-medium cursor-pointer transition-colors",
-              children: "Legal"
-            }
-          ) }) })
+          /* @__PURE__ */ jsxs("ul", { className: "text-sm space-y-2 leading-[20px] dark:text-neutral-400", children: [
+            /* @__PURE__ */ jsx("li", { children: /* @__PURE__ */ jsx("a", { href: "/privasi", className: "hover:text-black dark:hover:text-white font-medium transition-colors", children: "Privasi" }) }),
+            /* @__PURE__ */ jsx("li", { children: /* @__PURE__ */ jsx("a", { href: "/kontak", className: "hover:text-black dark:hover:text-white font-medium transition-colors", children: "Kontak" }) })
+          ] })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "space-y-3 col-span-2 sm:col-span-1", children: [
           /* @__PURE__ */ jsx("h6", { className: "text-xs font-mono tracking-wider font-extrabold text-neutral-400 uppercase leading-[16px]", children: "Media Sosial" }),
@@ -3980,7 +3970,7 @@ function Footer({ onNavigateHome, onNavigateAbout, darkMode }) {
     /* @__PURE__ */ jsx("div", { className: "max-w-7xl mx-auto border-t border-neutral-200 dark:border-neutral-800 mt-10 pt-6 text-center text-xs font-mono text-neutral-500 dark:text-neutral-400 flex flex-col items-center justify-center leading-[18px]", children: /* @__PURE__ */ jsx("span", { children: "©2026 norinoya" }) })
   ] });
 }
-const __vite_glob_0_73 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_75 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Footer
 }, Symbol.toStringTag, { value: "Module" }));
@@ -4014,7 +4004,7 @@ function BackToTopButton({ threshold = 250 }) {
     }
   ) });
 }
-const __vite_glob_0_66 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_68 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BackToTopButton
 }, Symbol.toStringTag, { value: "Module" }));
@@ -4484,7 +4474,7 @@ function SavedBookmarks({
     ) }),
     /* @__PURE__ */ jsxs("div", { className: "relative text-center py-5 sm:py-7 md:py-8 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white rounded-2xl overflow-hidden shadow-xs dark:shadow-md border border-neutral-200/60 dark:border-neutral-800 px-4 sm:px-6 flex flex-col items-center justify-center space-y-2.5 sm:space-y-3.5 mb-4 sm:mb-6 transition-all duration-200", children: [
       /* @__PURE__ */ jsx("div", { className: "absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent pointer-events-none" }),
-      /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/60 text-amber-900 dark:text-amber-300 text-[10px] sm:text-[11px] font-mono font-bold tracking-widest uppercase rounded-full", children: [
+      /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-[#D1D6E0] dark:bg-amber-950/40  text-neutral-800 dark:text-amber-300 text-[10px] sm:text-[11px] font-mono font-bold tracking-widest uppercase rounded-full", children: [
         /* @__PURE__ */ jsx(Bookmark, { className: "w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-500 text-amber-600 dark:text-amber-400" }),
         /* @__PURE__ */ jsx("span", { children: "KOLEKSI TERSIMPAN" })
       ] }),
@@ -5065,9 +5055,6 @@ function BookmarkPage({
   const handleNavBookmark = () => {
     router.visit("/bookmark");
   };
-  const handleNavAbout = () => {
-    router.visit("/?scroll=about");
-  };
   const handleNavigateToComic = (path) => {
     router.visit(path);
   };
@@ -5110,11 +5097,11 @@ function BookmarkPage({
         onNavigateToHome: handleNavHome
       }
     ) }),
-    /* @__PURE__ */ jsx(Footer, { onNavigateHome: handleNavHome, onNavigateAbout: handleNavAbout, darkMode }),
+    /* @__PURE__ */ jsx(Footer, { onNavigateHome: handleNavHome, darkMode }),
     /* @__PURE__ */ jsx(BackToTopButton, {})
   ] });
 }
-const __vite_glob_0_64 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_66 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   SavedBookmarks,
   default: BookmarkPage
@@ -5167,6 +5154,12 @@ function AboutSection$1() {
               /* @__PURE__ */ jsxs("li", { children: [
                 /* @__PURE__ */ jsx("strong", { children: "Statistik Non-Identitas:" }),
                 " Norinoya dapat menggunakan data kunjungan umum, seperti jumlah pengunjung dan sumber rujukan klik, untuk memahami penggunaan situs serta membantu mengoptimalkan performa dan pengalaman pengguna. Data statistik tersebut digunakan dalam bentuk yang tidak ditujukan untuk mengidentifikasi pengguna secara langsung."
+              ] }),
+              /* @__PURE__ */ jsxs("li", { children: [
+                /* @__PURE__ */ jsx("strong", { children: "Cookie iklan Google:" }),
+                " Jika iklan Google ditayangkan di Norinoya, Google dan mitra iklannya dapat menggunakan cookie untuk menayangkan serta mengukur iklan. Pengunjung dapat mengatur preferensi iklan di ",
+                /* @__PURE__ */ jsx("a", { href: "https://adssettings.google.com", className: "underline", target: "_blank", rel: "noopener noreferrer", children: "setelan iklan Google" }),
+                "."
               ] })
             ] })
           ] })
@@ -5205,14 +5198,14 @@ function AboutSection$1() {
               /* @__PURE__ */ jsx("p", { children: "Norinoya dapat memperbarui Kebijakan Privasi, Penggunaan Cookie, dan Disclaimer ini apabila terdapat perubahan pada fitur, layanan, teknologi, atau ketentuan yang berlaku." }),
               /* @__PURE__ */ jsx("p", { children: "Setiap perubahan akan diperbarui pada halaman ini." })
             ] }),
-            /* @__PURE__ */ jsx("div", { className: "pt-2 text-xs font-mono text-neutral-500 dark:text-neutral-400 border-t border-neutral-100 dark:border-neutral-800/80", children: "Terakhir diperbarui: 9 September 2026" })
+            /* @__PURE__ */ jsx("div", { className: "pt-2 text-xs font-mono text-neutral-500 dark:text-neutral-400 border-t border-neutral-100 dark:border-neutral-800/80", children: "Terakhir diperbarui: 28 Oktober 2026" })
           ] })
         ] })
       ]
     }
   );
 }
-const __vite_glob_0_65 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_67 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AboutSection$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5244,7 +5237,7 @@ function BookmarkToast({ message }) {
     }
   ) });
 }
-const __vite_glob_0_67 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_69 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   BookmarkToast,
   useBookmarkToast
@@ -5418,7 +5411,7 @@ const ShareModal = ({
     )
   ] }) });
 };
-const __vite_glob_0_84 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_86 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   ShareModal
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5532,7 +5525,7 @@ const HighlightReview = ({ activeVolObj, selectedComic }) => {
     )
   ] });
 };
-const __vite_glob_0_74 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_76 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   HighlightReview
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5611,7 +5604,7 @@ const HighlightReviewInstagram = ({ activeVolObj, selectedComic }) => {
     /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 pb-1 select-none", children: items.map((item) => /* @__PURE__ */ jsx(InstagramCard, { item }, item.id)) })
   ] });
 };
-const __vite_glob_0_75 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_77 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   HighlightReviewInstagram
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5746,7 +5739,7 @@ const ModalAffiliateStore = ({ isOpen, onClose, group, comicTitle, volNumber, pr
     }
   ) });
 };
-const __vite_glob_0_77 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_79 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   ModalAffiliateStore
 }, Symbol.toStringTag, { value: "Module" }));
@@ -6699,7 +6692,7 @@ function DetailBuku$1({
     )
   ] });
 }
-const __vite_glob_0_68 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_70 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: DetailBuku$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -7334,10 +7327,25 @@ function DetailKios$1({
     /* @__PURE__ */ jsx(BookmarkToast, { message: bookmarkToast })
   ] });
 }
-const __vite_glob_0_69 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_71 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: DetailKios$1
 }, Symbol.toStringTag, { value: "Module" }));
+const DEFAULT_EXCERPT = "Baca update berita dan artikel terbaru seputar manga, anime, dan pop culture di Norinoya.";
+function newsExcerpt(html, fallback = DEFAULT_EXCERPT) {
+  const decoded = (html || "").replace(/<[^>]*>/g, " ").replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&").replace(/&quot;/gi, '"').replace(/&#39;|&apos;/gi, "'").replace(/&lt;/gi, "<").replace(/&gt;/gi, ">");
+  const text = decoded.replace(/\s+/g, " ").trim();
+  if (!text) {
+    return fallback;
+  }
+  if (text.length <= 155) {
+    return text;
+  }
+  const cut = text.slice(0, 155);
+  const space = cut.lastIndexOf(" ");
+  const clipped = space > 80 ? cut.slice(0, space) : cut;
+  return clipped.replace(/[.,;:!?"'\s]+$/g, "") + "…";
+}
 const ToriiGate$3 = ({ className = "w-4 h-4" }) => /* @__PURE__ */ jsxs(
   "svg",
   {
@@ -7389,6 +7397,7 @@ const getReadingRatingHoverClass = (rating, groupPrefix = "group-hover") => {
   }
 };
 const stripLazyIframes = (html) => html.replace(/(<iframe\b[^>]*?)\s+loading=("lazy"|'lazy'|lazy)/gi, "$1");
+const prepareNewsHtml = (html) => stripLazyIframes(html).replace(/<br\s*\/?>/gi, " ");
 const NewsBody = React__default.memo(function NewsBody2({ html, className }) {
   const containerRef = React__default.useRef(null);
   React__default.useEffect(() => {
@@ -7398,7 +7407,7 @@ const NewsBody = React__default.memo(function NewsBody2({ html, className }) {
   }, [html]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className, dangerouslySetInnerHTML: { __html: html } });
 });
-function DetailNews$1({
+function DetailNews({
   activePost,
   selectPost,
   handleToggleCategory,
@@ -7451,10 +7460,20 @@ function DetailNews$1({
     if (document.body) document.body.scrollTop = 0;
   }, [activePost == null ? void 0 : activePost.id]);
   const metaTitle = (activePost == null ? void 0 : activePost.title) ? `${activePost.title} - Norinoya News` : "Berita - Norinoya";
-  const metaDesc = ((activePost == null ? void 0 : activePost.content) || "Baca update berita dan artikel terbaru seputar manga, anime, dan pop culture di Norinoya.").replace(/<[^>]*>/g, "").slice(0, 160);
+  const metaDesc = newsExcerpt(activePost == null ? void 0 : activePost.content);
   const metaImage = (activePost == null ? void 0 : activePost.attachedImage) || "";
-  const contentHtml = React__default.useMemo(() => stripLazyIframes((activePost == null ? void 0 : activePost.content) || ""), [activePost == null ? void 0 : activePost.content]);
+  const contentHtml = React__default.useMemo(() => prepareNewsHtml((activePost == null ? void 0 : activePost.content) || ""), [activePost == null ? void 0 : activePost.content]);
+  React__default.useLayoutEffect(() => {
+    var _a, _b;
+    if (!(activePost == null ? void 0 : activePost.id)) return;
+    (_a = document.getElementById("server-news-article")) == null ? void 0 : _a.remove();
+    (_b = document.getElementById("news-boot-skeleton")) == null ? void 0 : _b.remove();
+  }, [activePost == null ? void 0 : activePost.id]);
   if (!activePost) return null;
+  const canonicalUrl = route("news.detail", String(activePost.slug || activePost.id));
+  const heroImage = activePost.attachedImage || "";
+  const galleryImages = activePost.galleryImages ?? [];
+  const galleryIsOnlyHero = heroImage !== "" && (galleryImages.length === 0 || galleryImages.length === 1 && galleryImages[0] === heroImage);
   return /* @__PURE__ */ jsxs("div", { className: "w-full max-w-7xl mx-auto relative -mt-4 sm:-mt-6", children: [
     /* @__PURE__ */ jsxs(Head, { children: [
       /* @__PURE__ */ jsx("title", { children: metaTitle }),
@@ -7469,27 +7488,7 @@ function DetailNews$1({
       /* @__PURE__ */ jsx("meta", { name: "twitter:description", content: metaDesc }),
       metaImage && /* @__PURE__ */ jsx("meta", { name: "twitter:image", content: metaImage }),
       /* @__PURE__ */ jsx("meta", { name: "theme-color", content: "#E53935" }),
-      /* @__PURE__ */ jsx("link", { rel: "canonical", href: `${window.location.origin}/news/${activePost.slug || activePost.id}` }),
-      /* @__PURE__ */ jsx("script", { type: "application/ld+json", children: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "NewsArticle",
-        headline: activePost.title,
-        datePublished: activePost.createdAt || activePost.timestamp,
-        dateModified: activePost.createdAt || activePost.timestamp,
-        ...activePost.username ? { author: { "@type": "Person", name: activePost.displayName || activePost.username } } : {},
-        ...metaImage ? { image: [metaImage] } : {},
-        articleSection: activePost.category,
-        ...activePost.content ? { description: activePost.content.replace(/<[^>]*>/g, "").slice(0, 160) } : {}
-      }) }),
-      /* @__PURE__ */ jsx("script", { type: "application/ld+json", children: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Beranda", item: `${window.location.origin}/` },
-          { "@type": "ListItem", position: 2, name: "Berita", item: `${window.location.origin}/news` },
-          { "@type": "ListItem", position: 3, name: activePost.title, item: `${window.location.origin}/news/${activePost.slug || activePost.id}` }
-        ]
-      }) })
+      /* @__PURE__ */ jsx("link", { rel: "canonical", href: canonicalUrl })
     ] }),
     /* @__PURE__ */ jsx("div", { className: "fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800", children: /* @__PURE__ */ jsxs("div", { className: "max-w-7xl w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3", children: [
       /* @__PURE__ */ jsxs(
@@ -7551,103 +7550,123 @@ function DetailNews$1({
               },
               f.id
             )) }),
-            /* @__PURE__ */ jsx("div", { className: "flex flex-col", children: /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-5", children: [
-              /* @__PURE__ */ jsxs("div", { className: "space-y-2.5 px-5", children: [
-                /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono font-semibold text-neutral-500 dark:text-neutral-400 leading-normal", children: [
-                  /* @__PURE__ */ jsxs("span", { className: "font-extrabold text-[#112A12] dark:text-white shrink-0", children: [
-                    "@",
-                    activePost.username
-                  ] }),
-                  /* @__PURE__ */ jsx("span", { className: "shrink-0 text-neutral-300 dark:text-neutral-600", children: "•" }),
-                  /* @__PURE__ */ jsx("span", { className: "shrink-0", children: activePost.displayName }),
-                  /* @__PURE__ */ jsx("span", { className: "shrink-0 text-neutral-300 dark:text-neutral-600", children: "•" }),
-                  /* @__PURE__ */ jsx("span", { className: "shrink-0", children: activePost.timestamp })
+            /* @__PURE__ */ jsxs("div", { className: "flex flex-col", children: [
+              /* @__PURE__ */ jsxs("article", { className: "flex flex-col gap-5", children: [
+                /* @__PURE__ */ jsxs("div", { className: "space-y-3", children: [
+                  (() => {
+                    let IconComponent = Newspaper;
+                    let label = "Berita";
+                    if (activePost.category === "cetakan_ulang") {
+                      IconComponent = RefreshCw;
+                      label = "Cetak Ulang";
+                    } else if (activePost.category === "manga") {
+                      IconComponent = BookOpen;
+                      label = "Manga";
+                    } else if (activePost.category === "light_novel") {
+                      IconComponent = BookMarked;
+                      label = "Light Novel";
+                    } else if (activePost.category === "novel") {
+                      IconComponent = BookText;
+                      label = "Novel";
+                    } else if (activePost.category === "rilisan") {
+                      IconComponent = Newspaper;
+                      label = "Rilisan";
+                    } else if (activePost.category === "edukasi") {
+                      IconComponent = Sparkles;
+                      label = "Review";
+                    } else if (activePost.category === "promo") {
+                      IconComponent = Tag;
+                      label = "Promo";
+                    } else if (activePost.category === "event") {
+                      IconComponent = Ticket;
+                      label = "Event";
+                    } else if (activePost.category === "komunitas") {
+                      IconComponent = Mic;
+                      label = "Komunitas";
+                    } else if (activePost.category === "anime") {
+                      IconComponent = Tv;
+                      label = "Anime";
+                    } else if (activePost.category === "game") {
+                      IconComponent = Gamepad2;
+                      label = "Game";
+                    } else if (activePost.category === "jepang") {
+                      IconComponent = ToriiGate$3;
+                      label = "Jepang";
+                    } else if (activePost.category === "breaking") {
+                      IconComponent = Flame;
+                      label = "Breaking";
+                    }
+                    return /* @__PURE__ */ jsx("div", { className: "flex items-center gap-2 flex-wrap", children: /* @__PURE__ */ jsxs(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: () => {
+                          if (window.location.pathname === "/news") {
+                            handleToggleCategory(activePost.category, true);
+                            selectPost(null);
+                            const searchParams = new URLSearchParams(window.location.search);
+                            searchParams.set("category", activePost.category);
+                            window.history.pushState({}, "", `/news?${searchParams.toString()}`);
+                          } else {
+                            router.get("/news", { category: activePost.category });
+                          }
+                        },
+                        className: "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-bold border border-neutral-200/50 dark:border-neutral-700 transition-all cursor-pointer active:scale-95 group/badge",
+                        title: `Filter postingan kategori: ${label}`,
+                        children: [
+                          /* @__PURE__ */ jsx(IconComponent, { className: "w-4 h-4 text-neutral-700 dark:text-neutral-300 shrink-0 group-hover/badge:rotate-12 transition-transform" }),
+                          /* @__PURE__ */ jsx("span", { children: label })
+                        ]
+                      }
+                    ) });
+                  })(),
+                  /* @__PURE__ */ jsx("h1", { className: "text-2xl sm:text-3xl lg:text-3xl font-extrabold text-neutral-900 dark:text-neutral-50 leading-tight tracking-tight", children: activePost.title }),
+                  /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-x-2 gap-y-1 text-sm leading-normal text-neutral-500 dark:text-neutral-400", children: [
+                    /* @__PURE__ */ jsx("span", { className: "font-sans font-semibold text-neutral-800 dark:text-neutral-100 shrink-0", children: activePost.displayName }),
+                    /* @__PURE__ */ jsx("span", { className: "shrink-0 text-neutral-300 dark:text-neutral-600", children: "•" }),
+                    /* @__PURE__ */ jsx("time", { dateTime: activePost.createdAt || void 0, className: "shrink-0 font-mono text-xs", children: activePost.timestamp })
+                  ] })
                 ] }),
-                (() => {
-                  let IconComponent = Newspaper;
-                  let label = "Berita";
-                  if (activePost.category === "cetakan_ulang") {
-                    IconComponent = RefreshCw;
-                    label = "Cetak Ulang";
-                  } else if (activePost.category === "manga") {
-                    IconComponent = BookOpen;
-                    label = "Manga";
-                  } else if (activePost.category === "light_novel") {
-                    IconComponent = BookMarked;
-                    label = "Light Novel";
-                  } else if (activePost.category === "novel") {
-                    IconComponent = BookText;
-                    label = "Novel";
-                  } else if (activePost.category === "rilisan") {
-                    IconComponent = Newspaper;
-                    label = "Rilisan";
-                  } else if (activePost.category === "edukasi") {
-                    IconComponent = Sparkles;
-                    label = "Review";
-                  } else if (activePost.category === "promo") {
-                    IconComponent = Tag;
-                    label = "Promo";
-                  } else if (activePost.category === "event") {
-                    IconComponent = Ticket;
-                    label = "Event";
-                  } else if (activePost.category === "komunitas") {
-                    IconComponent = Mic;
-                    label = "Komunitas";
-                  } else if (activePost.category === "anime") {
-                    IconComponent = Tv;
-                    label = "Anime";
-                  } else if (activePost.category === "game") {
-                    IconComponent = Gamepad2;
-                    label = "Game";
-                  } else if (activePost.category === "jepang") {
-                    IconComponent = ToriiGate$3;
-                    label = "Jepang";
-                  } else if (activePost.category === "breaking") {
-                    IconComponent = Flame;
-                    label = "Breaking";
-                  }
-                  return /* @__PURE__ */ jsx("div", { className: "flex items-center gap-2 flex-wrap", children: /* @__PURE__ */ jsxs(
+                activePost.hashTags && activePost.hashTags.length > 0 && /* @__PURE__ */ jsx("div", { className: "flex flex-wrap gap-2", children: activePost.hashTags.map((tag, i) => {
+                  const label = tag.replace(/^#/, "").trim();
+                  if (!label) return null;
+                  return /* @__PURE__ */ jsxs(
                     "button",
                     {
                       type: "button",
-                      onClick: () => {
-                        if (window.location.pathname === "/news") {
-                          handleToggleCategory(activePost.category, true);
-                          selectPost(null);
-                          const searchParams = new URLSearchParams(window.location.search);
-                          searchParams.set("category", activePost.category);
-                          window.history.pushState({}, "", `/news?${searchParams.toString()}`);
-                        } else {
-                          router.get("/news", { category: activePost.category });
-                        }
-                      },
-                      className: "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-bold border border-neutral-200/50 dark:border-neutral-700 transition-all cursor-pointer active:scale-95 group/badge",
-                      title: `Filter postingan kategori: ${label}`,
+                      onClick: () => router.get("/news", { tag: label }),
+                      className: "inline-flex items-center px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-semibold border border-neutral-200/80 dark:border-neutral-700 transition-all cursor-pointer active:scale-95",
+                      title: `Lihat berita dengan tagar #${label}`,
                       children: [
-                        /* @__PURE__ */ jsx(IconComponent, { className: "w-4 h-4 text-neutral-700 dark:text-neutral-300 shrink-0 group-hover/badge:rotate-12 transition-transform" }),
-                        /* @__PURE__ */ jsx("span", { children: label })
+                        "#",
+                        label
                       ]
-                    }
-                  ) });
-                })(),
-                /* @__PURE__ */ jsx("h1", { className: "text-xl sm:text-2xl font-extrabold text-neutral-900 dark:text-neutral-50 leading-tight", children: activePost.title })
+                    },
+                    `${label}-${i}`
+                  );
+                }) }),
+                heroImage && /* @__PURE__ */ jsx("div", { className: "relative w-full rounded-lg aspect-video max-h-[500px] overflow-hidden  ", children: /* @__PURE__ */ jsx(
+                  "img",
+                  {
+                    src: heroImage,
+                    alt: activePost.title || "Gambar berita",
+                    className: "absolute inset-0 h-full w-full object-cover"
+                  }
+                ) }),
+                activePost.content && /* @__PURE__ */ jsx(
+                  NewsBody,
+                  {
+                    html: contentHtml,
+                    className: "w-full  text-left text-base leading-[1.65] font-sans text-neutral-800 dark:text-neutral-200 [&_p]:mt-0 [&_p]:mb-5 [&_p:last-child]:mb-0 [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:leading-snug [&_h2]:text-neutral-900 dark:[&_h2]:text-neutral-50 [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:leading-snug [&_h3]:text-neutral-900 dark:[&_h3]:text-neutral-50 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_blockquote]:my-6 [&_blockquote]:border-l-4 [&_blockquote]:border-[#DA6B1C] [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-neutral-600 dark:[&_blockquote]:text-neutral-300 [&_img]:my-6 [&_img]:max-w-full [&_img]:rounded-xl [&_figure]:my-6 [&_figure]:mx-auto [&_figure]:max-w-full [&_figcaption]:mt-2 [&_figcaption]:text-center [&_figcaption]:text-xs [&_figcaption]:text-neutral-500 dark:[&_figcaption]:text-neutral-400 [&_hr]:my-8 [&_hr]:border-t [&_hr]:border-neutral-200 dark:[&_hr]:border-neutral-800 [&_.norinoya-text-small]:text-xs [&_small]:text-xs [&_strong]:font-bold [&_strong]:text-neutral-900 dark:[&_strong]:text-neutral-50 [&_a]:font-semibold [&_a]:text-emerald-700 [&_a]:underline [&_a]:decoration-emerald-600/50 [&_a]:underline-offset-2 [&_a]:break-words hover:[&_a]:text-emerald-800 dark:[&_a]:text-emerald-400 dark:[&_a]:decoration-emerald-400/50 dark:hover:[&_a]:text-emerald-300 [&_iframe]:my-4 [&_iframe]:max-w-full [&_iframe]:transform-gpu [&_iframe]:backface-hidden"
+                  }
+                ),
+                !galleryIsOnlyHero && renderImageGallery(activePost, true)
               ] }),
-              activePost.content && /* @__PURE__ */ jsx(
-                NewsBody,
-                {
-                  html: contentHtml,
-                  className: "whitespace-pre-line [&_p:empty]:min-h-[1.5rem] text-xs sm:text-sm text-neutral-700 dark:text-[#c0d6d8] leading-relaxed font-sans bg-neutral-50 dark:bg-[#202120] p-4 sm:p-5 rounded-xl border border-neutral-100 dark:border-neutral-800 prose dark:prose-invert max-w-none prose-sm prose-p:my-2.5 prose-p:leading-relaxed prose-headings:mt-4 prose-headings:mb-2 text-justify [&_a]:font-semibold [&_a]:text-emerald-700 [&_a]:underline [&_a]:decoration-emerald-600/50 [&_a]:underline-offset-2 [&_a]:break-words hover:[&_a]:text-emerald-800 dark:[&_a]:text-emerald-400 dark:[&_a]:decoration-emerald-400/50 dark:hover:[&_a]:text-emerald-300 [&_iframe]:my-4 [&_iframe]:max-w-full [&_iframe]:transform-gpu [&_iframe]:backface-hidden"
-                }
-              ),
-              renderImageGallery(activePost, true),
               activePost.recommendations && activePost.recommendations.length > 0 && /* @__PURE__ */ jsxs("div", { className: "pt-2 border-t border-neutral-200/80 dark:border-neutral-800 space-y-5", children: [
                 /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between gap-2 bg-neutral-100/80 dark:bg-neutral-800/80 p-3 sm:p-3.5 rounded-2xl border border-neutral-200/80 dark:border-neutral-700/60", children: [
                   /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2.5", children: [
                     /* @__PURE__ */ jsx("div", { className: "w-8 h-8 rounded-xl bg-[#DA6B1C] text-white flex items-center justify-center font-bold shadow-xs shrink-0", children: /* @__PURE__ */ jsx(Sparkles, { className: "w-4 h-4" }) }),
-                    /* @__PURE__ */ jsxs("div", { children: [
-                      /* @__PURE__ */ jsx("h4", { className: "text-xs sm:text-sm font-extrabold text-neutral-900 dark:text-neutral-50 tracking-tight flex items-center gap-1.5", children: /* @__PURE__ */ jsx("span", { children: "INSERT KATALOG & REVIEW SHORT" }) }),
-                      /* @__PURE__ */ jsx("p", { className: "text-[10px] sm:text-[11px] font-mono text-neutral-500 dark:text-neutral-400", children: "Katalog (Kiri) • Review Short Konotasi & Card Instagram (Kanan)" })
-                    ] })
+                    /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx("h4", { className: "text-xs sm:text-sm font-extrabold text-neutral-900 dark:text-neutral-50 tracking-tight", children: "Buku yang dibahas" }) })
                   ] }),
                   /* @__PURE__ */ jsxs("span", { className: "px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-[#DA6B1C] text-white shrink-0", children: [
                     activePost.recommendations.length,
@@ -7779,11 +7798,10 @@ function DetailNews$1({
                                   onSelectShort({
                                     id: ((_a2 = rec.shortReview) == null ? void 0 : _a2.id) || `short-${rec.number || idx}`,
                                     title: shortTitle,
-                                    views: ((_b2 = rec.shortReview) == null ? void 0 : _b2.views) || "24.3K",
-                                    duration: ((_c2 = rec.shortReview) == null ? void 0 : _c2.duration) || "0:52",
-                                    likes: "5.2K",
+                                    views: (_b2 = rec.shortReview) == null ? void 0 : _b2.views,
+                                    duration: (_c2 = rec.shortReview) == null ? void 0 : _c2.duration,
                                     thumbnail: shortThumbnail,
-                                    quote: ((_d2 = rec.shortReview) == null ? void 0 : _d2.quote) || '"Review jujur bedah fisik & cetakan komik!"'
+                                    quote: (_d2 = rec.shortReview) == null ? void 0 : _d2.quote
                                   });
                                 } else if (videoUrl) {
                                   window.open(videoUrl, "_blank");
@@ -7809,20 +7827,14 @@ function DetailNews$1({
                                     /* @__PURE__ */ jsx(Video, { className: "w-3 h-3 text-[#DA6B1C]" }),
                                     /* @__PURE__ */ jsx("span", { children: "SHORTS" })
                                   ] }),
-                                  /* @__PURE__ */ jsx("span", { className: "px-2 py-1 rounded-md text-[10px] font-mono font-bold bg-black/70 text-white backdrop-blur-md border border-white/10 shadow-xs", children: ((_g = rec.shortReview) == null ? void 0 : _g.duration) || "0:58" })
+                                  ((_g = rec.shortReview) == null ? void 0 : _g.duration) && /* @__PURE__ */ jsx("span", { className: "px-2 py-1 rounded-md text-[10px] font-mono font-bold bg-black/70 text-white backdrop-blur-md border border-white/10 shadow-xs", children: rec.shortReview.duration })
                                 ] }),
                                 /* @__PURE__ */ jsx("div", { className: "relative z-10 flex-1 flex items-center justify-center pointer-events-none", children: /* @__PURE__ */ jsx("div", { className: "w-11 h-11 rounded-full bg-[#DA6B1C] text-white flex items-center justify-center shadow-lg group-hover/short:scale-110 transition-transform", children: /* @__PURE__ */ jsx(Play, { className: "w-4 h-4 fill-white translate-x-0.5" }) }) }),
                                 /* @__PURE__ */ jsxs("div", { className: "relative z-10 p-3 space-y-2", children: [
                                   /* @__PURE__ */ jsx("h5", { className: "text-xs sm:text-sm font-extrabold text-white leading-snug drop-shadow-md line-clamp-2 group-hover/short:text-orange-300 transition-colors", children: shortTitle }),
-                                  /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between text-white/90 font-mono text-[11px] font-bold pt-1.5 border-t border-white/15", children: [
-                                    /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5", children: [
-                                      /* @__PURE__ */ jsx(Eye, { className: "w-3.5 h-3.5 text-neutral-300" }),
-                                      /* @__PURE__ */ jsx("span", { children: ((_h = rec.shortReview) == null ? void 0 : _h.views) || "18.9K" })
-                                    ] }),
-                                    /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5 text-orange-400", children: [
-                                      /* @__PURE__ */ jsx(Heart, { className: "w-3.5 h-3.5 fill-current text-orange-400" }),
-                                      /* @__PURE__ */ jsx("span", { children: "4.8K" })
-                                    ] })
+                                  ((_h = rec.shortReview) == null ? void 0 : _h.views) && /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-1.5 text-white/90 font-mono text-[11px] font-bold pt-1.5 border-t border-white/15", children: [
+                                    /* @__PURE__ */ jsx(Eye, { className: "w-3.5 h-3.5 text-neutral-300" }),
+                                    /* @__PURE__ */ jsx("span", { children: rec.shortReview.views })
                                   ] })
                                 ] })
                               ]
@@ -8018,9 +8030,14 @@ function DetailNews$1({
                       categoryColor = "bg-orange-50 dark:bg-orange-950/45 text-orange-600 dark:text-orange-400 border border-orange-100/50 dark:border-orange-900/30";
                     }
                     return /* @__PURE__ */ jsxs(
-                      "div",
+                      "a",
                       {
-                        onClick: () => selectPost(post),
+                        href: `/news/${encodeURIComponent(String(post.slug || post.id))}`,
+                        onClick: (e) => {
+                          if (!isPlainLeftClick(e)) return;
+                          e.preventDefault();
+                          selectPost(post);
+                        },
                         className: "bg-neutral-50/50 dark:bg-[#1A1A1A] hover:bg-neutral-50 dark:hover:bg-[#262626] p-4 rounded-xl border border-neutral-200/60 dark:border-neutral-800/80 cursor-pointer group transition-all flex flex-col justify-between h-full hover:shadow-xs",
                         children: [
                           /* @__PURE__ */ jsxs("div", { className: "space-y-2", children: [
@@ -8042,7 +8059,7 @@ function DetailNews$1({
                   }) })
                 ] });
               })()
-            ] }) })
+            ] })
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "lg:col-span-4 flex flex-col gap-5", children: [
             /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 space-y-3 shadow-xs text-left", children: [
@@ -8128,9 +8145,12 @@ function DetailNews$1({
                 const rating = kiosItem.condition_rating || "";
                 const partnerName = kiosItem.publisher_name || "";
                 return /* @__PURE__ */ jsx(
-                  "div",
+                  "a",
                   {
-                    onClick: () => {
+                    href: `/kios/${encodeURIComponent(String(kiosItem.slug || kiosItem.id))}`,
+                    onClick: (e) => {
+                      if (!isPlainLeftClick(e)) return;
+                      e.preventDefault();
                       const targetSlug = kiosItem.slug || kiosItem.id;
                       router.visit(`/kios/${targetSlug}`);
                     },
@@ -8175,13 +8195,6 @@ function DetailNews$1({
                   `kios-${kiosItem.id || idx}`
                 );
               }) })
-            ] }),
-            /* @__PURE__ */ jsxs("div", { className: "rounded-2xl bg-white dark:bg-[#202120] p-5 sm:p-6 border border-dashed border-neutral-300 dark:border-neutral-700/80 text-center flex flex-col items-center justify-center gap-3 transition-all", children: [
-              /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-center gap-1.5 text-neutral-400 dark:text-neutral-500", children: [
-                /* @__PURE__ */ jsx("span", { className: "text-sm", children: "📣" }),
-                /* @__PURE__ */ jsx("span", { className: "text-[11px] font-mono font-extrabold uppercase tracking-wider", children: "SPONSORED ADSENSE" })
-              ] }),
-              /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-[13px] text-neutral-600 dark:text-neutral-300 font-sans leading-relaxed max-w-xs mx-auto", children: "Iklan Google Adsense membantu kelangsungan server database buku Norinoya. Hubungi kami untuk penempatan banner premium." })
             ] })
           ] })
         ] })
@@ -8191,9 +8204,9 @@ function DetailNews$1({
     /* @__PURE__ */ jsx(BookmarkToast, { message: bookmarkToast })
   ] });
 }
-const __vite_glob_0_70 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_72 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: DetailNews$1
+  default: DetailNews
 }, Symbol.toStringTag, { value: "Module" }));
 const STATUS_STYLES = {
   Subscription: {
@@ -8332,11 +8345,16 @@ function AdaptationBox({ adaptation }) {
         /* @__PURE__ */ jsx("span", { children: adaptation.label })
       ] })
     ] }),
-    /* @__PURE__ */ jsx("div", { className: "space-y-1", children: /* @__PURE__ */ jsxs("p", { className: "text-sm text-neutral-950 dark:text-neutral-50 font-semibold", children: [
-      adaptation.range,
-      " ",
-      /* @__PURE__ */ jsx("span", { className: "font-normal text-neutral-500 dark:text-neutral-400", children: adaptation.chapters })
-    ] }) })
+    /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-1.5 sm:gap-2", children: [
+      /* @__PURE__ */ jsxs("div", { className: "px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-white/90 dark:bg-neutral-800/90 text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs font-sans font-semibold select-none shadow-3xs", children: [
+        "Volume: ",
+        adaptation.range
+      ] }),
+      /* @__PURE__ */ jsxs("div", { className: "px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-white/90 dark:bg-neutral-800/90 text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs font-sans font-semibold select-none shadow-3xs", children: [
+        "Chapter: ",
+        adaptation.chapters
+      ] })
+    ] })
   ] });
 }
 function BookPostCard({ manga }) {
@@ -8449,7 +8467,10 @@ function TimelineNode({ entry }) {
           /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-1.5", children: [
             entry.studio && /* @__PURE__ */ jsxs("span", { className: "inline-flex items-center gap-1 px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-950 dark:text-neutral-50 text-[11px] font-mono font-semibold", children: [
               /* @__PURE__ */ jsx(Clapperboard, { className: "w-3.5 h-3.5" }),
-              /* @__PURE__ */ jsx("span", { children: entry.studio })
+              /* @__PURE__ */ jsxs("span", { children: [
+                "Studio : ",
+                entry.studio
+              ] })
             ] }),
             (_a = entry.tags) == null ? void 0 : _a.map((tag) => /* @__PURE__ */ jsx(
               "span",
@@ -8485,7 +8506,6 @@ function DetailPanduanAdaptasi({ panduan }) {
   const handleNavHome = () => router.visit("/");
   const handleNavNews = () => router.visit("/news");
   const handleNavKios = () => router.visit("/kios");
-  const handleNavAbout = () => router.visit("/?scroll=about");
   const [shareModalData, setShareModalData] = useState({
     isOpen: false,
     title: "",
@@ -8599,7 +8619,7 @@ function DetailPanduanAdaptasi({ panduan }) {
       ] }) }),
       entries.length === 0 ? /* @__PURE__ */ jsx("div", { className: "py-16 text-center rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700", children: /* @__PURE__ */ jsx("p", { className: "text-sm text-neutral-500 dark:text-neutral-400", children: "Belum ada node timeline untuk panduan ini." }) }) : /* @__PURE__ */ jsx("div", { className: "relative pl-6 md:pl-10 space-y-8 sm:space-y-10 before:content-[''] before:absolute before:left-[17px] md:before:left-[21px] before:top-4 before:bottom-6 before:w-[2px] before:bg-neutral-200 dark:before:bg-neutral-800", children: entries.map((entry) => /* @__PURE__ */ jsx(TimelineNode, { entry }, entry.id)) })
     ] }) }),
-    /* @__PURE__ */ jsx(Footer, { onNavigateHome: handleNavHome, onNavigateAbout: handleNavAbout, darkMode }),
+    /* @__PURE__ */ jsx(Footer, { onNavigateHome: handleNavHome, darkMode }),
     /* @__PURE__ */ jsx(
       ShareModal,
       {
@@ -8612,11 +8632,11 @@ function DetailPanduanAdaptasi({ panduan }) {
     )
   ] });
 }
-const __vite_glob_0_71 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_73 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: DetailPanduanAdaptasi
 }, Symbol.toStringTag, { value: "Module" }));
-const DetailKios = lazy(() => Promise.resolve().then(() => __vite_glob_0_69));
+const DetailKios = lazy(() => Promise.resolve().then(() => __vite_glob_0_71));
 function CustomSelect$1({ label, value, options, onChange, isOpen, onToggle }) {
   var _a, _b;
   const selectedOptions = options.filter((opt) => value.includes(opt.value) && opt.value !== "all");
@@ -9588,13 +9608,6 @@ function EtalaseCatalog$1({
               }
             )
           ] })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full mt-8 bg-neutral-50/70 dark:bg-neutral-900/40 border border-dashed border-neutral-300 dark:border-neutral-800 rounded-2xl p-5 sm:p-6 text-center space-y-1.5 transition-colors shadow-2xs", children: [
-          /* @__PURE__ */ jsxs("div", { className: "text-xs font-mono font-extrabold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 flex items-center justify-center gap-1.5", children: [
-            /* @__PURE__ */ jsx("span", { children: "📢" }),
-            /* @__PURE__ */ jsx("span", { children: "SPONSORED ADSENSE" })
-          ] }),
-          /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 font-sans max-w-2xl mx-auto leading-relaxed", children: "Iklan Google Adsense membantu kelangsungan server database buku Norinoya. Hubungi kami untuk penempatan banner premium." })
         ] })
       ] })
     ] }),
@@ -9817,7 +9830,7 @@ Dibuat via *Norinoya Kios Affiliate*. Stop buku bajakan, dukung kreator orisinal
     )
   ] });
 }
-const __vite_glob_0_72 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_74 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: EtalaseCatalog$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -9932,11 +9945,11 @@ function LoadingDetailBuku({ onClose }) {
     ] })
   ] }) });
 }
-const __vite_glob_0_85 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_87 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingDetailBuku
 }, Symbol.toStringTag, { value: "Module" }));
-const DetailBuku = lazy(() => Promise.resolve().then(() => __vite_glob_0_68));
+const DetailBuku = lazy(() => Promise.resolve().then(() => __vite_glob_0_70));
 function CustomSelect({ label, value, options, onChange, isOpen, onToggle }) {
   var _a, _b;
   const selectedOptions = options.filter((opt) => value.includes(opt.value) && opt.value !== "all");
@@ -10764,13 +10777,6 @@ function MarketplaceDb$1({
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ jsxs("div", { className: "w-full bg-neutral-50/70 dark:bg-neutral-900/40 border border-dashed border-neutral-300 dark:border-neutral-800 rounded-2xl p-5 sm:p-6 text-center space-y-1.5 mb-6 transition-colors shadow-2xs", children: [
-        /* @__PURE__ */ jsxs("div", { className: "text-xs font-mono font-extrabold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 flex items-center justify-center gap-1.5", children: [
-          /* @__PURE__ */ jsx("span", { children: "📢" }),
-          /* @__PURE__ */ jsx("span", { children: "SPONSORED ADSENSE" })
-        ] }),
-        /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 font-sans max-w-2xl mx-auto leading-relaxed", children: "Iklan Google Adsense membantu kelangsungan server database buku Norinoya. Hubungi kami untuk penempatan banner premium." })
-      ] }),
       upcomingReleases.length > 0 && /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-[#171717] border border-black dark:border-orange-800/50 p-4 sm:p-5 rounded-2xl space-y-3.5 shadow-2xs mb-6 relative overflow-hidden transition-colors ", children: [
         /* @__PURE__ */ jsx("div", { className: "absolute -top-12 -right-12 w-40 h-40 bg-[#DA6B1C]/10 dark:bg-[#DA6B1C]/5 rounded-full blur-2xl pointer-events-none" }),
         /* @__PURE__ */ jsx("div", { className: "flex flex-wrap items-center justify-between gap-2 border-b border-neutral-100 dark:border-neutral-800 pb-3 relative z-10", children: /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
@@ -11207,7 +11213,7 @@ function MarketplaceDb$1({
             ] }),
             " dari ",
             /* @__PURE__ */ jsx("strong", { className: "text-neutral-950 dark:text-white font-bold", children: listedCount }),
-            "Buku"
+            " Buku"
           ] })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "relative select-none", onClick: (e) => e.stopPropagation(), children: [
@@ -11427,13 +11433,6 @@ function MarketplaceDb$1({
             }
           )
         ] })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "w-full mt-8 bg-neutral-50/70 dark:bg-neutral-900/40 border border-dashed border-neutral-300 dark:border-neutral-800 rounded-2xl p-5 sm:p-6 text-center space-y-1.5 transition-colors shadow-2xs", children: [
-        /* @__PURE__ */ jsxs("div", { className: "text-xs font-mono font-extrabold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 flex items-center justify-center gap-1.5", children: [
-          /* @__PURE__ */ jsx("span", { children: "📢" }),
-          /* @__PURE__ */ jsx("span", { children: "SPONSORED ADSENSE" })
-        ] }),
-        /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 font-sans max-w-2xl mx-auto leading-relaxed", children: "Iklan Google Adsense membantu kelangsungan server database buku Norinoya. Hubungi kami untuk penempatan banner premium." })
       ] })
     ] }),
     /* @__PURE__ */ jsx(AnimatePresence, { onExitComplete: restoreCatalogScroll, children: selectedComic && (isDetailLoading ? /* @__PURE__ */ jsx(LoadingDetailBuku, { onClose: handleCloseModal }) : /* @__PURE__ */ jsx(Suspense, { fallback: /* @__PURE__ */ jsx(LoadingDetailBuku, {}), children: /* @__PURE__ */ jsx(
@@ -11464,7 +11463,7 @@ function MarketplaceDb$1({
     ) })) })
   ] });
 }
-const __vite_glob_0_76 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_78 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: MarketplaceDb$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -11631,7 +11630,7 @@ function ModalKolaborasi({ isOpen, onClose }) {
     }
   ) });
 }
-const __vite_glob_0_78 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_80 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ModalKolaborasi
 }, Symbol.toStringTag, { value: "Module" }));
@@ -11726,6 +11725,8 @@ function NewsCategorySidebar({
   setSearchInput,
   searchTerm,
   setSearchTerm,
+  activeTag = "",
+  clearActiveTag,
   scrollToFeedTop,
   isScrolled,
   isCategoryExpanded,
@@ -11825,6 +11826,24 @@ function NewsCategorySidebar({
                 children: "Reset"
               }
             )
+          ] }),
+          activeTag && /* @__PURE__ */ jsxs("div", { className: "mt-2.5 flex items-center justify-between text-[11px] text-[#112A12] dark:text-[#457347] font-medium bg-[#112A12]/10 dark:bg-[#112A12]/20 px-2.5 py-1 rounded-md", children: [
+            /* @__PURE__ */ jsxs("span", { className: "truncate", children: [
+              "Tagar: #",
+              activeTag
+            ] }),
+            /* @__PURE__ */ jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => {
+                  clearActiveTag == null ? void 0 : clearActiveTag();
+                  scrollToFeedTop();
+                },
+                className: "text-xs font-bold hover:underline cursor-pointer ml-1 shrink-0",
+                children: "Reset"
+              }
+            )
           ] })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 p-4 rounded-xl border border-neutral-200/60 dark:border-neutral-800 shadow-xs flex flex-col gap-3 transition-all", children: [
@@ -11908,7 +11927,7 @@ function NewsCategorySidebar({
     }
   );
 }
-const __vite_glob_0_80 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_82 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsCategorySidebar
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12087,7 +12106,7 @@ function NewsRightSidebar({
     ] })
   ] });
 }
-const __vite_glob_0_83 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_85 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsRightSidebar
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12113,7 +12132,6 @@ const ToriiGate$1 = ({ className = "w-4 h-4" }) => /* @__PURE__ */ jsxs(
 );
 function NewsPostCard({
   post,
-  index,
   selectPost,
   handleToggleCategory,
   renderImageGallery,
@@ -12161,74 +12179,64 @@ function NewsPostCard({
     CategoryBadgeIcon = Flame;
     categoryLabelText = "Breaking";
   }
-  return /* @__PURE__ */ jsxs(motion.div, { className: "space-y-6", children: [
-    /* @__PURE__ */ jsxs(
-      motion.article,
-      {
-        initial: { opacity: 0, y: 12 },
-        animate: { opacity: 1, y: 0 },
-        exit: { opacity: 0, scale: 0.98 },
-        className: "bg-white hover:bg-[#F7F7F7] dark:bg-neutral-900 dark:hover:bg-[#262626] rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 p-5 sm:p-6 shadow-[0_2px_16px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all cursor-pointer group space-y-3.5",
-        onClick: () => selectPost(post),
-        children: [
-          /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono font-medium text-neutral-500 dark:text-neutral-400 leading-normal", children: [
-            /* @__PURE__ */ jsxs("span", { className: "font-extrabold text-[#112A12] dark:text-[#112A12] shrink-0", children: [
-              "@",
-              post.username
-            ] }),
-            /* @__PURE__ */ jsx("span", { className: "shrink-0 text-neutral-300 dark:text-neutral-600", children: "•" }),
-            /* @__PURE__ */ jsx("span", { className: "shrink-0", children: post.displayName }),
-            /* @__PURE__ */ jsx("span", { className: "shrink-0 text-neutral-300 dark:text-neutral-600", children: "•" }),
-            /* @__PURE__ */ jsx("span", { className: "shrink-0", children: post.timestamp })
+  return /* @__PURE__ */ jsx(motion.div, { className: "space-y-6", children: /* @__PURE__ */ jsxs(
+    motion.article,
+    {
+      initial: { opacity: 0, y: 12 },
+      animate: { opacity: 1, y: 0 },
+      exit: { opacity: 0, scale: 0.98 },
+      className: "bg-white hover:bg-[#F7F7F7] dark:bg-neutral-900 dark:hover:bg-[#262626] rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 p-5 sm:p-6 shadow-[0_2px_16px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all cursor-pointer group space-y-3.5",
+      onClick: () => selectPost(post),
+      children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono font-medium text-neutral-500 dark:text-neutral-400 leading-normal", children: [
+          /* @__PURE__ */ jsxs("span", { className: "font-extrabold text-[#112A12] dark:text-[#112A12] shrink-0", children: [
+            "@",
+            post.username
           ] }),
-          /* @__PURE__ */ jsx("div", { className: "flex items-center justify-between gap-2", children: /* @__PURE__ */ jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: (e) => {
-                e.stopPropagation();
-                handleToggleCategory(post.category, true);
-              },
-              className: "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-neutral-100/90 dark:bg-neutral-800/90 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-bold border border-neutral-200/40 dark:border-neutral-700/40 transition-all cursor-pointer active:scale-95 group/badge",
-              title: `Klik untuk memfilter kategori: ${categoryLabelText}`,
-              children: [
-                /* @__PURE__ */ jsx(CategoryBadgeIcon, { className: "w-4 h-4 text-neutral-700 dark:text-neutral-300 shrink-0 group-hover/badge:rotate-12 transition-transform" }),
-                /* @__PURE__ */ jsx("span", { children: categoryLabelText })
-              ]
-            }
-          ) }),
-          /* @__PURE__ */ jsx("h3", { className: "text-lg sm:text-2xl font-extrabold leading-tight tracking-tight text-neutral-900 dark:text-neutral-50", children: post.title }),
-          renderImageGallery(post),
-          /* @__PURE__ */ jsx("div", { className: "flex items-center justify-end pt-2.5 border-t border-neutral-100 dark:border-neutral-800/80 mt-3", children: /* @__PURE__ */ jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: (e) => handleSharePost(post, e),
-              className: "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200/90 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white text-xs font-sans font-semibold transition-all cursor-pointer active:scale-95 border border-neutral-200/60 dark:border-neutral-700/60 shadow-2xs group/share",
-              title: "Bagikan postingan ini",
-              children: [
-                /* @__PURE__ */ jsx("span", { children: "Bagikan" }),
-                /* @__PURE__ */ jsx(Send, { className: "w-3.5 h-3.5 text-neutral-700 dark:text-neutral-300 group-hover/share:translate-x-0.5 group-hover/share:-translate-y-0.5 transition-transform stroke-[2]" })
-              ]
-            }
-          ) })
-        ]
-      }
-    ),
-    index === 0 && /* @__PURE__ */ jsxs("div", { className: "bg-neutral-50/60 dark:bg-neutral-900/40 rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700/80 p-5 sm:p-6 text-center space-y-2 transition-all", children: [
-      /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-center gap-1.5 text-xs font-mono font-bold tracking-wider text-neutral-400 dark:text-neutral-500 uppercase", children: [
-        /* @__PURE__ */ jsx("span", { children: "📢" }),
-        /* @__PURE__ */ jsx("span", { children: "SPONSORED ADSENSE" })
-      ] }),
-      /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-xl mx-auto leading-relaxed font-sans", children: "Iklan Google Adsense membantu kelangsungan server database buku Norinoya. Hubungi kami untuk penempatan banner premium." })
-    ] })
-  ] }, post.id);
+          /* @__PURE__ */ jsx("span", { className: "shrink-0 text-neutral-300 dark:text-neutral-600", children: "•" }),
+          /* @__PURE__ */ jsx("span", { className: "shrink-0", children: post.displayName }),
+          /* @__PURE__ */ jsx("span", { className: "shrink-0 text-neutral-300 dark:text-neutral-600", children: "•" }),
+          /* @__PURE__ */ jsx("span", { className: "shrink-0", children: post.timestamp })
+        ] }),
+        /* @__PURE__ */ jsx("div", { className: "flex items-center justify-between gap-2", children: /* @__PURE__ */ jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: (e) => {
+              e.stopPropagation();
+              handleToggleCategory(post.category, true);
+            },
+            className: "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-neutral-100/90 dark:bg-neutral-800/90 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-bold border border-neutral-200/40 dark:border-neutral-700/40 transition-all cursor-pointer active:scale-95 group/badge",
+            title: `Klik untuk memfilter kategori: ${categoryLabelText}`,
+            children: [
+              /* @__PURE__ */ jsx(CategoryBadgeIcon, { className: "w-4 h-4 text-neutral-700 dark:text-neutral-300 shrink-0 group-hover/badge:rotate-12 transition-transform" }),
+              /* @__PURE__ */ jsx("span", { children: categoryLabelText })
+            ]
+          }
+        ) }),
+        /* @__PURE__ */ jsx("h3", { className: "text-lg sm:text-2xl font-extrabold leading-tight tracking-tight text-neutral-900 dark:text-neutral-50", children: post.title }),
+        renderImageGallery(post),
+        /* @__PURE__ */ jsx("div", { className: "flex items-center justify-end pt-2.5 border-t border-neutral-100 dark:border-neutral-800/80 mt-3", children: /* @__PURE__ */ jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: (e) => handleSharePost(post, e),
+            className: "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200/90 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white text-xs font-sans font-semibold transition-all cursor-pointer active:scale-95 border border-neutral-200/60 dark:border-neutral-700/60 shadow-2xs group/share",
+            title: "Bagikan postingan ini",
+            children: [
+              /* @__PURE__ */ jsx("span", { children: "Bagikan" }),
+              /* @__PURE__ */ jsx(Send, { className: "w-3.5 h-3.5 text-neutral-700 dark:text-neutral-300 group-hover/share:translate-x-0.5 group-hover/share:-translate-y-0.5 transition-transform stroke-[2]" })
+            ]
+          }
+        ) })
+      ]
+    }
+  ) }, post.id);
 }
-const __vite_glob_0_82 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_84 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsPostCard
 }, Symbol.toStringTag, { value: "Module" }));
-const DetailNews = lazy(() => Promise.resolve().then(() => __vite_glob_0_70));
 const ToriiGate = ({ className = "w-4 h-4" }) => /* @__PURE__ */ jsxs(
   "svg",
   {
@@ -12361,6 +12369,20 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
   }, [dbNewsList]);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const readTagParam = () => {
+    if (typeof window === "undefined") return "";
+    return (new URLSearchParams(window.location.search).get("tag") || "").replace(/^#/, "").trim();
+  };
+  const [activeTag, setActiveTag] = useState(readTagParam);
+  const clearActiveTag = () => {
+    setActiveTag("");
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has("tag")) return;
+    params.delete("tag");
+    const next = params.toString();
+    const path = window.location.pathname;
+    window.history.replaceState({}, "", next ? `${path}?${next}` : path);
+  };
   const INITIAL_VISIBLE_COUNT = 6;
   const LOAD_MORE_STEP = 4;
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
@@ -12383,30 +12405,43 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
       if (catParam) {
         setSelectedCategories([catParam.toLowerCase()]);
       }
+      setActiveTag((urlParams.get("tag") || "").replace(/^#/, "").trim());
     };
     window.addEventListener("popstate", handleUrlChange);
     return () => window.removeEventListener("popstate", handleUrlChange);
   }, []);
+  const leftSidebarRef = useRef(null);
+  const feedColumnRef = useRef(null);
+  const isScrolledRef = useRef(false);
   useEffect(() => {
     const handleScroll = () => {
+      var _a;
       const y = window.scrollY;
       if (y < 250 && leftSidebarRef.current && leftSidebarRef.current.scrollTop > 0) {
         leftSidebarRef.current.scrollTo({ top: 0, behavior: "smooth" });
       }
-      if (y > 750) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-        setIsCategoryExpanded(false);
+      const feedHeight = ((_a = feedColumnRef.current) == null ? void 0 : _a.offsetHeight) ?? 0;
+      const canMinimize = feedHeight >= window.innerHeight + 750;
+      let next = isScrolledRef.current;
+      if (!canMinimize) {
+        next = false;
+      } else if (y > 750) {
+        next = true;
+      } else if (y < 400) {
+        next = false;
       }
-      if (y > 1800) {
+      if (next !== isScrolledRef.current) {
+        isScrolledRef.current = next;
+        setIsScrolled(next);
+        if (!next) setIsCategoryExpanded(false);
+      }
+      if (canMinimize && y > 1800) {
         setIsCategoryExpanded(false);
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  const leftSidebarRef = useRef(null);
   const mobileCategoryNavRef = useRef(null);
   const scrollCategoriesBy = (direction) => {
     if (mobileCategoryNavRef.current) {
@@ -12453,6 +12488,15 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
     }, 20);
   };
   const [localSelectedPost, setLocalSelectedPost] = useState(null);
+  const { url } = usePage();
+  useEffect(() => {
+    const [path, query = ""] = url.split("?");
+    setActiveTag((new URLSearchParams(query).get("tag") || "").replace(/^#/, "").trim());
+    if (path === "/news") {
+      setLocalSelectedPost(null);
+      setSelectedNewsId == null ? void 0 : setSelectedNewsId(null);
+    }
+  }, [url, setSelectedNewsId]);
   const initialPollsState = useMemo(() => {
     const pMap = { ...INITIAL_POLLS };
     if (dbNewsList && dbNewsList.length > 0) {
@@ -12522,7 +12566,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
     const images = post.galleryImages && post.galleryImages.length > 0 ? post.galleryImages : post.attachedImage ? [post.attachedImage] : [];
     if (!images || images.length === 0) return null;
     if (images.length === 1) {
-      return /* @__PURE__ */ jsxs(
+      return /* @__PURE__ */ jsx(
         "div",
         {
           onClick: (e) => {
@@ -12533,12 +12577,45 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
             }
           },
           className: "relative w-full rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 shadow-xs group/img cursor-pointer",
+          children: /* @__PURE__ */ jsx(
+            "img",
+            {
+              src: images[0],
+              alt: "Foto Berita Norinoya",
+              loading: "lazy",
+              decoding: "async",
+              referrerPolicy: "no-referrer",
+              onError: (e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.style.display = "none";
+              },
+              className: "w-full h-auto object-contain max-h-[500px] hover:scale-[1.01] transition-transform duration-300"
+            }
+          )
+        }
+      );
+    }
+    return /* @__PURE__ */ jsx("div", { className: "relative w-full rounded-xl overflow-hidden shadow-xs border border-neutral-200 dark:border-neutral-800", children: /* @__PURE__ */ jsx("div", { className: `grid gap-1 bg-neutral-950 ${images.length === 2 ? "grid-cols-2 aspect-[16/10]" : images.length === 3 ? "grid-cols-2 aspect-[16/10]" : "grid-cols-2 aspect-square sm:aspect-[16/10]"}`, children: images.slice(0, 4).map((imgUrl, idx) => {
+      const isThirdInThree = images.length === 3 && idx === 2;
+      const isFourthAndExtra = idx === 3 && images.length > 4;
+      const extraCount = images.length - 4;
+      return /* @__PURE__ */ jsxs(
+        "div",
+        {
+          onClick: (e) => {
+            if (!isDetail) {
+              selectPost(post);
+            } else {
+              openLightbox(e, images, idx);
+            }
+          },
+          className: `relative overflow-hidden cursor-pointer group/img bg-neutral-900 ${isThirdInThree ? "col-span-2" : ""}`,
           children: [
             /* @__PURE__ */ jsx(
               "img",
               {
-                src: images[0],
-                alt: "Foto Berita Norinoya",
+                src: imgUrl,
+                alt: `Galeri foto berita ${idx + 1}`,
                 loading: "lazy",
                 decoding: "async",
                 referrerPolicy: "no-referrer",
@@ -12546,64 +12623,19 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
                   e.currentTarget.onerror = null;
                   e.currentTarget.style.display = "none";
                 },
-                className: "w-full h-auto object-contain max-h-[500px] hover:scale-[1.01] transition-transform duration-300"
+                className: "w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-300"
               }
             ),
-            isDetail && post.hashTags && post.hashTags.length > 0 && /* @__PURE__ */ jsx("div", { className: "absolute bottom-3 right-3 flex gap-1.5 flex-wrap", children: post.hashTags.map((tag, i) => /* @__PURE__ */ jsxs("span", { className: "px-2.5 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase bg-neutral-900/80 text-neutral-100 border border-neutral-700/60 shadow-xs", children: [
-              "#",
-              tag
-            ] }, i)) })
+            isFourthAndExtra && /* @__PURE__ */ jsxs("div", { className: "absolute inset-0 bg-neutral-900/75 backdrop-blur-2xs flex items-center justify-center text-white font-mono font-extrabold text-base sm:text-lg", children: [
+              "+",
+              extraCount,
+              " Foto"
+            ] })
           ]
-        }
+        },
+        idx
       );
-    }
-    return /* @__PURE__ */ jsxs("div", { className: "relative w-full rounded-xl overflow-hidden shadow-xs border border-neutral-200 dark:border-neutral-800", children: [
-      /* @__PURE__ */ jsx("div", { className: `grid gap-1 bg-neutral-950 ${images.length === 2 ? "grid-cols-2 aspect-[16/10]" : images.length === 3 ? "grid-cols-2 aspect-[16/10]" : "grid-cols-2 aspect-square sm:aspect-[16/10]"}`, children: images.slice(0, 4).map((imgUrl, idx) => {
-        const isThirdInThree = images.length === 3 && idx === 2;
-        const isFourthAndExtra = idx === 3 && images.length > 4;
-        const extraCount = images.length - 4;
-        return /* @__PURE__ */ jsxs(
-          "div",
-          {
-            onClick: (e) => {
-              if (!isDetail) {
-                selectPost(post);
-              } else {
-                openLightbox(e, images, idx);
-              }
-            },
-            className: `relative overflow-hidden cursor-pointer group/img bg-neutral-900 ${isThirdInThree ? "col-span-2" : ""}`,
-            children: [
-              /* @__PURE__ */ jsx(
-                "img",
-                {
-                  src: imgUrl,
-                  alt: `Galeri foto berita ${idx + 1}`,
-                  loading: "lazy",
-                  decoding: "async",
-                  referrerPolicy: "no-referrer",
-                  onError: (e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.style.display = "none";
-                  },
-                  className: "w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-300"
-                }
-              ),
-              isFourthAndExtra && /* @__PURE__ */ jsxs("div", { className: "absolute inset-0 bg-neutral-900/75 backdrop-blur-2xs flex items-center justify-center text-white font-mono font-extrabold text-base sm:text-lg", children: [
-                "+",
-                extraCount,
-                " Foto"
-              ] })
-            ]
-          },
-          idx
-        );
-      }) }),
-      isDetail && post.hashTags && post.hashTags.length > 0 && /* @__PURE__ */ jsx("div", { className: "absolute bottom-3 right-3 flex gap-1.5 flex-wrap z-10", children: post.hashTags.map((tag, i) => /* @__PURE__ */ jsxs("span", { className: "px-2.5 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase bg-neutral-900/85 text-neutral-100 border border-neutral-700/60 shadow-xs backdrop-blur-xs", children: [
-        "#",
-        tag.replace(/^#/, "")
-      ] }, i)) })
-    ] });
+    }) }) });
   };
   const [flyingReactions, setFlyingReactions] = useState([]);
   const reactionIdCounterRef = useRef(0);
@@ -12921,14 +12953,21 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
         const matchesContent = post.content.toLowerCase().includes(term);
         const matchesHashtag = (post.hashTags || []).some((tag) => tag.toLowerCase().includes(term));
         const matchesCategory = post.category.toLowerCase().includes(term);
-        return matchesTitle || matchesContent || matchesHashtag || matchesCategory;
+        if (!(matchesTitle || matchesContent || matchesHashtag || matchesCategory)) return false;
+      }
+      if (activeTag) {
+        const needle = activeTag.toLowerCase();
+        const matchesExactTag = (post.hashTags || []).some(
+          (tag) => tag.replace(/^#/, "").trim().toLowerCase() === needle
+        );
+        if (!matchesExactTag) return false;
       }
       return true;
     });
-  }, [selectedCategories, searchTerm, newsFeedData]);
+  }, [selectedCategories, searchTerm, activeTag, newsFeedData]);
   useEffect(() => {
     setVisibleCount(INITIAL_VISIBLE_COUNT);
-  }, [selectedCategories, searchTerm]);
+  }, [selectedCategories, searchTerm, activeTag]);
   const visiblePosts = useMemo(() => {
     return filteredPosts.slice(0, visibleCount);
   }, [filteredPosts, visibleCount]);
@@ -12950,6 +12989,8 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
               setSearchInput,
               searchTerm,
               setSearchTerm,
+              activeTag,
+              clearActiveTag,
               scrollToFeedTop,
               isScrolled,
               isCategoryExpanded,
@@ -12960,7 +13001,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
               NEWS_UPDATES: newsFeedData
             }
           ),
-          /* @__PURE__ */ jsxs("div", { className: "lg:col-span-6 flex flex-col gap-6", children: [
+          /* @__PURE__ */ jsxs("div", { ref: feedColumnRef, className: "lg:col-span-6 flex flex-col gap-6", children: [
             /* @__PURE__ */ jsxs("div", { className: "lg:hidden flex flex-col gap-3", children: [
               /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 p-4 rounded-xl border border-neutral-200/60 dark:border-neutral-800 shadow-xs flex flex-col items-center", children: [
                 /* @__PURE__ */ jsx("h3", { className: "text-xs font-mono font-extrabold tracking-wider text-neutral-500 dark:text-neutral-400 uppercase mb-2.5 text-center", children: "Cari Berita & Review" }),
@@ -13046,6 +13087,24 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
                       children: "Reset"
                     }
                   )
+                ] }),
+                activeTag && /* @__PURE__ */ jsxs("div", { className: "mt-2.5 flex items-center justify-between text-[11px] text-[#112A12] dark:text-emerald-400 font-medium bg-[#112A12]/10 dark:bg-[#112A12]/20 px-3 py-1 rounded-md w-full max-w-md", children: [
+                  /* @__PURE__ */ jsxs("span", { className: "truncate", children: [
+                    "Tagar: #",
+                    activeTag
+                  ] }),
+                  /* @__PURE__ */ jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => {
+                        clearActiveTag();
+                        scrollToFeedTop();
+                      },
+                      className: "text-xs font-bold hover:underline cursor-pointer ml-2 shrink-0",
+                      children: "Reset"
+                    }
+                  )
                 ] })
               ] }),
               /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-neutral-900 p-2 sm:p-2.5 rounded-xl border border-neutral-200/60 dark:border-neutral-800 shadow-xs flex items-center gap-1.5 relative group", children: [
@@ -13099,7 +13158,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
                     children: /* @__PURE__ */ jsx(ChevronRight, { className: "w-4 h-4" })
                   }
                 ),
-                (!selectedCategories.includes("all") || searchTerm) && /* @__PURE__ */ jsx(
+                (!selectedCategories.includes("all") || searchTerm || activeTag) && /* @__PURE__ */ jsx(
                   "button",
                   {
                     type: "button",
@@ -13107,6 +13166,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
                       handleToggleCategory("all", true);
                       setSearchTerm("");
                       setSearchInput("");
+                      clearActiveTag();
                     },
                     className: "w-8 h-8 text-xs font-bold rounded-lg bg-red-600 hover:bg-red-700 text-white shrink-0 cursor-pointer flex items-center justify-center shadow-xs active:scale-95 transition-all ml-0.5",
                     title: "Reset Filter",
@@ -13131,19 +13191,25 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
                   ' • Hasil Pencarian "',
                   searchTerm,
                   '"'
+                ] }),
+                activeTag && /* @__PURE__ */ jsxs("span", { children: [
+                  " • Tagar: #",
+                  activeTag
                 ] })
               ] }),
               /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 shrink-0", children: [
-                !selectedCategories.includes("all") && /* @__PURE__ */ jsxs("span", { className: "text-xs font-mono text-neutral-400 dark:text-neutral-500", children: [
+                !selectedCategories.includes("all") || searchTerm || activeTag ? /* @__PURE__ */ jsxs("span", { className: "text-xs font-mono text-neutral-400 dark:text-neutral-500", children: [
                   filteredPosts.length,
                   " post ditemukan"
-                ] }),
-                (!selectedCategories.includes("all") || searchTerm) && /* @__PURE__ */ jsx(
+                ] }) : null,
+                (!selectedCategories.includes("all") || searchTerm || activeTag) && /* @__PURE__ */ jsx(
                   "button",
                   {
                     onClick: () => {
                       handleToggleCategory("all", true);
                       setSearchTerm("");
+                      setSearchInput("");
+                      clearActiveTag();
                     },
                     className: "hidden lg:flex w-7 h-7 text-xs font-bold rounded-lg bg-red-600 hover:bg-red-700 text-white shrink-0 cursor-pointer items-center justify-center shadow-xs active:scale-95 transition-all",
                     title: "Reset Filter",
@@ -13208,6 +13274,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
                   onClick: () => {
                     setSearchInput("");
                     setSearchTerm("");
+                    clearActiveTag();
                     handleToggleCategory("all", true);
                     scrollToFeedTop();
                   },
@@ -13236,7 +13303,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
         ]
       },
       "news-list"
-    ) : /* @__PURE__ */ jsx(Suspense, { fallback: null, children: /* @__PURE__ */ jsx(
+    ) : /* @__PURE__ */ jsx(
       DetailNews,
       {
         activePost,
@@ -13264,7 +13331,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
         onSelectShort,
         allNews: newsFeedData
       }
-    ) }) }),
+    ) }),
     /* @__PURE__ */ jsx(AnimatePresence, { children: toastMessage && /* @__PURE__ */ jsxs(
       motion.div,
       {
@@ -13354,7 +13421,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
     )
   ] });
 }
-const __vite_glob_0_81 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_83 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsFeed$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13469,7 +13536,7 @@ function LoadingHome() {
     )) })
   ] });
 }
-const __vite_glob_0_86 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_88 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingHome
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13557,7 +13624,7 @@ function LoadingKios() {
     )) })
   ] });
 }
-const __vite_glob_0_87 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_89 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingKios
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13662,7 +13729,7 @@ function LoadingNews() {
     ] })
   ] });
 }
-const __vite_glob_0_88 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_90 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingNews
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13693,10 +13760,10 @@ function usePageLoading() {
   }, []);
   return isLoading;
 }
-const NewsFeed = lazy(() => Promise.resolve().then(() => __vite_glob_0_81));
-const MarketplaceDb = lazy(() => Promise.resolve().then(() => __vite_glob_0_76));
-const AboutSection = lazy(() => Promise.resolve().then(() => __vite_glob_0_65));
-const EtalaseCatalog = lazy(() => Promise.resolve().then(() => __vite_glob_0_72));
+const NewsFeed = lazy(() => Promise.resolve().then(() => __vite_glob_0_83));
+const MarketplaceDb = lazy(() => Promise.resolve().then(() => __vite_glob_0_78));
+const AboutSection = lazy(() => Promise.resolve().then(() => __vite_glob_0_67));
+const EtalaseCatalog = lazy(() => Promise.resolve().then(() => __vite_glob_0_74));
 function App({
   catalog,
   upcoming = [],
@@ -13800,10 +13867,6 @@ function App({
   };
   const handleNavNews = () => {
     router.visit("/news");
-  };
-  const handleNavAbout = () => {
-    setActiveTab("about");
-    window.location.hash = "#about";
   };
   const handleNavEtalase = () => {
     router.visit("/kios");
@@ -14072,7 +14135,6 @@ function App({
           Footer,
           {
             onNavigateHome: handleNavHome,
-            onNavigateAbout: handleNavAbout,
             darkMode
           }
         ),
@@ -14196,24 +14258,14 @@ function App({
                 /* @__PURE__ */ jsx("div", { className: "w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center text-lg shrink-0 select-none", children: "🍪" }),
                 /* @__PURE__ */ jsxs("div", { className: "space-y-1", children: [
                   /* @__PURE__ */ jsx("h4", { className: "font-extrabold text-xs tracking-wider uppercase text-neutral-350", children: "Informasi Cookie & Privasi" }),
-                  /* @__PURE__ */ jsxs("p", { className: "text-xs text-neutral-300 leading-relaxed font-sans mt-0.5", children: [
-                    "Norinoya menggunakan kuki lokal (cookies) dan ",
-                    /* @__PURE__ */ jsx("code", { children: "localStorage" }),
-                    " untuk mengingat status pembatasan bacaan dewasa dan merawat preferensi navigasi Anda secara anonim. Kami tidak melacak data sensitif pribadi Anda."
-                  ] })
+                  /* @__PURE__ */ jsx("p", { className: "text-xs text-neutral-300 leading-relaxed font-sans mt-0.5", children: "Norinoya memakai cookie dan localStorage untuk mengingat batasan usia serta preferensi navigasi. Jika iklan Google ditayangkan, Google dapat memakai cookie iklan. Kami tidak menyimpan data pribadi sensitif di server Norinoya." })
                 ] })
               ] }),
               /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 mt-1 sm:justify-end", children: [
                 /* @__PURE__ */ jsx(
                   "button",
                   {
-                    onClick: () => {
-                      handleNavAbout();
-                      setTimeout(() => {
-                        var _a2;
-                        (_a2 = document.getElementById("privacy-policy")) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth" });
-                      }, 150);
-                    },
+                    onClick: () => router.visit("/privasi"),
                     className: "px-3 py-1.5 hover:underline text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer text-left mr-auto sm:mr-0 font-bold",
                     children: "Kebijakan Privasi"
                   }
@@ -14472,7 +14524,7 @@ function App({
     }
   );
 }
-const __vite_glob_0_89 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_91 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: App
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14522,9 +14574,6 @@ function KiosPage({
   const handleNavEtalase = () => {
     setSelectedSaleId(null);
     router.visit("/kios");
-  };
-  const handleNavAbout = () => {
-    router.visit("/?scroll=about");
   };
   const activeKiosItem = selectedSaleId ? kiosItems.find((k) => String(k.id) === selectedSaleId) : null;
   const pageTitle = activeKiosItem ? `${activeKiosItem.title} - Beli di Kios Norinoya` : "Kios & Etalase Merchandise - Norinoya";
@@ -14619,7 +14668,6 @@ function KiosPage({
       Footer,
       {
         onNavigateHome: handleNavHome,
-        onNavigateAbout: handleNavAbout,
         darkMode
       }
     ),
@@ -14633,9 +14681,64 @@ function KiosPage({
     /* @__PURE__ */ jsx(BackToTopButton, {})
   ] });
 }
-const __vite_glob_0_90 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_92 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: KiosPage
+}, Symbol.toStringTag, { value: "Module" }));
+const CONTACT_EMAIL = "norinoya.official@gmail.com";
+function KontakPage() {
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("norinoya-dark-mode") === "true";
+    }
+    return false;
+  });
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+  React__default.useLayoutEffect(() => {
+    sessionStorage.setItem("norinoya-dark-mode", String(darkMode));
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+  const pageTitle = "Kontak - Norinoya";
+  const pageDesc = "Hubungi Norinoya di norinoya.official@gmail.com untuk koreksi, hak cipta, dan urusan situs.";
+  const canonicalUrl = route("legal.contact");
+  return /* @__PURE__ */ jsxs("div", { className: "bg-[#FEFFFE] dark:bg-[#202120] min-h-screen text-neutral-950 dark:text-neutral-50 flex flex-col font-sans", children: [
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: pageTitle }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: pageDesc }),
+      /* @__PURE__ */ jsx("link", { rel: "canonical", href: canonicalUrl })
+    ] }),
+    /* @__PURE__ */ jsx(
+      Navbar,
+      {
+        activeTab: "about",
+        darkMode,
+        toggleDarkMode,
+        onNavigateHome: () => router.visit("/"),
+        onNavigateNews: () => router.visit("/news"),
+        onNavigateKios: () => router.visit("/kios")
+      }
+    ),
+    /* @__PURE__ */ jsx("main", { className: "flex-1 w-full max-w-3xl mx-auto px-4 sm:px-6 py-10", children: /* @__PURE__ */ jsxs("section", { className: "p-6 md:p-8 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl space-y-4", children: [
+      /* @__PURE__ */ jsx("h1", { className: "text-2xl md:text-3xl font-sans font-extrabold tracking-tight", children: "Kontak" }),
+      /* @__PURE__ */ jsx("p", { className: "text-sm md:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed", children: "Hubungi Norinoya untuk koreksi informasi, pertanyaan hak cipta, dan urusan situs." }),
+      /* @__PURE__ */ jsxs(
+        "a",
+        {
+          href: `mailto:${CONTACT_EMAIL}`,
+          className: "inline-flex items-center gap-2 text-sm font-semibold text-neutral-900 dark:text-neutral-100 underline underline-offset-2",
+          children: [
+            /* @__PURE__ */ jsx(Mail, { className: "w-4 h-4" }),
+            CONTACT_EMAIL
+          ]
+        }
+      )
+    ] }) }),
+    /* @__PURE__ */ jsx(Footer, { onNavigateHome: () => router.visit("/"), darkMode })
+  ] });
+}
+const __vite_glob_0_93 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: KontakPage
 }, Symbol.toStringTag, { value: "Module" }));
 function NewsPage({
   newsList = [],
@@ -14684,13 +14787,9 @@ function NewsPage({
   const handleNavEtalase = () => {
     router.visit("/kios");
   };
-  const handleNavAbout = () => {
-    router.visit("/?scroll=about");
-  };
   const activeNewsItem = selectedNewsId ? newsList.find((n) => String(n.id) === selectedNewsId) : null;
   const pageTitle = activeNewsItem ? `${activeNewsItem.title} - Norinoya News` : "Berita & Pengumuman Komik - Norinoya";
-  const cleanContent = (activeNewsItem == null ? void 0 : activeNewsItem.content) ? activeNewsItem.content.replace(/<[^>]*>?/gm, "") : "";
-  const pageDesc = activeNewsItem ? (cleanContent || `Berita ${activeNewsItem.title} di Norinoya Hub`).slice(0, 160) : "Update berita rilisan komik terbaru, info cetak ulang m&c! Akasha dan Elex Media, promo, serta poling komunitas Norinoya.";
+  const pageDesc = activeNewsItem ? newsExcerpt(activeNewsItem.content, `Berita ${activeNewsItem.title} di Norinoya Hub`) : "Update berita rilisan komik terbaru, info cetak ulang m&c! Akasha dan Elex Media, promo, serta poling komunitas Norinoya.";
   const pageImage = (activeNewsItem == null ? void 0 : activeNewsItem.attached_image) || Array.isArray(activeNewsItem == null ? void 0 : activeNewsItem.gallery_images) && activeNewsItem.gallery_images[0] || "/favicon.png";
   return /* @__PURE__ */ jsxs("div", { className: "bg-[#FEFFFE] dark:bg-[#202120] min-h-screen text-neutral-950 dark:text-neutral-50 selection:bg-neutral-900 dark:selection:bg-neutral-100 selection:text-white dark:selection:text-neutral-900 flex flex-col justify-between font-sans", children: [
     /* @__PURE__ */ jsxs(Head, { children: [
@@ -14731,16 +14830,6 @@ function NewsPage({
             /* @__PURE__ */ jsx("h1", { className: "text-3xl md:text-5xl font-sans font-black tracking-tight uppercase leading-none max-w-4xl text-neutral-950 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-neutral-100 dark:to-neutral-300", children: "NEWS" }),
             /* @__PURE__ */ jsx("p", { className: "text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed", children: "Explore manga, light novel, anime, dan rilisan terbaru dari sumber resmi." }),
             /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center justify-center gap-3 pt-1.5 relative z-10", children: [
-              /* @__PURE__ */ jsx(
-                "a",
-                {
-                  href: "https://discord.gg/tbZJA8XAE",
-                  target: "_blank",
-                  rel: "noopener noreferrer",
-                  className: "px-2 py-2 bg-[#5865F2] hover:bg-[#4752C4] !text-white active:scale-95 duration-100 text-xs font-mono font-bold tracking-tight rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-[#4752C4]/20",
-                  children: /* @__PURE__ */ jsx("svg", { className: "w-4 h-4 fill-white text-white shrink-0", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsx("path", { d: "M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.094 13.094 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z" }) })
-                }
-              ),
               /* @__PURE__ */ jsx(
                 "a",
                 {
@@ -14807,7 +14896,6 @@ function NewsPage({
       Footer,
       {
         onNavigateHome: handleNavHome,
-        onNavigateAbout: handleNavAbout,
         darkMode
       }
     ),
@@ -14849,7 +14937,7 @@ function NewsPage({
     /* @__PURE__ */ jsx(BackToTopButton, {})
   ] });
 }
-const __vite_glob_0_91 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_94 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14871,7 +14959,6 @@ function PanduanAdaptasiPage({
   const handleNavHome = () => router.visit("/");
   const handleNavNews = () => router.visit("/news");
   const handleNavKios = () => router.visit("/kios");
-  const handleNavAbout = () => router.visit("/?scroll=about");
   const [searchQuery, setSearchQuery] = useState((filters == null ? void 0 : filters.q) ?? "");
   const debounceRef = useRef(null);
   useEffect(() => {
@@ -15029,12 +15116,52 @@ function PanduanAdaptasiPage({
         ] })
       ] })
     ] }) }),
-    /* @__PURE__ */ jsx(Footer, { onNavigateHome: handleNavHome, onNavigateAbout: handleNavAbout, darkMode })
+    /* @__PURE__ */ jsx(Footer, { onNavigateHome: handleNavHome, darkMode })
   ] });
 }
-const __vite_glob_0_92 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_95 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: PanduanAdaptasiPage
+}, Symbol.toStringTag, { value: "Module" }));
+function PrivasiPage() {
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("norinoya-dark-mode") === "true";
+    }
+    return false;
+  });
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+  React__default.useLayoutEffect(() => {
+    sessionStorage.setItem("norinoya-dark-mode", String(darkMode));
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+  const pageTitle = "Kebijakan Privasi - Norinoya";
+  const pageDesc = "Kebijakan privasi Norinoya, termasuk penggunaan cookie iklan Google bila iklan ditayangkan.";
+  const canonicalUrl = route("legal.privacy");
+  return /* @__PURE__ */ jsxs("div", { className: "bg-[#FEFFFE] dark:bg-[#202120] min-h-screen text-neutral-950 dark:text-neutral-50 flex flex-col font-sans", children: [
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: pageTitle }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: pageDesc }),
+      /* @__PURE__ */ jsx("link", { rel: "canonical", href: canonicalUrl })
+    ] }),
+    /* @__PURE__ */ jsx(
+      Navbar,
+      {
+        activeTab: "about",
+        darkMode,
+        toggleDarkMode,
+        onNavigateHome: () => router.visit("/"),
+        onNavigateNews: () => router.visit("/news"),
+        onNavigateKios: () => router.visit("/kios")
+      }
+    ),
+    /* @__PURE__ */ jsx("main", { className: "flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-8", children: /* @__PURE__ */ jsx(AboutSection$1, {}) }),
+    /* @__PURE__ */ jsx(Footer, { onNavigateHome: () => router.visit("/"), darkMode })
+  ] });
+}
+const __vite_glob_0_96 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: PrivasiPage
 }, Symbol.toStringTag, { value: "Module" }));
 function InputError({ message, className = "", ...props }) {
   return message ? /* @__PURE__ */ jsx("p", { ...props, className: cn("text-sm text-red-600 dark:text-red-400", className), children: message }) : null;
@@ -15104,7 +15231,7 @@ function ConfirmPassword() {
     }
   );
 }
-const __vite_glob_0_93 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_97 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ConfirmPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15163,7 +15290,7 @@ function ForgotPassword({ status }) {
     ] })
   ] });
 }
-const __vite_glob_0_94 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_98 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ForgotPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15190,7 +15317,7 @@ function LoginPage({
       "div",
       {
         id: "login-page-container",
-        className: "\n                    min-h-screen\n                    w-full\n                    bg-[#E5ECF6]\n                    flex\n                    items-center\n                    justify-center\n                    px-4\n                    py-6\n                    sm:px-6\n                    sm:py-8\n                    lg:px-10\n                    font-['Plus_Jakarta_Sans',sans-serif]\n                ",
+        className: "\n                    min-h-screen\n                    w-full\n                    bg-[#E5ECF6]\n                    flex\n                    items-center\n                    justify-center\n                    px-4\n                    py-6\n                    sm:px-6\n                    sm:py-8\n                    lg:px-10\n                ",
         children: /* @__PURE__ */ jsx("div", { className: "w-full max-w-[1020px]", children: /* @__PURE__ */ jsxs(
           "div",
           {
@@ -15461,7 +15588,7 @@ function LoginPage({
     )
   ] });
 }
-const __vite_glob_0_95 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_99 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoginPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15487,7 +15614,7 @@ function RegisterPage() {
       "div",
       {
         id: "register-page-container",
-        className: "min-h-screen w-full bg-[#E5ECF6] flex items-center justify-center p-4 sm:p-6 lg:p-10 font-['Plus_Jakarta_Sans',sans-serif]",
+        className: "min-h-screen w-full bg-[#E5ECF6] flex items-center justify-center p-4 sm:p-6 lg:p-10",
         children: /* @__PURE__ */ jsx("div", { className: "w-full max-w-[1020px]", children: /* @__PURE__ */ jsxs(
           "div",
           {
@@ -15698,7 +15825,7 @@ function RegisterPage() {
     )
   ] });
 }
-const __vite_glob_0_96 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_100 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: RegisterPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15777,7 +15904,7 @@ function ResetPassword({ token, email }) {
     ] }) })
   ] });
 }
-const __vite_glob_0_97 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_101 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ResetPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15799,7 +15926,7 @@ function VerifyEmail({ status }) {
     ] })
   ] });
 }
-const __vite_glob_0_98 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_102 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: VerifyEmail
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16014,11 +16141,11 @@ function Dashboard({
     ] })
   ] });
 }
-const __vite_glob_0_99 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_103 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Dashboard
 }, Symbol.toStringTag, { value: "Module" }));
-const __vite_glob_0_100 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_104 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoginPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16112,7 +16239,7 @@ function Appearance() {
     ] }) })
   ] });
 }
-const __vite_glob_0_101 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_105 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Appearance
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16221,7 +16348,7 @@ function Password() {
     ] }) })
   ] });
 }
-const __vite_glob_0_102 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_106 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Password
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16375,7 +16502,7 @@ function Profile({ mustVerifyEmail, status }) {
     ] })
   ] });
 }
-const __vite_glob_0_103 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_107 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Profile
 }, Symbol.toStringTag, { value: "Module" }));
@@ -17531,7 +17658,7 @@ function Welcome() {
     ] })
   ] });
 }
-const __vite_glob_0_104 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_108 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Welcome
 }, Symbol.toStringTag, { value: "Module" }));
@@ -17589,63 +17716,67 @@ createServer(
         "./pages/Admin/News/Index.tsx": __vite_glob_0_45,
         "./pages/Admin/News/Logs.tsx": __vite_glob_0_46,
         "./pages/Admin/News/SearchLogs.tsx": __vite_glob_0_47,
-        "./pages/Admin/PanduanAdaptasi/Create.tsx": __vite_glob_0_48,
-        "./pages/Admin/PanduanAdaptasi/Edit.tsx": __vite_glob_0_49,
-        "./pages/Admin/PanduanAdaptasi/Index.tsx": __vite_glob_0_50,
-        "./pages/Admin/PanduanAdaptasi/components/BookPicker.tsx": __vite_glob_0_51,
-        "./pages/Admin/PanduanAdaptasi/components/FieldError.tsx": __vite_glob_0_52,
-        "./pages/Admin/PanduanAdaptasi/components/FilterOptionsCombobox.tsx": __vite_glob_0_53,
-        "./pages/Admin/PanduanAdaptasi/components/NodeLinksSection.tsx": __vite_glob_0_54,
-        "./pages/Admin/PanduanAdaptasi/components/PanduanForm.tsx": __vite_glob_0_55,
-        "./pages/Admin/PanduanAdaptasi/components/PanduanNodesSection.tsx": __vite_glob_0_56,
-        "./pages/Admin/Publishers/Create.tsx": __vite_glob_0_57,
-        "./pages/Admin/Publishers/Edit.tsx": __vite_glob_0_58,
-        "./pages/Admin/Publishers/Index.tsx": __vite_glob_0_59,
-        "./pages/Admin/Publishers/components/PublisherForm.tsx": __vite_glob_0_60,
-        "./pages/Admin/StoryStatuses/Create.tsx": __vite_glob_0_61,
-        "./pages/Admin/StoryStatuses/Edit.tsx": __vite_glob_0_62,
-        "./pages/Admin/StoryStatuses/Index.tsx": __vite_glob_0_63,
-        "./pages/User/bookmark.tsx": __vite_glob_0_64,
-        "./pages/User/components/AboutSection.tsx": __vite_glob_0_65,
-        "./pages/User/components/BackToTopButton.tsx": __vite_glob_0_66,
-        "./pages/User/components/BookmarkToast.tsx": __vite_glob_0_67,
-        "./pages/User/components/DetailBuku.tsx": __vite_glob_0_68,
-        "./pages/User/components/DetailKios.tsx": __vite_glob_0_69,
-        "./pages/User/components/DetailNews.tsx": __vite_glob_0_70,
-        "./pages/User/components/DetailPanduanAdaptasi.tsx": __vite_glob_0_71,
-        "./pages/User/components/EtalaseCatalog.tsx": __vite_glob_0_72,
-        "./pages/User/components/Footer.tsx": __vite_glob_0_73,
-        "./pages/User/components/HighlightReview.tsx": __vite_glob_0_74,
-        "./pages/User/components/HighlightReviewInstagram.tsx": __vite_glob_0_75,
-        "./pages/User/components/MarketplaceDB.tsx": __vite_glob_0_76,
-        "./pages/User/components/ModalAffiliateStore.tsx": __vite_glob_0_77,
-        "./pages/User/components/ModalKolaborasi.tsx": __vite_glob_0_78,
-        "./pages/User/components/Navbar.tsx": __vite_glob_0_79,
-        "./pages/User/components/NewsCategorySidebar.tsx": __vite_glob_0_80,
-        "./pages/User/components/NewsFeed.tsx": __vite_glob_0_81,
-        "./pages/User/components/NewsPostCard.tsx": __vite_glob_0_82,
-        "./pages/User/components/NewsRightSidebar.tsx": __vite_glob_0_83,
-        "./pages/User/components/ShareModal.tsx": __vite_glob_0_84,
-        "./pages/User/components/SkeletonLoading/LoadingDetailBuku.tsx": __vite_glob_0_85,
-        "./pages/User/components/SkeletonLoading/LoadingHome.tsx": __vite_glob_0_86,
-        "./pages/User/components/SkeletonLoading/LoadingKios.tsx": __vite_glob_0_87,
-        "./pages/User/components/SkeletonLoading/LoadingNews.tsx": __vite_glob_0_88,
-        "./pages/User/home.tsx": __vite_glob_0_89,
-        "./pages/User/kios.tsx": __vite_glob_0_90,
-        "./pages/User/news.tsx": __vite_glob_0_91,
-        "./pages/User/panduanAdaptasi.tsx": __vite_glob_0_92,
-        "./pages/auth/confirm-password.tsx": __vite_glob_0_93,
-        "./pages/auth/forgot-password.tsx": __vite_glob_0_94,
-        "./pages/auth/login.tsx": __vite_glob_0_95,
-        "./pages/auth/register.tsx": __vite_glob_0_96,
-        "./pages/auth/reset-password.tsx": __vite_glob_0_97,
-        "./pages/auth/verify-email.tsx": __vite_glob_0_98,
-        "./pages/dashboard.tsx": __vite_glob_0_99,
-        "./pages/login.tsx": __vite_glob_0_100,
-        "./pages/settings/appearance.tsx": __vite_glob_0_101,
-        "./pages/settings/password.tsx": __vite_glob_0_102,
-        "./pages/settings/profile.tsx": __vite_glob_0_103,
-        "./pages/welcome.tsx": __vite_glob_0_104
+        "./pages/Admin/News/components/NewsBookSelect.tsx": __vite_glob_0_48,
+        "./pages/Admin/News/components/NewsForm.tsx": __vite_glob_0_49,
+        "./pages/Admin/PanduanAdaptasi/Create.tsx": __vite_glob_0_50,
+        "./pages/Admin/PanduanAdaptasi/Edit.tsx": __vite_glob_0_51,
+        "./pages/Admin/PanduanAdaptasi/Index.tsx": __vite_glob_0_52,
+        "./pages/Admin/PanduanAdaptasi/components/BookPicker.tsx": __vite_glob_0_53,
+        "./pages/Admin/PanduanAdaptasi/components/FieldError.tsx": __vite_glob_0_54,
+        "./pages/Admin/PanduanAdaptasi/components/FilterOptionsCombobox.tsx": __vite_glob_0_55,
+        "./pages/Admin/PanduanAdaptasi/components/NodeLinksSection.tsx": __vite_glob_0_56,
+        "./pages/Admin/PanduanAdaptasi/components/PanduanForm.tsx": __vite_glob_0_57,
+        "./pages/Admin/PanduanAdaptasi/components/PanduanNodesSection.tsx": __vite_glob_0_58,
+        "./pages/Admin/Publishers/Create.tsx": __vite_glob_0_59,
+        "./pages/Admin/Publishers/Edit.tsx": __vite_glob_0_60,
+        "./pages/Admin/Publishers/Index.tsx": __vite_glob_0_61,
+        "./pages/Admin/Publishers/components/PublisherForm.tsx": __vite_glob_0_62,
+        "./pages/Admin/StoryStatuses/Create.tsx": __vite_glob_0_63,
+        "./pages/Admin/StoryStatuses/Edit.tsx": __vite_glob_0_64,
+        "./pages/Admin/StoryStatuses/Index.tsx": __vite_glob_0_65,
+        "./pages/User/bookmark.tsx": __vite_glob_0_66,
+        "./pages/User/components/AboutSection.tsx": __vite_glob_0_67,
+        "./pages/User/components/BackToTopButton.tsx": __vite_glob_0_68,
+        "./pages/User/components/BookmarkToast.tsx": __vite_glob_0_69,
+        "./pages/User/components/DetailBuku.tsx": __vite_glob_0_70,
+        "./pages/User/components/DetailKios.tsx": __vite_glob_0_71,
+        "./pages/User/components/DetailNews.tsx": __vite_glob_0_72,
+        "./pages/User/components/DetailPanduanAdaptasi.tsx": __vite_glob_0_73,
+        "./pages/User/components/EtalaseCatalog.tsx": __vite_glob_0_74,
+        "./pages/User/components/Footer.tsx": __vite_glob_0_75,
+        "./pages/User/components/HighlightReview.tsx": __vite_glob_0_76,
+        "./pages/User/components/HighlightReviewInstagram.tsx": __vite_glob_0_77,
+        "./pages/User/components/MarketplaceDB.tsx": __vite_glob_0_78,
+        "./pages/User/components/ModalAffiliateStore.tsx": __vite_glob_0_79,
+        "./pages/User/components/ModalKolaborasi.tsx": __vite_glob_0_80,
+        "./pages/User/components/Navbar.tsx": __vite_glob_0_81,
+        "./pages/User/components/NewsCategorySidebar.tsx": __vite_glob_0_82,
+        "./pages/User/components/NewsFeed.tsx": __vite_glob_0_83,
+        "./pages/User/components/NewsPostCard.tsx": __vite_glob_0_84,
+        "./pages/User/components/NewsRightSidebar.tsx": __vite_glob_0_85,
+        "./pages/User/components/ShareModal.tsx": __vite_glob_0_86,
+        "./pages/User/components/SkeletonLoading/LoadingDetailBuku.tsx": __vite_glob_0_87,
+        "./pages/User/components/SkeletonLoading/LoadingHome.tsx": __vite_glob_0_88,
+        "./pages/User/components/SkeletonLoading/LoadingKios.tsx": __vite_glob_0_89,
+        "./pages/User/components/SkeletonLoading/LoadingNews.tsx": __vite_glob_0_90,
+        "./pages/User/home.tsx": __vite_glob_0_91,
+        "./pages/User/kios.tsx": __vite_glob_0_92,
+        "./pages/User/kontak.tsx": __vite_glob_0_93,
+        "./pages/User/news.tsx": __vite_glob_0_94,
+        "./pages/User/panduanAdaptasi.tsx": __vite_glob_0_95,
+        "./pages/User/privasi.tsx": __vite_glob_0_96,
+        "./pages/auth/confirm-password.tsx": __vite_glob_0_97,
+        "./pages/auth/forgot-password.tsx": __vite_glob_0_98,
+        "./pages/auth/login.tsx": __vite_glob_0_99,
+        "./pages/auth/register.tsx": __vite_glob_0_100,
+        "./pages/auth/reset-password.tsx": __vite_glob_0_101,
+        "./pages/auth/verify-email.tsx": __vite_glob_0_102,
+        "./pages/dashboard.tsx": __vite_glob_0_103,
+        "./pages/login.tsx": __vite_glob_0_104,
+        "./pages/settings/appearance.tsx": __vite_glob_0_105,
+        "./pages/settings/password.tsx": __vite_glob_0_106,
+        "./pages/settings/profile.tsx": __vite_glob_0_107,
+        "./pages/welcome.tsx": __vite_glob_0_108
       });
       return pages[`./pages/${name}.tsx`];
     },
