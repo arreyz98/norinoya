@@ -113,6 +113,73 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased bg-[#FEFFFE] dark:bg-[#202120] text-neutral-900 dark:text-neutral-50 transition-colors duration-150">
+        {{-- Salinan artikel untuk HTML pertama. Teks tetap ada untuk Google, tapi disembunyikan dari pengguna. React melepas node ini setelah layout siap. --}}
+        @if (!empty($metaData['article']['title']))
+            <style>
+                #server-news-article {
+                    position: absolute;
+                    width: 1px;
+                    height: 1px;
+                    padding: 0;
+                    margin: -1px;
+                    overflow: hidden;
+                    clip: rect(0, 0, 0, 0);
+                    clip-path: inset(50%);
+                    white-space: nowrap;
+                    border: 0;
+                }
+                #news-boot-skeleton {
+                    position: fixed;
+                    inset: 0;
+                    z-index: 40;
+                    overflow: auto;
+                    background: #FEFFFE;
+                }
+                html.dark #news-boot-skeleton {
+                    background: #202120;
+                }
+            </style>
+            <noscript>
+                <style>
+                    #server-news-article {
+                        position: static;
+                        width: auto;
+                        height: auto;
+                        max-width: 48rem;
+                        margin: 0 auto;
+                        padding: 2rem 1rem;
+                        overflow: visible;
+                        clip: auto;
+                        clip-path: none;
+                        white-space: normal;
+                    }
+                    #news-boot-skeleton {
+                        display: none;
+                    }
+                </style>
+            </noscript>
+            <div id="news-boot-skeleton" aria-hidden="true">
+                <div style="max-width: 48rem; margin: 0 auto; padding: 6rem 1.5rem 2rem;">
+                    <div style="height: 0.75rem; width: 8rem; border-radius: 999px; background: #e5e5e5; margin-bottom: 1rem;"></div>
+                    <div style="height: 2rem; width: 70%; border-radius: 0.75rem; background: #e5e5e5; margin-bottom: 0.75rem;"></div>
+                    <div style="height: 0.875rem; width: 12rem; border-radius: 999px; background: #eeeeee; margin-bottom: 1.5rem;"></div>
+                    <div style="height: 16rem; width: 100%; border-radius: 1rem; background: #e5e5e5; margin-bottom: 1.5rem;"></div>
+                    <div style="height: 0.875rem; width: 100%; border-radius: 999px; background: #eeeeee; margin-bottom: 0.75rem;"></div>
+                    <div style="height: 0.875rem; width: 92%; border-radius: 999px; background: #eeeeee; margin-bottom: 0.75rem;"></div>
+                    <div style="height: 0.875rem; width: 96%; border-radius: 999px; background: #eeeeee; margin-bottom: 0.75rem;"></div>
+                    <div style="height: 0.875rem; width: 80%; border-radius: 999px; background: #eeeeee;"></div>
+                </div>
+            </div>
+            <article id="server-news-article">
+                <h1>{{ $metaData['article']['title'] }}</h1>
+                @if (!empty($metaData['article']['published_at']))
+                    <time datetime="{{ $metaData['article']['published_at'] }}">{{ $metaData['article']['published_at'] }}</time>
+                @endif
+                @if (!empty($metaData['article']['content']))
+                    <div>{!! $metaData['article']['content'] !!}</div>
+                @endif
+            </article>
+        @endif
         @inertia
     </body>
 </html>

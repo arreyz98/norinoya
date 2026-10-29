@@ -19,6 +19,7 @@ use App\Http\Controllers\User\BookController as UserBookController;
 use App\Http\Controllers\User\BookmarkController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\KiosController;
+use App\Http\Controllers\User\LegalController;
 use App\Http\Controllers\User\NewsController as UserNewsController;
 use App\Http\Controllers\User\PanduanAdaptasiController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,10 @@ Route::get('/news', [UserNewsController::class, 'index'])->name('news');
 Route::get('/kios', [KiosController::class, 'index'])->name('kios');
 
 Route::get('/bookmark', [BookmarkController::class, 'index'])->name('bookmark');
+
+Route::get('/privasi', [LegalController::class, 'privacy'])->name('legal.privacy');
+
+Route::get('/kontak', [LegalController::class, 'contact'])->name('legal.contact');
 
 // Panduan adaptasi — halaman indeks dulu, baru detail per slug (konten masih statis)
 Route::get('/panduan-adaptasi', [PanduanAdaptasiController::class, 'index'])->name('panduan-adaptasi.index');

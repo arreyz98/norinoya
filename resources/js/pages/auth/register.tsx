@@ -35,7 +35,7 @@ export default function RegisterPage() {
 
             <div
                 id="register-page-container"
-                className="min-h-screen w-full bg-[#E5ECF6] flex items-center justify-center p-4 sm:p-6 lg:p-10 font-['Plus_Jakarta_Sans',sans-serif]"
+                className="min-h-screen w-full bg-[#E5ECF6] flex items-center justify-center p-4 sm:p-6 lg:p-10"
             >
                 <div className="w-full max-w-[1020px]">
                     {/* Main Card Container */}

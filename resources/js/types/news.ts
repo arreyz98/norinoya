@@ -4,12 +4,15 @@ export interface PollOptionItem {
     votes: number;
 }
 
-export interface ReactionItem {
+// Ditulis sebagai `type` (bukan `interface`) supaya punya implicit index signature.
+// Kalau berbentuk interface, `ReactionItem[]` tidak memenuhi FormDataConvertible
+// dan inferensi tipe `useForm` di halaman admin gagal.
+export type ReactionItem = {
     id: string;
     emoji: string;
     label: string;
     count: number;
-}
+};
 
 export interface NewsRecommendationItemInput {
     number: number | string;
@@ -28,6 +31,7 @@ export interface NewsItem {
     slug: string;
     content: string;
     category: string;
+    publication_status?: 'draft' | 'published';
     hash_tags?: string[] | null;
     attached_image?: string | null;
     gallery_images?: string[] | null;

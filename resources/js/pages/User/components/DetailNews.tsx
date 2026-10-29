@@ -4,13 +4,14 @@ import { motion } from 'motion/react';
 import {
   ArrowLeft, Send, CheckCircle2,
   Newspaper, RefreshCw, Sparkles, Tag, Ticket, Mic, Tv, Gamepad2, Flame,
-  Users, Eye, Heart, ShoppingBag, ChevronRight, BookOpen, BookMarked, BookText,
+  Users, Eye, ShoppingBag, ChevronRight, BookOpen, BookMarked, BookText,
   Play, ArrowUpRight, Video, Bookmark, Instagram
 } from 'lucide-react';
 import { useBookmarks } from '../../../utils/bookmarkStorage';
 import { prepareEmbedFrames, syncEmbedHeights } from '../../../utils/embedFrame';
 import { getBookTypeLabel } from '../../../utils/mapBookToComic';
 import { bookPath, isPlainLeftClick } from '../../../utils/bookUrl';
+import { newsExcerpt } from '../../../utils/newsExcerpt';
 import { BookmarkToast, useBookmarkToast } from './BookmarkToast';
 import { COMICS_DATA } from '../../../types/mockData';
 import { NewsUpdate, Comic, Volume } from '../../../types/demo';
@@ -73,6 +74,10 @@ import type { RawKiosItem } from './EtalaseCatalog';
 // iframe lazy dapat dimuat ulang/disaring ulang oleh browser saat halaman di-scroll.
 const stripLazyIframes = (html: string): string =>
     html.replace(/(<iframe\b[^>]*?)\s+loading=("lazy"|'lazy'|lazy)/gi, '$1');
+
+// <br> dari editor jadi spasi, supaya kalimat mengalir. Paragraf <p> tetap terpisah.
+const prepareNewsHtml = (html: string): string =>
+    stripLazyIframes(html).replace(/<br\s*\/?>/gi, ' ');
 
 // Konten dibungkus komponen memo: React tidak akan menyentuh innerHTML selama string HTML sama,
 // sehingga iframe embed tidak pernah di-recreate/di-reload saat re-render (mis. dipicu scroll).
@@ -183,13 +188,24 @@ export default function DetailNews({
   }, [activePost?.id]);
 
   const metaTitle = activePost?.title ? `${activePost.title} - Norinoya News` : 'Berita - Norinoya';
-  const metaDesc = (activePost?.content || 'Baca update berita dan artikel terbaru seputar manga, anime, dan pop culture di Norinoya.').replace(/<[^>]*>/g, '').slice(0, 160);
+  const metaDesc = newsExcerpt(activePost?.content);
   const metaImage = activePost?.attachedImage || '';
 
   // Normalisasi konten: pastikan iframe embed lama tidak memakai loading="lazy"
-  const contentHtml = React.useMemo(() => stripLazyIframes(activePost?.content || ''), [activePost?.content]);
+  const contentHtml = React.useMemo(() => prepareNewsHtml(activePost?.content || ''), [activePost?.content]);
+
+  React.useLayoutEffect(() => {
+    if (!activePost?.id) return;
+    document.getElementById('server-news-article')?.remove();
+    document.getElementById('news-boot-skeleton')?.remove();
+  }, [activePost?.id]);
 
   if (!activePost) return null;
+
+  const canonicalUrl = route('news.detail', String(activePost.slug || activePost.id));
+  const heroImage = activePost.attachedImage || '';
+  const galleryImages = activePost.galleryImages ?? [];
+  const galleryIsOnlyHero = heroImage !== '' && (galleryImages.length === 0 || (galleryImages.length === 1 && galleryImages[0] === heroImage));
 
    return (
     <div className="w-full max-w-7xl mx-auto relative -mt-4 sm:-mt-6">
@@ -206,31 +222,7 @@ export default function DetailNews({
         <meta name="twitter:description" content={metaDesc} />
         {metaImage && <meta name="twitter:image" content={metaImage} />}
         <meta name="theme-color" content="#E53935" />
-        <link rel="canonical" href={`${window.location.origin}/news/${activePost.slug || activePost.id}`} />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'NewsArticle',
-            headline: activePost.title,
-             datePublished: activePost.createdAt || activePost.timestamp,
-             dateModified: activePost.createdAt || activePost.timestamp,
-            ...(activePost.username ? { author: { '@type': 'Person', name: activePost.displayName || activePost.username } } : {}),
-            ...(metaImage ? { image: [metaImage] } : {}),
-            articleSection: activePost.category,
-            ...(activePost.content ? { description: activePost.content.replace(/<[^>]*>/g, '').slice(0, 160) } : {}),
-          })}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Beranda', item: `${window.location.origin}/` },
-              { '@type': 'ListItem', position: 2, name: 'Berita', item: `${window.location.origin}/news` },
-              { '@type': 'ListItem', position: 3, name: activePost.title, item: `${window.location.origin}/news/${activePost.slug || activePost.id}` },
-            ],
-          })}
-        </script>
+        <link rel="canonical" href={canonicalUrl} />
        </Head>
        {/* Full-width Fixed Top Navigation Bar */}
       <div className="fixed top-[57px] sm:top-[61px] left-0 right-0 z-40 w-full bg-white/95 dark:bg-[#202120]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800">
@@ -309,18 +301,10 @@ export default function DetailNews({
 
           {/* Main Detail Content Area */}
           <div className="flex flex-col">
-            <div className="flex flex-col gap-5">
+            <article className="flex flex-col gap-5">
 
               {/* Headline & Meta */}
-              <div className="space-y-2.5 px-5">
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono font-semibold text-neutral-500 dark:text-neutral-400 leading-normal">
-                  <span className="font-extrabold text-[#112A12] dark:text-white shrink-0">@{activePost.username}</span>
-                  <span className="shrink-0 text-neutral-300 dark:text-neutral-600">•</span>
-                  <span className="shrink-0">{activePost.displayName}</span>
-                  <span className="shrink-0 text-neutral-300 dark:text-neutral-600">•</span>
-                  <span className="shrink-0">{activePost.timestamp}</span>
-                </div>
-
+              <div className="space-y-3">
                 {/* Category Badge Pill */}
                 {(() => {
                   let IconComponent: React.ElementType = Newspaper;
@@ -390,21 +374,57 @@ export default function DetailNews({
                   );
                 })()}
 
-                 <h1 className="text-xl sm:text-2xl font-extrabold text-neutral-900 dark:text-neutral-50 leading-tight">
+                 <h1 className="text-2xl sm:text-3xl lg:text-3xl font-extrabold text-neutral-900 dark:text-neutral-50 leading-tight tracking-tight">
                    {activePost.title}
                  </h1>
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm leading-normal text-neutral-500 dark:text-neutral-400">
+                  <span className="font-sans font-semibold text-neutral-800 dark:text-neutral-100 shrink-0">{activePost.displayName}</span>
+                  <span className="shrink-0 text-neutral-300 dark:text-neutral-600">•</span>
+                  <time dateTime={activePost.createdAt || undefined} className="shrink-0 font-mono text-xs">{activePost.timestamp}</time>
+                </div>
               </div>
+
+              {activePost.hashTags && activePost.hashTags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {activePost.hashTags.map((tag, i) => {
+                    const label = tag.replace(/^#/, '').trim();
+                    if (!label) return null;
+                    return (
+                      <button
+                        key={`${label}-${i}`}
+                        type="button"
+                        onClick={() => router.get('/news', { tag: label })}
+                        className="inline-flex items-center px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-semibold border border-neutral-200/80 dark:border-neutral-700 transition-all cursor-pointer active:scale-95"
+                        title={`Lihat berita dengan tagar #${label}`}
+                      >
+                        #{label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {heroImage && (
+                <div className="relative w-full rounded-lg aspect-video max-h-[500px] overflow-hidden  ">
+                  <img
+                    src={heroImage}
+                    alt={activePost.title || 'Gambar berita'}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                </div>
+              )}
 
               {/* Body Paragraph */}
               {activePost.content && (
                 <NewsBody
                   html={contentHtml}
-                  className="whitespace-pre-line [&_p:empty]:min-h-[1.5rem] text-xs sm:text-sm text-neutral-700 dark:text-[#c0d6d8] leading-relaxed font-sans bg-neutral-50 dark:bg-[#202120] p-4 sm:p-5 rounded-xl border border-neutral-100 dark:border-neutral-800 prose dark:prose-invert max-w-none prose-sm prose-p:my-2.5 prose-p:leading-relaxed prose-headings:mt-4 prose-headings:mb-2 text-justify [&_a]:font-semibold [&_a]:text-emerald-700 [&_a]:underline [&_a]:decoration-emerald-600/50 [&_a]:underline-offset-2 [&_a]:break-words hover:[&_a]:text-emerald-800 dark:[&_a]:text-emerald-400 dark:[&_a]:decoration-emerald-400/50 dark:hover:[&_a]:text-emerald-300 [&_iframe]:my-4 [&_iframe]:max-w-full [&_iframe]:transform-gpu [&_iframe]:backface-hidden"
+                  className="w-full  text-left text-base leading-[1.65] font-sans text-neutral-800 dark:text-neutral-200 [&_p]:mt-0 [&_p]:mb-5 [&_p:last-child]:mb-0 [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:leading-snug [&_h2]:text-neutral-900 dark:[&_h2]:text-neutral-50 [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:leading-snug [&_h3]:text-neutral-900 dark:[&_h3]:text-neutral-50 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_blockquote]:my-6 [&_blockquote]:border-l-4 [&_blockquote]:border-[#DA6B1C] [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-neutral-600 dark:[&_blockquote]:text-neutral-300 [&_img]:my-6 [&_img]:max-w-full [&_img]:rounded-xl [&_figure]:my-6 [&_figure]:mx-auto [&_figure]:max-w-full [&_figcaption]:mt-2 [&_figcaption]:text-center [&_figcaption]:text-xs [&_figcaption]:text-neutral-500 dark:[&_figcaption]:text-neutral-400 [&_hr]:my-8 [&_hr]:border-t [&_hr]:border-neutral-200 dark:[&_hr]:border-neutral-800 [&_.norinoya-text-small]:text-xs [&_small]:text-xs [&_strong]:font-bold [&_strong]:text-neutral-900 dark:[&_strong]:text-neutral-50 [&_a]:font-semibold [&_a]:text-emerald-700 [&_a]:underline [&_a]:decoration-emerald-600/50 [&_a]:underline-offset-2 [&_a]:break-words hover:[&_a]:text-emerald-800 dark:[&_a]:text-emerald-400 dark:[&_a]:decoration-emerald-400/50 dark:hover:[&_a]:text-emerald-300 [&_iframe]:my-4 [&_iframe]:max-w-full [&_iframe]:transform-gpu [&_iframe]:backface-hidden"
                 />
               )}
 
-              {/* Photo / Multi-image Grid Gallery directly below description */}
-              {renderImageGallery(activePost, true)}
+              {/* Galeri tambahan. Gambar tunggal yang sama dengan hero tidak diulang. */}
+              {!galleryIsOnlyHero && renderImageGallery(activePost, true)}
+            </article>
 
               {/* INSERT KATALOG & REVIEW SHORT RECOMMENDATIONS SECTION */}
               {activePost.recommendations && activePost.recommendations.length > 0 && (
@@ -416,12 +436,9 @@ export default function DetailNews({
                         <Sparkles className="w-4 h-4" />
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-extrabold text-neutral-900 dark:text-neutral-50 tracking-tight flex items-center gap-1.5">
-                          <span>INSERT KATALOG & REVIEW SHORT</span>
+                        <h4 className="text-xs sm:text-sm font-extrabold text-neutral-900 dark:text-neutral-50 tracking-tight">
+                          Buku yang dibahas
                         </h4>
-                        <p className="text-[10px] sm:text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
-                          Katalog (Kiri) • Review Short Konotasi &amp; Card Instagram (Kanan)
-                        </p>
                       </div>
                     </div>
                     <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-[#DA6B1C] text-white shrink-0">
@@ -621,11 +638,10 @@ export default function DetailNews({
                                   onSelectShort({
                                     id: rec.shortReview?.id || `short-${rec.number || idx}`,
                                     title: shortTitle,
-                                    views: rec.shortReview?.views || '24.3K',
-                                    duration: rec.shortReview?.duration || '0:52',
-                                    likes: '5.2K',
+                                    views: rec.shortReview?.views,
+                                    duration: rec.shortReview?.duration,
                                     thumbnail: shortThumbnail,
-                                    quote: rec.shortReview?.quote || '"Review jujur bedah fisik & cetakan komik!"'
+                                    quote: rec.shortReview?.quote,
                                   });
                                 } else if (videoUrl) {
                                   window.open(videoUrl, '_blank');
@@ -653,9 +669,11 @@ export default function DetailNews({
                                   <Video className="w-3 h-3 text-[#DA6B1C]" />
                                   <span>SHORTS</span>
                                 </span>
-                                <span className="px-2 py-1 rounded-md text-[10px] font-mono font-bold bg-black/70 text-white backdrop-blur-md border border-white/10 shadow-xs">
-                                  {rec.shortReview?.duration || '0:58'}
-                                </span>
+                                {rec.shortReview?.duration && (
+                                  <span className="px-2 py-1 rounded-md text-[10px] font-mono font-bold bg-black/70 text-white backdrop-blur-md border border-white/10 shadow-xs">
+                                    {rec.shortReview.duration}
+                                  </span>
+                                )}
                               </div>
 
                               {/* Center Play Button Overlay */}
@@ -671,16 +689,12 @@ export default function DetailNews({
                                   {shortTitle}
                                 </h5>
 
-                                <div className="flex items-center justify-between text-white/90 font-mono text-[11px] font-bold pt-1.5 border-t border-white/15">
-                                  <div className="flex items-center gap-1.5">
+                                {rec.shortReview?.views && (
+                                  <div className="flex items-center gap-1.5 text-white/90 font-mono text-[11px] font-bold pt-1.5 border-t border-white/15">
                                     <Eye className="w-3.5 h-3.5 text-neutral-300" />
-                                    <span>{rec.shortReview?.views || '18.9K'}</span>
+                                    <span>{rec.shortReview.views}</span>
                                   </div>
-                                  <div className="flex items-center gap-1.5 text-orange-400">
-                                    <Heart className="w-3.5 h-3.5 fill-current text-orange-400" />
-                                    <span>4.8K</span>
-                                  </div>
-                                </div>
+                                )}
                               </div>
                             </div>
                             )}
@@ -935,9 +949,14 @@ export default function DetailNews({
                         }
 
                         return (
-                          <div
+                          <a
                             key={post.id}
-                            onClick={() => selectPost(post)}
+                            href={`/news/${encodeURIComponent(String(post.slug || post.id))}`}
+                            onClick={(e) => {
+                              if (!isPlainLeftClick(e)) return;
+                              e.preventDefault();
+                              selectPost(post);
+                            }}
                             className="bg-neutral-50/50 dark:bg-[#1A1A1A] hover:bg-neutral-50 dark:hover:bg-[#262626] p-4 rounded-xl border border-neutral-200/60 dark:border-neutral-800/80 cursor-pointer group transition-all flex flex-col justify-between h-full hover:shadow-xs"
                           >
                             <div className="space-y-2">
@@ -958,7 +977,7 @@ export default function DetailNews({
                               <span>Baca Berita</span>
                               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                             </div>
-                          </div>
+                          </a>
                         );
                       })}
                     </div>
@@ -966,7 +985,6 @@ export default function DetailNews({
                 );
               })()}
 
-            </div>
           </div>
         </div>
 
@@ -1090,9 +1108,12 @@ export default function DetailNews({
                   const partnerName = kiosItem.publisher_name || '';
 
                  return (
-                   <div
+                   <a
                      key={`kios-${kiosItem.id || idx}`}
-                     onClick={() => {
+                     href={`/kios/${encodeURIComponent(String(kiosItem.slug || kiosItem.id))}`}
+                     onClick={(e) => {
+                       if (!isPlainLeftClick(e)) return;
+                       e.preventDefault();
                        const targetSlug = kiosItem.slug || kiosItem.id;
                        router.visit(`/kios/${targetSlug}`);
                      }}
@@ -1149,26 +1170,12 @@ export default function DetailNews({
                           </div>
                        </div>
                      </div>
-                   </div>
+                   </a>
                  );
                 })}
               </div>
             </div>
             )}
-
-            {/* WIDGET 3: SPONSORED ADSENSE */}
-           <div className="rounded-2xl bg-white dark:bg-[#202120] p-5 sm:p-6 border border-dashed border-neutral-300 dark:border-neutral-700/80 text-center flex flex-col items-center justify-center gap-3 transition-all">
-             <div className="flex items-center justify-center gap-1.5 text-neutral-400 dark:text-neutral-500">
-               <span className="text-sm">📣</span>
-               <span className="text-[11px] font-mono font-extrabold uppercase tracking-wider">
-                 SPONSORED ADSENSE
-               </span>
-             </div>
-
-             <p className="text-xs sm:text-[13px] text-neutral-600 dark:text-neutral-300 font-sans leading-relaxed max-w-xs mx-auto">
-               Iklan Google Adsense membantu kelangsungan server database buku Norinoya. Hubungi kami untuk penempatan banner premium.
-             </p>
-           </div>
 
         </div>
       </div>

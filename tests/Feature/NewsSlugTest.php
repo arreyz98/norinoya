@@ -68,3 +68,31 @@ it('mengalihkan slug lama ke slug terbaru', function () {
 it('mengembalikan 404 untuk berita yang tidak ada', function () {
     $this->get('/news/berita-yang-tidak-pernah-ada')->assertNotFound();
 });
+
+it('menaruh judul dan kalimat isi berita di html pertama', function () {
+    $sentence = 'Kalimat unik untuk mesin pencari tentang cetak ulang manga.';
+    $news = createNewsRecord([
+        'title' => 'Cetak Ulang Manga Musim Gugur',
+        'content' => '<p>Pengantar singkat.</p><p>'.$sentence.'</p>',
+        'display_name' => 'Redaksi Norinoya',
+    ]);
+
+    $html = $this->get("/news/{$news->slug}")
+        ->assertOk()
+        ->getContent();
+
+    $canonical = url("/news/{$news->slug}");
+
+    expect($html)->toContain('Cetak Ulang Manga Musim Gugur')
+        ->and($html)->toContain($sentence)
+        ->and($html)->toContain('NewsArticle')
+        ->and($html)->toContain('dateModified')
+        ->and($html)->toContain($canonical)
+        ->and($html)->toContain('id="server-news-article"');
+
+    preg_match('/<meta name="description" content="([^"]*)"/', $html, $description);
+
+    expect($description[1] ?? '')->toContain('Kalimat unik untuk mesin pencari')
+        ->and($description[1] ?? '')->not->toContain('<')
+        ->and($description[1] ?? '')->not->toContain('&lt;');
+});

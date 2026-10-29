@@ -36,7 +36,6 @@ export interface NewsPostCardProps {
 
 export default function NewsPostCard({
   post,
-  index,
   selectPost,
   handleToggleCategory,
   renderImageGallery,
@@ -141,18 +140,6 @@ export default function NewsPostCard({
           </button>
         </div>
       </motion.article>
-
-      {index === 0 && (
-        <div className="bg-neutral-50/60 dark:bg-neutral-900/40 rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700/80 p-5 sm:p-6 text-center space-y-2 transition-all">
-          <div className="flex items-center justify-center gap-1.5 text-xs font-mono font-bold tracking-wider text-neutral-400 dark:text-neutral-500 uppercase">
-            <span>📢</span>
-            <span>SPONSORED ADSENSE</span>
-          </div>
-          <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-xl mx-auto leading-relaxed font-sans">
-            Iklan Google Adsense membantu kelangsungan server database buku Norinoya. Hubungi kami untuk penempatan banner premium.
-          </p>
-        </div>
-      )}
     </motion.div>
   );
 }

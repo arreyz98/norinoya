@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\PublicationStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -31,6 +33,7 @@ class News extends Model
         'slug_history',
         'content',
         'category',
+        'publication_status',
         'hash_tags',
         'attached_image',
         'gallery_images',
@@ -45,6 +48,7 @@ class News extends Model
     ];
 
     protected $casts = [
+        'publication_status' => PublicationStatus::class,
         'hash_tags' => 'array',
         'gallery_images' => 'array',
         'is_pinned' => 'boolean',
@@ -78,7 +82,7 @@ class News extends Model
 
         // Slug yang murni angka bisa bentrok dengan URL lama berbasis ID (/news/1).
         if (is_numeric($base)) {
-            $base = 'berita-' . $base;
+            $base = 'berita-'.$base;
         }
 
         return trim(Str::limit($base, self::SLUG_MAX_LENGTH, ''), '-');
@@ -94,8 +98,8 @@ class News extends Model
         $counter = 2;
 
         while (static::slugTaken($slug, $ignoreId)) {
-            $suffix = '-' . $counter;
-            $slug = trim(Str::limit($base, self::SLUG_MAX_LENGTH - strlen($suffix), ''), '-') . $suffix;
+            $suffix = '-'.$counter;
+            $slug = trim(Str::limit($base, self::SLUG_MAX_LENGTH - strlen($suffix), ''), '-').$suffix;
             $counter++;
         }
 
@@ -120,6 +124,26 @@ class News extends Model
     }
 
     /**
+     * Varian sadar-status: draft tidak boleh bisa dibuka lewat URL publik.
+     */
+    public static function findPublishedBySlugOrHistory(string $slug): ?self
+    {
+        return static::query()->published()->where('slug', $slug)->first()
+            ?? static::query()->published()->whereJsonContains('slug_history', $slug)->first();
+    }
+
+    /** Hanya berita berstatus terbit yang boleh tampil di situs publik. */
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('publication_status', PublicationStatus::Published);
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->publication_status === PublicationStatus::Published;
+    }
+
+    /**
      * Simpan slug lama ke riwayat supaya URL lama bisa di-redirect 301.
      * Panggil sebelum slug baru di-assign.
      */
@@ -127,7 +151,8 @@ class News extends Model
     {
         $oldSlug = trim((string) $oldSlug);
 
-        if ($oldSlug === '' || $oldSlug === (string) $this->slug) {
+        // Dipanggil saat slug masih yang lama, jadi nilai ini sama dengan slug aktif.
+        if ($oldSlug === '') {
             return;
         }
 

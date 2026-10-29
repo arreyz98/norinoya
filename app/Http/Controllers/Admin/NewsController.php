@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\PublicationStatus;
 use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\Book;
@@ -9,6 +10,7 @@ use App\Models\BookTiktokEmbed;
 use App\Models\BookInstagramEmbed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class NewsController extends Controller
@@ -18,9 +20,51 @@ class NewsController extends Controller
      */
     protected function flushNewsCaches(): void
     {
-        foreach (['news:list:v2', 'news:kios_items', 'news:books:v2', 'news:total', 'home:news:v1', 'sitemap:xml:v1'] as $key) {
+        // Versi key dinaikkan karena daftar berita kini difilter publication_status.
+        // Key sitemap disamakan dengan SitemapController ('sitemap:xml:v3') — sebelumnya
+        // di sini tertulis v1 sehingga sitemap tidak pernah ter-invalidate.
+        foreach (['news:list:v3', 'news:kios_items', 'news:books:v2', 'news:total:v2', 'home:news:v2', 'sitemap:xml:v3'] as $key) {
             Cache::forget($key);
         }
+    }
+
+    /**
+     * Aturan alamat gambar: tolak protokol berbahaya (javascript/data/vbscript).
+     * Nilai lain dibiarkan agar data lama (path relatif, host tanpa protokol)
+     * tetap bisa disimpan. Rule `url` bawaan Laravel tidak dipakai karena
+     * menolak path relatif seperti "/assets/images/foto.jpg".
+     */
+    protected function imageUrlRule(): \Closure
+    {
+        return function (string $attribute, mixed $value, \Closure $fail): void {
+            $url = trim((string) $value);
+
+            if ($url === '') {
+                return;
+            }
+
+            if (preg_match('/^(javascript|data|vbscript):/i', $url)) {
+                $fail('Alamat gambar mengandung protokol yang tidak diizinkan.');
+            }
+        };
+    }
+
+    /**
+     * Gambar utama (hero + og:image + JSON-LD) diambil dari slot galeri pertama.
+     * Sebelum ini kolom attached_image tidak pernah diisi form admin, sehingga
+     * hero di halaman detail dan og:image selalu kosong.
+     *
+     * @param  array<string, mixed>  $validated
+     * @return array<string, mixed>
+     */
+    protected function syncAttachedImageFromGallery(array $validated): array
+    {
+        if (array_key_exists('gallery_images', $validated)) {
+            $gallery = is_array($validated['gallery_images']) ? $validated['gallery_images'] : [];
+            $validated['attached_image'] = $gallery[0] ?? null;
+        }
+
+        return $validated;
     }
 
     public function index(Request $request)
@@ -399,11 +443,12 @@ class NewsController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'category' => 'required|string',
+            'publication_status' => ['nullable', Rule::in([PublicationStatus::Draft->value, PublicationStatus::Published->value])],
             'username' => 'nullable|string|max:100',
             'display_name' => 'nullable|string|max:100',
-            'attached_image' => 'nullable|string',
+            'attached_image' => ['nullable', 'string', 'max:255', $this->imageUrlRule()],
             'gallery_images' => 'nullable|array|max:4',
-            'gallery_images.*' => 'nullable|string',
+            'gallery_images.*' => ['nullable', 'string', 'max:255', $this->imageUrlRule()],
             'reading_rating' => 'nullable|string',
             'is_pinned' => 'boolean',
             'hash_tags' => 'nullable|array',
@@ -426,6 +471,9 @@ class NewsController extends Controller
         $validated['username'] = $validated['username'] ?? 'norinoya_official';
         $validated['display_name'] = $validated['display_name'] ?? 'Norinoya Official';
 
+        // Berita baru tanpa pilihan eksplisit langsung terbit (perilaku lama dipertahankan).
+        $validated['publication_status'] = $validated['publication_status'] ?? PublicationStatus::Published->value;
+
         // Clean & filter gallery_images (max 4 non-empty URLs)
         if (!empty($validated['gallery_images'])) {
             $validated['gallery_images'] = array_values(array_filter($validated['gallery_images'], function ($img) {
@@ -433,6 +481,8 @@ class NewsController extends Controller
             }));
             $validated['gallery_images'] = array_slice($validated['gallery_images'], 0, 4);
         }
+
+        $validated = $this->syncAttachedImageFromGallery($validated);
 
         // Clean hash_tags (remove # if typed by admin)
         if (!empty($validated['hash_tags'])) {
@@ -545,12 +595,13 @@ class NewsController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'category' => 'required|string|in:rilisan,cetakan_ulang,promo,edukasi,event,komunitas,anime,game,jepang,manga,light_novel,novel',
+            'publication_status' => ['nullable', Rule::in([PublicationStatus::Draft->value, PublicationStatus::Published->value])],
             'username' => 'nullable|string|max:255',
             'display_name' => 'nullable|string|max:255',
             'content' => 'required|string',
-            'attached_image' => 'nullable|string',
+            'attached_image' => ['nullable', 'string', 'max:255', $this->imageUrlRule()],
             'gallery_images' => 'nullable|array',
-            'gallery_images.*' => 'nullable|string',
+            'gallery_images.*' => ['nullable', 'string', 'max:255', $this->imageUrlRule()],
             'reading_rating' => 'nullable|string|in:Anak & Bimbingan Orang Tua,Remaja,Dewasa Ringan,Dewasa Berat',
             'is_pinned' => 'boolean',
             'hash_tags' => 'nullable|array',
@@ -587,6 +638,8 @@ class NewsController extends Controller
             }));
             $validated['gallery_images'] = array_slice($validated['gallery_images'], 0, 4);
         }
+
+        $validated = $this->syncAttachedImageFromGallery($validated);
 
         // Clean hash_tags
         if (!empty($validated['hash_tags'])) {

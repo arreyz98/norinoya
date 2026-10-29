@@ -46,7 +46,6 @@ export default function LoginPage({
                     sm:px-6
                     sm:py-8
                     lg:px-10
-                    font-['Plus_Jakarta_Sans',sans-serif]
                 "
             >
                 <div className="w-full max-w-[1020px]">

@@ -49,7 +49,6 @@ export default function PanduanAdaptasiPage({
   const handleNavHome = () => router.visit('/');
   const handleNavNews = () => router.visit('/news');
   const handleNavKios = () => router.visit('/kios');
-  const handleNavAbout = () => router.visit('/?scroll=about');
 
   /* ---------------------------------------------------------------- */
   /*  Search (debounce, state tersimpan di URL ?q=)                    */
@@ -273,7 +272,7 @@ export default function PanduanAdaptasiPage({
         </section>
       </main>
 
-      <Footer onNavigateHome={handleNavHome} onNavigateAbout={handleNavAbout} darkMode={darkMode} />
+      <Footer onNavigateHome={handleNavHome} darkMode={darkMode} />
     </div>
   );
 }

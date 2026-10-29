@@ -575,16 +575,7 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
 
                                     <th className="px-4 py-3 text-left text-xs font-bold text-white">Status</th>
 
-                                    <th className="px-4 py-3 text-center text-xs font-bold text-white">
-                                        <button
-                                            type="button"
-                                            onClick={toggleViewsSort}
-                                            className="inline-flex cursor-pointer items-center gap-1 hover:text-emerald-200"
-                                        >
-                                            <span>Views</span>
-                                            {renderSortIcon('views_desc', 'views_asc')}
-                                        </button>
-                                    </th>
+                                    <th className="px-4 py-3 text-center text-xs font-bold text-white">Link Affiliate</th>
 
                                     <th className="px-4 py-3 text-left text-xs font-bold text-white">Publikasi</th>
 
@@ -668,12 +659,16 @@ export default function Index({ books, selectedSeries = null, selectedPublisher 
                                                 )}
                                             </td>
 
-                                            {/* Views */}
                                             <td className="px-4 py-3 text-center">
-                                                <span className="inline-flex items-center gap-1 rounded-md bg-neutral-100 px-2.5 py-1 font-mono text-xs font-bold text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
-                                                    <Eye className="h-3.5 w-3.5 text-neutral-400" />
-                                                    <span>{(book.views_count ?? 0).toLocaleString('id-ID')}</span>
-                                                </span>
+                                                {book.affiliate_links_count > 0 ? (
+                                                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-1 text-xs font-medium text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-200">
+                                                        {book.affiliate_links_count} affiliate
+                                                    </span>
+                                                ) : (
+                                                    <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 border border-neutral-200 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300">
+                                                        Tidak ada affiliate
+                                                    </span>
+                                                )}
                                             </td>
 
                                             <td className="px-4 py-3">

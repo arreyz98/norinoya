@@ -248,11 +248,13 @@ function AdaptationBox({ adaptation }: { adaptation: AdaptationCorrespondence })
           <span>{adaptation.label}</span>
         </span>
       </div>
-      <div className="space-y-1">
-        <p className="text-sm text-neutral-950 dark:text-neutral-50 font-semibold">
-          {adaptation.range}{' '}
-          <span className="font-normal text-neutral-500 dark:text-neutral-400">{adaptation.chapters}</span>
-        </p>
+      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+        <div className="px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-white/90 dark:bg-neutral-800/90 text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs font-sans font-semibold select-none shadow-3xs">
+          Volume: {adaptation.range}
+        </div>
+        <div className="px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl border border-neutral-200/80 dark:border-neutral-700/80 bg-white/90 dark:bg-neutral-800/90 text-neutral-800 dark:text-neutral-200 text-[11px] sm:text-xs font-sans font-semibold select-none shadow-3xs">
+          Chapter: {adaptation.chapters}
+        </div>
       </div>
     </div>
   );
@@ -459,7 +461,7 @@ function TimelineNode({ entry }: { entry: TimelineEntry }) {
                 {entry.studio && (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-950 dark:text-neutral-50 text-[11px] font-mono font-semibold">
                     <Clapperboard className="w-3.5 h-3.5" />
-                    <span>{entry.studio}</span>
+                    <span>Studio : {entry.studio}</span>
                   </span>
                 )}
                 {entry.tags?.map((tag) => (
@@ -482,8 +484,11 @@ function TimelineNode({ entry }: { entry: TimelineEntry }) {
               <p className="text-sm sm:text-[15px] leading-relaxed text-neutral-500 dark:text-neutral-400 mb-4">
                 {entry.description}
               </p>
+          
 
               {entry.adaptation && <AdaptationBox adaptation={entry.adaptation} />}
+      
+       
             </div>
 
             {/* Quick watch / read links */}
@@ -523,7 +528,6 @@ export default function DetailPanduanAdaptasi({ panduan }: DetailPanduanAdaptasi
   const handleNavHome = () => router.visit('/');
   const handleNavNews = () => router.visit('/news');
   const handleNavKios = () => router.visit('/kios');
-  const handleNavAbout = () => router.visit('/?scroll=about');
 
   const [shareModalData, setShareModalData] = useState({
     isOpen: false,
@@ -679,7 +683,7 @@ export default function DetailPanduanAdaptasi({ panduan }: DetailPanduanAdaptasi
         </section>
       </main>
 
-      <Footer onNavigateHome={handleNavHome} onNavigateAbout={handleNavAbout} darkMode={darkMode} />
+      <Footer onNavigateHome={handleNavHome} darkMode={darkMode} />
 
       <ShareModal
         isOpen={shareModalData.isOpen}

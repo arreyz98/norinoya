@@ -13,7 +13,7 @@ class SitemapController extends Controller
 {
     public function index(): Response
     {
-        $xml = Cache::remember('sitemap:xml:v2', 3600, function () {
+        $xml = Cache::remember('sitemap:xml:v3', 3600, function () {
             $base = rtrim(config('app.url'), '/');
 
             $urls = [];
@@ -24,6 +24,8 @@ class SitemapController extends Controller
                 ['loc' => $base.'/news', 'priority' => '0.8', 'freq' => 'daily'],
                 ['loc' => $base.'/kios', 'priority' => '0.8', 'freq' => 'daily'],
                 ['loc' => $base.'/panduan-adaptasi', 'priority' => '0.7', 'freq' => 'weekly'],
+                ['loc' => $base.'/privasi', 'priority' => '0.4', 'freq' => 'monthly'],
+                ['loc' => $base.'/kontak', 'priority' => '0.4', 'freq' => 'monthly'],
             ];
             foreach ($static as $s) {
                 $urls[] = $this->urlEntry($s['loc'], now()->toAtomString(), $s['freq'], $s['priority']);
@@ -48,6 +50,7 @@ class SitemapController extends Controller
 
             // News
             $newsList = News::query()
+                ->published()
                 ->select(['id', 'slug', 'updated_at'])
                 ->whereNotNull('slug')
                 ->where('slug', '!=', '')

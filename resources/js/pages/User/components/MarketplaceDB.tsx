@@ -1094,17 +1094,6 @@ const getReadingRatingStyle = (rating?: string) => {
             </div>
           </div>
 
-          {/* Ads Placeholder */}
-          <div className="w-full bg-neutral-50/70 dark:bg-neutral-900/40 border border-dashed border-neutral-300 dark:border-neutral-800 rounded-2xl p-5 sm:p-6 text-center space-y-1.5 mb-6 transition-colors shadow-2xs">
-            <div className="text-xs font-mono font-extrabold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 flex items-center justify-center gap-1.5">
-              <span>📢</span>
-              <span>SPONSORED ADSENSE</span>
-            </div>
-            <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 font-sans max-w-2xl mx-auto leading-relaxed">
-              Iklan Google Adsense membantu kelangsungan server database buku Norinoya. Hubungi kami untuk penempatan banner premium.
-            </p>
-          </div>
-
           {/* Section Item Segera Rilis */}
           {upcomingReleases.length > 0 && (
             <div className="bg-white dark:bg-[#171717] border border-black dark:border-orange-800/50 p-4 sm:p-5 rounded-2xl space-y-3.5 shadow-2xs mb-6 relative overflow-hidden transition-colors ">
@@ -1605,7 +1594,7 @@ const getReadingRatingStyle = (rating?: string) => {
             DATA TERBITAN RESMI
           </span>
           <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300">
-            Menampilkan <strong className="text-neutral-950 dark:text-white font-bold">{rangeStart} - {rangeEnd}</strong> dari <strong className="text-neutral-950 dark:text-white font-bold">{listedCount}</strong>Buku
+            Menampilkan <strong className="text-neutral-950 dark:text-white font-bold">{rangeStart} - {rangeEnd}</strong> dari <strong className="text-neutral-950 dark:text-white font-bold">{listedCount}</strong> Buku
           </p>
         </div>
 
@@ -1894,17 +1883,6 @@ const getReadingRatingStyle = (rating?: string) => {
           </div>
         </div>
       )}
-
-      {/* SPONSORED ADSENSE BANNER */}
-      <div className="w-full mt-8 bg-neutral-50/70 dark:bg-neutral-900/40 border border-dashed border-neutral-300 dark:border-neutral-800 rounded-2xl p-5 sm:p-6 text-center space-y-1.5 transition-colors shadow-2xs">
-        <div className="text-xs font-mono font-extrabold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 flex items-center justify-center gap-1.5">
-          <span>📢</span>
-          <span>SPONSORED ADSENSE</span>
-        </div>
-        <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 font-sans max-w-2xl mx-auto leading-relaxed">
-          Iklan Google Adsense membantu kelangsungan server database buku Norinoya. Hubungi kami untuk penempatan banner premium.
-        </p>
-      </div>
         </>
       )}
 

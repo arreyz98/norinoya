@@ -17,10 +17,10 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $newsList = Cache::remember('news:list:v2', 300, fn () => News::latest()->limit(80)->get());
+        $newsList = Cache::remember('news:list:v3', 300, fn () => News::published()->latest()->limit(80)->get());
         $kiosItems = Cache::remember('news:kios_items', 300, fn () => KiosItem::with(['kiosPartner:id,name,slug', 'linkedBook:id,title'])->available()->latest()->limit(40)->get());
         $books = app(QueryCatalog::class)->cardsForNews($newsList);
-        $totalNewsCount = Cache::remember('news:total', 300, fn () => News::count());
+        $totalNewsCount = Cache::remember('news:total:v2', 300, fn () => News::published()->count());
 
         return Inertia::render('User/news', [
             'newsList' => $newsList,
@@ -40,10 +40,11 @@ class NewsController extends Controller
     public function show(Request $request, $slug)
     {
         // Prioritas: slug aktif -> slug lama -> ID numerik (URL lama).
-        $news = News::findBySlugOrHistory($slug);
+        // Draft tidak boleh bisa diakses lewat URL publik mana pun.
+        $news = News::findPublishedBySlugOrHistory($slug);
 
         if (! $news && ctype_digit((string) $slug)) {
-            $news = News::find((int) $slug);
+            $news = News::published()->find((int) $slug);
 
             if ($news) {
                 return redirect()->route('news.detail', $this->canonicalParams($request, $news->slug), 301);
@@ -78,11 +79,14 @@ class NewsController extends Controller
             ]);
         }
 
-        $newsList = News::latest()->get();
+        $newsList = News::published()->latest()->get();
         $kiosItems = KiosItem::with(['kiosPartner', 'linkedBook'])->available()->latest()->get();
         $books = app(QueryCatalog::class)->cardsForNews(collect([$news])->merge($newsList));
 
-        $totalNewsCount = News::count();
+        $totalNewsCount = News::published()->count();
+        $description = $this->newsExcerpt($news->content);
+        $image = $this->absoluteNewsImage($news->attached_image);
+        $url = url("/news/{$news->slug}");
 
         return Inertia::render('User/news', [
             'newsList' => $newsList,
@@ -93,10 +97,16 @@ class NewsController extends Controller
             'totalNewsCount' => $totalNewsCount,
             'meta' => [
                 'title' => $news->title.' - Norinoya News',
-                'description' => Str::limit(strip_tags($news->content ?? 'Baca update berita dan artikel terbaru di Norinoya News.'), 160),
-                'image' => ($img = $news->attached_image) ? (Str::startsWith($img, ['http://', 'https://']) ? $img : url($img)) : url('/favicon.png'),
-                'url' => url("/news/{$news->slug}"),
+                'description' => $description,
+                'image' => $image,
+                'url' => $url,
                 'type' => 'article',
+                'schema' => $this->newsSchema($news, $description, $image, $url),
+                'article' => [
+                    'title' => $news->title,
+                    'published_at' => $news->created_at?->toAtomString(),
+                    'content' => $news->content ?? '',
+                ],
             ],
         ]);
     }
@@ -119,18 +129,18 @@ class NewsController extends Controller
 
         $news = null;
         if (is_numeric($cleanId)) {
-            $news = News::where('id', $cleanId)->first();
+            $news = News::published()->where('id', $cleanId)->first();
         }
 
         if (! $news) {
             $targetSlug = $slug ?: $id;
-            $news = News::where('slug', $targetSlug)->first();
+            $news = News::published()->where('slug', $targetSlug)->first();
 
             // Fallback lewat id HANYA bila parameternya benar-benar angka. MySQL
             // meng-cast string ke angka dari awalan numeriknya, sehingga slug
             // seperti "5-hal-seru-..." bisa salah cocok ke news id 5.
             if (! $news && is_numeric($id)) {
-                $news = News::where('id', $id)->first();
+                $news = News::published()->where('id', $id)->first();
             }
         }
 
@@ -205,5 +215,95 @@ class NewsController extends Controller
             'search_count' => (int) $log->search_count,
             'search_date' => $today,
         ]);
+    }
+
+    /**
+     * Cuplikan meta: buang tag, rapikan spasi, potong di batas kata.
+     */
+    private function newsExcerpt(?string $html): string
+    {
+        $fallback = 'Baca update berita dan artikel terbaru di Norinoya News.';
+        $text = html_entity_decode(strip_tags(str_replace('<', ' <', (string) $html)), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = trim((string) preg_replace('/\s+/u', ' ', $text));
+
+        if ($text === '') {
+            return $fallback;
+        }
+
+        if (mb_strlen($text) <= 155) {
+            return $text;
+        }
+
+        $cut = mb_substr($text, 0, 155);
+        $space = mb_strrpos($cut, ' ');
+
+        if ($space !== false && $space > 80) {
+            $cut = mb_substr($cut, 0, $space);
+        }
+
+        return rtrim($cut, " \t\n\r\0\x0B.,;:!?\"'").'…';
+    }
+
+    private function absoluteNewsImage(?string $image): string
+    {
+        if (! $image) {
+            return url('/favicon.png');
+        }
+
+        if (Str::startsWith($image, ['http://', 'https://'])) {
+            return $image;
+        }
+
+        return url($image);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function newsSchema(News $news, string $description, string $image, string $url): array
+    {
+        $authorName = trim((string) ($news->display_name ?: $news->username));
+        $published = $news->created_at?->toAtomString();
+        $modified = $news->updated_at?->toAtomString() ?? $published;
+
+        $article = array_filter([
+            '@type' => 'NewsArticle',
+            '@id' => $url.'#article',
+            'headline' => $news->title,
+            'description' => $description,
+            'inLanguage' => 'id',
+            'mainEntityOfPage' => [
+                '@type' => 'WebPage',
+                '@id' => $url,
+            ],
+            'datePublished' => $published,
+            'dateModified' => $modified,
+            'image' => [$image],
+            'articleSection' => $news->category,
+            'author' => $authorName !== '' ? ['@type' => 'Person', 'name' => $authorName] : null,
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => 'Norinoya',
+                'logo' => [
+                    '@type' => 'ImageObject',
+                    'url' => url('/assets/images/logo-dark.png'),
+                ],
+            ],
+        ], static fn ($value) => $value !== null && $value !== '');
+
+        return [
+            '@context' => 'https://schema.org',
+            '@graph' => [
+                $article,
+                [
+                    '@type' => 'BreadcrumbList',
+                    'itemListElement' => [
+                        ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
+                        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Berita', 'item' => url('/news')],
+                        ['@type' => 'ListItem', 'position' => 3, 'name' => $news->title, 'item' => $url],
+                    ],
+                ],
+            ],
+        ];
     }
 }

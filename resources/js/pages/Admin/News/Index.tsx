@@ -1,5 +1,5 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Pencil, Plus, Trash2, Newspaper, Pin, Search, ArrowUpDown, Eye, History, SearchCode } from 'lucide-react';
+import { Pencil, Plus, Trash2, Newspaper, Pin, Search, ArrowUpDown, Eye, History, SearchCode, Globe, FilePenLine } from 'lucide-react';
 import { useState } from 'react';
 
 import AppLayout from '@/layouts/app-layout';
@@ -236,6 +236,7 @@ export default function NewsIndex({ news, filters: rawFilters }: NewsIndexProps)
                             <TableRow className="border-b border-[#112A12] hover:bg-transparent">
                                 <TableHead className="text-xs font-bold text-white">Judul Berita</TableHead>
                                 <TableHead className="text-xs font-bold text-white">Kategori</TableHead>
+                                <TableHead className="text-xs font-bold text-white">Status</TableHead>
                                 <TableHead className="text-xs font-bold text-white">Penulis</TableHead>
                                 <TableHead className="text-xs font-bold text-white">Status Pin</TableHead>
                                 <TableHead className="text-center text-xs font-bold text-white">Views</TableHead>
@@ -246,7 +247,7 @@ export default function NewsIndex({ news, filters: rawFilters }: NewsIndexProps)
                         <TableBody>
                             {news.data.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                                    <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
                                         Belum ada berita. Klik tombol Tambah Berita untuk memublikasikan postingan baru.
                                     </TableCell>
                                 </TableRow>
@@ -260,6 +261,19 @@ export default function NewsIndex({ news, filters: rawFilters }: NewsIndexProps)
                                             <span className="px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-neutral-100 dark:bg-neutral-800 uppercase">
                                                 {item.category}
                                             </span>
+                                        </TableCell>
+                                        <TableCell>
+                                            {item.publication_status === 'draft' ? (
+                                                <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800">
+                                                    <FilePenLine className="w-3 h-3" />
+                                                    Draf
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">
+                                                    <Globe className="w-3 h-3" />
+                                                    Terbit
+                                                </span>
+                                            )}
                                         </TableCell>
                                         <TableCell className="text-sm text-muted-foreground">
                                             @{item.username} ({item.display_name})

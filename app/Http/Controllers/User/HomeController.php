@@ -34,12 +34,12 @@ class HomeController extends Controller
             'storyStatuses' => $storyStatuses,
             'genres' => $genres,
             'newsList' => Inertia::defer(fn () => Cache::remember(
-                'home:news:v1',
+                'home:news:v2',
                 300,
-                fn () => News::latest()->limit(50)->get()
+                fn () => News::published()->latest()->limit(50)->get()
             )),
             'relevantBooks' => Inertia::defer(function () use ($catalog) {
-                $news = Cache::remember('home:news:v1', 300, fn () => News::latest()->limit(50)->get());
+                $news = Cache::remember('home:news:v2', 300, fn () => News::published()->latest()->limit(50)->get());
 
                 return $catalog->cardsForNews($news);
             }),

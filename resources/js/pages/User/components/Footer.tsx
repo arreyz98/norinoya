@@ -5,11 +5,10 @@ import logoLightUrl from '../../../../../public/assets/images/white.svg';
 
 interface FooterProps {
   onNavigateHome: () => void;
-  onNavigateAbout: () => void;
   darkMode: boolean;
 }
 
-export default function Footer({ onNavigateHome, onNavigateAbout , darkMode }: FooterProps) {
+export default function Footer({ onNavigateHome, darkMode }: FooterProps) {
     const handleNavNews = () => {
     router.visit('/news');
   };
@@ -56,17 +55,14 @@ export default function Footer({ onNavigateHome, onNavigateAbout , darkMode }: F
                 <h6 className="text-xs font-mono tracking-wider font-extrabold text-neutral-400 uppercase leading-[16px]">Kebijakan Hukum</h6>
                 <ul className="text-sm space-y-2 leading-[20px] dark:text-neutral-400">
                   <li>
-                    <button
-                      onClick={() => {
-                        onNavigateAbout();
-                        setTimeout(() => {
-                          document.getElementById('privacy-policy')?.scrollIntoView({ behavior: 'smooth' });
-                        }, 150);
-                      }}
-                      className="hover:text-black dark:hover:text-white font-medium cursor-pointer transition-colors"
-                    >
-                      Legal
-                    </button>
+                    <a href="/privasi" className="hover:text-black dark:hover:text-white font-medium transition-colors">
+                      Privasi
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/kontak" className="hover:text-black dark:hover:text-white font-medium transition-colors">
+                      Kontak
+                    </a>
                   </li>
                 </ul>
               </div>

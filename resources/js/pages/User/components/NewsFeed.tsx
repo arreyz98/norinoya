@@ -1,7 +1,8 @@
-import React, { useState, useMemo, useRef, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { usePage } from '@inertiajs/react';
 
-const DetailNews = lazy(() => import('./DetailNews'));
+import DetailNews from './DetailNews';
 import NewsCategorySidebar from './NewsCategorySidebar';
 import NewsRightSidebar from './NewsRightSidebar';
 import NewsPostCard from './NewsPostCard';
@@ -186,6 +187,20 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
   }, [dbNewsList]);
   const [searchInput, setSearchInput] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const readTagParam = () => {
+    if (typeof window === 'undefined') return '';
+    return (new URLSearchParams(window.location.search).get('tag') || '').replace(/^#/, '').trim();
+  };
+  const [activeTag, setActiveTag] = useState(readTagParam);
+  const clearActiveTag = () => {
+    setActiveTag('');
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has('tag')) return;
+    params.delete('tag');
+    const next = params.toString();
+    const path = window.location.pathname;
+    window.history.replaceState({}, '', next ? `${path}?${next}` : path);
+  };
   const INITIAL_VISIBLE_COUNT = 6;
   const LOAD_MORE_STEP = 4;
   const [visibleCount, setVisibleCount] = useState<number>(INITIAL_VISIBLE_COUNT);
@@ -202,7 +217,7 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isCategoryExpanded, setIsCategoryExpanded] = useState<boolean>(false);
 
-  // Sync category from URL if changes
+  // Sync category and tag from URL if changes
   useEffect(() => {
     const handleUrlChange = () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -210,34 +225,51 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
       if (catParam) {
         setSelectedCategories([catParam.toLowerCase()]);
       }
+      setActiveTag((urlParams.get('tag') || '').replace(/^#/, '').trim());
     };
     window.addEventListener('popstate', handleUrlChange);
     return () => window.removeEventListener('popstate', handleUrlChange);
   }, []);
 
-  // Scroll listener: detect scroll past ~2 posts (scrollY > 750) and auto-minimize past ~5 posts (scrollY > 1800)
+  const leftSidebarRef = useRef<HTMLDivElement>(null);
+  const feedColumnRef = useRef<HTMLDivElement>(null);
+  const isScrolledRef = useRef(false);
+
+  // Mode ringkas sidebar hanya kalau kolom berita cukup tinggi.
+  // Kalau cuma satu postingan, sidebar yang memendek membuat halaman
+  // meloncat dan kartu berita naik-turun.
   useEffect(() => {
     const handleScroll = () => {
       const y = window.scrollY;
       if (y < 250 && leftSidebarRef.current && leftSidebarRef.current.scrollTop > 0) {
         leftSidebarRef.current.scrollTo({ top: 0, behavior: 'smooth' });
       }
-      if (y > 750) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-        setIsCategoryExpanded(false);
+
+      const feedHeight = feedColumnRef.current?.offsetHeight ?? 0;
+      const canMinimize = feedHeight >= window.innerHeight + 750;
+
+      let next = isScrolledRef.current;
+      if (!canMinimize) {
+        next = false;
+      } else if (y > 750) {
+        next = true;
+      } else if (y < 400) {
+        next = false;
       }
 
-      // Auto-minimize when scrolled deep (past ~5 news posts)
-      if (y > 1800) {
+      if (next !== isScrolledRef.current) {
+        isScrolledRef.current = next;
+        setIsScrolled(next);
+        if (!next) setIsCategoryExpanded(false);
+      }
+
+      if (canMinimize && y > 1800) {
         setIsCategoryExpanded(false);
       }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  const leftSidebarRef = useRef<HTMLDivElement>(null);
   const mobileCategoryNavRef = useRef<HTMLDivElement>(null);
 
   const scrollCategoriesBy = (direction: 'left' | 'right') => {
@@ -288,6 +320,16 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
   };
   
   const [localSelectedPost, setLocalSelectedPost] = useState<NewsUpdate | null>(null);
+  const { url } = usePage();
+
+  useEffect(() => {
+    const [path, query = ''] = url.split('?');
+    setActiveTag((new URLSearchParams(query).get('tag') || '').replace(/^#/, '').trim());
+    if (path === '/news') {
+      setLocalSelectedPost(null);
+      setSelectedNewsId?.(null);
+    }
+  }, [url, setSelectedNewsId]);
   
   const initialPollsState = useMemo<Record<string, Poll>>(() => {
     const pMap: Record<string, Poll> = { ...INITIAL_POLLS };
@@ -396,15 +438,6 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
              }}
              className="w-full h-auto object-contain max-h-[500px] hover:scale-[1.01] transition-transform duration-300"
            />
-          {isDetail && post.hashTags && post.hashTags.length > 0 && (
-            <div className="absolute bottom-3 right-3 flex gap-1.5 flex-wrap">
-              {post.hashTags.map((tag, i) => (
-                <span key={i} className="px-2.5 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase bg-neutral-900/80 text-neutral-100 border border-neutral-700/60 shadow-xs">
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          )}
         </div>
       );
     }
@@ -450,16 +483,6 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
             );
           })}
         </div>
-
-        {isDetail && post.hashTags && post.hashTags.length > 0 && (
-          <div className="absolute bottom-3 right-3 flex gap-1.5 flex-wrap z-10">
-            {post.hashTags.map((tag, i) => (
-              <span key={i} className="px-2.5 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase bg-neutral-900/85 text-neutral-100 border border-neutral-700/60 shadow-xs backdrop-blur-xs">
-                #{tag.replace(/^#/, '')}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
     );
   };
@@ -867,17 +890,25 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
         const matchesContent = post.content.toLowerCase().includes(term);
         const matchesHashtag = (post.hashTags || []).some(tag => tag.toLowerCase().includes(term));
         const matchesCategory = post.category.toLowerCase().includes(term);
-        return matchesTitle || matchesContent || matchesHashtag || matchesCategory;
+        if (!(matchesTitle || matchesContent || matchesHashtag || matchesCategory)) return false;
+      }
+
+      if (activeTag) {
+        const needle = activeTag.toLowerCase();
+        const matchesExactTag = (post.hashTags || []).some(
+          (tag) => tag.replace(/^#/, '').trim().toLowerCase() === needle
+        );
+        if (!matchesExactTag) return false;
       }
 
       return true;
     });
-  }, [selectedCategories, searchTerm, newsFeedData]);
+  }, [selectedCategories, searchTerm, activeTag, newsFeedData]);
 
   // Reset visibleCount saat filter atau kata kunci pencarian berubah
   useEffect(() => {
     setVisibleCount(INITIAL_VISIBLE_COUNT);
-  }, [selectedCategories, searchTerm]);
+  }, [selectedCategories, searchTerm, activeTag]);
 
   // Batasi postingan yang dirender sesuai visibleCount
   const visiblePosts = useMemo(() => {
@@ -903,6 +934,8 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
               setSearchInput={setSearchInput}
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
+              activeTag={activeTag}
+              clearActiveTag={clearActiveTag}
               scrollToFeedTop={scrollToFeedTop}
               isScrolled={isScrolled}
               isCategoryExpanded={isCategoryExpanded}
@@ -914,7 +947,7 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
             />
 
             {/* MIDDLE COLUMN: FEATURED POST & ARTICLE LIST (6 Columns) */}
-            <div className="lg:col-span-6 flex flex-col gap-6">
+            <div ref={feedColumnRef} className="lg:col-span-6 flex flex-col gap-6">
               
               {/* MOBILE & TABLET SEARCH BAR & CATEGORIES (lg:hidden) */}
               <div className="lg:hidden flex flex-col gap-3">
@@ -992,6 +1025,21 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
                       </button>
                     </div>
                   )}
+                  {activeTag && (
+                    <div className="mt-2.5 flex items-center justify-between text-[11px] text-[#112A12] dark:text-emerald-400 font-medium bg-[#112A12]/10 dark:bg-[#112A12]/20 px-3 py-1 rounded-md w-full max-w-md">
+                      <span className="truncate">Tagar: #{activeTag}</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          clearActiveTag();
+                          scrollToFeedTop();
+                        }}
+                        className="text-xs font-bold hover:underline cursor-pointer ml-2 shrink-0"
+                      >
+                        Reset
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {/* 2. CATEGORY FILTER HORIZONTAL SLIDER DENGAN TOMBOL GESER KIRI/KANAN */}
@@ -1053,13 +1101,14 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
                   </button>
 
                   {/* Reset Filter Button jika ada filter terpilih */}
-                  {(!selectedCategories.includes('all') || searchTerm) && (
+                  {(!selectedCategories.includes('all') || searchTerm || activeTag) && (
                     <button
                       type="button"
                       onClick={() => {
                         handleToggleCategory('all', true);
                         setSearchTerm('');
                         setSearchInput('');
+                        clearActiveTag();
                       }}
                       className="w-8 h-8 text-xs font-bold rounded-lg bg-red-600 hover:bg-red-700 text-white shrink-0 cursor-pointer flex items-center justify-center shadow-xs active:scale-95 transition-all ml-0.5"
                       title="Reset Filter"
@@ -1082,18 +1131,21 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
                     </span>
                   )}
                   {searchTerm && <span> • Hasil Pencarian "{searchTerm}"</span>}
+                  {activeTag && <span> • Tagar: #{activeTag}</span>}
                 </h2>
                 <div className="flex items-center gap-2 shrink-0">
-                  {!selectedCategories.includes('all') && (
+                  {!selectedCategories.includes('all') || searchTerm || activeTag ? (
                     <span className="text-xs font-mono text-neutral-400 dark:text-neutral-500">
                       {filteredPosts.length} post ditemukan
                     </span>
-                  )}
-                  {(!selectedCategories.includes('all') || searchTerm) && (
+                  ) : null}
+                  {(!selectedCategories.includes('all') || searchTerm || activeTag) && (
                     <button
                       onClick={() => {
                         handleToggleCategory('all', true);
                         setSearchTerm('');
+                        setSearchInput('');
+                        clearActiveTag();
                       }}
                       className="hidden lg:flex w-7 h-7 text-xs font-bold rounded-lg bg-red-600 hover:bg-red-700 text-white shrink-0 cursor-pointer items-center justify-center shadow-xs active:scale-95 transition-all"
                       title="Reset Filter"
@@ -1162,6 +1214,7 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
                           onClick={() => {
                             setSearchInput('');
                             setSearchTerm('');
+                            clearActiveTag();
                             handleToggleCategory('all', true);
                             scrollToFeedTop();
                           }}
@@ -1192,8 +1245,7 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
             />
           </motion.div>
         ) : (
-          <Suspense fallback={null}>
-            <DetailNews
+          <DetailNews
               activePost={activePost}
               selectPost={selectPost}
               handleToggleCategory={handleToggleCategory}
@@ -1219,7 +1271,6 @@ export default function NewsFeed({ dbNewsList = [], dbBooksList = [], dbKiosList
               onSelectShort={onSelectShort}
               allNews={newsFeedData}
             />
-          </Suspense>
         )}
       </AnimatePresence>
 

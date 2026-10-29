@@ -55,13 +55,5 @@ export function normalizeNestedServerErrors(
     return normalized;
 }
 
-/** URL valid (http/https) — sinkron dengan rule validasi server. */
-export function isValidUrl(value: string): boolean {
-    try {
-        const url = new URL(value);
-
-        return url.protocol === 'http:' || url.protocol === 'https:';
-    } catch {
-        return false;
-    }
-}
+/** URL valid (http/https) — kini tinggal di utils bersama, di-export ulang demi kompatibilitas. */
+export { isValidUrl } from '@/utils/imageUrl';

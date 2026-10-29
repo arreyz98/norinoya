@@ -12,7 +12,7 @@ class BookmarkController extends Controller
     public function index()
     {
         return Inertia::render('User/bookmark', [
-            'newsList' => Inertia::defer(fn () => News::latest()->limit(40)->get()),
+            'newsList' => Inertia::defer(fn () => News::published()->latest()->limit(40)->get()),
             'kiosItems' => Inertia::defer(fn () => KiosItem::with(['kiosPartner:id,name,slug', 'linkedBook:id,title'])->latest()->limit(40)->get()),
             'meta' => ['robots' => 'noindex,nofollow'],
         ]);

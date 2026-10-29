@@ -31,6 +31,8 @@ export interface NewsCategorySidebarProps {
   setSearchInput: (val: string) => void;
   searchTerm: string;
   setSearchTerm: (val: string) => void;
+  activeTag?: string;
+  clearActiveTag?: () => void;
   scrollToFeedTop: () => void;
   isScrolled: boolean;
   isCategoryExpanded: boolean;
@@ -64,6 +66,8 @@ export default function NewsCategorySidebar({
   setSearchInput,
   searchTerm,
   setSearchTerm,
+  activeTag = '',
+  clearActiveTag,
   scrollToFeedTop,
   isScrolled,
   isCategoryExpanded,
@@ -146,6 +150,21 @@ export default function NewsCategorySidebar({
               onClick={() => {
                 setSearchInput('');
                 setSearchTerm('');
+                scrollToFeedTop();
+              }}
+              className="text-xs font-bold hover:underline cursor-pointer ml-1 shrink-0"
+            >
+              Reset
+            </button>
+          </div>
+        )}
+        {activeTag && (
+          <div className="mt-2.5 flex items-center justify-between text-[11px] text-[#112A12] dark:text-[#457347] font-medium bg-[#112A12]/10 dark:bg-[#112A12]/20 px-2.5 py-1 rounded-md">
+            <span className="truncate">Tagar: #{activeTag}</span>
+            <button
+              type="button"
+              onClick={() => {
+                clearActiveTag?.();
                 scrollToFeedTop();
               }}
               className="text-xs font-bold hover:underline cursor-pointer ml-1 shrink-0"

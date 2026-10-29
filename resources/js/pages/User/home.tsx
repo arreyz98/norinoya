@@ -204,11 +204,6 @@ export default function App({
     router.visit('/news');
   };
 
-  const handleNavAbout = () => {
-    setActiveTab('about');
-    window.location.hash = '#about';
-  };
-
   const handleNavEtalase = () => {
     router.visit('/kios');
   };
@@ -517,7 +512,6 @@ export default function App({
         {/* Global Footer (Informative, design-inspired) */}
         <Footer
           onNavigateHome={handleNavHome}
-          onNavigateAbout={handleNavAbout}
           darkMode={darkMode}
         />
 
@@ -677,19 +671,14 @@ export default function App({
                 <div className="space-y-1">
                   <h4 className="font-extrabold text-xs tracking-wider uppercase text-neutral-350">Informasi Cookie &amp; Privasi</h4>
                   <p className="text-xs text-neutral-300 leading-relaxed font-sans mt-0.5">
-                    Norinoya menggunakan kuki lokal (cookies) dan <code>localStorage</code> untuk mengingat status pembatasan bacaan dewasa dan merawat preferensi navigasi Anda secara anonim. Kami tidak melacak data sensitif pribadi Anda.
+                    Norinoya memakai cookie dan localStorage untuk mengingat batasan usia serta preferensi navigasi. Jika iklan Google ditayangkan, Google dapat memakai cookie iklan. Kami tidak menyimpan data pribadi sensitif di server Norinoya.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 mt-1 sm:justify-end">
                 <button
-                  onClick={() => {
-                    handleNavAbout();
-                    setTimeout(() => {
-                      document.getElementById('privacy-policy')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 150);
-                  }}
+                  onClick={() => router.visit('/privasi')}
                   className="px-3 py-1.5 hover:underline text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer text-left mr-auto sm:mr-0 font-bold"
                 >
                   Kebijakan Privasi

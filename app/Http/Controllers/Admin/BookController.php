@@ -1370,7 +1370,7 @@ class BookController extends Controller
             'news:books:v2',
             'kios:books:v2',
             'home:total_books',
-            'sitemap:xml:v2',
+            'sitemap:xml:v3',
         ] as $key) {
             Cache::forget($key);
         }

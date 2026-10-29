@@ -1,13 +1,9 @@
 import { hasVideoLinkContent, type BookFormData, type SubmissionMaps, type ValidationErrors } from './book-form-types';
+import { isValidUrl } from '@/utils/imageUrl';
 
-export const isValidUrl = (value: string): boolean => {
-    try {
-        const url = new URL(value);
-        return url.protocol === 'http:' || url.protocol === 'https:';
-    } catch {
-        return false;
-    }
-};
+// isValidUrl kini tinggal di utils bersama (dipakai Books, PanduanAdaptasi, dan News).
+// Di-export ulang supaya seluruh call site lama tetap bekerja tanpa perubahan.
+export { isValidUrl };
 
 // Transliterasi mendekati Illuminate\Support\Str::ascii() (portable-ascii)
 // untuk karakter yang tidak terurai lewat NFKD.

@@ -64,6 +64,7 @@ export default function AboutSection() {
             <li><strong>Penyimpanan Data Lokal:</strong> Norinoya dapat menggunakan localStorage dan cookie pada browser untuk menyimpan preferensi navigasi pengguna, seperti status pembukaan konten berdasarkan rating usia serta status persetujuan Cookie Consent Banner. Data tersebut disimpan secara lokal pada perangkat pengguna.</li>
             <li><strong>Tautan Pihak Ketiga:</strong> Norinoya memuat tautan referral atau affiliate, seperti Gramedia, Shopee, dan Tokopedia. Ketika pengguna mengakses platform pihak ketiga tersebut, pengelolaan cookie, tracker, dan data pengguna mengikuti kebijakan privasi masing-masing platform. Norinoya tidak mengendalikan kebijakan privasi pihak ketiga tersebut.</li>
             <li><strong>Statistik Non-Identitas:</strong> Norinoya dapat menggunakan data kunjungan umum, seperti jumlah pengunjung dan sumber rujukan klik, untuk memahami penggunaan situs serta membantu mengoptimalkan performa dan pengalaman pengguna. Data statistik tersebut digunakan dalam bentuk yang tidak ditujukan untuk mengidentifikasi pengguna secara langsung.</li>
+            <li><strong>Cookie iklan Google:</strong> Jika iklan Google ditayangkan di Norinoya, Google dan mitra iklannya dapat menggunakan cookie untuk menayangkan serta mengukur iklan. Pengunjung dapat mengatur preferensi iklan di <a href="https://adssettings.google.com" className="underline" target="_blank" rel="noopener noreferrer">setelan iklan Google</a>.</li>
           </ul>
         </div>
       </div>
@@ -145,7 +146,7 @@ export default function AboutSection() {
           </div>
 
           <div className="pt-2 text-xs font-mono text-neutral-500 dark:text-neutral-400 border-t border-neutral-100 dark:border-neutral-800/80">
-            Terakhir diperbarui: 9 September 2026
+            Terakhir diperbarui: 28 Oktober 2026
           </div>
         </div>
       </div>

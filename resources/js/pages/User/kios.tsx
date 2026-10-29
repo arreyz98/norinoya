@@ -77,10 +77,6 @@ export default function KiosPage({
     router.visit('/kios');
   };
 
-  const handleNavAbout = () => {
-    router.visit('/?scroll=about');
-  };
-
   const activeKiosItem = selectedSaleId ? kiosItems.find(k => String(k.id) === selectedSaleId) : null;
   const pageTitle = activeKiosItem
     ? `${activeKiosItem.title} - Beli di Kios Norinoya`
@@ -199,7 +195,6 @@ export default function KiosPage({
       {/* Footer */}
       <Footer
         onNavigateHome={handleNavHome}
-        onNavigateAbout={handleNavAbout}
         darkMode={darkMode}
       />
 

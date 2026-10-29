@@ -599,7 +599,7 @@ export function SavedBookmarks({
       <div className="relative text-center py-5 sm:py-7 md:py-8 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white rounded-2xl overflow-hidden shadow-xs dark:shadow-md border border-neutral-200/60 dark:border-neutral-800 px-4 sm:px-6 flex flex-col items-center justify-center space-y-2.5 sm:space-y-3.5 mb-4 sm:mb-6 transition-all duration-200">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent pointer-events-none" />
 
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/60 text-amber-900 dark:text-amber-300 text-[10px] sm:text-[11px] font-mono font-bold tracking-widest uppercase rounded-full">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-[#D1D6E0] dark:bg-amber-950/40  text-neutral-800 dark:text-amber-300 text-[10px] sm:text-[11px] font-mono font-bold tracking-widest uppercase rounded-full">
           <Bookmark className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-500 text-amber-600 dark:text-amber-400" />
           <span>KOLEKSI TERSIMPAN</span>
         </span>
@@ -1288,10 +1288,6 @@ export default function BookmarkPage({
     router.visit('/bookmark');
   };
 
-  const handleNavAbout = () => {
-    router.visit('/?scroll=about');
-  };
-
   const handleNavigateToComic = (path: string) => {
     router.visit(path);
   };
@@ -1337,7 +1333,7 @@ export default function BookmarkPage({
         />
       </main>
 
-      <Footer onNavigateHome={handleNavHome} onNavigateAbout={handleNavAbout} darkMode={darkMode}/>
+      <Footer onNavigateHome={handleNavHome} darkMode={darkMode}/>
 
       {/* Floating Back to Top Button */}
       <BackToTopButton />
