@@ -1,4 +1,4 @@
-import { p as prepareEmbedFrames, s as syncEmbedHeights, c as cn, T as Toaster, L as Label, I as Input, B as Button, A as AppLayout, u as useAppearance, S as Separator, D as Dialog, a as DialogTrigger, b as DialogContent, d as DialogTitle, e as DialogDescription, f as DialogFooter, g as DialogClose, _ as __vite_glob_0_65, h as __vite_glob_0_64, i as __vite_glob_0_63, j as __vite_glob_0_62, k as __vite_glob_0_61, l as __vite_glob_0_60, m as __vite_glob_0_59, n as __vite_glob_0_58, o as __vite_glob_0_57, q as __vite_glob_0_56, r as __vite_glob_0_55, t as __vite_glob_0_54, v as __vite_glob_0_53, w as __vite_glob_0_52, x as __vite_glob_0_51, y as __vite_glob_0_50, z as __vite_glob_0_49, C as __vite_glob_0_48, E as __vite_glob_0_47, F as __vite_glob_0_46, G as __vite_glob_0_45, H as __vite_glob_0_44, J as __vite_glob_0_43, K as __vite_glob_0_42, M as __vite_glob_0_41, N as __vite_glob_0_40, O as __vite_glob_0_39, P as __vite_glob_0_38, Q as __vite_glob_0_37, R as __vite_glob_0_36, U as __vite_glob_0_35, V as __vite_glob_0_34, W as __vite_glob_0_33, X as __vite_glob_0_32, Y as __vite_glob_0_31, Z as __vite_glob_0_30, $ as __vite_glob_0_29, a0 as __vite_glob_0_28, a1 as __vite_glob_0_27, a2 as __vite_glob_0_26, a3 as __vite_glob_0_25, a4 as __vite_glob_0_24, a5 as __vite_glob_0_23, a6 as __vite_glob_0_22, a7 as __vite_glob_0_21, a8 as __vite_glob_0_20, a9 as __vite_glob_0_19, aa as __vite_glob_0_18, ab as __vite_glob_0_17, ac as __vite_glob_0_16, ad as __vite_glob_0_15, ae as __vite_glob_0_14, af as __vite_glob_0_13, ag as __vite_glob_0_12, ah as __vite_glob_0_11, ai as __vite_glob_0_10, aj as __vite_glob_0_9, ak as __vite_glob_0_8, al as __vite_glob_0_7, am as __vite_glob_0_6, an as __vite_glob_0_5, ao as __vite_glob_0_4, ap as __vite_glob_0_3, aq as __vite_glob_0_2, ar as __vite_glob_0_1, as as __vite_glob_0_0 } from "./assets/admin-pages-CA6TsA42.js";
+import { p as prepareEmbedFrames, s as syncEmbedHeights, c as cn, T as Toaster, L as Label, I as Input, B as Button, A as AppLayout, u as useAppearance, S as Separator, D as Dialog, a as DialogTrigger, b as DialogContent, d as DialogTitle, e as DialogDescription, f as DialogFooter, g as DialogClose, _ as __vite_glob_0_65, h as __vite_glob_0_64, i as __vite_glob_0_63, j as __vite_glob_0_62, k as __vite_glob_0_61, l as __vite_glob_0_60, m as __vite_glob_0_59, n as __vite_glob_0_58, o as __vite_glob_0_57, q as __vite_glob_0_56, r as __vite_glob_0_55, t as __vite_glob_0_54, v as __vite_glob_0_53, w as __vite_glob_0_52, x as __vite_glob_0_51, y as __vite_glob_0_50, z as __vite_glob_0_49, C as __vite_glob_0_48, E as __vite_glob_0_47, F as __vite_glob_0_46, G as __vite_glob_0_45, H as __vite_glob_0_44, J as __vite_glob_0_43, K as __vite_glob_0_42, M as __vite_glob_0_41, N as __vite_glob_0_40, O as __vite_glob_0_39, P as __vite_glob_0_38, Q as __vite_glob_0_37, R as __vite_glob_0_36, U as __vite_glob_0_35, V as __vite_glob_0_34, W as __vite_glob_0_33, X as __vite_glob_0_32, Y as __vite_glob_0_31, Z as __vite_glob_0_30, $ as __vite_glob_0_29, a0 as __vite_glob_0_28, a1 as __vite_glob_0_27, a2 as __vite_glob_0_26, a3 as __vite_glob_0_25, a4 as __vite_glob_0_24, a5 as __vite_glob_0_23, a6 as __vite_glob_0_22, a7 as __vite_glob_0_21, a8 as __vite_glob_0_20, a9 as __vite_glob_0_19, aa as __vite_glob_0_18, ab as __vite_glob_0_17, ac as __vite_glob_0_16, ad as __vite_glob_0_15, ae as __vite_glob_0_14, af as __vite_glob_0_13, ag as __vite_glob_0_12, ah as __vite_glob_0_11, ai as __vite_glob_0_10, aj as __vite_glob_0_9, ak as __vite_glob_0_8, al as __vite_glob_0_7, am as __vite_glob_0_6, an as __vite_glob_0_5, ao as __vite_glob_0_4, ap as __vite_glob_0_3, aq as __vite_glob_0_2, ar as __vite_glob_0_1, as as __vite_glob_0_0 } from "./assets/admin-pages-B9STmjqr.js";
 import { jsxs, Fragment, jsx } from "react/jsx-runtime";
 import React__default, { useState, useEffect, useCallback, useMemo, useRef, lazy, Suspense } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -11,6 +11,7 @@ import "class-variance-authority";
 import "sonner";
 import "@tiptap/react";
 import "@tiptap/starter-kit";
+import "@tiptap/pm/model";
 import "@tiptap/core";
 import "@tiptap/pm/state";
 import "react-day-picker";
@@ -3836,7 +3837,7 @@ function Navbar({
     ] })
   ] });
 }
-const __vite_glob_0_81 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_82 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Navbar
 }, Symbol.toStringTag, { value: "Module" }));
@@ -3970,7 +3971,7 @@ function Footer({ onNavigateHome, darkMode }) {
     /* @__PURE__ */ jsx("div", { className: "max-w-7xl mx-auto border-t border-neutral-200 dark:border-neutral-800 mt-10 pt-6 text-center text-xs font-mono text-neutral-500 dark:text-neutral-400 flex flex-col items-center justify-center leading-[18px]", children: /* @__PURE__ */ jsx("span", { children: "©2026 norinoya" }) })
   ] });
 }
-const __vite_glob_0_75 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_76 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Footer
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5209,6 +5210,148 @@ const __vite_glob_0_67 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: AboutSection$1
 }, Symbol.toStringTag, { value: "Module" }));
+const getReadingRatingStyle$1 = (rating) => {
+  switch (rating) {
+    case "Anak & Bimbingan Orang Tua":
+    case "Anak & Bimbingan":
+      return {
+        bg: "bg-[#22c55e] dark:bg-[#16a34a] border-emerald-600/30 text-white",
+        text: "Anak & Bimbingan",
+        color: "#41a34c",
+        hoverClass: "group-hover:text-[#41a34c] dark:group-hover:text-emerald-400",
+        hoverClassKat: "group-hover/kat:text-[#41a34c] dark:group-hover/kat:text-emerald-400"
+      };
+    case "Remaja":
+      return {
+        bg: "bg-[#f59e0b] dark:bg-[#d97706] border-amber-600/30 text-white",
+        text: "Remaja",
+        color: "#f59e0b",
+        hoverClass: "group-hover:text-[#d97706] dark:group-hover:text-amber-400",
+        hoverClassKat: "group-hover/kat:text-[#d97706] dark:group-hover/kat:text-amber-400"
+      };
+    case "Dewasa Ringan":
+      return {
+        bg: "bg-[#ff6628] dark:bg-[#ea580c] border-orange-600/30 text-white",
+        text: "Dewasa Ringan",
+        color: "#ff723c",
+        hoverClass: "group-hover:text-[#ff6628] dark:group-hover:text-orange-400",
+        hoverClassKat: "group-hover/kat:text-[#ff6628] dark:group-hover/kat:text-orange-400"
+      };
+    case "Dewasa Berat":
+      return {
+        bg: "bg-[#ef4444] dark:bg-[#dc2626] border-red-600/30 text-white",
+        text: "Dewasa Berat",
+        color: "#c1271f",
+        hoverClass: "group-hover:text-[#c1271f] dark:group-hover:text-red-400",
+        hoverClassKat: "group-hover/kat:text-[#c1271f] dark:group-hover/kat:text-red-400"
+      };
+    default:
+      return {
+        bg: "bg-[#f97316] dark:bg-[#ea580c] border-orange-600/30 text-white",
+        text: "Remaja",
+        color: "#d97706",
+        hoverClass: "group-hover:text-[#d97706] dark:group-hover:text-amber-400",
+        hoverClassKat: "group-hover/kat:text-[#d97706] dark:group-hover/kat:text-amber-400"
+      };
+  }
+};
+const getAuthorNameOnly = (source) => {
+  const names = `${source.authorStory || ""}, ${source.authorArt || ""}`.split(",").map((name) => name.trim()).filter(Boolean);
+  return Array.from(new Set(names)).join(", ");
+};
+const getVolumeAuthorName = (comic, volume) => getAuthorNameOnly(volume) || getAuthorNameOnly(comic);
+function BookPostCard$1({
+  comic,
+  volume,
+  isBookmarked = false,
+  eager = false,
+  cornerBadge,
+  onOpen
+}) {
+  var _a;
+  const [hasCoverError, setHasCoverError] = useState(false);
+  const coverImage = volume.coverImage || comic.coverImage;
+  const ratingStyle = getReadingRatingStyle$1(comic.readingRating);
+  const authorName = getVolumeAuthorName(comic, volume);
+  const genresLabel = ((_a = comic.genres) == null ? void 0 : _a.slice(0, 2).join(", ")) ?? "";
+  const hasPrice = typeof volume.price === "number" && volume.price > 0;
+  return /* @__PURE__ */ jsx(
+    "a",
+    {
+      href: bookPath(comic, volume) ?? void 0,
+      onClick: (event) => {
+        if (!isPlainLeftClick(event)) return;
+        event.preventDefault();
+        onOpen(comic, volume.volNumber);
+      },
+      className: "block group cursor-pointer",
+      children: /* @__PURE__ */ jsxs(
+        "div",
+        {
+          className: `h-full bg-white dark:bg-neutral-900 border-2 rounded-xl overflow-hidden flex flex-col justify-between cursor-pointer transition-all duration-300 select-none ${isBookmarked ? "border-emerald-400" : "border-[#EFEFEF] dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_10px_24px_rgba(0,0,0,0.05)] hover:translate-y-[-2px]"}`,
+          children: [
+            /* @__PURE__ */ jsxs("div", { className: "relative aspect-[3/4] w-full bg-neutral-950 overflow-hidden select-none", children: [
+              coverImage && !hasCoverError ? /* @__PURE__ */ jsx(
+                "img",
+                {
+                  src: coverImage,
+                  alt: `${volume.title || comic.title} Vol ${volume.volNumber}`,
+                  loading: eager ? "eager" : "lazy",
+                  decoding: "async",
+                  fetchPriority: eager ? "high" : "auto",
+                  onError: () => setHasCoverError(true),
+                  className: "absolute inset-0 w-full h-full object-cover transition-transform duration-500 scale-100 group-hover:scale-105",
+                  referrerPolicy: "no-referrer"
+                }
+              ) : /* @__PURE__ */ jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-950 flex flex-col justify-center p-2.5 border border-neutral-700", children: /* @__PURE__ */ jsxs("div", { className: "text-center px-1", children: [
+                /* @__PURE__ */ jsx(BookOpen, { className: "w-7 h-7 text-neutral-500 stroke-[1.2] mx-auto mb-1 opacity-60" }),
+                /* @__PURE__ */ jsx("span", { className: "text-[8px] font-mono tracking-wider text-neutral-400 capitalize", children: getBookTypeLabel(comic.category) }),
+                /* @__PURE__ */ jsx("h4", { className: "text-[10px] font-sans font-extrabold text-neutral-200 mt-1 line-clamp-3 leading-normal", children: volume.title || comic.title })
+              ] }) }),
+              cornerBadge && /* @__PURE__ */ jsx("div", { className: "absolute top-1.5 left-1.5 z-20", children: cornerBadge }),
+              /* @__PURE__ */ jsxs("div", { className: "absolute bottom-2 left-2 z-20 flex items-center gap-1 pointer-events-none", children: [
+                /* @__PURE__ */ jsx("span", { className: "bg-neutral-100/95 dark:bg-neutral-800/95 text-neutral-900 dark:text-neutral-100 font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8.5px] capitalize leading-none shadow-xs border border-neutral-200/50 dark:border-neutral-700/50", children: getBookTypeLabel(comic.category) }),
+                comic.readingRating && /* @__PURE__ */ jsx(
+                  "span",
+                  {
+                    className: `font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8.5px] leading-none shadow-xs border ${ratingStyle.bg}`,
+                    children: ratingStyle.text
+                  }
+                )
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxs("div", { className: "space-y-1 p-2.5 flex-1 flex flex-col justify-between text-left", children: [
+              /* @__PURE__ */ jsxs("div", { className: "space-y-0.5", children: [
+                /* @__PURE__ */ jsx("span", { className: "text-[9px] sm:text-[9.5px] font-sans text-neutral-400 dark:text-neutral-500 leading-tight block truncate", children: comic.publisherName }),
+                /* @__PURE__ */ jsx(
+                  "h4",
+                  {
+                    className: `text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100 ${ratingStyle.hoverClass} transition-colors line-clamp-1 leading-snug`,
+                    children: volume.title || comic.title
+                  }
+                ),
+                /* @__PURE__ */ jsxs("div", { className: "text-[9.5px] sm:text-[10px] font-sans font-extrabold text-[#112A12] dark:text-[#457347] leading-tight", children: [
+                  "Vol.",
+                  volume.volNumber
+                ] }),
+                authorName && /* @__PURE__ */ jsx("p", { className: "text-[9.5px] sm:text-[10px] font-sans text-neutral-600 dark:text-neutral-400 leading-tight truncate pt-0.5", children: authorName }),
+                genresLabel && /* @__PURE__ */ jsx("div", { className: "flex flex-wrap gap-1 items-center pt-0.5", children: /* @__PURE__ */ jsx("span", { className: "text-[9px] sm:text-[9.5px] text-neutral-450 dark:text-neutral-550 font-sans line-clamp-1", children: genresLabel }) })
+              ] }),
+              /* @__PURE__ */ jsx("div", { className: "border-t border-neutral-100 dark:border-neutral-800 my-1.5" }),
+              /* @__PURE__ */ jsx("div", { className: "flex items-center justify-start font-mono w-full", children: /* @__PURE__ */ jsx("span", { className: "font-extrabold text-neutral-950 dark:text-neutral-50 font-sans text-xs shrink-0 leading-none", children: hasPrice ? `Rp ${volume.price.toLocaleString("id-ID")}` : "-" }) })
+            ] })
+          ]
+        }
+      )
+    }
+  );
+}
+const __vite_glob_0_69 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: BookPostCard$1,
+  getReadingRatingStyle: getReadingRatingStyle$1,
+  getVolumeAuthorName
+}, Symbol.toStringTag, { value: "Module" }));
 const TOAST_DURATION = 3e3;
 function useBookmarkToast() {
   const [message, setMessage] = useState(null);
@@ -5237,7 +5380,7 @@ function BookmarkToast({ message }) {
     }
   ) });
 }
-const __vite_glob_0_69 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_70 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   BookmarkToast,
   useBookmarkToast
@@ -5411,7 +5554,7 @@ const ShareModal = ({
     )
   ] }) });
 };
-const __vite_glob_0_86 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_87 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   ShareModal
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5525,7 +5668,7 @@ const HighlightReview = ({ activeVolObj, selectedComic }) => {
     )
   ] });
 };
-const __vite_glob_0_76 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_77 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   HighlightReview
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5604,7 +5747,7 @@ const HighlightReviewInstagram = ({ activeVolObj, selectedComic }) => {
     /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 pb-1 select-none", children: items.map((item) => /* @__PURE__ */ jsx(InstagramCard, { item }, item.id)) })
   ] });
 };
-const __vite_glob_0_77 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_78 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   HighlightReviewInstagram
 }, Symbol.toStringTag, { value: "Module" }));
@@ -5739,7 +5882,7 @@ const ModalAffiliateStore = ({ isOpen, onClose, group, comicTitle, volNumber, pr
     }
   ) });
 };
-const __vite_glob_0_79 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_80 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   ModalAffiliateStore
 }, Symbol.toStringTag, { value: "Module" }));
@@ -6692,7 +6835,7 @@ function DetailBuku$1({
     )
   ] });
 }
-const __vite_glob_0_70 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_71 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: DetailBuku$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -7327,7 +7470,7 @@ function DetailKios$1({
     /* @__PURE__ */ jsx(BookmarkToast, { message: bookmarkToast })
   ] });
 }
-const __vite_glob_0_71 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_72 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: DetailKios$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -8204,7 +8347,7 @@ function DetailNews({
     /* @__PURE__ */ jsx(BookmarkToast, { message: bookmarkToast })
   ] });
 }
-const __vite_glob_0_72 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_73 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: DetailNews
 }, Symbol.toStringTag, { value: "Module" }));
@@ -8632,11 +8775,11 @@ function DetailPanduanAdaptasi({ panduan }) {
     )
   ] });
 }
-const __vite_glob_0_73 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_74 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: DetailPanduanAdaptasi
 }, Symbol.toStringTag, { value: "Module" }));
-const DetailKios = lazy(() => Promise.resolve().then(() => __vite_glob_0_71));
+const DetailKios = lazy(() => Promise.resolve().then(() => __vite_glob_0_72));
 function CustomSelect$1({ label, value, options, onChange, isOpen, onToggle }) {
   var _a, _b;
   const selectedOptions = options.filter((opt) => value.includes(opt.value) && opt.value !== "all");
@@ -9830,7 +9973,7 @@ Dibuat via *Norinoya Kios Affiliate*. Stop buku bajakan, dukung kreator orisinal
     )
   ] });
 }
-const __vite_glob_0_74 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_75 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: EtalaseCatalog$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -9945,11 +10088,11 @@ function LoadingDetailBuku({ onClose }) {
     ] })
   ] }) });
 }
-const __vite_glob_0_87 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_88 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingDetailBuku
 }, Symbol.toStringTag, { value: "Module" }));
-const DetailBuku = lazy(() => Promise.resolve().then(() => __vite_glob_0_70));
+const DetailBuku = lazy(() => Promise.resolve().then(() => __vite_glob_0_71));
 function CustomSelect({ label, value, options, onChange, isOpen, onToggle }) {
   var _a, _b;
   const selectedOptions = options.filter((opt) => value.includes(opt.value) && opt.value !== "all");
@@ -10242,7 +10385,6 @@ function MarketplaceDb$1({
     return resolveVolumeFor(found, parsedVol);
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [imageErrors, setImageErrors] = useState({});
   const upcomingReleases = useMemo(() => {
     const list = [];
     const source = serverCatalog ? upcomingComics ?? [] : activeComics;
@@ -10262,56 +10404,6 @@ function MarketplaceDb$1({
     () => new Set(upcomingReleases.map(({ comic, volume }) => `${comic.id}-vol-${volume.volNumber}`)),
     [upcomingReleases]
   );
-  const getReadingRatingStyle2 = (rating) => {
-    switch (rating) {
-      case "Anak & Bimbingan Orang Tua":
-      case "Anak & Bimbingan":
-        return {
-          bg: "bg-[#22c55e] dark:bg-[#16a34a] border-emerald-600/30 text-white",
-          text: "Anak & Bimbingan",
-          color: "#41a34c",
-          hoverClass: "group-hover:text-[#41a34c] dark:group-hover:text-emerald-400",
-          hoverClassKat: "group-hover/kat:text-[#41a34c] dark:group-hover/kat:text-emerald-400"
-        };
-      case "Remaja":
-        return {
-          bg: "bg-[#f59e0b] dark:bg-[#d97706] border-amber-600/30 text-white",
-          text: "Remaja",
-          color: "#f59e0b",
-          hoverClass: "group-hover:text-[#d97706] dark:group-hover:text-amber-400",
-          hoverClassKat: "group-hover/kat:text-[#d97706] dark:group-hover/kat:text-amber-400"
-        };
-      case "Dewasa Ringan":
-        return {
-          bg: "bg-[#ff6628] dark:bg-[#ea580c] border-orange-600/30 text-white",
-          text: "Dewasa Ringan",
-          color: "#ff723c",
-          hoverClass: "group-hover:text-[#ff6628] dark:group-hover:text-orange-400",
-          hoverClassKat: "group-hover/kat:text-[#ff6628] dark:group-hover/kat:text-orange-400"
-        };
-      case "Dewasa Berat":
-        return {
-          bg: "bg-[#ef4444] dark:bg-[#dc2626] border-red-600/30 text-white",
-          text: "Dewasa Berat",
-          color: "#c1271f",
-          hoverClass: "group-hover:text-[#c1271f] dark:group-hover:text-red-400",
-          hoverClassKat: "group-hover/kat:text-[#c1271f] dark:group-hover/kat:text-red-400"
-        };
-      default:
-        return {
-          bg: "bg-[#f97316] dark:bg-[#ea580c] border-orange-600/30 text-white",
-          text: "Remaja",
-          color: "#d97706",
-          hoverClass: "group-hover:text-[#d97706] dark:group-hover:text-amber-400",
-          hoverClassKat: "group-hover/kat:text-[#d97706] dark:group-hover/kat:text-amber-400"
-        };
-    }
-  };
-  const getAuthorNameOnly = (c) => {
-    const names = `${c.authorStory || ""}, ${c.authorArt || ""}`.split(",").map((n) => n.trim()).filter(Boolean);
-    return Array.from(new Set(names)).join(", ");
-  };
-  const getVolumeAuthorName = (c, v) => getAuthorNameOnly(v) || getAuthorNameOnly(c);
   const hadInitialSelectionRef = useRef(Boolean(initialSelectedComicId));
   useEffect(() => {
     if (initialSelectedComicId) {
@@ -10783,56 +10875,17 @@ function MarketplaceDb$1({
           /* @__PURE__ */ jsx("div", { className: "p-1.5 bg-[#DA6B1C]/10 dark:bg-[#DA6B1C]/10 rounded-lg", children: /* @__PURE__ */ jsx(Flame, { className: "w-4 h-4 text-[#DA6B1C] fill-[#DA6B1C]/20 animate-pulse" }) }),
           /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx("h3", { className: "text-xs sm:text-sm font-bold   tracking-wider text-neutral-900 dark:text-neutral-100 leading-none", children: "Segera Rilis" }) })
         ] }) }),
-        /* @__PURE__ */ jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 relative z-10", children: upcomingReleases.map(({ comic, volume }, idx) => /* @__PURE__ */ jsxs(
-          "a",
+        /* @__PURE__ */ jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 relative z-10", children: upcomingReleases.map(({ comic, volume }, idx) => /* @__PURE__ */ jsx(
+          BookPostCard$1,
           {
-            href: bookPath(comic, volume) ?? void 0,
-            onClick: (e) => {
-              if (!isPlainLeftClick(e)) return;
-              e.preventDefault();
-              openVolumeModal(comic, volume.volNumber);
-            },
-            className: "bg-neutral-50/80 dark:bg-neutral-900/80 hover:bg-white dark:hover:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 hover:border-[#DA6B1C] dark:hover:border-[#DA6B1C] rounded-xl p-2 sm:p-2.5 flex flex-col justify-between cursor-pointer transition-all duration-200 shadow-3xs hover:shadow-md hover:-translate-y-0.5 group",
-            children: [
-              /* @__PURE__ */ jsxs("div", { className: "space-y-1.5", children: [
-                /* @__PURE__ */ jsxs("div", { className: "relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-neutral-950 flex items-center justify-center", children: [
-                  volume.coverImage || comic.coverImage ? /* @__PURE__ */ jsx(
-                    "img",
-                    {
-                      src: volume.coverImage || comic.coverImage,
-                      alt: `${comic.title} Vol.${volume.volNumber}`,
-                      loading: idx < 2 ? "eager" : "lazy",
-                      decoding: "async",
-                      fetchPriority: idx < 2 ? "high" : "auto",
-                      className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300",
-                      referrerPolicy: "no-referrer"
-                    }
-                  ) : /* @__PURE__ */ jsxs("div", { className: "w-full h-full bg-neutral-900 flex flex-col items-center justify-center p-2 text-center", children: [
-                    /* @__PURE__ */ jsx(BookOpen, { className: "w-6 h-6 text-neutral-600 mb-1" }),
-                    /* @__PURE__ */ jsx("span", { className: "text-[9px] text-neutral-400 font-bold line-clamp-2", children: comic.title })
-                  ] }),
-                  /* @__PURE__ */ jsx("div", { className: "absolute top-1.5 left-1.5 right-1.5 z-10 flex justify-start", children: /* @__PURE__ */ jsxs("span", { className: "bg-[#DA6B1C] text-white font-mono font-black text-[8px] px-1.5 py-0.5 rounded-md shadow-xs tracking-tight flex items-center gap-1 border border-orange-600/30", children: [
-                    /* @__PURE__ */ jsx(Clock, { className: "w-2.5 h-2.5 text-white shrink-0" }),
-                    /* @__PURE__ */ jsx("span", { className: "text-white font-extrabold", children: "TBA" })
-                  ] }) }),
-                  /* @__PURE__ */ jsxs("div", { className: "absolute bottom-1.5 left-1.5 z-10 flex items-center gap-1 flex-wrap", children: [
-                    /* @__PURE__ */ jsx("span", { className: "bg-white/95 dark:bg-neutral-900/95 text-neutral-900 dark:text-neutral-100 font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8px] capitalize shadow-xs backdrop-blur-xs border border-neutral-200/60 dark:border-neutral-800", children: getBookTypeLabel(comic.category) }),
-                    comic.readingRating && /* @__PURE__ */ jsx("span", { className: `font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8px] shadow-xs ${getReadingRatingStyle2(comic.readingRating).bg}`, children: getReadingRatingStyle2(comic.readingRating).text })
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsxs("div", { className: "space-y-0.5 text-left pt-1", children: [
-                  /* @__PURE__ */ jsx("span", { className: "text-[8.5px] font-sans text-neutral-400 dark:text-neutral-500 block truncate leading-tight", children: comic.publisherName }),
-                  /* @__PURE__ */ jsx("h4", { className: `text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100 ${getReadingRatingStyle2(comic.readingRating).hoverClass} transition-colors line-clamp-1 leading-snug`, children: volume.title || comic.title }),
-                  /* @__PURE__ */ jsxs("div", { className: "text-[9.5px] font-mono font-extrabold text-[#112A12] dark:text-[#457347] leading-tight", children: [
-                    "Vol.",
-                    volume.volNumber
-                  ] }),
-                  getVolumeAuthorName(comic, volume) && /* @__PURE__ */ jsx("p", { className: "text-[9px] font-sans text-neutral-500 dark:text-neutral-400 truncate leading-tight", children: getVolumeAuthorName(comic, volume) }),
-                  comic.genres && comic.genres.length > 0 && /* @__PURE__ */ jsx("p", { className: "text-[8.5px] font-sans text-neutral-400 dark:text-white truncate leading-tight", children: comic.genres.slice(0, 2).join(", ") })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsx("div", { className: "pt-1.5 border-t border-neutral-200/60 dark:border-neutral-800/80 mt-1.5 flex items-center justify-between font-mono text-[10px]", children: /* @__PURE__ */ jsx("span", { className: "font-extrabold text-neutral-900 dark:text-neutral-100 text-[10.5px]", children: volume.price && volume.price > 0 ? `Rp ${volume.price.toLocaleString("id-ID")}` : "-" }) })
-            ]
+            comic,
+            volume,
+            eager: idx < 2,
+            onOpen: openVolumeModal,
+            cornerBadge: /* @__PURE__ */ jsxs("span", { className: "bg-[#DA6B1C] text-white font-mono font-black text-[8px] px-1.5 py-0.5 rounded-md shadow-xs tracking-tight flex items-center gap-1 border border-orange-600/30", children: [
+              /* @__PURE__ */ jsx(Clock, { className: "w-2.5 h-2.5 text-white shrink-0" }),
+              /* @__PURE__ */ jsx("span", { className: "text-white font-extrabold", children: "TBA" })
+            ] })
           },
           `upcoming-${comic.id}-${volume.volNumber}`
         )) })
@@ -11279,63 +11332,13 @@ function MarketplaceDb$1({
         const bookmarkId = `${comic.id}-vol-${volume.volNumber}`;
         const isBookmarked = isSaved("comics", bookmarkId);
         return /* @__PURE__ */ jsx(
-          "a",
+          BookPostCard$1,
           {
-            href: bookPath(comic, volume) ?? void 0,
-            onClick: (e) => {
-              if (!isPlainLeftClick(e)) return;
-              e.preventDefault();
-              openVolumeModal(comic, volume.volNumber);
-            },
-            className: "block group cursor-pointer",
-            children: /* @__PURE__ */ jsxs(
-              "div",
-              {
-                className: `h-full bg-white dark:bg-neutral-900 border-2 rounded-xl overflow-hidden flex flex-col justify-between cursor-pointer transition-all duration-300 ${isBookmarked ? "border-emerald-400" : "border-[#EFEFEF] dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_10px_24px_rgba(0,0,0,0.05)] hover:translate-y-[-2px]"} select-none`,
-                children: [
-                  /* @__PURE__ */ jsxs("div", { className: "relative aspect-[3/4] w-full bg-neutral-950 flex flex-col justify-between p-2.5 select-none overflow-hidden", children: [
-                    (volume.coverImage || comic.coverImage) && !imageErrors[post.id] ? /* @__PURE__ */ jsx(
-                      "img",
-                      {
-                        src: volume.coverImage || comic.coverImage,
-                        alt: `${volume.title || comic.title} Vol ${volume.volNumber}`,
-                        loading: paginatedVolumePosts.indexOf(post) < 6 ? "eager" : "lazy",
-                        decoding: "async",
-                        fetchPriority: paginatedVolumePosts.indexOf(post) < 4 ? "high" : "auto",
-                        onError: () => setImageErrors((prev) => ({ ...prev, [post.id]: true })),
-                        className: "absolute inset-0 w-full h-full object-cover transition-transform duration-500 scale-100 group-hover:scale-105",
-                        referrerPolicy: "no-referrer"
-                      }
-                    ) : /* @__PURE__ */ jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-950 flex flex-col justify-between p-2.5 border border-neutral-700", children: /* @__PURE__ */ jsxs("div", { className: "my-auto text-center px-1", children: [
-                      /* @__PURE__ */ jsx(BookOpen, { className: "w-7 h-7 text-neutral-500 stroke-[1.2] mx-auto mb-1 opacity-60" }),
-                      /* @__PURE__ */ jsx("span", { className: "text-[8px] font-mono tracking-wider text-neutral-400 capitalize", children: getBookTypeLabel(comic.category) }),
-                      /* @__PURE__ */ jsx("h4", { className: "text-[10px] font-sans font-extrabold text-neutral-200 mt-1 line-clamp-3 leading-normal", children: volume.title || comic.title })
-                    ] }) }),
-                    /* @__PURE__ */ jsxs("div", { className: "absolute bottom-2 left-2 z-20 flex items-center gap-1 pointer-events-none", children: [
-                      /* @__PURE__ */ jsx("span", { className: "bg-neutral-100/95 dark:bg-neutral-800/95 text-neutral-900 dark:text-neutral-100 font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8.5px] capitalize leading-none shadow-xs border border-neutral-200/50 dark:border-neutral-700/50", children: getBookTypeLabel(comic.category) }),
-                      comic.readingRating && /* @__PURE__ */ jsx("span", { className: `font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8.5px] leading-none shadow-xs border ${getReadingRatingStyle2(comic.readingRating).bg}`, children: getReadingRatingStyle2(comic.readingRating).text })
-                    ] })
-                  ] }),
-                  /* @__PURE__ */ jsxs("div", { className: "space-y-1 p-2.5 flex-1 flex flex-col justify-between text-left", children: [
-                    /* @__PURE__ */ jsxs("div", { className: "space-y-0.5", children: [
-                      /* @__PURE__ */ jsx("span", { className: "text-[9px] sm:text-[9.5px] font-sans text-neutral-400 dark:text-neutral-500 leading-tight block truncate", children: comic.publisherName }),
-                      /* @__PURE__ */ jsx("h4", { className: `text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100 ${getReadingRatingStyle2(comic.readingRating).hoverClass} transition-colors line-clamp-1 leading-snug`, children: volume.title || comic.title }),
-                      /* @__PURE__ */ jsxs("div", { className: "text-[9.5px] sm:text-[10px] font-sans font-extrabold text-[#112A12] dark:text-[#457347] leading-tight", children: [
-                        "Vol.",
-                        volume.volNumber
-                      ] }),
-                      getVolumeAuthorName(comic, volume) && /* @__PURE__ */ jsx("p", { className: "text-[9.5px] sm:text-[10px] font-sans text-neutral-600 dark:text-neutral-400 leading-tight truncate pt-0.5", children: getVolumeAuthorName(comic, volume) }),
-                      /* @__PURE__ */ jsx("div", { className: "flex flex-wrap gap-1 items-center pt-0.5", children: /* @__PURE__ */ jsx("span", { className: "text-[9px] sm:text-[9.5px] text-neutral-450 dark:text-neutral-550 font-sans line-clamp-1", children: comic.genres.slice(0, 2).join(", ") }) })
-                    ] }),
-                    /* @__PURE__ */ jsx("div", { className: "border-t border-neutral-100 dark:border-neutral-800 my-1.5" }),
-                    /* @__PURE__ */ jsx("div", { className: "flex items-center justify-start font-mono w-full", children: /* @__PURE__ */ jsxs("span", { className: "font-extrabold text-neutral-950 dark:text-neutral-50 font-sans text-xs shrink-0 leading-none", children: [
-                      "Rp ",
-                      volume.price.toLocaleString("id-ID")
-                    ] }) })
-                  ] })
-                ]
-              }
-            )
+            comic,
+            volume,
+            isBookmarked,
+            eager: paginatedVolumePosts.indexOf(post) < 6,
+            onOpen: openVolumeModal
           },
           postKey
         );
@@ -11463,7 +11466,7 @@ function MarketplaceDb$1({
     ) })) })
   ] });
 }
-const __vite_glob_0_78 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_79 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: MarketplaceDb$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -11630,7 +11633,7 @@ function ModalKolaborasi({ isOpen, onClose }) {
     }
   ) });
 }
-const __vite_glob_0_80 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_81 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ModalKolaborasi
 }, Symbol.toStringTag, { value: "Module" }));
@@ -11927,7 +11930,7 @@ function NewsCategorySidebar({
     }
   );
 }
-const __vite_glob_0_82 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_83 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsCategorySidebar
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12106,7 +12109,7 @@ function NewsRightSidebar({
     ] })
   ] });
 }
-const __vite_glob_0_85 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_86 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsRightSidebar
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12233,7 +12236,7 @@ function NewsPostCard({
     }
   ) }, post.id);
 }
-const __vite_glob_0_84 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_85 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsPostCard
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13421,7 +13424,7 @@ function NewsFeed$1({ dbNewsList = [], dbBooksList = [], dbKiosList = [], select
     )
   ] });
 }
-const __vite_glob_0_83 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_84 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsFeed$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13536,7 +13539,7 @@ function LoadingHome() {
     )) })
   ] });
 }
-const __vite_glob_0_88 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_89 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingHome
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13624,7 +13627,7 @@ function LoadingKios() {
     )) })
   ] });
 }
-const __vite_glob_0_89 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_90 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingKios
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13729,7 +13732,7 @@ function LoadingNews() {
     ] })
   ] });
 }
-const __vite_glob_0_90 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_91 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoadingNews
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13760,10 +13763,10 @@ function usePageLoading() {
   }, []);
   return isLoading;
 }
-const NewsFeed = lazy(() => Promise.resolve().then(() => __vite_glob_0_83));
-const MarketplaceDb = lazy(() => Promise.resolve().then(() => __vite_glob_0_78));
+const NewsFeed = lazy(() => Promise.resolve().then(() => __vite_glob_0_84));
+const MarketplaceDb = lazy(() => Promise.resolve().then(() => __vite_glob_0_79));
 const AboutSection = lazy(() => Promise.resolve().then(() => __vite_glob_0_67));
-const EtalaseCatalog = lazy(() => Promise.resolve().then(() => __vite_glob_0_74));
+const EtalaseCatalog = lazy(() => Promise.resolve().then(() => __vite_glob_0_75));
 function App({
   catalog,
   upcoming = [],
@@ -14524,7 +14527,7 @@ function App({
     }
   );
 }
-const __vite_glob_0_91 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_92 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: App
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14681,7 +14684,7 @@ function KiosPage({
     /* @__PURE__ */ jsx(BackToTopButton, {})
   ] });
 }
-const __vite_glob_0_92 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_93 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: KiosPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14736,7 +14739,7 @@ function KontakPage() {
     /* @__PURE__ */ jsx(Footer, { onNavigateHome: () => router.visit("/"), darkMode })
   ] });
 }
-const __vite_glob_0_93 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_94 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: KontakPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -14937,7 +14940,7 @@ function NewsPage({
     /* @__PURE__ */ jsx(BackToTopButton, {})
   ] });
 }
-const __vite_glob_0_94 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_95 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: NewsPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15119,7 +15122,7 @@ function PanduanAdaptasiPage({
     /* @__PURE__ */ jsx(Footer, { onNavigateHome: handleNavHome, darkMode })
   ] });
 }
-const __vite_glob_0_95 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_96 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: PanduanAdaptasiPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15159,7 +15162,7 @@ function PrivasiPage() {
     /* @__PURE__ */ jsx(Footer, { onNavigateHome: () => router.visit("/"), darkMode })
   ] });
 }
-const __vite_glob_0_96 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_97 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: PrivasiPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15231,7 +15234,7 @@ function ConfirmPassword() {
     }
   );
 }
-const __vite_glob_0_97 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_98 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ConfirmPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15290,7 +15293,7 @@ function ForgotPassword({ status }) {
     ] })
   ] });
 }
-const __vite_glob_0_98 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_99 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ForgotPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15588,7 +15591,7 @@ function LoginPage({
     )
   ] });
 }
-const __vite_glob_0_99 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_100 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoginPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15825,7 +15828,7 @@ function RegisterPage() {
     )
   ] });
 }
-const __vite_glob_0_100 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_101 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: RegisterPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15904,7 +15907,7 @@ function ResetPassword({ token, email }) {
     ] }) })
   ] });
 }
-const __vite_glob_0_101 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_102 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ResetPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -15926,7 +15929,7 @@ function VerifyEmail({ status }) {
     ] })
   ] });
 }
-const __vite_glob_0_102 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_103 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: VerifyEmail
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16141,11 +16144,11 @@ function Dashboard({
     ] })
   ] });
 }
-const __vite_glob_0_103 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_104 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Dashboard
 }, Symbol.toStringTag, { value: "Module" }));
-const __vite_glob_0_104 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_105 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LoginPage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16239,7 +16242,7 @@ function Appearance() {
     ] }) })
   ] });
 }
-const __vite_glob_0_105 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_106 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Appearance
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16348,7 +16351,7 @@ function Password() {
     ] }) })
   ] });
 }
-const __vite_glob_0_106 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_107 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Password
 }, Symbol.toStringTag, { value: "Module" }));
@@ -16502,7 +16505,7 @@ function Profile({ mustVerifyEmail, status }) {
     ] })
   ] });
 }
-const __vite_glob_0_107 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_108 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Profile
 }, Symbol.toStringTag, { value: "Module" }));
@@ -17658,7 +17661,7 @@ function Welcome() {
     ] })
   ] });
 }
-const __vite_glob_0_108 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_109 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Welcome
 }, Symbol.toStringTag, { value: "Module" }));
@@ -17737,46 +17740,47 @@ createServer(
         "./pages/User/bookmark.tsx": __vite_glob_0_66,
         "./pages/User/components/AboutSection.tsx": __vite_glob_0_67,
         "./pages/User/components/BackToTopButton.tsx": __vite_glob_0_68,
-        "./pages/User/components/BookmarkToast.tsx": __vite_glob_0_69,
-        "./pages/User/components/DetailBuku.tsx": __vite_glob_0_70,
-        "./pages/User/components/DetailKios.tsx": __vite_glob_0_71,
-        "./pages/User/components/DetailNews.tsx": __vite_glob_0_72,
-        "./pages/User/components/DetailPanduanAdaptasi.tsx": __vite_glob_0_73,
-        "./pages/User/components/EtalaseCatalog.tsx": __vite_glob_0_74,
-        "./pages/User/components/Footer.tsx": __vite_glob_0_75,
-        "./pages/User/components/HighlightReview.tsx": __vite_glob_0_76,
-        "./pages/User/components/HighlightReviewInstagram.tsx": __vite_glob_0_77,
-        "./pages/User/components/MarketplaceDB.tsx": __vite_glob_0_78,
-        "./pages/User/components/ModalAffiliateStore.tsx": __vite_glob_0_79,
-        "./pages/User/components/ModalKolaborasi.tsx": __vite_glob_0_80,
-        "./pages/User/components/Navbar.tsx": __vite_glob_0_81,
-        "./pages/User/components/NewsCategorySidebar.tsx": __vite_glob_0_82,
-        "./pages/User/components/NewsFeed.tsx": __vite_glob_0_83,
-        "./pages/User/components/NewsPostCard.tsx": __vite_glob_0_84,
-        "./pages/User/components/NewsRightSidebar.tsx": __vite_glob_0_85,
-        "./pages/User/components/ShareModal.tsx": __vite_glob_0_86,
-        "./pages/User/components/SkeletonLoading/LoadingDetailBuku.tsx": __vite_glob_0_87,
-        "./pages/User/components/SkeletonLoading/LoadingHome.tsx": __vite_glob_0_88,
-        "./pages/User/components/SkeletonLoading/LoadingKios.tsx": __vite_glob_0_89,
-        "./pages/User/components/SkeletonLoading/LoadingNews.tsx": __vite_glob_0_90,
-        "./pages/User/home.tsx": __vite_glob_0_91,
-        "./pages/User/kios.tsx": __vite_glob_0_92,
-        "./pages/User/kontak.tsx": __vite_glob_0_93,
-        "./pages/User/news.tsx": __vite_glob_0_94,
-        "./pages/User/panduanAdaptasi.tsx": __vite_glob_0_95,
-        "./pages/User/privasi.tsx": __vite_glob_0_96,
-        "./pages/auth/confirm-password.tsx": __vite_glob_0_97,
-        "./pages/auth/forgot-password.tsx": __vite_glob_0_98,
-        "./pages/auth/login.tsx": __vite_glob_0_99,
-        "./pages/auth/register.tsx": __vite_glob_0_100,
-        "./pages/auth/reset-password.tsx": __vite_glob_0_101,
-        "./pages/auth/verify-email.tsx": __vite_glob_0_102,
-        "./pages/dashboard.tsx": __vite_glob_0_103,
-        "./pages/login.tsx": __vite_glob_0_104,
-        "./pages/settings/appearance.tsx": __vite_glob_0_105,
-        "./pages/settings/password.tsx": __vite_glob_0_106,
-        "./pages/settings/profile.tsx": __vite_glob_0_107,
-        "./pages/welcome.tsx": __vite_glob_0_108
+        "./pages/User/components/BookPostCard.tsx": __vite_glob_0_69,
+        "./pages/User/components/BookmarkToast.tsx": __vite_glob_0_70,
+        "./pages/User/components/DetailBuku.tsx": __vite_glob_0_71,
+        "./pages/User/components/DetailKios.tsx": __vite_glob_0_72,
+        "./pages/User/components/DetailNews.tsx": __vite_glob_0_73,
+        "./pages/User/components/DetailPanduanAdaptasi.tsx": __vite_glob_0_74,
+        "./pages/User/components/EtalaseCatalog.tsx": __vite_glob_0_75,
+        "./pages/User/components/Footer.tsx": __vite_glob_0_76,
+        "./pages/User/components/HighlightReview.tsx": __vite_glob_0_77,
+        "./pages/User/components/HighlightReviewInstagram.tsx": __vite_glob_0_78,
+        "./pages/User/components/MarketplaceDB.tsx": __vite_glob_0_79,
+        "./pages/User/components/ModalAffiliateStore.tsx": __vite_glob_0_80,
+        "./pages/User/components/ModalKolaborasi.tsx": __vite_glob_0_81,
+        "./pages/User/components/Navbar.tsx": __vite_glob_0_82,
+        "./pages/User/components/NewsCategorySidebar.tsx": __vite_glob_0_83,
+        "./pages/User/components/NewsFeed.tsx": __vite_glob_0_84,
+        "./pages/User/components/NewsPostCard.tsx": __vite_glob_0_85,
+        "./pages/User/components/NewsRightSidebar.tsx": __vite_glob_0_86,
+        "./pages/User/components/ShareModal.tsx": __vite_glob_0_87,
+        "./pages/User/components/SkeletonLoading/LoadingDetailBuku.tsx": __vite_glob_0_88,
+        "./pages/User/components/SkeletonLoading/LoadingHome.tsx": __vite_glob_0_89,
+        "./pages/User/components/SkeletonLoading/LoadingKios.tsx": __vite_glob_0_90,
+        "./pages/User/components/SkeletonLoading/LoadingNews.tsx": __vite_glob_0_91,
+        "./pages/User/home.tsx": __vite_glob_0_92,
+        "./pages/User/kios.tsx": __vite_glob_0_93,
+        "./pages/User/kontak.tsx": __vite_glob_0_94,
+        "./pages/User/news.tsx": __vite_glob_0_95,
+        "./pages/User/panduanAdaptasi.tsx": __vite_glob_0_96,
+        "./pages/User/privasi.tsx": __vite_glob_0_97,
+        "./pages/auth/confirm-password.tsx": __vite_glob_0_98,
+        "./pages/auth/forgot-password.tsx": __vite_glob_0_99,
+        "./pages/auth/login.tsx": __vite_glob_0_100,
+        "./pages/auth/register.tsx": __vite_glob_0_101,
+        "./pages/auth/reset-password.tsx": __vite_glob_0_102,
+        "./pages/auth/verify-email.tsx": __vite_glob_0_103,
+        "./pages/dashboard.tsx": __vite_glob_0_104,
+        "./pages/login.tsx": __vite_glob_0_105,
+        "./pages/settings/appearance.tsx": __vite_glob_0_106,
+        "./pages/settings/password.tsx": __vite_glob_0_107,
+        "./pages/settings/profile.tsx": __vite_glob_0_108,
+        "./pages/welcome.tsx": __vite_glob_0_109
       });
       return pages[`./pages/${name}.tsx`];
     },

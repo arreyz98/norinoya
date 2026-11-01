@@ -305,14 +305,14 @@ export default function BookForm({
         affiliate_links: book?.affiliate_links?.map((link) => ({
             id: link.id,
             affiliate_store_id: String(link.affiliate_store_id),
-            store_name: link.store_name ?? 'Official Store',
-            location: link.location ?? 'Indonesia',
+            store_name: link.store_name ?? 'Gramedia',
+            location: link.location ?? 'Random Warehouse',
             url: link.url,
         })) ?? [
             {
                 affiliate_store_id: '',
-                store_name: 'Official Store',
-                location: 'Indonesia',
+                store_name: 'Gramedia',
+                location: 'Random Warehouse',
                 url: '',
             },
         ],
@@ -697,8 +697,8 @@ export default function BookForm({
                 ...previous.affiliate_links,
                 {
                     affiliate_store_id: '',
-                    store_name: 'Official Store',
-                    location: 'Indonesia',
+                    store_name: 'Gramedia',
+                    location: 'Random Warehouse',
                     url: '',
                 },
             ],

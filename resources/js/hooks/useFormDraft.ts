@@ -86,6 +86,31 @@ export function useFormDraft<T>({
     const currentSnapshot = JSON.stringify(data);
     const isDirty = currentSnapshot !== initialSnapshot;
 
+    // Nilai terbaru disimpan di ref supaya listener `pagehide`/`beforeunload`
+    // bisa menulis draf tanpa perlu dipasang ulang tiap keystroke.
+    const dataRef = React.useRef(data);
+    const isDirtyRef = React.useRef(isDirty);
+    const snapshotRef = React.useRef(currentSnapshot);
+    React.useEffect(() => {
+        dataRef.current = data;
+        isDirtyRef.current = isDirty;
+        snapshotRef.current = currentSnapshot;
+    }, [data, isDirty, currentSnapshot]);
+
+    // `onRestore` biasanya arrow function inline dari pemanggil (identitas baru
+    // tiap render), jadi disimpan di ref agar tidak memicu efek berulang.
+    const onRestoreRef = React.useRef(onRestore);
+    React.useEffect(() => {
+        onRestoreRef.current = onRestore;
+    }, [onRestore]);
+
+    // Snapshot data saat draf dibuang / submit sukses. Draf tidak boleh ditulis
+    // lagi selama data masih sama persis dengan snapshot ini — tetapi begitu user
+    // mengetik lagi (snapshot berubah), autosave hidup kembali seperti biasa.
+    const clearedSnapshotRef = React.useRef<string | null>(null);
+
+    const autoRestoredRef = React.useRef(false);
+
     // Baca draf sekali saat mount (atau bila storageKey berubah).
     React.useEffect(() => {
         const stored = readDraft<T>(storageKey);
@@ -102,6 +127,17 @@ export function useFormDraft<T>({
             return;
         }
 
+        // Pulihkan otomatis sekali per mount, supaya isi form tidak hilang ketika
+        // halaman di-refresh (F5) atau browser tertutup tak sengaja. Aman karena
+        // draf hanya dipakai bila lebih baru dari data server, dan saat mount form
+        // belum punya perubahan user yang bisa tertimpa.
+        if (!autoRestoredRef.current) {
+            autoRestoredRef.current = true;
+            onRestoreRef.current(stored.data);
+            setPendingDraft(null);
+            return;
+        }
+
         setPendingDraft(stored);
     }, [serverUpdatedAt, storageKey]);
 
@@ -109,7 +145,7 @@ export function useFormDraft<T>({
     // selagi masih ada draf yang menunggu keputusan user.
     React.useEffect(() => {
         if (typeof window === 'undefined') return;
-        if (!isDirty || pendingDraft) return;
+        if (!isDirty || pendingDraft || clearedSnapshotRef.current === currentSnapshot) return;
 
         const timer = window.setTimeout(() => {
             try {
@@ -120,9 +156,40 @@ export function useFormDraft<T>({
         }, delay);
 
         return () => window.clearTimeout(timer);
-    }, [data, delay, isDirty, pendingDraft, storageKey]);
+    }, [data, delay, isDirty, pendingDraft, storageKey, currentSnapshot]);
+
+    // Simpan paksa saat halaman akan ditinggalkan (refresh / tutup tab). Tanpa ini,
+    // ketikan yang lebih muda dari `delay` detik ikut hilang saat F5 — penyebab
+    // "isi berita hilang semua" setelah refresh.
+    React.useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        const flush = () => {
+            if (!isDirtyRef.current || clearedSnapshotRef.current === snapshotRef.current) return;
+
+            try {
+                window.localStorage.setItem(
+                    storageKey,
+                    JSON.stringify({ data: dataRef.current, savedAt: Date.now() }),
+                );
+            } catch {
+                // Abaikan: tidak ada yang bisa dilakukan saat storage tidak bisa diakses.
+            }
+        };
+
+        window.addEventListener('pagehide', flush);
+        window.addEventListener('beforeunload', flush);
+
+        return () => {
+            window.removeEventListener('pagehide', flush);
+            window.removeEventListener('beforeunload', flush);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [storageKey]);
 
     const clearDraft = React.useCallback(() => {
+        // Tandai snapshot saat ini agar draf tidak langsung tertulis ulang.
+        clearedSnapshotRef.current = snapshotRef.current;
         setPendingDraft(null);
         removeDraft(storageKey);
     }, [storageKey]);

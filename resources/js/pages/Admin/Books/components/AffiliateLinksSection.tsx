@@ -76,7 +76,7 @@ export default function AffiliateLinksSection({
                                             autoComplete="on"
                                             value={link.store_name || ''}
                                             onChange={(event) => updateAffiliateLink(index, 'store_name', event.target.value)}
-                                            placeholder="Official Store"
+                                            placeholder="Gramedia"
                                         />
 
                                         <FieldError field={`affiliate_links.${index}.store_name`} errors={activeErrors} />
@@ -91,7 +91,7 @@ export default function AffiliateLinksSection({
                                             autoComplete="on"
                                             value={link.location || ''}
                                             onChange={(event) => updateAffiliateLink(index, 'location', event.target.value)}
-                                            placeholder="Indonesia"
+                                            placeholder="Random Warehouse"
                                         />
 
                                         <FieldError field={`affiliate_links.${index}.location`} errors={activeErrors} />

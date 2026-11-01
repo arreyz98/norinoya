@@ -1,7 +1,9 @@
 import React from 'react';
 import { useEditor, useEditorState, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Check, ExternalLink, Instagram, ImagePlus, Link as LinkIcon, Minus, Redo2, Eraser, Twitter, Undo2, Unlink, Video, Youtube, ALargeSmall } from 'lucide-react';
+// Alias: `DOMParser` milik ProseMirror membayangi `DOMParser` bawaan browser.
+import { DOMParser as ProseMirrorDOMParser } from '@tiptap/pm/model';
+import { Check, ExternalLink, Instagram, ImagePlus, Link as LinkIcon, Minus, Pin, Redo2, Eraser, Twitter, Undo2, Unlink, Video, Youtube, ALargeSmall } from 'lucide-react';
 import { Embed, resolveEmbedUrl } from './EmbedNode';
 import { NewsImage } from './NewsImageNode';
 import { SmallText } from './SmallTextMark';
@@ -23,8 +25,23 @@ const normalizeUrl = (raw: string): string => {
     return `https://${url}`;
 };
 
+// Preferensi "toolbar mengambang" disimpan per-browser supaya admin tidak perlu
+// mengaktifkannya lagi setiap kali membuka form berita.
+const TOOLBAR_STICKY_KEY = 'norinoya-editor-toolbar-sticky';
+
+const readStickyPreference = (): boolean => {
+    if (typeof window === 'undefined') return false;
+    try {
+        return window.localStorage.getItem(TOOLBAR_STICKY_KEY) === 'true';
+    } catch {
+        // localStorage bisa diblokir (mode privat / kebijakan browser); pakai default non-aktif.
+        return false;
+    }
+};
+
 export default function RichTextEditor({ value, onChange, placeholder }: RichTextEditorProps) {
     const [openDialog, setOpenDialog] = React.useState<'link' | 'embed' | 'image' | null>(null);
+    const [isToolbarSticky, setIsToolbarSticky] = React.useState<boolean>(readStickyPreference);
     const [linkUrl, setLinkUrl] = React.useState('');
     const [embedUrl, setEmbedUrl] = React.useState('');
     const [imageUrl, setImageUrl] = React.useState('');
@@ -38,6 +55,10 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
     const imageInputRef = React.useRef<HTMLInputElement>(null);
     const [isEmpty, setIsEmpty] = React.useState(true);
     const [imageError, setImageError] = React.useState('');
+    // Pantau nilai terakhir yang sudah disinkronkan ke editor, supaya editor
+    // yang baru dibuat langsung terisi nilai dari luar (form draf / edit) tanpa
+    // memicu loop `setValue` berulang.
+    const lastSyncedValueRef = React.useRef<string | null>(null);
 
     const editor = useEditor({
         extensions: [
@@ -71,12 +92,15 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
                 // Metrik sengaja disamakan dengan halaman publik (DetailNews NewsBody)
                 // supaya editor benar-benar WYSIWYG. Catatan: @tailwindcss/typography
                 // TIDAK terpasang, jadi class `prose` tidak boleh dipakai (no-op).
-                class: 'min-h-[480px] p-4 [&_p:empty]:min-h-[1.5rem] [&_p]:mb-5 [&_p:last-child]:mb-0 text-sm leading-relaxed text-neutral-800 dark:text-neutral-200 focus:outline-none focus:ring-0 [&_a]:cursor-pointer [&_a]:font-medium [&_a]:text-emerald-700 [&_a]:underline [&_a]:decoration-emerald-500/60 [&_a]:underline-offset-2 hover:[&_a]:text-emerald-800 dark:[&_a]:text-emerald-400 dark:[&_a]:decoration-emerald-400/50 dark:hover:[&_a]:text-emerald-300 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:leading-snug [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:leading-snug [&_blockquote]:my-6 [&_blockquote]:border-l-4 [&_blockquote]:border-[#DA6B1C] [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-neutral-600 dark:[&_blockquote]:text-neutral-300 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_img]:my-6 [&_img]:max-w-full [&_img]:rounded-xl [&_figure]:my-6 [&_figure]:mx-auto [&_figure]:max-w-full [&_figcaption]:mt-2 [&_figcaption]:text-center [&_figcaption]:text-xs [&_figcaption]:text-neutral-500 dark:[&_figcaption]:text-neutral-400 [&_hr]:my-6 [&_hr]:border-t [&_hr]:border-neutral-300 dark:[&_hr]:border-neutral-700 [&_.norinoya-text-small]:text-xs [&_small]:text-xs [&_a]:break-words'
+                class: 'min-h-[480px] p-4 [&_p:empty]:min-h-[1.5rem] [&_p]:mb-0 [&_p:last-child]:mb-0 text-base leading-[1.65] text-neutral-800 dark:text-neutral-200 focus:outline-none focus:ring-0 [&_a]:cursor-pointer [&_a]:font-medium [&_a]:text-emerald-700 [&_a]:underline [&_a]:decoration-emerald-500/60 [&_a]:underline-offset-2 hover:[&_a]:text-emerald-800 dark:[&_a]:text-emerald-400 dark:[&_a]:decoration-emerald-400/50 dark:hover:[&_a]:text-emerald-300 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:leading-snug [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:leading-snug [&_blockquote]:my-6 [&_blockquote]:border-l-4 [&_blockquote]:border-[#DA6B1C] [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-neutral-600 dark:[&_blockquote]:text-neutral-300 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_img]:my-6 [&_img]:max-w-full [&_img]:rounded-xl [&_figure]:my-6 [&_figure]:mx-auto [&_figure]:max-w-full [&_figcaption]:mt-2 [&_figcaption]:text-center [&_figcaption]:text-xs [&_figcaption]:text-neutral-500 dark:[&_figcaption]:text-neutral-400 [&_hr]:my-8 [&_hr]:border-t [&_hr]:border-neutral-300 dark:[&_hr]:border-neutral-700 [&_.norinoya-text-small]:text-xs [&_small]:text-xs [&_a]:break-words'
             },
         },
         onUpdate: ({ editor }) => {
             setIsEmpty(editor.isEmpty);
-            onChange(editor.getHTML());
+            // Catat HTML hasil edit supaya efek sinkronisasi tidak setContent() ulang
+            // saat nilai ini kembali sebagai prop `value` (loop parent -> editor).
+            lastSyncedValueRef.current = editor.getHTML();
+            onChange(lastSyncedValueRef.current);
         },
     });
 
@@ -105,20 +129,48 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
         },
     });
 
-    // Update isEmpth saat editor dimuat ulang (mis. value berubah dari luar)
+    // Sinkronkan konten saat `value` berubah dari luar (mis. form draf dipulihkan
+    // setelah refresh). Perbandingan TIDAK memakai string HTML mentah: `setContent()`
+    // menormalkan atribut (target/rel pada link, dsb.) sehingga string bisa berbeda
+    // padahal dokumennya sama — kalau dipaksa setContent() tiap kali, kursor melompat
+    // ke awal dan paragraf yang baru dibuat bisa hilang. Karena itu `value` di-parse
+    // ke dokumen ProseMirror lalu dibandingkan strukturnya (`Node.eq`).
     React.useEffect(() => {
         if (!editor) return;
-        setIsEmpty(editor.isEmpty);
-    }, [value, editor]);
 
-    React.useEffect(() => {
-        if (editor && value !== editor.getHTML()) {
-            if (value === '' || (editor.isEmpty && value !== '')) {
+        // Nilai ini berasal dari editor sendiri (onUpdate -> parent -> prop),
+        // jadi tidak perlu disinkronkan balik.
+        if (lastSyncedValueRef.current === value) {
+            setIsEmpty(editor.isEmpty);
+            return;
+        }
+
+        if (editor.getHTML() !== value) {
+            const shouldResetEmpty = value === '' || (editor.isEmpty && value !== '');
+
+            let isSameDocument = false;
+            if (!shouldResetEmpty) {
+                try {
+                    const container = document.createElement('div');
+                    container.innerHTML = value;
+                    const parsedDoc = ProseMirrorDOMParser.fromSchema(editor.schema).parse(container);
+                    isSameDocument = parsedDoc.eq(editor.state.doc);
+                } catch {
+                    // Parser gagal (value rusak) -> anggap berbeda supaya isi tetap dimuat.
+                    isSameDocument = false;
+                }
+            }
+
+            if (shouldResetEmpty || !isSameDocument) {
                 // API TipTap v3: opsi berupa objek, bukan boolean.
                 // emitUpdate: false agar tidak memicu onChange balik saat konten di-set dari luar.
                 editor.commands.setContent(value || '', { emitUpdate: false });
             }
         }
+
+        lastSyncedValueRef.current = value;
+        // Placeholder harus ikut status terbaru setelah konten di-set dari luar.
+        setIsEmpty(editor.isEmpty);
     }, [value, editor]);
 
     React.useEffect(() => {
@@ -263,6 +315,18 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
         closeImageForm();
     };
 
+    const handleToggleStickyToolbar = () => {
+        setIsToolbarSticky((prev) => {
+            const next = !prev;
+            try {
+                window.localStorage.setItem(TOOLBAR_STICKY_KEY, String(next));
+            } catch {
+                // Gagal menyimpan preferensi bukan alasan untuk menolak toggle; state tetap berubah.
+            }
+            return next;
+        });
+    };
+
     const handleContainerKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (
             linkFormRef.current?.contains(event.target as Node) ||
@@ -285,8 +349,32 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
             onKeyDown={handleContainerKeyDown}
             className="border border-neutral-300 dark:border-neutral-700 rounded-xl shadow-xs bg-white dark:bg-neutral-900 focus-within:ring-2 focus-within:ring-emerald-500/50 dark:focus-within:ring-emerald-400/50"
         >
-            {/* Toolbar Formatter */}
-            <div className="flex items-center gap-1.5 p-2 bg-neutral-50 dark:bg-neutral-800 border-b border-neutral-200 dark:border-neutral-700 select-none flex-wrap rounded-t-xl">
+            {/* Toolbar Formatter. Saat `isToolbarSticky` aktif, toolbar menempel di atas
+                viewport selama area editor masih terlihat, lalu lepas sendiri setelah
+                melewatinya. z-30 cukup di bawah dropdown/dialog (z-50) dan header admin. */}
+            <div
+                className={`flex items-center gap-1.5 p-2 bg-neutral-50 dark:bg-neutral-800 border-b select-none flex-wrap rounded-t-xl transition-shadow ${
+                    isToolbarSticky
+                        ? 'sticky top-0 z-30 shadow-sm border-neutral-200 dark:border-neutral-700'
+                        : 'border-neutral-200 dark:border-neutral-700'
+                }`}
+            >
+                <button
+                    type="button"
+                    onClick={handleToggleStickyToolbar}
+                    aria-pressed={isToolbarSticky}
+                    className={`flex items-center gap-1 px-2 py-1 text-xs rounded-lg transition-all ${
+                        isToolbarSticky
+                            ? 'bg-[#112A12] text-white hover:bg-[#0c1e0d] dark:bg-emerald-500 dark:text-neutral-900 dark:hover:bg-emerald-400'
+                            : 'bg-white dark:bg-neutral-700/80 border border-neutral-200 dark:border-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-600'
+                    }`}
+                    title={isToolbarSticky ? 'Matikan toolbar mengambang' : 'Aktifkan toolbar mengambang (menempel saat scroll)'}
+                >
+                    <Pin className={`w-3.5 h-3.5 ${isToolbarSticky ? '' : 'rotate-45'}`} />
+                </button>
+
+                <span className="w-px h-5 mx-0.5 bg-neutral-200 dark:bg-neutral-700" />
+
                 <button
                     type="button"
                     onClick={() => editor.chain().focus().undo().run()}

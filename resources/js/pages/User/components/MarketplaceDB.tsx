@@ -14,7 +14,8 @@ import { Comic, Volume } from '../../../types/demo';
 import { RawNewsItem } from '../news';
 import { useBookmarks } from '../../../utils/bookmarkStorage';
 import { getBookTypeLabel, mapBooksToComics, CatalogFilters, BookModel } from '../../../utils/mapBookToComic';
-import { bookPath, isPlainLeftClick } from '../../../utils/bookUrl';
+import { bookPath } from '../../../utils/bookUrl';
+import BookPostCard from './BookPostCard';
 
 interface CustomSelectProps {
   label: string;
@@ -411,7 +412,6 @@ export default function MarketplaceDb({
   });
 
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   const upcomingReleases = useMemo(() => {
     const list: Array<{ comic: Comic; volume: Volume }> = [];
@@ -439,73 +439,6 @@ export default function MarketplaceDb({
     () => new Set(upcomingReleases.map(({ comic, volume }) => `${comic.id}-vol-${volume.volNumber}`)),
     [upcomingReleases],
   );
-
-const getReadingRatingStyle = (rating?: string) => {
-    switch (rating) {
-      case 'Anak & Bimbingan Orang Tua':
-      case 'Anak & Bimbingan':
-        return {
-          bg: 'bg-[#22c55e] dark:bg-[#16a34a] border-emerald-600/30 text-white',
-          text: 'Anak & Bimbingan',
-          color: '#41a34c',
-          hoverClass: 'group-hover:text-[#41a34c] dark:group-hover:text-emerald-400',
-          hoverClassKat: 'group-hover/kat:text-[#41a34c] dark:group-hover/kat:text-emerald-400'
-        };
-      case 'Remaja':
-        return {
-          bg: 'bg-[#f59e0b] dark:bg-[#d97706] border-amber-600/30 text-white',
-          text: 'Remaja',
-          color: '#f59e0b',
-          hoverClass: 'group-hover:text-[#d97706] dark:group-hover:text-amber-400',
-          hoverClassKat: 'group-hover/kat:text-[#d97706] dark:group-hover/kat:text-amber-400'
-        };
-      case 'Dewasa Ringan':
-        return {
-          bg: 'bg-[#ff6628] dark:bg-[#ea580c] border-orange-600/30 text-white',
-          text: 'Dewasa Ringan',
-          color: '#ff723c',
-          hoverClass: 'group-hover:text-[#ff6628] dark:group-hover:text-orange-400',
-          hoverClassKat: 'group-hover/kat:text-[#ff6628] dark:group-hover/kat:text-orange-400'
-        };
-      case 'Dewasa Berat':
-        return {
-          bg: 'bg-[#ef4444] dark:bg-[#dc2626] border-red-600/30 text-white',
-          text: 'Dewasa Berat',
-          color: '#c1271f',
-          hoverClass: 'group-hover:text-[#c1271f] dark:group-hover:text-red-400',
-          hoverClassKat: 'group-hover/kat:text-[#c1271f] dark:group-hover/kat:text-red-400'
-        };
-      default:
-        return {
-          bg: 'bg-[#f97316] dark:bg-[#ea580c] border-orange-600/30 text-white',
-          text: 'Remaja',
-          color: '#d97706',
-          hoverClass: 'group-hover:text-[#d97706] dark:group-hover:text-amber-400',
-          hoverClassKat: 'group-hover/kat:text-[#d97706] dark:group-hover/kat:text-amber-400'
-        };
-    }
-  };
-
-
-
-  const getAuthorNameOnly = (c: { authorStory?: string; authorArt?: string }) => {
-    // Gabungkan author story & art lalu dedupe; satu orang bisa memegang kedua
-    // peran sekaligus, sehingga nama yang sama tidak perlu tampil dua kali.
-    const names = `${c.authorStory || ''}, ${c.authorArt || ''}`
-      .split(',')
-      .map((n) => n.trim())
-      .filter(Boolean);
-    return Array.from(new Set(names)).join(', ');
-  };
-
-  // Author untuk kartu per-volume: utamakan author milik volume itu sendiri,
-  // baru fallback ke author level series (comic). Tanpa ini, kartu menampilkan
-  // author gabungan dari semua buku dalam series yang sama.
-  const getVolumeAuthorName = (
-    c: { authorStory?: string; authorArt?: string },
-    v: { authorStory?: string; authorArt?: string },
-  ) => getAuthorNameOnly(v) || getAuthorNameOnly(c);
-
 
   const hadInitialSelectionRef = useRef<boolean>(Boolean(initialSelectedComicId));
 
@@ -1116,87 +1049,19 @@ const getReadingRatingStyle = (rating?: string) => {
               {/* Grid of 6 Upcoming Items */}
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 relative z-10">
                 {upcomingReleases.map(({ comic, volume }, idx) => (
-                  <a
+                  <BookPostCard
                     key={`upcoming-${comic.id}-${volume.volNumber}`}
-                    href={bookPath(comic, volume) ?? undefined}
-                    onClick={(e) => {
-                      if (!isPlainLeftClick(e)) return;
-                      e.preventDefault();
-                      openVolumeModal(comic, volume.volNumber);
-                    }}
-                    className="bg-neutral-50/80 dark:bg-neutral-900/80 hover:bg-white dark:hover:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 hover:border-[#DA6B1C] dark:hover:border-[#DA6B1C] rounded-xl p-2 sm:p-2.5 flex flex-col justify-between cursor-pointer transition-all duration-200 shadow-3xs hover:shadow-md hover:-translate-y-0.5 group"
-                  >
-                    <div className="space-y-1.5">
-                      {/* Cover Art with Release Badge */}
-                      <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-neutral-950 flex items-center justify-center">
-                        {(volume.coverImage || comic.coverImage) ? (
-                          <img
-                            src={volume.coverImage || comic.coverImage}
-                            alt={`${comic.title} Vol.${volume.volNumber}`}
-                            loading={idx < 2 ? 'eager' : 'lazy'}
-                            decoding="async"
-                            fetchPriority={idx < 2 ? 'high' : 'auto'}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            referrerPolicy="no-referrer"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-neutral-900 flex flex-col items-center justify-center p-2 text-center">
-                            <BookOpen className="w-6 h-6 text-neutral-600 mb-1" />
-                            <span className="text-[9px] text-neutral-400 font-bold line-clamp-2">{comic.title}</span>
-                          </div>
-                        )}
-
-                        {/* Release Date Badge — tanggal belum pasti, selalu TBA */}
-                        <div className="absolute top-1.5 left-1.5 right-1.5 z-10 flex justify-start">
-                          <span className="bg-[#DA6B1C] text-white font-mono font-black text-[8px] px-1.5 py-0.5 rounded-md shadow-xs tracking-tight flex items-center gap-1 border border-orange-600/30">
-                            <Clock className="w-2.5 h-2.5 text-white shrink-0" />
-                            <span className="text-white font-extrabold">TBA</span>
-                          </span>
-                        </div>
-
-                        {/* Bottom Category & Rating Badges */}
-                        <div className="absolute bottom-1.5 left-1.5 z-10 flex items-center gap-1 flex-wrap">
-                          <span className="bg-white/95 dark:bg-neutral-900/95 text-neutral-900 dark:text-neutral-100 font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8px] capitalize shadow-xs backdrop-blur-xs border border-neutral-200/60 dark:border-neutral-800">
-                            {getBookTypeLabel(comic.category)}
-                          </span>
-                          {comic.readingRating && (
-                            <span className={`font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8px] shadow-xs ${getReadingRatingStyle(comic.readingRating).bg}`}>
-                              {getReadingRatingStyle(comic.readingRating).text}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Meta info */}
-                      <div className="space-y-0.5 text-left pt-1">
-                        <span className="text-[8.5px] font-sans text-neutral-400 dark:text-neutral-500 block truncate leading-tight">
-                          {comic.publisherName}
-                        </span>
-                        <h4 className={`text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100 ${getReadingRatingStyle(comic.readingRating).hoverClass} transition-colors line-clamp-1 leading-snug`}>
-                          {volume.title || comic.title}
-                        </h4>
-                        <div className="text-[9.5px] font-mono font-extrabold text-[#112A12] dark:text-[#457347] leading-tight">
-                          Vol.{volume.volNumber}
-                        </div>
-                        {getVolumeAuthorName(comic, volume) && (
-                          <p className="text-[9px] font-sans text-neutral-500 dark:text-neutral-400 truncate leading-tight">
-                            {getVolumeAuthorName(comic, volume)}
-                          </p>
-                        )}
-                        {comic.genres && comic.genres.length > 0 && (
-                          <p className="text-[8.5px] font-sans text-neutral-400 dark:text-white truncate leading-tight">
-                            {comic.genres.slice(0, 2).join(', ')}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="pt-1.5 border-t border-neutral-200/60 dark:border-neutral-800/80 mt-1.5 flex items-center justify-between font-mono text-[10px]">
-                      <span className="font-extrabold text-neutral-900 dark:text-neutral-100 text-[10.5px]">
-                        {volume.price && volume.price > 0 ? `Rp ${volume.price.toLocaleString('id-ID')}` : '-'}
+                    comic={comic}
+                    volume={volume}
+                    eager={idx < 2}
+                    onOpen={openVolumeModal}
+                    cornerBadge={
+                      <span className="bg-[#DA6B1C] text-white font-mono font-black text-[8px] px-1.5 py-0.5 rounded-md shadow-xs tracking-tight flex items-center gap-1 border border-orange-600/30">
+                        <Clock className="w-2.5 h-2.5 text-white shrink-0" />
+                        <span className="text-white font-extrabold">TBA</span>
                       </span>
-                    </div>
-                  </a>
+                    }
+                  />
                 ))}
               </div>
             </div>
@@ -1669,113 +1534,16 @@ const getReadingRatingStyle = (rating?: string) => {
             const bookmarkId = `${comic.id}-vol-${volume.volNumber}`;
             const isBookmarked = isSaved('comics', bookmarkId);
             return (
-              <a
+              <BookPostCard
                 key={postKey}
-                href={bookPath(comic, volume) ?? undefined}
-                onClick={(e) => {
-                  if (!isPlainLeftClick(e)) return;
-                  e.preventDefault();
-                  openVolumeModal(comic, volume.volNumber);
-                }}
-                className="block group cursor-pointer"
-              >
-                <div
-                   className={`h-full bg-white dark:bg-neutral-900 border-2 rounded-xl overflow-hidden flex flex-col justify-between cursor-pointer transition-all duration-300 ${
-                     isBookmarked
-                       ? 'border-emerald-400'
-                       : 'border-[#EFEFEF] dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_10px_24px_rgba(0,0,0,0.05)] hover:translate-y-[-2px]'
-                   } select-none`}
-                >
-                    {/* Book Jacket Art */}
-                    <div className="relative aspect-[3/4] w-full bg-neutral-950 flex flex-col justify-between p-2.5 select-none overflow-hidden">
-                      {(volume.coverImage || comic.coverImage) && !imageErrors[post.id] ? (
-                        <img
-                          src={volume.coverImage || comic.coverImage}
-                          alt={`${volume.title || comic.title} Vol ${volume.volNumber}`}
-                          loading={paginatedVolumePosts.indexOf(post) < 6 ? 'eager' : 'lazy'}
-                          decoding="async"
-                          fetchPriority={paginatedVolumePosts.indexOf(post) < 4 ? 'high' : 'auto'}
-                          onError={() => setImageErrors(prev => ({ ...prev, [post.id]: true }))}
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 scale-100 group-hover:scale-105"
-                          referrerPolicy="no-referrer"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-950 flex flex-col justify-between p-2.5 border border-neutral-700">
-                          <div className="my-auto text-center px-1">
-                            <BookOpen className="w-7 h-7 text-neutral-500 stroke-[1.2] mx-auto mb-1 opacity-60" />
-                            <span className="text-[8px] font-mono tracking-wider text-neutral-400 capitalize">
-                              {getBookTypeLabel(comic.category)}
-                            </span>
-                            <h4 className="text-[10px] font-sans font-extrabold text-neutral-200 mt-1 line-clamp-3 leading-normal">
-                              {volume.title || comic.title}
-                            </h4>
-                          </div>
-                        </div>
-                      )}
-                    
-
-                      {/* Bottom Quick Category & Age Rating Overlay */}
-                      <div className="absolute bottom-2 left-2 z-20 flex items-center gap-1 pointer-events-none">
-                        <span className="bg-neutral-100/95 dark:bg-neutral-800/95 text-neutral-900 dark:text-neutral-100 font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8.5px] capitalize leading-none shadow-xs border border-neutral-200/50 dark:border-neutral-700/50">
-                          {getBookTypeLabel(comic.category)}
-                        </span>
-                        {comic.readingRating && (
-                          <span className={`font-sans font-extrabold px-1.5 py-0.5 rounded-md text-[8.5px] leading-none shadow-xs border ${getReadingRatingStyle(comic.readingRating).bg}`}>
-                            {getReadingRatingStyle(comic.readingRating).text}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Meta details */}
-                    <div className="space-y-1 p-2.5 flex-1 flex flex-col justify-between text-left">
-                      <div className="space-y-0.5">
-                        {/* Publisher */}
-                        <span className="text-[9px] sm:text-[9.5px] font-sans text-neutral-400 dark:text-neutral-500 leading-tight block truncate">
-                          {comic.publisherName}
-                        </span>
-
-                        {/* Title */}
-                        <h4 className={`text-xs font-sans font-extrabold text-neutral-900 dark:text-neutral-100 ${getReadingRatingStyle(comic.readingRating).hoverClass} transition-colors line-clamp-1 leading-snug`}>
-                          {volume.title || comic.title}
-                        </h4>
-
-                        {/* Volume under Title */}
-                        <div className="text-[9.5px] sm:text-[10px] font-sans font-extrabold text-[#112A12] dark:text-[#457347] leading-tight">
-                          Vol.{volume.volNumber}
-                        </div>
-
-                        {/* Author (author volume ini, fallback ke series) */}
-                        {getVolumeAuthorName(comic, volume) && (
-                          <p className="text-[9.5px] sm:text-[10px] font-sans text-neutral-600 dark:text-neutral-400 leading-tight truncate pt-0.5">
-                            {getVolumeAuthorName(comic, volume)}
-                          </p>
-                        )}
-
-                        {/* Genres tags */}
-                        <div className="flex flex-wrap gap-1 items-center pt-0.5">
-                          <span className="text-[9px] sm:text-[9.5px] text-neutral-450 dark:text-neutral-550 font-sans line-clamp-1">
-                            {comic.genres.slice(0, 2).join(', ')}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Divider line */}
-                      <div className="border-t border-neutral-100 dark:border-neutral-800 my-1.5" />
-
-                      {/* Price Row */}
-                      <div className="flex items-center justify-start font-mono w-full">
-                        <span className="font-extrabold text-neutral-950 dark:text-neutral-50 font-sans text-xs shrink-0 leading-none">
-                          Rp {volume.price.toLocaleString('id-ID')}
-                        </span>
-                      </div>
-
-
-                    </div>
-                  </div>
-                </a>
-              );
-            })
+                comic={comic}
+                volume={volume}
+                isBookmarked={isBookmarked}
+                eager={paginatedVolumePosts.indexOf(post) < 6}
+                onOpen={openVolumeModal}
+              />
+            );
+          })
           ) : (
             <div className="col-span-full py-16 px-6 border border-dashed border-neutral-250 dark:border-neutral-800 text-center rounded-2xl bg-neutral-50/60 dark:bg-[#171717] flex flex-col items-center justify-center space-y-3">
               <div className="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-1">
