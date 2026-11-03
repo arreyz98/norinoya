@@ -619,7 +619,7 @@ export default function DetailBuku({
 
                     <div className="space-y-1 pl-0.5">
                       <div className="text-xs font-sans font-extrabold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                        {activeVolObj?.editionName ? `Edisi ${activeVolObj.editionName}` : 'Edisi Indonesia'}
+                       Cetakan Indonesia
                       </div>
                       <div className="text-[11px] sm:text-xs font-sans font-medium text-neutral-450 dark:text-neutral-550">
                         Penerbit: {selectedComic.publisherName || 'Penerbit Resmi'}

@@ -983,6 +983,9 @@ export default function BookForm({
                 </Alert>
             )}
 
+            {/* IMAGES */}
+            <BookImagesSection {...sectionProps} form={form} addImage={addImage} removeImage={removeImage} updateImage={updateImage} />
+
             {/* INFORMASI BUKU */}
             <BookBasicInfo
                 {...sectionProps}
@@ -1016,9 +1019,6 @@ export default function BookForm({
                 genreOptions={genreOptions}
                 updateField={updateField}
             />
-
-            {/* IMAGES */}
-            <BookImagesSection {...sectionProps} form={form} addImage={addImage} removeImage={removeImage} updateImage={updateImage} />
 
             {/* DESKRIPSI & EMBED */}
             <BookDescriptionMediaSection
